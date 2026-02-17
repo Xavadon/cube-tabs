@@ -1,4 +1,5 @@
 using _Project.Scripts.Architecture.Services.Scene;
+using _Project.Scripts.Gameplay.Character.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -6,14 +7,12 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 {
     public class LevelInitializer : ILevelInitializer
     {
-        /*private readonly PlayerSpawner _playerSpawner;
-        private readonly CameraSpawner _cameraSpawner;*/
+        private readonly CharacterSpawner _characterSpawner;
 
-        /*public LevelInitializer(PlayerSpawner playerSpawner, CameraSpawner cameraSpawner)
+        public LevelInitializer(CharacterSpawner characterSpawner)
         {
-            _playerSpawner = playerSpawner;
-            _cameraSpawner = cameraSpawner;
-        }*/
+            _characterSpawner = characterSpawner;
+        }
         
         public UniTask Initialize()
         {
@@ -23,29 +22,12 @@ namespace _Project.Scripts.Gameplay.Services.Scene
         
         public void InitializeLevel()
         {
-            /*Debug.Log("[LevelInitializer] Starting level initialization...");
-            GameObject player = _playerSpawner.SpawnPlayer();
+            Debug.Log("[LevelInitializer] Starting level initialization...");
 
-            if (player == null)
-            {
-                Debug.LogError("[LevelInitializer] Failed to spawn player!");
-                return;
-            }
-
-            Transform cameraTarget = FindCameraTarget(player.transform);
-
-            if (cameraTarget == null)
-            {
-                Debug.LogWarning("[LevelInitializer] CameraTarget not found on player, using player root transform");
-                cameraTarget = player.transform;
-            }
-
-            _cameraSpawner.SpawnCamera(cameraTarget);
-            */
+            _characterSpawner.Spawn(CharacterType.Enemy);
             
             Debug.Log("[LevelInitializer] Level initialized successfully");
         }
-
         
         private Transform FindCameraTarget(Transform playerRoot)
         {
