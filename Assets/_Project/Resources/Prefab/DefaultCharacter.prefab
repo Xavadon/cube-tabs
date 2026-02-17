@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 3310206211989840516}
   - component: {fileID: 5721026936268990242}
   - component: {fileID: -2645375698040035195}
-  - component: {fileID: -2743593246995335281}
   m_Layer: 0
   m_Name: DefaultCharacter
   m_TagString: Untagged
@@ -113,25 +112,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _navMeshAgent: {fileID: 5721026936268990242}
-  _brain: {fileID: -2743593246995335281}
---- !u!114 &-2743593246995335281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 647169504389971583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c50abe307bcc8404c9133c2e19cc711e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _detectionRadius: 10
-  _attackRange: 2
-  _attackCooldown: 1.5
-  _playerLayer:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!1 &3461493281183027933
 GameObject:
   m_ObjectHideFlags: 0

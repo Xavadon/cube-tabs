@@ -1,3 +1,4 @@
+using System;
 using _Project.Scripts.Gameplay.Character.Components.AiBrain;
 using _Project.Scripts.Gameplay.Character.Components.Health;
 using _Project.Scripts.Gameplay.Character.Data;
@@ -19,7 +20,7 @@ namespace _Project.Scripts.Gameplay.Character
         private NavMeshAgent _navMeshAgent;
         
         [SerializeField]
-        private CharacterMeleeBrain _brain;  //TODO: rework brain
+        private CharacterBrain _brain;  //TODO: rework brain
         
         private NavMeshMovementComponent _movement;
         private HealthComponent _health;
@@ -29,7 +30,7 @@ namespace _Project.Scripts.Gameplay.Character
         {
             CharacterType = characterType;
             
-            _brain.Initialize(_navMeshAgent, characterData.AiBrain);
+            _brain = new(characterData.MeleeBrainData, _navMeshAgent, transform);
             _movement = new(_navMeshAgent, transform, characterData.MoveSpeed);
             _health = new(characterData);
             _resistance = new(characterData);
@@ -39,6 +40,11 @@ namespace _Project.Scripts.Gameplay.Character
             _navMeshAgent.acceleration = 1000f;
             _health.OnDeath += HandleDeath;
             //TODO skinchange
+        }
+
+        private void Update()
+        {
+            _brain?.Tick();
         }
 
         private void HandleDeath()

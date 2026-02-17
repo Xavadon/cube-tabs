@@ -7,7 +7,10 @@ namespace _Project.Scripts.Architecture.BehaviorTree.Composites
         private readonly List<BTNode> _children = new();
         private int _currentIndex;
 
-        public Sequence(params BTNode[] children) => _children.AddRange(children);
+        public Sequence(params BTNode[] children)
+        {
+            _children.AddRange(children);
+        }
 
         public override NodeStatus Evaluate()
         {
