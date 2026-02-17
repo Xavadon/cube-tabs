@@ -30,7 +30,7 @@ namespace _Project.Scripts.Gameplay.Character
         {
             CharacterType = characterType;
             
-            _brain = new(characterData.MeleeBrainData, _navMeshAgent, transform);
+            _brain = new(characterData.BrainData, _navMeshAgent, transform);
             _movement = new(_navMeshAgent, transform, characterData.MoveSpeed);
             _health = new(characterData);
             _resistance = new(characterData);

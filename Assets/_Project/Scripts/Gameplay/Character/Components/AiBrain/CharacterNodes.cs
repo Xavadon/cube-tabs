@@ -1,6 +1,7 @@
 using _Project.Scripts.Architecture.BehaviorTree;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem.iOS;
 
 namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 {
@@ -20,7 +21,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
                 return Status = NodeStatus.Success;
             }
 
-            return Status = NodeStatus.Running;
+            return Status = NodeStatus.Failure;
         }
     }
 
@@ -147,24 +148,98 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             return Status = NodeStatus.Running;
         }
     }
-    
-    public class MeleeAttack : BTNode
+
+    public class StopMovement : BTNode
     {
         public override NodeStatus Evaluate()
         {
+            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
+            agent.isStopped = true;
+            return Status = NodeStatus.Success;
+        }
+    }
+    
+    public class ResumeMovement : BTNode
+    {
+        public override NodeStatus Evaluate()
+        {
+            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
+            agent.isStopped = false;
+            return Status = NodeStatus.Success;
+        }
+    }
+
+    public abstract class AttackBase : BTNode
+    {
+        private readonly float _windUpDuration;
+
+        private float _elapsed;
+        private bool _isAttacking;
+
+        public AttackBase(float windUpDuration)
+        {
+            _windUpDuration = windUpDuration;
+        }
+
+        public override NodeStatus Evaluate()
+        {
+            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
+
+            if (!_isAttacking)
+            {
+                _isAttacking = true;
+                _elapsed = 0;
+                agent.isStopped = true;
+            }
+            
+            _elapsed += Time.deltaTime;
+
+            if (_elapsed >= _windUpDuration)
+            {
+                PerformAttack();
+                agent.isStopped = false;
+                _isAttacking = false;
+                return Status = NodeStatus.Success;
+            }
+
+            return Status = NodeStatus.Failure;
+        }
+        
+        public override void Reset()
+        {
+            base.Reset();
+            _isAttacking = false;
+            _elapsed = 0;
+        }
+        
+        protected abstract void PerformAttack();
+    }
+
+    public class MeleeAttack : AttackBase
+    {
+        public MeleeAttack(float windUpDuration) : base(windUpDuration)
+        {
+            
+        }
+        
+        protected override void PerformAttack()
+        {
+            Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
             Debug.Log("Melee Attack");
-            return Status = NodeStatus.Success;
         }
     }
     
-    public class RangedAttack : BTNode
+    public class RangedAttack : AttackBase
     {
-        public override NodeStatus Evaluate()
+        public RangedAttack(float windUpDuration) : base(windUpDuration)
         {
-            Debug.Log("Ranged Attack");
-            return Status = NodeStatus.Success;
+            
+        }
+
+        protected override void PerformAttack()
+        {
+            Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
+            Debug.Log("Range Attack");
         }
     }
-    
-    
 }

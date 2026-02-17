@@ -19,7 +19,7 @@ namespace _Project.Scripts.Gameplay.Character.Data
         public CharacterResistancesData CharacterResistancesData { get; private set; }
         
         [field: SerializeField]
-        public MeleeBrainData MeleeBrainData { get; private set; }
+        public BrainDataBase BrainData { get; private set; }
         
         [Header("Equipment")]
         public WeaponData[] WeaponData;

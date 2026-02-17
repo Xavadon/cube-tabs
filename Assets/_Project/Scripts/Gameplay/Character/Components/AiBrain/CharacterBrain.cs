@@ -1,7 +1,4 @@
 using _Project.Scripts.Architecture.BehaviorTree;
-using _Project.Scripts.Architecture.BehaviorTree.Composites;
-using _Project.Scripts.Architecture.BehaviorTree.Decorators;
-using _Project.Scripts.Architecture.BehaviorTree.Leaves;
 using _Project.Scripts.Gameplay.Character.Data.AiBrain;
 using UnityEngine;
 using UnityEngine.AI;
@@ -19,9 +16,9 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
     {
         private readonly BehaviourTree _tree;
 
-        public CharacterBrain(IBrainData data, NavMeshAgent agent, Transform transform)
+        public CharacterBrain(BrainDataBase dataBase, NavMeshAgent agent, Transform transform)
         {
-            _tree = new BehaviourTree(data.BuildTree());
+            _tree = new BehaviourTree(dataBase.BuildTree());
             _tree.Blackboard.Set(BrainKeys.Agent, agent);
             _tree.Blackboard.Set(BrainKeys.Transform, transform);
         }

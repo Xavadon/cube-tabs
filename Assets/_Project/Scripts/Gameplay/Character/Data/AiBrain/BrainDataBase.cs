@@ -1,9 +1,10 @@
 using _Project.Scripts.Architecture.BehaviorTree;
+using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
 {
-    public interface IBrainData
+    public abstract class BrainDataBase : ScriptableObject
     {
-        BTNode BuildTree();
+        public abstract BTNode BuildTree();
     }
 }
