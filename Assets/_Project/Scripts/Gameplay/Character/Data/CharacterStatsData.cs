@@ -6,12 +6,12 @@ namespace _Project.Scripts.Gameplay.Character.Data
     public class CharacterStatsData : ScriptableObject
     {
         [field: SerializeField]
-        public float Health { get; private set; }
+        public float Health { get; private set; } = 100f;
         
         [field: SerializeField]
-        public float Mana { get; private set; }
-        
-        [field: SerializeField]
-        public float Stamina { get; private set; }
+        public float Mana { get; private set; } = 100f;
+
+        [field: SerializeField] 
+        public float Stamina { get; private set; } = 100f;
     }
 }

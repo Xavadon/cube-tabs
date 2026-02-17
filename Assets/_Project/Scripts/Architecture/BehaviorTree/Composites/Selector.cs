@@ -14,17 +14,14 @@ namespace _Project.Scripts.Architecture.BehaviorTree.Composites
 
         public override NodeStatus Evaluate()
         {
-            while (_currentIndex < _children.Count)
+            for (int i = 0; i < _children.Count; i++)
             {
-                Status = _children[_currentIndex].Evaluate();
+                Status = _children[i].Evaluate();
 
                 if (Status != NodeStatus.Failure)
                     return Status;
-
-                _currentIndex++;
             }
 
-            _currentIndex = 0;
             return Status = NodeStatus.Failure;
         }
 

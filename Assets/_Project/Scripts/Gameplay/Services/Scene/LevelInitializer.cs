@@ -25,6 +25,10 @@ namespace _Project.Scripts.Gameplay.Services.Scene
             Debug.Log("[LevelInitializer] Starting level initialization...");
 
             _characterSpawner.Spawn(CharacterType.Enemy);
+            _characterSpawner.Spawn(CharacterType.Enemy);
+            _characterSpawner.Spawn(CharacterType.Enemy);
+            _characterSpawner.Spawn(CharacterType.Enemy);
+            _characterSpawner.Spawn(CharacterType.Enemy);
             
             Debug.Log("[LevelInitializer] Level initialized successfully");
         }

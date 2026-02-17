@@ -28,12 +28,15 @@ namespace _Project.Scripts.Gameplay.Character
         public void Initialize(CharacterType characterType, CharacterData characterData)
         {
             CharacterType = characterType;
-
-            _brain.Initialize(_navMeshAgent);
+            
+            _brain.Initialize(_navMeshAgent, characterData.AiBrain);
             _movement = new(_navMeshAgent, transform, characterData.MoveSpeed);
             _health = new(characterData);
             _resistance = new(characterData);
-            
+
+            _navMeshAgent.speed = characterData.MoveSpeed;
+            _navMeshAgent.stoppingDistance = 2; //_brain.attackdistance
+            _navMeshAgent.acceleration = 1000f;
             _health.OnDeath += HandleDeath;
             //TODO skinchange
         }
