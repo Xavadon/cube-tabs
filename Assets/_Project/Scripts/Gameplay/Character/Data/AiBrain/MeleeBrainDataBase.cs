@@ -31,9 +31,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
                 new Sequence(
                     new HasTarget(),
                     new IsInRange(AttackRange),
-                    new StopMovement(),
-                    new Cooldown(AttackCooldown, new MeleeAttack(WindUpDuration)),
-                    new ResumeMovement()
+                    new Cooldown(AttackCooldown, new MeleeAttack(WindUpDuration,AttackRange))
                 ),
                 new Sequence(
                     new HasTarget(),

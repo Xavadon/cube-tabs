@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Range Brain Data
   m_EditorClassIdentifier: 
   <DetectionRadius>k__BackingField: 15
+  <FleeRange>k__BackingField: 5
+  <WindUpDuration>k__BackingField: 0.3
   <AttackRange>k__BackingField: 10
-  <FleeRange>k__BackingField: 3
   <AttackCooldown>k__BackingField: 2
   <TargetLayer>k__BackingField:
     serializedVersion: 2

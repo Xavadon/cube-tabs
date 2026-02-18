@@ -6,6 +6,7 @@ namespace _Project.Scripts.Architecture.BehaviorTree.Composites
     {
         private readonly List<BTNode> _children = new();
         private int _currentIndex;
+        private int _runningIndex = -1;
 
         public Selector(params BTNode[] children)
         {
@@ -19,9 +20,16 @@ namespace _Project.Scripts.Architecture.BehaviorTree.Composites
                 Status = _children[i].Evaluate();
 
                 if (Status != NodeStatus.Failure)
+                {
+                    if (_runningIndex >= 0 && _runningIndex != i)
+                        _children[_runningIndex].Reset();
+
+                    _runningIndex = Status == NodeStatus.Running ? i : -1;
                     return Status;
+                }
             }
 
+            _runningIndex = -1;
             return Status = NodeStatus.Failure;
         }
 
@@ -29,6 +37,7 @@ namespace _Project.Scripts.Architecture.BehaviorTree.Composites
         {
             base.Reset();
             _currentIndex = 0;
+            _runningIndex = -1;
             _children.ForEach(c => c.Reset());
         }
 

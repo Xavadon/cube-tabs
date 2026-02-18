@@ -14,7 +14,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
         public float DetectionRadius { get; private set; } = 15f;
 
         [field: SerializeField]
-        public float FleeRange { get; private set; } = 3f;
+        public float FleeRange { get; private set; } = 5f;
        
         [field: SerializeField] 
         public float WindUpDuration { get; private set; } = 0.3f;
@@ -31,19 +31,20 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
         public override BTNode BuildTree()
         {
             return new Selector(
-                new Sequence(
+                new Sequence
+                (
                     new HasTarget(),
                     new IsInRange(FleeRange),
                     new Flee(FleeRange)
                 ),
-                new Sequence(
+                new Sequence
+                (
                     new HasTarget(),
-                    new IsInRange(AttackRange),
-                    new StopMovement(),
-                    new Cooldown(AttackCooldown, new RangedAttack(WindUpDuration)),
-                    new ResumeMovement()
+                    new IsInRange(AttackRange), 
+                    new Cooldown(AttackCooldown, new RangedAttack(WindUpDuration, AttackRange))
                 ),
-                new Sequence(
+                new Sequence
+                (
                     new HasTarget(),
                     new ChaseTarget(AttackRange)
                 ),

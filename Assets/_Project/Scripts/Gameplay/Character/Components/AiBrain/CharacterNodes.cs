@@ -93,6 +93,8 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         public override NodeStatus Evaluate()
         {
             NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
+            agent.stoppingDistance = _stopDistance;
+            
             Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
             
             agent.SetDestination(target.position);
@@ -118,6 +120,8 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         public override NodeStatus Evaluate()
         {
             NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
+            agent.stoppingDistance = 1;
+            
             Transform transform = Blackboard.Get<Transform>(BrainKeys.Transform);
             Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
 
@@ -125,7 +129,9 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             {
                 return Status = NodeStatus.Failure;
             }
-            
+
+            agent.isStopped = false;
+
             Vector3 direction = (transform.position - target.position).normalized;
             Vector3 fleePoint = transform.position + direction * _fleeDistance;
 
@@ -169,40 +175,104 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         }
     }
 
-    public abstract class AttackBase : BTNode
+    public class LookAtTarget : BTNode
     {
-        private readonly float _windUpDuration;
+        private readonly float _rotationSpeed;
 
-        private float _elapsed;
-        private bool _isAttacking;
-
-        public AttackBase(float windUpDuration)
+        public LookAtTarget(float rotationSpeed = 10f)
         {
-            _windUpDuration = windUpDuration;
+            _rotationSpeed = rotationSpeed;
         }
 
         public override NodeStatus Evaluate()
         {
             NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
+            Transform transform = Blackboard.Get<Transform>(BrainKeys.Transform);
+            Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
+
+            if (target == null)
+                return Status = NodeStatus.Failure;
+
+            agent.updateRotation = false;
+
+            Vector3 direction = target.position - transform.position;
+            direction.y = 0;
+
+            if (direction.sqrMagnitude > 0.001f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation,
+                    targetRotation,
+                    _rotationSpeed * Time.deltaTime
+                );
+            }
+
+            return Status = NodeStatus.Success;
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
+            if (agent != null)
+                agent.updateRotation = true;
+        }
+    }
+
+    public abstract class AttackBase : BTNode
+    {
+        private readonly float _windUpDuration;
+        private readonly float _stoppingDistance;
+
+        private float _elapsed;
+        private bool _isAttacking;
+
+        public AttackBase(float windUpDuration, float stoppingDistance)
+        {
+            _windUpDuration = windUpDuration;
+            _stoppingDistance = stoppingDistance;
+        }
+
+        public override NodeStatus Evaluate()
+        {
+            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
+            agent.stoppingDistance = _stoppingDistance;
+            
+            Transform transform = Blackboard.Get<Transform>(BrainKeys.Transform);
+            Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
 
             if (!_isAttacking)
             {
                 _isAttacking = true;
                 _elapsed = 0;
                 agent.isStopped = true;
+                agent.updateRotation = false;
             }
-            
+
+            if (target != null)
+            {
+                Vector3 direction = target.position - transform.position;
+                direction.y = 0;
+                if (direction.sqrMagnitude > 0.001f)
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(direction);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 15f * Time.deltaTime);
+                }
+            }
+
             _elapsed += Time.deltaTime;
 
             if (_elapsed >= _windUpDuration)
             {
                 PerformAttack();
                 agent.isStopped = false;
+                agent.updateRotation = true;
                 _isAttacking = false;
                 return Status = NodeStatus.Success;
             }
 
-            return Status = NodeStatus.Failure;
+            return Status = NodeStatus.Running;
         }
         
         public override void Reset()
@@ -210,6 +280,12 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             base.Reset();
             _isAttacking = false;
             _elapsed = 0;
+            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
+            if (agent != null)
+            {
+                agent.isStopped = false;
+                agent.updateRotation = true;
+            }
         }
         
         protected abstract void PerformAttack();
@@ -217,11 +293,11 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
     public class MeleeAttack : AttackBase
     {
-        public MeleeAttack(float windUpDuration) : base(windUpDuration)
+        public MeleeAttack(float windUpDuration, float stoppingDistance) : base(windUpDuration, stoppingDistance)
         {
             
         }
-        
+
         protected override void PerformAttack()
         {
             Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
@@ -231,7 +307,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
     
     public class RangedAttack : AttackBase
     {
-        public RangedAttack(float windUpDuration) : base(windUpDuration)
+        public RangedAttack(float windUpDuration, float stoppingDistance) : base(windUpDuration, stoppingDistance)
         {
             
         }

@@ -19,9 +19,7 @@ namespace _Project.Scripts.Gameplay.Character
         [SerializeField]
         private NavMeshAgent _navMeshAgent;
         
-        [SerializeField]
-        private CharacterBrain _brain;  //TODO: rework brain
-        
+        private CharacterBrain _brain; 
         private NavMeshMovementComponent _movement;
         private HealthComponent _health;
         private ResistanceComponent _resistance;
@@ -36,7 +34,6 @@ namespace _Project.Scripts.Gameplay.Character
             _resistance = new(characterData);
 
             _navMeshAgent.speed = characterData.MoveSpeed;
-            _navMeshAgent.stoppingDistance = 2; //_brain.attackdistance
             _navMeshAgent.acceleration = 1000f;
             _health.OnDeath += HandleDeath;
             //TODO skinchange
