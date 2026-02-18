@@ -1,5 +1,4 @@
 using _Project.Scripts.Architecture.Services;
-using _Project.Scripts.Gameplay.Services.Scene;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -7,14 +6,17 @@ namespace _Project.Scripts.Gameplay.Character.Services
 {
     public interface ISpawnPointProvider : IService
     {
-        (Vector3 position, Quaternion rotation) GetCharacterSpawn();
+        (Vector3 position, Quaternion rotation) GetAllySpawn();
+        (Vector3 position, Quaternion rotation) GetEnemySpawn();
     }
-    
+
     public class SpawnPointProvider : ISpawnPointProvider
     {
-        private const string CharacterSpawnPointTag = "CharacterSpawnPoint";
-    
-        private Transform _playerSpawnPoint;
+        private const string AllySpawnPointTag  = "AllyCharacterSpawnPoint";
+        private const string EnemySpawnPointTag = "EnemyCharacterSpawnPoint";
+
+        private Transform _allySpawnPoint;
+        private Transform _enemySpawnPoint;
 
         public UniTask Initialize()
         {
@@ -22,33 +24,47 @@ namespace _Project.Scripts.Gameplay.Character.Services
             return UniTask.CompletedTask;
         }
 
-        private void TryFindSpawnPoint()
+        private Transform FindSpawnPoint(string tag)
         {
-            var go = GameObject.FindGameObjectWithTag(CharacterSpawnPointTag);
+            var go = GameObject.FindGameObjectWithTag(tag);
 
             if (go != null)
             {
-                _playerSpawnPoint = go.transform;
+                return go.transform;
             }
-            else
-            {
-                Debug.LogWarning($"[SpawnPointProvider] '{CharacterSpawnPointTag}' not found");
-            }
+
+            Debug.LogWarning($"[SpawnPointProvider] Spawn point with tag '{tag}' not found");
+            return null;
         }
 
-        public (Vector3 position, Quaternion rotation) GetCharacterSpawn()
+        private (Vector3 position, Quaternion rotation) ToSpawnData(Transform point)
         {
-            if (_playerSpawnPoint == null)
+            if (point != null)
             {
-                TryFindSpawnPoint();
+                return (point.position, point.rotation);
             }
-            
-            if (_playerSpawnPoint != null)
-            {
-                return (_playerSpawnPoint.position, _playerSpawnPoint.rotation);
-            }
-        
+
             return (Vector3.zero, Quaternion.identity);
+        }
+
+        public (Vector3 position, Quaternion rotation) GetAllySpawn()
+        {
+            if (_allySpawnPoint is null)
+            {
+                _allySpawnPoint = FindSpawnPoint(AllySpawnPointTag);
+            }
+
+            return ToSpawnData(_allySpawnPoint);
+        }
+
+        public (Vector3 position, Quaternion rotation) GetEnemySpawn()
+        {
+            if (_enemySpawnPoint is null)
+            {
+                _enemySpawnPoint = FindSpawnPoint(EnemySpawnPointTag);
+            }
+
+            return ToSpawnData(_enemySpawnPoint);
         }
     }
 }

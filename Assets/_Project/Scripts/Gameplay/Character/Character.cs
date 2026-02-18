@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using _Project.Scripts.Gameplay.Character.Components.AiBrain;
 using _Project.Scripts.Gameplay.Character.Components.Health;
 using _Project.Scripts.Gameplay.Character.Data;
@@ -10,7 +11,7 @@ using UnityEngine.AI;
 
 namespace _Project.Scripts.Gameplay.Character
 {
-    public class Character : MonoBehaviour
+    public class Character : MonoBehaviour, IDamageAble
     {
         //public AbilityContainer Abilities { get; private set; } //TODO
         public CharacterType CharacterType { get; private set; }
@@ -24,11 +25,31 @@ namespace _Project.Scripts.Gameplay.Character
         private HealthComponent _health;
         private ResistanceComponent _resistance;
         
+        public void ApplyDamage(float amount, Vector3 hitPoint, DamageType type = DamageType.Physical)
+        {
+            _health.ApplyDamage(amount, hitPoint, type);
+        }
+
         public void Initialize(CharacterType characterType, CharacterData characterData)
         {
             CharacterType = characterType;
             
-            _brain = new(characterData.BrainData, _navMeshAgent, transform);
+            switch (characterType)
+            {
+                case CharacterType.Ally:
+                    gameObject.layer = LayerMask.NameToLayer("Ally");
+                    break;
+                case CharacterType.Enemy:
+                    gameObject.layer = LayerMask.NameToLayer("Enemy");
+                    break;
+                case CharacterType.None:
+                    throw new ArgumentOutOfRangeException(nameof(characterType), characterType, null);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(characterType), characterType, null);
+            }
+
+            WeaponData weapon = characterData.WeaponData?.Length > 0 ? characterData.WeaponData[0] : null;
+            _brain = new(characterData.BrainData, _navMeshAgent, transform, weapon);
             _movement = new(_navMeshAgent, transform, characterData.MoveSpeed);
             _health = new(characterData);
             _resistance = new(characterData);
@@ -51,7 +72,7 @@ namespace _Project.Scripts.Gameplay.Character
 
             // TODO: Анимация смерти
 
-            Destroy(gameObject, 3f);
+            Destroy(gameObject);
         }
     }
 }

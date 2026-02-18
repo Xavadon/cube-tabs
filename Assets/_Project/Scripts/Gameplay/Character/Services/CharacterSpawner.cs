@@ -1,7 +1,9 @@
+using System;
 using _Project.Scripts.Architecture.Services;
 using _Project.Scripts.Gameplay.Character.Data;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace _Project.Scripts.Gameplay.Character.Services
 {
@@ -36,9 +38,25 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
         public void Spawn(CharacterType type)
         {
-            var character = _characterFactory.Create(type);
+            Character character = _characterFactory.Create(type);
 
-            var (position, rotation) = _spawnPointProvider.GetCharacterSpawn();
+            Vector3 position = Vector3.zero;
+            Quaternion rotation = Quaternion.identity;
+            
+            switch (type)
+            {
+                case CharacterType.Ally:
+                    (position, rotation) = _spawnPointProvider.GetAllySpawn();
+                    break;
+                case CharacterType.Enemy:
+                    (position, rotation) = _spawnPointProvider.GetEnemySpawn();
+                    break;
+                case CharacterType.None:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+            
             character.transform.position = position;
             character.transform.rotation = rotation;
         }
@@ -60,11 +78,28 @@ namespace _Project.Scripts.Gameplay.Character.Services
         public Character Create(CharacterType type)
         {
             GameObject characterPrefab = Resources.Load<GameObject>("Prefab/DefaultCharacter");
-            CharacterData data = Resources.Load<CharacterData>("Data/DefaultCharacter");
-            
             GameObject charaGO = Object.Instantiate(characterPrefab);
+            
+            CharacterData data; 
+            
+            switch (type)
+            {
+                case CharacterType.Ally:
+                    data = Resources.Load<CharacterData>("Data/Ally DefaultCharacter");
+                    charaGO.layer = LayerMask.NameToLayer("Ally");
+                    break;
+                case CharacterType.Enemy:
+                    data = Resources.Load<CharacterData>("Data/Enemy DefaultCharacter");
+                    charaGO.layer = LayerMask.NameToLayer("Enemy");
+                    break;
+                case CharacterType.None:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+            
             charaGO.name = data.Name;
-
+      
             if (charaGO.TryGetComponent(out Character character))
             {
                 character.Initialize(type, data);

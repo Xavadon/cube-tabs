@@ -1,7 +1,8 @@
 using _Project.Scripts.Architecture.BehaviorTree;
+using _Project.Scripts.Gameplay.Character.Components.Health;
+using _Project.Scripts.Gameplay.Character.Data;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem.iOS;
 
 namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 {
@@ -293,29 +294,41 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
     public class MeleeAttack : AttackBase
     {
-        public MeleeAttack(float windUpDuration, float stoppingDistance) : base(windUpDuration, stoppingDistance)
-        {
-            
-        }
+        public MeleeAttack(float windUpDuration, float stoppingDistance) : base(windUpDuration, stoppingDistance) { }
 
         protected override void PerformAttack()
         {
             Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
-            Debug.Log("Melee Attack");
+            if (target == null) return;
+
+            IDamageAble damageable = target.GetComponent<IDamageAble>();
+            if (damageable == null) return;
+
+            WeaponData weapon = Blackboard.Get<WeaponData>(BrainKeys.WeaponData);
+            float damage = weapon != null ? weapon.Damage : 10f;
+            DamageType type = weapon != null ? weapon.DamageType : DamageType.Physical;
+
+            damageable.ApplyDamage(damage, target.position, type);
         }
     }
-    
+
     public class RangedAttack : AttackBase
     {
-        public RangedAttack(float windUpDuration, float stoppingDistance) : base(windUpDuration, stoppingDistance)
-        {
-            
-        }
+        public RangedAttack(float windUpDuration, float stoppingDistance) : base(windUpDuration, stoppingDistance) { }
 
         protected override void PerformAttack()
         {
             Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
-            Debug.Log("Range Attack");
+            if (target == null) return;
+
+            IDamageAble damageable = target.GetComponent<IDamageAble>();
+            if (damageable == null) return;
+
+            WeaponData weapon = Blackboard.Get<WeaponData>(BrainKeys.WeaponData);
+            float damage = weapon != null ? weapon.Damage : 10f;
+            DamageType type = weapon != null ? weapon.DamageType : DamageType.Physical;
+
+            damageable.ApplyDamage(damage, target.position, type);
         }
     }
 }

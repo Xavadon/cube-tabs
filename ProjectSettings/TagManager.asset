@@ -4,7 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - CharacterSpawnPoint
+  - AllyCharacterSpawnPoint
+  - EnemyCharacterSpawnPoint
   layers:
   - Default
   - TransparentFX
@@ -13,7 +14,7 @@ TagManager:
   - Water
   - UI
   - Ally
-  - 
+  - Enemy
   - 
   - 
   - 
