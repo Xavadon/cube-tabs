@@ -13,12 +13,12 @@ namespace _Project.Scripts.Gameplay.Character.Services
         Enemy,
         None
     }
-    
+
     public interface ICharacterSpawner : IService
     {
         void Spawn(CharacterType type);
     }
-    
+
     public class CharacterSpawner : ICharacterSpawner
     {
         private readonly ISpawnPointProvider _spawnPointProvider;
@@ -32,7 +32,7 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
         public UniTask Initialize()
         {
-            Debug.Log($"[CharacterSpawner] Service initialized");
+            Debug.Log("[CharacterSpawner] Initialized");
             return UniTask.CompletedTask;
         }
 
@@ -40,28 +40,17 @@ namespace _Project.Scripts.Gameplay.Character.Services
         {
             Character character = _characterFactory.Create(type);
 
-            Vector3 position = Vector3.zero;
-            Quaternion rotation = Quaternion.identity;
-            
-            switch (type)
+            (Vector3 position, Quaternion rotation) = type switch
             {
-                case CharacterType.Ally:
-                    (position, rotation) = _spawnPointProvider.GetAllySpawn();
-                    break;
-                case CharacterType.Enemy:
-                    (position, rotation) = _spawnPointProvider.GetEnemySpawn();
-                    break;
-                case CharacterType.None:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
-            }
-            
-            character.transform.position = position;
-            character.transform.rotation = rotation;
+                CharacterType.Ally  => _spawnPointProvider.GetAllySpawn(),
+                CharacterType.Enemy => _spawnPointProvider.GetEnemySpawn(),
+                _                   => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            };
+
+            character.transform.SetPositionAndRotation(position, rotation);
         }
     }
-    
+
     public interface ICharacterFactory : IService
     {
         Character Create(CharacterType type);
@@ -69,44 +58,36 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
     public class CharacterFactory : ICharacterFactory
     {
+        private const string CharacterPrefabPath = "Prefab/DefaultCharacter";
+
         public UniTask Initialize()
         {
-            Debug.Log($"[CharacterFactory] Service initialized");
+            Debug.Log("[CharacterFactory] Initialized");
             return UniTask.CompletedTask;
         }
 
         public Character Create(CharacterType type)
         {
-            GameObject characterPrefab = Resources.Load<GameObject>("Prefab/DefaultCharacter");
-            GameObject charaGO = Object.Instantiate(characterPrefab);
-            
-            CharacterData data; 
-            
-            switch (type)
+            GameObject prefab = Resources.Load<GameObject>(CharacterPrefabPath);
+            GameObject characterGO = Object.Instantiate(prefab);
+
+            (CharacterData data, int layer) = type switch
             {
-                case CharacterType.Ally:
-                    data = Resources.Load<CharacterData>("Data/Ally DefaultCharacter");
-                    charaGO.layer = LayerMask.NameToLayer("Ally");
-                    break;
-                case CharacterType.Enemy:
-                    data = Resources.Load<CharacterData>("Data/Enemy DefaultCharacter");
-                    charaGO.layer = LayerMask.NameToLayer("Enemy");
-                    break;
-                case CharacterType.None:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
-            }
-            
-            charaGO.name = data.Name;
-      
-            if (charaGO.TryGetComponent(out Character character))
+                CharacterType.Ally  => (Resources.Load<CharacterData>("Data/Ally DefaultCharacter"),  LayerMask.NameToLayer("Ally")),
+                CharacterType.Enemy => (Resources.Load<CharacterData>("Data/Enemy DefaultCharacter"), LayerMask.NameToLayer("Enemy")),
+                _                   => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            };
+
+            characterGO.name  = data.Name;
+            characterGO.layer = layer;
+
+            if (characterGO.TryGetComponent(out Character character))
             {
                 character.Initialize(type, data);
                 return character;
             }
 
-            Debug.LogError("[CharacterFactory] Could not get character component");
+            Debug.LogError("[CharacterFactory] Character component not found");
             return null;
         }
     }
