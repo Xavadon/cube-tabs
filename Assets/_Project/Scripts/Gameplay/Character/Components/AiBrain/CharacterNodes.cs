@@ -93,6 +93,9 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
         public override NodeStatus Evaluate()
         {
+            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.Animator);
+            animator.PlayMoveAnimation();
+            
             NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
             agent.stoppingDistance = _stopDistance;
             
@@ -106,6 +109,14 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             }
             
             return Status = NodeStatus.Running;
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            
+            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.Animator);
+            animator.PlayIdleAnimation();
         }
     }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using _Project.Scripts.Gameplay.Character.Components;
 using _Project.Scripts.Gameplay.Character.Components.AiBrain;
 using _Project.Scripts.Gameplay.Character.Components.Health;
 using _Project.Scripts.Gameplay.Character.Data;
@@ -18,9 +19,13 @@ namespace _Project.Scripts.Gameplay.Character
         public SkinChanger SkinChanger { get; private set; }
         
         [SerializeField]
+        private Animator _animator;
+        
+        [SerializeField]
         private NavMeshAgent _navMeshAgent;
         
         private CharacterBrain _brain; 
+        private AnimatorConroller _animatorConroller;
         private NavMeshMovementComponent _movement;
         private HealthComponent _health;
         private ResistanceComponent _resistance;
@@ -48,8 +53,20 @@ namespace _Project.Scripts.Gameplay.Character
                     throw new ArgumentOutOfRangeException(nameof(characterType), characterType, null);
             }
 
-            WeaponData weapon = characterData.WeaponData?.Length > 0 ? characterData.WeaponData[0] : null;
-            _brain = new(characterData.BrainData, _navMeshAgent, transform, weapon);
+            WeaponData weapon;
+            
+            if (characterData.WeaponData?.Length > 0)
+            {
+                weapon = characterData.WeaponData[0];
+            }
+            else
+            {
+                weapon = null;
+            }
+
+            _animatorConroller = new(_animator);
+            
+            _brain = new(characterData.BrainData, _navMeshAgent, _animatorConroller, transform, weapon);
             _movement = new(_navMeshAgent, transform, characterData.MoveSpeed);
             _health = new(characterData);
             _resistance = new(characterData);

@@ -112,6 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d28de054b6c0cf147a81080226289803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 4144499400286136660}
   _navMeshAgent: {fileID: 5721026936268990242}
 --- !u!65 &1228664569282647761
 BoxCollider:
