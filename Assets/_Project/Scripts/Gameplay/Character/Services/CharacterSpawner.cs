@@ -24,11 +24,13 @@ namespace _Project.Scripts.Gameplay.Character.Services
     {
         private readonly ISpawnPointProvider _spawnPointProvider;
         private readonly ICharacterFactory _characterFactory;
+        private readonly ICharacterRegistry _characterRegistry;
 
-        public CharacterSpawner(ISpawnPointProvider spawnPointProvider, ICharacterFactory characterFactory)
+        public CharacterSpawner(ISpawnPointProvider spawnPointProvider, ICharacterFactory characterFactory, ICharacterRegistry characterRegistry)
         {
             _spawnPointProvider = spawnPointProvider;
             _characterFactory = characterFactory;
+            _characterRegistry = characterRegistry;
         }
 
         public UniTask Initialize()
@@ -55,6 +57,8 @@ namespace _Project.Scripts.Gameplay.Character.Services
                 for (int i = 0; i < entry.Count; i++)
                 {
                     Character character = _characterFactory.Create(type, entry.CharacterData);
+                    character.SetRegistry(_characterRegistry);
+                    _characterRegistry.Register(character);
 
                     var (position, rotation) = spawnPoints[spawnIndex % spawnPoints.Length];
 

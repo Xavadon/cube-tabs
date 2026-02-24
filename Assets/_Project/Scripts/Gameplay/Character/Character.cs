@@ -5,6 +5,7 @@ using _Project.Scripts.Gameplay.Character.Components.AiBrain;
 using _Project.Scripts.Gameplay.Character.Components.Health;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Character.Services;
+using ICharacterRegistry = global::_Project.Scripts.Gameplay.Character.Services.ICharacterRegistry;
 using Game.Scripts.Core.Gameplay.Enemies.Components;
 using MinecraftModels.Scripts;
 using UnityEngine;
@@ -31,6 +32,7 @@ namespace _Project.Scripts.Gameplay.Character
         private NavMeshMovementComponent _movement;
         private HealthComponent _health;
         private ResistanceComponent _resistance;
+        private ICharacterRegistry _registry;
         
         public void ApplyDamage(float amount, Vector3 hitPoint, DamageType type = DamageType.Physical)
         {
@@ -81,8 +83,14 @@ namespace _Project.Scripts.Gameplay.Character
             _brain?.Tick();
         }
 
+        public void SetRegistry(ICharacterRegistry registry)
+        {
+            _registry = registry;
+        }
+
         private void HandleDeath()
         {
+            _registry?.Unregister(this);
             _movement.Stop();
 
             // TODO: Анимация смерти
