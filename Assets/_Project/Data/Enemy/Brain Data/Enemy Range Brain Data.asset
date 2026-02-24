@@ -15,9 +15,9 @@ MonoBehaviour:
   <DetectionRadius>k__BackingField: 40
   <FleeRange>k__BackingField: 5
   <WindUpDuration>k__BackingField: 0.3
-  <AttackDuration>k__BackingField: 2
+  <AttackDuration>k__BackingField: 1.2
   <AttackRange>k__BackingField: 10
-  <AttackCooldown>k__BackingField: 0.1
+  <AttackCooldown>k__BackingField: 0.5
   <TargetLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64

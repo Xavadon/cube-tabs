@@ -198,7 +198,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         {
             NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
             agent.stoppingDistance = 1;
-            
+
             Transform transform = Blackboard.Get<Transform>(BrainKeys.Transform);
             Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
 
@@ -207,28 +207,47 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
                 return Status = NodeStatus.Failure;
             }
 
-            agent.isStopped = false;
-
-            Vector3 direction = (transform.position - target.position).normalized;
-            Vector3 fleePoint = transform.position + direction * _fleeDistance;
-
-            if (NavMesh.SamplePosition(fleePoint, out var hit, _fleeDistance, NavMesh.AllAreas))
-            {
-                agent.SetDestination(hit.position);
-            }
-            else
-            {
-                agent.SetDestination(fleePoint);
-            }
-            
             float distanceToTarget = Vector3.Distance(transform.position, target.position);
-            
+
             if (distanceToTarget >= _fleeDistance)
             {
                 return Status = NodeStatus.Success;
             }
 
+            agent.isStopped = false;
+
+            Vector3 direction = (transform.position - target.position).normalized;
+
+            if (!TryFindFleePoint(transform.position, direction, out Vector3 destination))
+            {
+                return Status = NodeStatus.Failure;
+            }
+
+            agent.SetDestination(destination);
             return Status = NodeStatus.Running;
+        }
+
+        private bool TryFindFleePoint(Vector3 origin, Vector3 direction, out Vector3 result)
+        {
+            float sampleRadius = _fleeDistance * 0.5f;
+
+            // Try direct, then +-45, +-90, +-135, 180
+            float[] angles = { 0f, 45f, -45f, 90f, -90f, 135f, -135f, 180f };
+
+            foreach (float angle in angles)
+            {
+                Vector3 rotated = Quaternion.Euler(0f, angle, 0f) * direction;
+                Vector3 candidate = origin + rotated * _fleeDistance;
+
+                if (NavMesh.SamplePosition(candidate, out var hit, sampleRadius, NavMesh.AllAreas))
+                {
+                    result = hit.position;
+                    return true;
+                }
+            }
+
+            result = default;
+            return false;
         }
     }
     
