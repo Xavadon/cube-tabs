@@ -1,6 +1,3 @@
-using System;
-using UnityEngine;
-
 namespace _Project.Scripts.Architecture.BehaviorTree.Decorators
 {
     public class Parallel : BTNode
@@ -14,12 +11,30 @@ namespace _Project.Scripts.Architecture.BehaviorTree.Decorators
 
         protected override NodeStatus Process()
         {
+            bool anyRunning = false;
+            bool anyFailed = false;
+
             foreach (var child in _children)
             {
-                child.Evaluate();
+                var status = child.Evaluate();
+                if (status == NodeStatus.Running) anyRunning = true;
+                if (status == NodeStatus.Failure) anyFailed = true;
             }
-            
-            return Status = _children[^1].Status;
+
+            if (anyFailed) return Status = NodeStatus.Failure;
+            if (anyRunning) return Status = NodeStatus.Running;
+            return Status = NodeStatus.Success;
+        }
+
+        protected override void Exit()
+        {
+            foreach (var child in _children)
+            {
+                if (child.Status == NodeStatus.Running)
+                {
+                    child.Reset();
+                }
+            }
         }
 
         public override void Reset()

@@ -6,7 +6,8 @@ namespace _Project.Scripts.Architecture.BehaviorTree.Decorators
     {
         private readonly BTNode _child;
         private readonly float _duration;
-        private float _lastSuccessTime = float.NegativeInfinity;
+        
+        private float _lastSuccessTime;
 
         public Cooldown(float duration, BTNode child)
         {
