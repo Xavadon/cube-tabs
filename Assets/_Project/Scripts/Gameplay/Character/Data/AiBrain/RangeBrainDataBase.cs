@@ -49,9 +49,14 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
             return new Sequence(
                 new HasTarget(),
                 new IsInRange(AttackRange),
-                new Parallel(
-                    new Cooldown(AttackCooldown, new RangedAttack(WindUpDuration, AttackDuration, AttackRange)),
-                    new RotateTowardsTarget()
+                new Selector(
+                    new Cooldown(AttackCooldown,
+                        new Parallel(
+                            new RangedAttack(WindUpDuration, AttackDuration, AttackRange),
+                            new RotateTowardsTarget()
+                        )
+                    ),
+                    new Wait(0.1f)
                 )
             );
         }

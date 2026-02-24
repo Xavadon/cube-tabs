@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Id>k__BackingField: 0
   <Name>k__BackingField: DefaultCharacter
-  <MoveSpeed>k__BackingField: 1
+  <MoveSpeed>k__BackingField: 3.5
   <CharacterStatsData>k__BackingField: {fileID: 11400000, guid: 4bf7e93c8d7bd76428ff51f67b684026, type: 2}
   <CharacterResistancesData>k__BackingField: {fileID: 11400000, guid: b8755b404b88a8c4da2fdefe032562a8, type: 2}
   <BrainData>k__BackingField: {fileID: 11400000, guid: 9b4258595442995419e87b9cd45b7363, type: 2}

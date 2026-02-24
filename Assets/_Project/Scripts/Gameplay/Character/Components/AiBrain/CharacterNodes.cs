@@ -187,6 +187,13 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             _fleeDistance = fleeDistance;
         }
 
+        protected override void Enter()
+        {
+            base.Enter();
+            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
+            animator.PlayMove();
+        }
+
         protected override NodeStatus Process()
         {
             NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
