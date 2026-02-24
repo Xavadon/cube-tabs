@@ -13,7 +13,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
     public class HasTarget : BTNode
     {
-        public override NodeStatus Evaluate()
+        protected override NodeStatus Process()
         {
             Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
             
@@ -35,7 +35,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             _range = range;
         }
         
-        public override NodeStatus Evaluate()
+        protected override NodeStatus Process()
         {
             Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
             Transform transform = Blackboard.Get<Transform>(BrainKeys.Transform);
@@ -67,7 +67,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             _layer = layer;
         }
 
-        public override NodeStatus Evaluate()
+        protected override NodeStatus Process()
         {
             Transform transform = Blackboard.Get<Transform>(BrainKeys.Transform);
             Collider[] colliders = Physics.OverlapSphere(transform.position, _radius, _layer);
@@ -91,30 +91,31 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             _stopDistance = stopDistance;
         }
 
-        public override NodeStatus Evaluate()
+        protected override void Enter()
         {
             AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.Animator);
             animator.PlayMoveAnimation();
-            
+        }
+
+        protected override NodeStatus Process()
+        {
             NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
             agent.stoppingDistance = _stopDistance;
-            
+
             Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
-            
+
             agent.SetDestination(target.position);
 
             if (agent.remainingDistance <= _stopDistance)
             {
                 return Status = NodeStatus.Success;
             }
-            
+
             return Status = NodeStatus.Running;
         }
 
-        public override void Reset()
+        protected override void Exit()
         {
-            base.Reset();
-            
             AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.Animator);
             animator.PlayIdleAnimation();
         }
@@ -129,7 +130,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             _fleeDistance = fleeDistance;
         }
 
-        public override NodeStatus Evaluate()
+        protected override NodeStatus Process()
         {
             NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
             agent.stoppingDistance = 1;
@@ -169,7 +170,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
     public class StopMovement : BTNode
     {
-        public override NodeStatus Evaluate()
+        protected override NodeStatus Process()
         {
             NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
             agent.isStopped = true;
@@ -179,7 +180,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
     
     public class ResumeMovement : BTNode
     {
-        public override NodeStatus Evaluate()
+        protected override NodeStatus Process()
         {
             NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
             agent.isStopped = false;
@@ -196,7 +197,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             _rotationSpeed = rotationSpeed;
         }
 
-        public override NodeStatus Evaluate()
+        protected override NodeStatus Process()
         {
             NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
             Transform transform = Blackboard.Get<Transform>(BrainKeys.Transform);
@@ -246,7 +247,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             _stoppingDistance = stoppingDistance;
         }
 
-        public override NodeStatus Evaluate()
+        protected override NodeStatus Process()
         {
             NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
             agent.stoppingDistance = _stoppingDistance;

@@ -13,7 +13,7 @@ namespace _Project.Scripts.Architecture.BehaviorTree.Leaves
             _duration = duration;
         }
 
-        public override NodeStatus Evaluate()
+        protected override NodeStatus Process()
         {
             if (!_isWaiting)
             {

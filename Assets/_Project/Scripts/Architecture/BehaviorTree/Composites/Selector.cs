@@ -13,7 +13,7 @@ namespace _Project.Scripts.Architecture.BehaviorTree.Composites
             _children.AddRange(children);
         }
 
-        public override NodeStatus Evaluate()
+        protected override NodeStatus Process()
         {
             for (int i = 0; i < _children.Count; i++)
             {

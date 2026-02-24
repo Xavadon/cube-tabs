@@ -14,7 +14,7 @@ namespace _Project.Scripts.Architecture.BehaviorTree.Decorators
             _child = child;
         }
 
-        public override NodeStatus Evaluate()
+        protected override NodeStatus Process()
         {
             if (Time.time - _lastSuccessTime < _duration)
                 return Status = NodeStatus.Failure;

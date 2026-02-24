@@ -12,7 +12,7 @@ namespace _Project.Scripts.Architecture.BehaviorTree.Decorators
             _children = children;
         }
 
-        public override NodeStatus Evaluate()
+        protected override NodeStatus Process()
         {
             foreach (var child in _children)
             {

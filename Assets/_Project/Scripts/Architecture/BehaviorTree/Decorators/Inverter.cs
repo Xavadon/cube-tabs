@@ -9,7 +9,7 @@ namespace _Project.Scripts.Architecture.BehaviorTree.Decorators
             _child = child;
         }
 
-        public override NodeStatus Evaluate()
+        protected override NodeStatus Process()
         {
             return Status = _child.Evaluate() switch
             {

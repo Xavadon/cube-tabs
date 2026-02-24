@@ -11,7 +11,7 @@ namespace _Project.Scripts.Architecture.BehaviorTree.Leaves
             _predicate = predicate;
         }
 
-        public override NodeStatus Evaluate()
+        protected override NodeStatus Process()
         {
             if (_predicate())
             {

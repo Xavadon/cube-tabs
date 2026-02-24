@@ -6,16 +6,46 @@ namespace _Project.Scripts.Architecture.BehaviorTree
         Success,
         Failure
     }
-    
+
     public abstract class BTNode
     {
         public NodeStatus Status { get; protected set; }
         protected Blackboard Blackboard { get; private set; }
 
-        public abstract NodeStatus Evaluate();
+        private bool _isActive;
+
+        public NodeStatus Evaluate()
+        {
+            if (!_isActive)
+            {
+                _isActive = true;
+                Enter();
+            }
+
+            Status = Process();
+
+            if (Status != NodeStatus.Running)
+            {
+                _isActive = false;
+                Exit();
+            }
+
+            return Status;
+        }
+
+        protected abstract NodeStatus Process();
+
+        protected virtual void Enter() { }
+
+        protected virtual void Exit() { }
 
         public virtual void Reset()
         {
+            if (_isActive)
+            {
+                _isActive = false;
+                Exit();
+            }
             Status = NodeStatus.Failure;
         }
 

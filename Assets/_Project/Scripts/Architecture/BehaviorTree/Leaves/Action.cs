@@ -11,7 +11,7 @@ namespace _Project.Scripts.Architecture.BehaviorTree.Leaves
             _action = action;
         }
 
-        public override NodeStatus Evaluate()
+        protected override NodeStatus Process()
         {
             return Status = _action();
         }
