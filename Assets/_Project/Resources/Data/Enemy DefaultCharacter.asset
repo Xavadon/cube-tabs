@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b574c7249b5861d43abc286ee8fcc848, type: 3}
   m_Name: Enemy DefaultCharacter
   m_EditorClassIdentifier: 
+  <Id>k__BackingField: 0
   <Name>k__BackingField: DefaultCharacter
   <MoveSpeed>k__BackingField: 5
   <CharacterStatsData>k__BackingField: {fileID: 11400000, guid: 4bf7e93c8d7bd76428ff51f67b684026, type: 2}

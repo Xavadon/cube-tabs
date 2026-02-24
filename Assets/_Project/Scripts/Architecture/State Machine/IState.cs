@@ -2,11 +2,6 @@
 
 namespace _Project.Scripts.Architecture.State_Machine
 {
-    public interface IBlackboardState
-    {
-        void RegisterBlackboard(Blackboard blackboard);
-    }
-    
     public interface IState : IExitableState
     {
         void Enter();

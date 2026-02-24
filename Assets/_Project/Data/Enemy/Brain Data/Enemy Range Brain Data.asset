@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf2d0f2aef0e43d68ec46e544f2cb2c7, type: 3}
   m_Name: Enemy Range Brain Data
   m_EditorClassIdentifier: 
-  <DetectionRadius>k__BackingField: 15
+  <DetectionRadius>k__BackingField: 40
   <FleeRange>k__BackingField: 5
   <WindUpDuration>k__BackingField: 0.3
+  <AttackDuration>k__BackingField: 2
   <AttackRange>k__BackingField: 10
-  <AttackCooldown>k__BackingField: 2
+  <AttackCooldown>k__BackingField: 0.1
   <TargetLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64

@@ -17,10 +17,13 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
         public float WindUpDuration { get; private set; } = 0.3f;
         
         [field: SerializeField] 
+        public float AttackDuration { get; private set; } = 1f;
+        
+        [field: SerializeField] 
         public float AttackRange { get; private set; } = 2f;
 
         [field: SerializeField] 
-        public float AttackCooldown { get; private set; } = 1.5f;
+        public float AttackCooldown { get; private set; } = 0.5f;
 
         [field: SerializeField] 
         public LayerMask TargetLayer { get; private set; }
@@ -31,19 +34,18 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
                 new Sequence(
                     new HasTarget(),
                     new IsInRange(AttackRange),
-                    new Cooldown(AttackCooldown, new MeleeAttack(WindUpDuration, AttackRange))
+                    new Cooldown(AttackCooldown, new MeleeAttack(WindUpDuration, AttackDuration, AttackRange))
                 ),
                 new Sequence(
                     new HasTarget(),
-                    new IsInRange(AttackRange),
-                    new StopMovement()
+                    new IsInRange(AttackRange)
                 ),
                 new Sequence(
                     new HasTarget(),
                     new ChaseTarget(AttackRange)
                 ),
                 new FindTarget(DetectionRadius, TargetLayer),
-                new Wait(1f)
+                new Wait(0.1f)
             );
         }
     }

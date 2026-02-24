@@ -10,46 +10,57 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
     [CreateAssetMenu(menuName = "Config/Ai/RangeBrain")]
     public class RangeBrainDataBase : BrainDataBase
     {
-        [field: SerializeField]
-        public float DetectionRadius { get; private set; } = 15f;
+        [field: SerializeField] public float DetectionRadius { get; private set; } = 15f;
 
-        [field: SerializeField]
-        public float FleeRange { get; private set; } = 5f;
-       
-        [field: SerializeField] 
-        public float WindUpDuration { get; private set; } = 0.3f;
+        [field: SerializeField] public float FleeRange { get; private set; } = 5f;
 
-        [field: SerializeField]
-        public float AttackRange { get; private set; } = 10f;
+        [field: SerializeField] public float WindUpDuration { get; private set; } = 0.3f;
 
-        [field: SerializeField] 
-        public float AttackCooldown { get; private set; } = 2f;
+        [field: SerializeField] public float AttackDuration { get; private set; } = 2f;
 
-        [field: SerializeField]
-        public LayerMask TargetLayer { get; private set; }
+        [field: SerializeField] public float AttackRange { get; private set; } = 10f;
+
+        [field: SerializeField] public float AttackCooldown { get; private set; } = 2f;
+
+        [field: SerializeField] public LayerMask TargetLayer { get; private set; }
 
         public override BTNode BuildTree()
         {
             return new Selector(
-                new Sequence
-                (
-                    new HasTarget(),
-                    new IsInRange(FleeRange),
-                    new Flee(FleeRange)
-                ),
-                new Sequence
-                (
-                    new HasTarget(),
-                    new IsInRange(AttackRange), 
-                    new Cooldown(AttackCooldown, new RangedAttack(WindUpDuration, AttackRange))
-                ),
-                new Sequence
-                (
-                    new HasTarget(),
-                    new ChaseTarget(AttackRange)
-                ),
+                BuildFleeSequence(),
+                BuildAttackSequence(),
+                BuildChaseSequence(),
                 new FindTarget(DetectionRadius, TargetLayer),
-                new Wait(1f)
+                new Wait(0.1f)
+            );
+        }
+
+        private BTNode BuildFleeSequence()
+        {
+            return new Sequence(
+                new HasTarget(),
+                new IsInRange(FleeRange),
+                new Flee(FleeRange)
+            );
+        }
+
+        private BTNode BuildAttackSequence()
+        {
+            return new Sequence(
+                new HasTarget(),
+                new IsInRange(AttackRange),
+                new Parallel(
+                    new Cooldown(AttackCooldown, new RangedAttack(WindUpDuration, AttackDuration, AttackRange)),
+                    new RotateTowardsTarget()
+                )
+            );
+        }
+
+        private BTNode BuildChaseSequence()
+        {
+            return new Sequence(
+                new HasTarget(),
+                new ChaseTarget(AttackRange)
             );
         }
     }

@@ -67,6 +67,14 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             _layer = layer;
         }
 
+        protected override void Enter()
+        {
+            base.Enter();
+            
+            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
+            animator.PlayIdle();
+        }
+
         protected override NodeStatus Process()
         {
             Transform transform = Blackboard.Get<Transform>(BrainKeys.Transform);
@@ -82,6 +90,61 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         }
     }
 
+    public class RotateTowardsTarget : BTNode
+    {
+        private readonly float _threshold;
+        private readonly float _rotationSpeed;
+
+        public RotateTowardsTarget(float threshold = 5f, float rotationSpeed = 360f)
+        {
+            _threshold = threshold;
+            _rotationSpeed = rotationSpeed;
+        }
+
+        protected override void Enter()
+        {
+            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
+            agent.updateRotation = false;
+        }
+
+        protected override void Exit()
+        {
+            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
+            agent.updateRotation = true;
+        }
+
+        protected override NodeStatus Process()
+        {
+            Transform self = Blackboard.Get<Transform>(BrainKeys.Transform);
+            Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
+
+            if (self == null || target == null)
+            {
+                return Status = NodeStatus.Failure;
+            }
+
+            Vector3 direction = target.position - self.position;
+            direction.y = 0f;
+
+            if (direction == Vector3.zero)
+            {
+                return Status = NodeStatus.Success;
+            }
+
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            self.rotation = Quaternion.RotateTowards(self.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+
+            float angle = Quaternion.Angle(self.rotation, targetRotation);
+            
+            if (angle < _threshold)
+            {
+                return Status = NodeStatus.Success;
+            }
+
+            return Status = NodeStatus.Running;
+        }
+    }
+    
     public class ChaseTarget : BTNode
     {
         private readonly float _stopDistance;
@@ -112,12 +175,6 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             }
 
             return Status = NodeStatus.Running;
-        }
-
-        protected override void Exit()
-        {
-            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
-            animator.PlayIdle();
         }
     }
 
@@ -167,138 +224,55 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             return Status = NodeStatus.Running;
         }
     }
-
-    public class StopMovement : BTNode
-    {
-        protected override NodeStatus Process()
-        {
-            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
-            agent.isStopped = true;
-            return Status = NodeStatus.Success;
-        }
-    }
     
-    public class ResumeMovement : BTNode
-    {
-        protected override NodeStatus Process()
-        {
-            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
-            agent.isStopped = false;
-            return Status = NodeStatus.Success;
-        }
-    }
-
-    public class LookAtTarget : BTNode
-    {
-        private readonly float _rotationSpeed;
-
-        public LookAtTarget(float rotationSpeed = 10f)
-        {
-            _rotationSpeed = rotationSpeed;
-        }
-
-        protected override NodeStatus Process()
-        {
-            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
-            Transform transform = Blackboard.Get<Transform>(BrainKeys.Transform);
-            Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
-
-            if (target == null)
-                return Status = NodeStatus.Failure;
-
-            agent.updateRotation = false;
-
-            Vector3 direction = target.position - transform.position;
-            direction.y = 0;
-
-            if (direction.sqrMagnitude > 0.001f)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Slerp(
-                    transform.rotation,
-                    targetRotation,
-                    _rotationSpeed * Time.deltaTime
-                );
-            }
-
-            return Status = NodeStatus.Success;
-        }
-
-        public override void Reset()
-        {
-            base.Reset();
-            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
-            if (agent != null)
-                agent.updateRotation = true;
-        }
-    }
-
     public abstract class AttackBase : BTNode
     {
         private readonly float _windUpDuration;
+        private readonly float _attackDuration;
         private readonly float _stoppingDistance;
 
-        private float _elapsed;
+        private float _elapsedTime;
         private bool _isAttacking;
 
-        public AttackBase(float windUpDuration, float stoppingDistance)
+        public AttackBase(float windUpDuration, float attackDuration, float stoppingDistance)
         {
             _windUpDuration = windUpDuration;
+            _attackDuration = attackDuration;
             _stoppingDistance = stoppingDistance;
+        }
+
+        protected override void Enter()
+        {
+            base.Enter();
+            
+            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
+            agent.stoppingDistance = _stoppingDistance;
+            
+            _elapsedTime = 0f;
+        }
+
+        protected override void Exit()
+        {
+            base.Exit();
+            _isAttacking = false;
         }
 
         protected override NodeStatus Process()
         {
-            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
-            agent.stoppingDistance = _stoppingDistance;
-            
-            Transform transform = Blackboard.Get<Transform>(BrainKeys.Transform);
-            Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
+            _elapsedTime += Time.deltaTime;
 
-            if (!_isAttacking)
+            if (_elapsedTime >= _windUpDuration && !_isAttacking)
             {
                 _isAttacking = true;
-                _elapsed = 0;
-                agent.isStopped = true;
-                agent.updateRotation = false;
-            }
-
-            if (target != null)
-            {
-                Vector3 direction = target.position - transform.position;
-                direction.y = 0;
-                if (direction.sqrMagnitude > 0.001f)
-                {
-                    Quaternion targetRotation = Quaternion.LookRotation(direction);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 15f * Time.deltaTime);
-                }
-            }
-
-            _elapsed += Time.deltaTime;
-
-            if (_elapsed >= _windUpDuration)
-            {
                 PerformAttack();
-                agent.isStopped = false;
-                agent.updateRotation = true;
-                _isAttacking = false;
+            }
+
+            if (_elapsedTime >= _attackDuration)
+            {
                 return Status = NodeStatus.Success;
             }
 
             return Status = NodeStatus.Running;
-        }
-        
-        public override void Reset()
-        {
-            base.Reset();
-            _isAttacking = false;
-            _elapsed = 0;
-            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
-            if (agent != null)
-            {
-                agent.isStopped = false;
-                agent.updateRotation = true;
-            }
         }
         
         protected abstract void PerformAttack();
@@ -306,7 +280,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
     public class MeleeAttack : AttackBase
     {
-        public MeleeAttack(float windUpDuration, float stoppingDistance) : base(windUpDuration, stoppingDistance)
+        public MeleeAttack(float windUpDuration, float attackDuration, float stoppingDistance) : base(windUpDuration, attackDuration, stoppingDistance)
         {
             
         }
@@ -314,63 +288,93 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         protected override void Enter()
         {
             base.Enter();
+            
+            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
+            animator.PlayAttack();
         }
 
         protected override void PerformAttack()
         {
             Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
-            if (target == null) return;
+            
+            if (target == null)
+            {
+                return;
+            }
 
             IDamageAble damageable = target.GetComponent<IDamageAble>();
-            if (damageable == null) return;
+            
+            if (damageable == null)
+            {
+                return;
+            }
 
             WeaponData weapon = Blackboard.Get<WeaponData>(BrainKeys.WeaponData);
-            float damage;
+            float damage = 10f;
             
             if (weapon != null)
             {
                 damage = weapon.Damage;
             }
-            else
-            {
-                damage = 10f;
-            }
             
-            DamageType type;
+            DamageType type = DamageType.Physical;
+            
             if (weapon != null)
             {
                 type = weapon.DamageType;
             }
-            else
-            {
-                type = DamageType.Physical;
-            }
 
             damageable.ApplyDamage(damage, target.position, type);
-            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
-            animator.PlayAttack();
         }
     }
 
     public class RangedAttack : AttackBase
     {
-        public RangedAttack(float windUpDuration, float stoppingDistance) : base(windUpDuration, stoppingDistance) { }
+        public RangedAttack(float windUpDuration, float attackDuration, float stoppingDistance) : base(windUpDuration, attackDuration, stoppingDistance)
+        {
+            
+        }
+
+        protected override void Enter()
+        {
+            base.Enter();
+            
+            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
+            animator.PlayRangeAttack();
+        }
 
         protected override void PerformAttack()
         {
             Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
-            if (target == null) return;
+            
+            if (target == null)
+            {
+                return;
+            }
 
             IDamageAble damageable = target.GetComponent<IDamageAble>();
-            if (damageable == null) return;
+            
+            if (damageable == null)
+            {
+                return;
+            }
 
             WeaponData weapon = Blackboard.Get<WeaponData>(BrainKeys.WeaponData);
-            float damage = weapon != null ? weapon.Damage : 10f;
-            DamageType type = weapon != null ? weapon.DamageType : DamageType.Physical;
+            float damage = 10f;
+            
+            if (weapon != null)
+            {
+                damage = weapon.Damage;
+            }
+            
+            DamageType type = DamageType.Physical;;
+            
+            if (weapon != null)
+            {
+                type = weapon.DamageType;
+            }
 
             damageable.ApplyDamage(damage, target.position, type);
-            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
-            animator.PlayRangeAttack();
         }
     }
 }
