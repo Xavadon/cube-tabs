@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a268af6429472dd43a8c35ae75dc2274, type: 3}
+  m_Name: LevelConfig
+  m_EditorClassIdentifier: 
+  Enemies:
+  - CharacterData: {fileID: 11400000, guid: ebe9af6f5f1e9fa4d96a626bc84d00ac, type: 2}
+    Count: 2
+  - CharacterData: {fileID: 11400000, guid: 6e01f01e4701f964b8cbb4e62d225483, type: 2}
+    Count: 3
+  Allies:
+  - CharacterData: {fileID: 11400000, guid: e79c235fe17a5e24fbcedecc9027d630, type: 2}
+    Count: 1
+  - CharacterData: {fileID: 11400000, guid: 01b0d868f01a808469444d0d4eec8a5f, type: 2}
+    Count: 4

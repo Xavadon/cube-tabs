@@ -1,4 +1,5 @@
 using _Project.Scripts.Architecture.BehaviorTree;
+using _Project.Scripts.Architecture.State_Machine;
 using _Project.Scripts.Gameplay.Character.Components.Health;
 using _Project.Scripts.Gameplay.Character.Data;
 using UnityEngine;
@@ -167,6 +168,11 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
             Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
 
+            if (target == null)
+            {
+                return Status = NodeStatus.Failure;
+            }
+            
             agent.SetDestination(target.position);
 
             if (agent.remainingDistance <= _stopDistance)

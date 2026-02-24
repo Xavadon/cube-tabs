@@ -6,8 +6,8 @@ namespace _Project.Scripts.Gameplay.Character.Services
 {
     public interface ISpawnPointProvider : IService
     {
-        (Vector3 position, Quaternion rotation) GetAllySpawn();
-        (Vector3 position, Quaternion rotation) GetEnemySpawn();
+        (Vector3 position, Quaternion rotation)[] GetAllySpawns();
+        (Vector3 position, Quaternion rotation)[] GetEnemySpawns();
     }
 
     public class SpawnPointProvider : ISpawnPointProvider
@@ -15,8 +15,8 @@ namespace _Project.Scripts.Gameplay.Character.Services
         private const string AllySpawnPointTag  = "AllyCharacterSpawnPoint";
         private const string EnemySpawnPointTag = "EnemyCharacterSpawnPoint";
 
-        private Transform _allySpawnPoint;
-        private Transform _enemySpawnPoint;
+        private Transform[] _allySpawnPoints;
+        private Transform[] _enemySpawnPoints;
 
         public UniTask Initialize()
         {
@@ -24,47 +24,38 @@ namespace _Project.Scripts.Gameplay.Character.Services
             return UniTask.CompletedTask;
         }
 
-        private Transform FindSpawnPoint(string tag)
+        public (Vector3 position, Quaternion rotation)[] GetAllySpawns()
         {
-            var go = GameObject.FindGameObjectWithTag(tag);
-
-            if (go != null)
-            {
-                return go.transform;
-            }
-
-            Debug.LogWarning($"[SpawnPointProvider] Spawn point with tag '{tag}' not found");
-            return null;
+            return GetSpawnPoints(AllySpawnPointTag, ref _allySpawnPoints);
         }
 
-        private (Vector3 position, Quaternion rotation) ToSpawnData(Transform point)
+        public (Vector3 position, Quaternion rotation)[] GetEnemySpawns()
         {
-            if (point != null)
-            {
-                return (point.position, point.rotation);
-            }
-
-            return (Vector3.zero, Quaternion.identity);
+            return GetSpawnPoints(EnemySpawnPointTag, ref _enemySpawnPoints);
         }
 
-        public (Vector3 position, Quaternion rotation) GetAllySpawn()
+        private (Vector3 position, Quaternion rotation)[] GetSpawnPoints(string tag, ref Transform[] cache)
         {
-            if (_allySpawnPoint is null)
+            if (cache == null)
             {
-                _allySpawnPoint = FindSpawnPoint(AllySpawnPointTag);
+                var objects = GameObject.FindGameObjectsWithTag(tag);
+
+                if (objects.Length == 0)
+                {
+                    Debug.LogWarning($"[SpawnPointProvider] No spawn points with tag '{tag}' found");
+                    return new[] { (Vector3.zero, Quaternion.identity) };
+                }
+
+                cache = new Transform[objects.Length];
+                for (int i = 0; i < objects.Length; i++)
+                    cache[i] = objects[i].transform;
             }
 
-            return ToSpawnData(_allySpawnPoint);
-        }
+            var result = new (Vector3, Quaternion)[cache.Length];
+            for (int i = 0; i < cache.Length; i++)
+                result[i] = (cache[i].position, cache[i].rotation);
 
-        public (Vector3 position, Quaternion rotation) GetEnemySpawn()
-        {
-            if (_enemySpawnPoint is null)
-            {
-                _enemySpawnPoint = FindSpawnPoint(EnemySpawnPointTag);
-            }
-
-            return ToSpawnData(_enemySpawnPoint);
+            return result;
         }
     }
 }
