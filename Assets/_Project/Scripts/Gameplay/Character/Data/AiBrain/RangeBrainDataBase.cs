@@ -24,13 +24,16 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
         
         public override BTNode BuildTree(LayerMask targetLayer)
         {
-            return new Sequence(
-                new FindTarget(DetectionRadius, targetLayer),
-                new Selector(
-                    BuildFleeSequence(),
-                    BuildAttackSequence(),
-                    BuildChaseSequence()
-                )
+            return new Selector(
+                new Sequence(
+                    new FindTarget(DetectionRadius, targetLayer),
+                    new Selector(
+                        BuildFleeSequence(),
+                        BuildAttackSequence(),
+                        BuildChaseSequence()
+                    )
+                ),
+                new Idle()
             );
         }
 

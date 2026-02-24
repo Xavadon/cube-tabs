@@ -9,7 +9,30 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 {
     public class CharacterNodes
     {
-    
+
+    }
+
+    public class Idle : BTNode
+    {
+        protected override void Enter()
+        {
+            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
+            agent.isStopped = true;
+
+            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
+            animator.PlayIdle();
+        }
+
+        protected override void Exit()
+        {
+            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
+            agent.isStopped = false;
+        }
+
+        protected override NodeStatus Process()
+        {
+            return Status = NodeStatus.Success;
+        }
     }
 
     public class HasTarget : BTNode
