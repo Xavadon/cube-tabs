@@ -94,7 +94,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         protected override void Enter()
         {
             AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.Animator);
-            animator.PlayMoveAnimation();
+            animator.PlayMove();
         }
 
         protected override NodeStatus Process()
@@ -117,7 +117,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         protected override void Exit()
         {
             AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.Animator);
-            animator.PlayIdleAnimation();
+            animator.PlayIdle();
         }
     }
 
@@ -306,7 +306,15 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
     public class MeleeAttack : AttackBase
     {
-        public MeleeAttack(float windUpDuration, float stoppingDistance) : base(windUpDuration, stoppingDistance) { }
+        public MeleeAttack(float windUpDuration, float stoppingDistance) : base(windUpDuration, stoppingDistance)
+        {
+            
+        }
+
+        protected override void Enter()
+        {
+            base.Enter();
+        }
 
         protected override void PerformAttack()
         {
@@ -317,10 +325,30 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             if (damageable == null) return;
 
             WeaponData weapon = Blackboard.Get<WeaponData>(BrainKeys.WeaponData);
-            float damage = weapon != null ? weapon.Damage : 10f;
-            DamageType type = weapon != null ? weapon.DamageType : DamageType.Physical;
+            float damage;
+            
+            if (weapon != null)
+            {
+                damage = weapon.Damage;
+            }
+            else
+            {
+                damage = 10f;
+            }
+            
+            DamageType type;
+            if (weapon != null)
+            {
+                type = weapon.DamageType;
+            }
+            else
+            {
+                type = DamageType.Physical;
+            }
 
             damageable.ApplyDamage(damage, target.position, type);
+            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.Animator);
+            animator.PlayAttack();
         }
     }
 
@@ -341,6 +369,8 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             DamageType type = weapon != null ? weapon.DamageType : DamageType.Physical;
 
             damageable.ApplyDamage(damage, target.position, type);
+            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.Animator);
+            animator.PlayRangeAttack();
         }
     }
 }

@@ -33,6 +33,7 @@ namespace _Project.Scripts.Gameplay.Character
         public void ApplyDamage(float amount, Vector3 hitPoint, DamageType type = DamageType.Physical)
         {
             _health.ApplyDamage(amount, hitPoint, type);
+            _animatorConroller.PlayHitReact();
         }
 
         public void Initialize(CharacterType characterType, CharacterData characterData)

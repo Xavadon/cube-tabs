@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 557604a83b9aaf340be8633d8ef1d2f1
+guid: 9c3de66824a497b4a9006c37c2e4c147
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -16,8 +16,7 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: "Invalid Avatar Rig Configuration. Missing or invalid transform:\n\tRequired
-      human bone 'LeftFoot' not found\n"
+    rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
@@ -25,7 +24,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 3
+    animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -83,67 +82,7 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human: []
-    skeleton:
-    - name: Character(Clone)
-      parentName: 
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 0.35, y: 0.35, z: 0.35}
-    - name: View
-      parentName: Character(Clone)
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: Body
-      parentName: View
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1.4999999, z: 0.49999997}
-    - name: Head
-      parentName: View
-      position: {x: -0, y: 1.2499998, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: LH_Parent
-      parentName: View
-      position: {x: 0.5, y: 0.5, z: 0}
-      rotation: {x: -0, y: -0, z: -0.086121276, w: 0.99628466}
-      scale: {x: 1, y: 1, z: 1}
-    - name: Left_Hand
-      parentName: LH_Parent
-      position: {x: 0.25000077, y: -0.5, z: 0}
-      rotation: {x: 1, y: 6.123234e-17, z: 6.123234e-17, w: 6.123234e-17}
-      scale: {x: -0.5, y: -1.4999999, z: -0.49999997}
-    - name: LL_Parent
-      parentName: View
-      position: {x: 0.25, y: -0.75, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: Left_Leg
-      parentName: LL_Parent
-      position: {x: -0, y: -0.75000024, z: 0}
-      rotation: {x: 1, y: 6.123234e-17, z: 6.123234e-17, w: 6.123234e-17}
-      scale: {x: -0.5, y: -1.4999999, z: -0.49999997}
-    - name: RH_Parent
-      parentName: View
-      position: {x: -0.5, y: 0.5, z: 0}
-      rotation: {x: -0, y: -0, z: -0.9103467, w: 0.4138464}
-      scale: {x: 1, y: 1, z: 1}
-    - name: Right_Hand
-      parentName: RH_Parent
-      position: {x: -0.25000077, y: -0.5, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 0.49999997, y: 1.4999999, z: 0.49999997}
-    - name: RL_Parent
-      parentName: View
-      position: {x: -0.25000054, y: -0.75, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: Right_Leg
-      parentName: RL_Parent
-      position: {x: -0, y: -0.75000024, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 0.49999997, y: 1.4999999, z: 0.49999997}
+    skeleton: []
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -160,7 +99,7 @@ ModelImporter:
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 1
+  avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0

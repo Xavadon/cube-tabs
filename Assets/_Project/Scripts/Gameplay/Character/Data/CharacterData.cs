@@ -7,6 +7,9 @@ namespace _Project.Scripts.Gameplay.Character.Data
     public class CharacterData : ScriptableObject
     {
         [field: SerializeField]
+        public int Id { get; private set; } = 0;
+        
+        [field: SerializeField]
         public string Name { get; private set; } = "DefaultCharacter";
         
         [field: SerializeField]
