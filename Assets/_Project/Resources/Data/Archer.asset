@@ -17,6 +17,7 @@ MonoBehaviour:
   <MoveSpeed>k__BackingField: 4
   <CharacterStatsData>k__BackingField: {fileID: 11400000, guid: 4bf7e93c8d7bd76428ff51f67b684026, type: 2}
   <CharacterResistancesData>k__BackingField: {fileID: 11400000, guid: b8755b404b88a8c4da2fdefe032562a8, type: 2}
-  <BrainData>k__BackingField: {fileID: 11400000, guid: 1e97c0d67ee72f14cb6caf199345da7b, type: 2}
+  <BrainData>k__BackingField: {fileID: 11400000, guid: 4a4366ad4bf24c945aecd71f11acb7ef, type: 2}
   WeaponData:
   - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
+  SkinMaterial: {fileID: 2100000, guid: a81d7cbbc18a53f49b9fd1a5277f2f6d, type: 2}

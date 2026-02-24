@@ -16,16 +16,18 @@ namespace _Project.Scripts.Gameplay.Character
     {
         //public AbilityContainer Abilities { get; private set; } //TODO
         public CharacterType CharacterType { get; private set; }
-        public SkinChanger SkinChanger { get; private set; }
         
         [SerializeField]
         private Animator _animator;
         
         [SerializeField]
         private NavMeshAgent _navMeshAgent;
+
+        [SerializeField]
+        public SkinChanger SkinChanger; 
         
         private CharacterBrain _brain; 
-        private AnimatorConroller _animatorConroller;
+        private AnimatorConroller _animatorController;
         private NavMeshMovementComponent _movement;
         private HealthComponent _health;
         private ResistanceComponent _resistance;
@@ -33,7 +35,7 @@ namespace _Project.Scripts.Gameplay.Character
         public void ApplyDamage(float amount, Vector3 hitPoint, DamageType type = DamageType.Physical)
         {
             _health.ApplyDamage(amount, hitPoint, type);
-            _animatorConroller.PlayHitReact();
+            _animatorController.PlayHitReact();
         }
 
         public void Initialize(CharacterType characterType, CharacterData characterData)
@@ -49,11 +51,20 @@ namespace _Project.Scripts.Gameplay.Character
 
             gameObject.layer = ownLayer;
 
-            WeaponData weapon = characterData.WeaponData?.Length > 0 ? characterData.WeaponData[0] : null;
+            WeaponData weapon;
+            
+            if (characterData.WeaponData?.Length > 0)
+            {
+                weapon = characterData.WeaponData[0];
+            }
+            else
+            {
+                weapon = null;
+            }
 
-            _animatorConroller = new(_animator);
+            _animatorController = new(_animator);
 
-            _brain = new(targetLayer, characterData.BrainData, _navMeshAgent, _animatorConroller, transform, weapon);
+            _brain = new(targetLayer, characterData.BrainData, _navMeshAgent, _animatorController, transform, weapon);
             _movement = new(_navMeshAgent, transform, characterData.MoveSpeed);
             _health = new(characterData);
             _resistance = new(characterData);
@@ -61,7 +72,8 @@ namespace _Project.Scripts.Gameplay.Character
             _navMeshAgent.speed = characterData.MoveSpeed;
             _navMeshAgent.acceleration = 1000f;
             _health.OnDeath += HandleDeath;
-            //TODO skinchange
+            
+            SkinChanger.ChangeSkin(characterData.SkinMaterial);
         }
 
         private void Update()
@@ -71,7 +83,6 @@ namespace _Project.Scripts.Gameplay.Character
 
         private void HandleDeath()
         {
-            //Brain.Disable();
             _movement.Stop();
 
             // TODO: Анимация смерти

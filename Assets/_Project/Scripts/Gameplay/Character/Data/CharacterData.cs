@@ -26,5 +26,8 @@ namespace _Project.Scripts.Gameplay.Character.Data
         
         [Header("Equipment")]
         public WeaponData[] WeaponData;
+        
+        [Header("Skin")]
+        public Material SkinMaterial;
     }
 }

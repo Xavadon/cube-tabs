@@ -15,7 +15,7 @@ namespace MinecraftModels.Scripts
         {
             foreach (var renderer in _meshRenderers)
             {
-                renderer.material = _material;
+                renderer.material = material;
             }
         }
         
