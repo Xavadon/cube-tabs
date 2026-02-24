@@ -93,7 +93,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
         protected override void Enter()
         {
-            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.Animator);
+            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
             animator.PlayMove();
         }
 
@@ -116,7 +116,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
         protected override void Exit()
         {
-            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.Animator);
+            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
             animator.PlayIdle();
         }
     }
@@ -347,7 +347,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             }
 
             damageable.ApplyDamage(damage, target.position, type);
-            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.Animator);
+            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
             animator.PlayAttack();
         }
     }
@@ -369,7 +369,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             DamageType type = weapon != null ? weapon.DamageType : DamageType.Physical;
 
             damageable.ApplyDamage(damage, target.position, type);
-            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.Animator);
+            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
             animator.PlayRangeAttack();
         }
     }

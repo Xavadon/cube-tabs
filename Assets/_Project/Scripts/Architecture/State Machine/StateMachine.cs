@@ -84,11 +84,15 @@ namespace _Project.Scripts.Architecture.State_Machine
             }
         }
 
-        protected void RegisterState<TState>(TState state) where TState : IExitableState =>
+        protected void RegisterState<TState>(TState state) where TState : IExitableState
+        {
             _registeredStatesMap.Add(typeof(TState), state);
+        }
 
-        protected void RegisterTransition<TState>(Func<bool> condition) where TState : IExitableState =>
+        protected void RegisterTransition<TState>(Func<bool> condition) where TState : IExitableState
+        {
             _transitionsMap.Add(typeof(TState), condition);
+        }
 
         private IExitableState ChangeState(Type stateType)
         {

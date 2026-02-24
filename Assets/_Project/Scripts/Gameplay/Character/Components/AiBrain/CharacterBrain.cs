@@ -10,7 +10,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
     {
         public const string Target = "Target";
         public const string Agent = "Agent";
-        public const string Animator = "Animator";
+        public const string AnimatorController = "AnimatorController";
         public const string Transform = "Transform";
         public const string WeaponData = "WeaponData";
     }
@@ -19,12 +19,12 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
     {
         private readonly BehaviourTree _tree;
 
-        public CharacterBrain(BrainDataBase dataBase, NavMeshAgent agent, AnimatorConroller animator, Transform transform, WeaponData weaponData)
+        public CharacterBrain(BrainDataBase dataBase, NavMeshAgent agent, AnimatorConroller animatorController, Transform transform, WeaponData weaponData)
         {
             _tree = new BehaviourTree(dataBase.BuildTree());
             _tree.Blackboard.Set(BrainKeys.Agent, agent);
             _tree.Blackboard.Set(BrainKeys.Transform, transform);
-            _tree.Blackboard.Set(BrainKeys.Animator, animator);
+            _tree.Blackboard.Set(BrainKeys.AnimatorController, animatorController);
             if (weaponData != null)
                 _tree.Blackboard.Set(BrainKeys.WeaponData, weaponData);
         }

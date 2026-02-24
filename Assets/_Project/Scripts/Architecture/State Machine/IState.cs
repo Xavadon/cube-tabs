@@ -1,5 +1,12 @@
-﻿namespace _Project.Scripts.Architecture.State_Machine
+﻿using UnityEditor.Experimental.GraphView;
+
+namespace _Project.Scripts.Architecture.State_Machine
 {
+    public interface IBlackboardState
+    {
+        void RegisterBlackboard(Blackboard blackboard);
+    }
+    
     public interface IState : IExitableState
     {
         void Enter();
