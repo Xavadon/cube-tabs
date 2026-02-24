@@ -19,9 +19,9 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
     {
         private readonly BehaviourTree _tree;
 
-        public CharacterBrain(BrainDataBase dataBase, NavMeshAgent agent, AnimatorConroller animatorController, Transform transform, WeaponData weaponData)
+        public CharacterBrain(LayerMask layerMask, BrainDataBase dataBase, NavMeshAgent agent, AnimatorConroller animatorController, Transform transform, WeaponData weaponData)
         {
-            _tree = new BehaviourTree(dataBase.BuildTree());
+            _tree = new BehaviourTree(dataBase.BuildTree(layerMask));
             _tree.Blackboard.Set(BrainKeys.Agent, agent);
             _tree.Blackboard.Set(BrainKeys.Transform, transform);
             _tree.Blackboard.Set(BrainKeys.AnimatorController, animatorController);

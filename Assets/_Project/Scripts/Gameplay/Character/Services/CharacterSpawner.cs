@@ -73,7 +73,6 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
     public interface ICharacterFactory : IService
     {
-        Character Create(CharacterType type);
         Character Create(CharacterType type, CharacterData data);
     }
 
@@ -85,18 +84,6 @@ namespace _Project.Scripts.Gameplay.Character.Services
         {
             Debug.Log("[CharacterFactory] Initialized");
             return UniTask.CompletedTask;
-        }
-
-        public Character Create(CharacterType type)
-        {
-            (CharacterData data, int layer) = type switch
-            {
-                CharacterType.Ally  => (Resources.Load<CharacterData>("Data/Ally DefaultCharacter"),  LayerMask.NameToLayer("Ally")),
-                CharacterType.Enemy => (Resources.Load<CharacterData>("Data/Enemy DefaultCharacter"), LayerMask.NameToLayer("Enemy")),
-                _                   => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-            };
-
-            return CreateCharacter(type, data, layer);
         }
 
         public Character Create(CharacterType type, CharacterData data)

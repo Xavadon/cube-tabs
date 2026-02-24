@@ -5,7 +5,6 @@ namespace _Project.Scripts.Architecture.BehaviorTree.Composites
     public class Sequence : BTNode
     {
         private readonly List<BTNode> _children = new();
-        private int _currentIndex;
 
         public Sequence(params BTNode[] children)
         {
@@ -14,24 +13,20 @@ namespace _Project.Scripts.Architecture.BehaviorTree.Composites
 
         protected override NodeStatus Process()
         {
-            while (_currentIndex < _children.Count)
+            for (int i = 0; i < _children.Count; i++)
             {
-                Status = _children[_currentIndex].Evaluate();
+                Status = _children[i].Evaluate();
 
                 if (Status != NodeStatus.Success)
                     return Status;
-
-                _currentIndex++;
             }
 
-            _currentIndex = 0;
             return Status = NodeStatus.Success;
         }
 
         public override void Reset()
         {
             base.Reset();
-            _currentIndex = 0;
             _children.ForEach(c => c.Reset());
         }
 

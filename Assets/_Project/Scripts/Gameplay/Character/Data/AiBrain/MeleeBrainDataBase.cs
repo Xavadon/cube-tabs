@@ -24,28 +24,15 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
 
         [field: SerializeField] 
         public float AttackCooldown { get; private set; } = 0.5f;
-
-        [field: SerializeField] 
-        public LayerMask TargetLayer { get; private set; }
-
-        public override BTNode BuildTree()
+        
+        public override BTNode BuildTree(LayerMask targetLayer)
         {
-            return new Selector(
-                new Sequence(
-                    new HasTarget(),
-                    new IsInRange(AttackRange),
-                    new Cooldown(AttackCooldown, new MeleeAttack(WindUpDuration, AttackDuration, AttackRange))
-                ),
-                new Sequence(
-                    new HasTarget(),
-                    new IsInRange(AttackRange)
-                ),
-                new Sequence(
-                    new HasTarget(),
+            return new Sequence(
+                new FindTarget(DetectionRadius, targetLayer),
+                new Selector(
+                    new Cooldown(AttackCooldown, new MeleeAttack(WindUpDuration, AttackDuration, AttackRange)),
                     new ChaseTarget(AttackRange)
-                ),
-                new FindTarget(DetectionRadius, TargetLayer),
-                new Wait(0.1f)
+                )
             );
         }
     }

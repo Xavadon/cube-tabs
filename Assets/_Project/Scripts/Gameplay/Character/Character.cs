@@ -39,35 +39,21 @@ namespace _Project.Scripts.Gameplay.Character
         public void Initialize(CharacterType characterType, CharacterData characterData)
         {
             CharacterType = characterType;
-            
-            switch (characterType)
-            {
-                case CharacterType.Ally:
-                    gameObject.layer = LayerMask.NameToLayer("Ally");
-                    break;
-                case CharacterType.Enemy:
-                    gameObject.layer = LayerMask.NameToLayer("Enemy");
-                    break;
-                case CharacterType.None:
-                    throw new ArgumentOutOfRangeException(nameof(characterType), characterType, null);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(characterType), characterType, null);
-            }
 
-            WeaponData weapon;
-            
-            if (characterData.WeaponData?.Length > 0)
+            (int ownLayer, LayerMask targetLayer) = characterType switch
             {
-                weapon = characterData.WeaponData[0];
-            }
-            else
-            {
-                weapon = null;
-            }
+                CharacterType.Ally  => (LayerMask.NameToLayer("Ally"),  (LayerMask)LayerMask.GetMask("Enemy")),
+                CharacterType.Enemy => (LayerMask.NameToLayer("Enemy"), (LayerMask)LayerMask.GetMask("Ally")),
+                _ => throw new ArgumentOutOfRangeException(nameof(characterType), characterType, null)
+            };
+
+            gameObject.layer = ownLayer;
+
+            WeaponData weapon = characterData.WeaponData?.Length > 0 ? characterData.WeaponData[0] : null;
 
             _animatorConroller = new(_animator);
-            
-            _brain = new(characterData.BrainData, _navMeshAgent, _animatorConroller, transform, weapon);
+
+            _brain = new(targetLayer, characterData.BrainData, _navMeshAgent, _animatorConroller, transform, weapon);
             _movement = new(_navMeshAgent, transform, characterData.MoveSpeed);
             _health = new(characterData);
             _resistance = new(characterData);

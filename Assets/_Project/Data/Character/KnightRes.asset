@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5fd0aec464534d7bb26ed89a15c9bde8, type: 3}
-  m_Name: DefaultEnemyRes
+  m_Name: KnightRes
   m_EditorClassIdentifier: 
   <PhysicalResist>k__BackingField: 0.1
   <MagicResist>k__BackingField: 0.25

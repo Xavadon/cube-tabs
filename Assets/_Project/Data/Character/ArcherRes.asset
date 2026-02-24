@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 019b1592037247208687ce564e6ea33b, type: 3}
-  m_Name: DefaultEmenyStats
+  m_Script: {fileID: 11500000, guid: 5fd0aec464534d7bb26ed89a15c9bde8, type: 3}
+  m_Name: ArcherRes
   m_EditorClassIdentifier: 
-  <Health>k__BackingField: 100
-  <Mana>k__BackingField: 100
-  <Stamina>k__BackingField: 100
+  <PhysicalResist>k__BackingField: 0.1
+  <MagicResist>k__BackingField: 0.25
+  <FireResist>k__BackingField: 0.1
+  <FaithResist>k__BackingField: 0.15

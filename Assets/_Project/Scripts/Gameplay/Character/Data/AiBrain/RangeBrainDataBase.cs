@@ -21,24 +21,22 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
         [field: SerializeField] public float AttackRange { get; private set; } = 10f;
 
         [field: SerializeField] public float AttackCooldown { get; private set; } = 2f;
-
-        [field: SerializeField] public LayerMask TargetLayer { get; private set; }
-
-        public override BTNode BuildTree()
+        
+        public override BTNode BuildTree(LayerMask targetLayer)
         {
-            return new Selector(
-                BuildFleeSequence(),
-                BuildAttackSequence(),
-                BuildChaseSequence(),
-                new FindTarget(DetectionRadius, TargetLayer),
-                new Wait(0.1f)
+            return new Sequence(
+                new FindTarget(DetectionRadius, targetLayer),
+                new Selector(
+                    BuildFleeSequence(),
+                    BuildAttackSequence(),
+                    BuildChaseSequence()
+                )
             );
         }
 
         private BTNode BuildFleeSequence()
         {
             return new Sequence(
-                new HasTarget(),
                 new IsInRange(FleeRange),
                 new Flee(FleeRange)
             );
@@ -47,7 +45,6 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
         private BTNode BuildAttackSequence()
         {
             return new Sequence(
-                new HasTarget(),
                 new IsInRange(AttackRange),
                 new Selector(
                     new Cooldown(AttackCooldown,
@@ -63,10 +60,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
 
         private BTNode BuildChaseSequence()
         {
-            return new Sequence(
-                new HasTarget(),
-                new ChaseTarget(AttackRange)
-            );
+            return new ChaseTarget(AttackRange);
         }
     }
 }

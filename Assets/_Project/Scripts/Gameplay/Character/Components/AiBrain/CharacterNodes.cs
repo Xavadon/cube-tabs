@@ -68,26 +68,32 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             _layer = layer;
         }
 
-        protected override void Enter()
-        {
-            base.Enter();
-            
-            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
-            animator.PlayIdle();
-        }
-
         protected override NodeStatus Process()
         {
             Transform transform = Blackboard.Get<Transform>(BrainKeys.Transform);
             Collider[] colliders = Physics.OverlapSphere(transform.position, _radius, _layer);
 
-            if (colliders.Length > 0)
+            if (colliders.Length == 0)
             {
-                Blackboard.Set(BrainKeys.Target, colliders[0].transform);
-                return Status = NodeStatus.Success;
+                Blackboard.Set<Transform>(BrainKeys.Target, null);
+                return Status = NodeStatus.Failure;
             }
 
-            return Status = NodeStatus.Failure;
+            Transform closest = null;
+            float closestDistance = float.MaxValue;
+
+            foreach (var col in colliders)
+            {
+                float dist = Vector3.Distance(transform.position, col.transform.position);
+                if (dist < closestDistance)
+                {
+                    closestDistance = dist;
+                    closest = col.transform;
+                }
+            }
+
+            Blackboard.Set(BrainKeys.Target, closest);
+            return Status = NodeStatus.Success;
         }
     }
 
