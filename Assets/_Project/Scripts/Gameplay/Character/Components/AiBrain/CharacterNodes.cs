@@ -83,8 +83,11 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
     public class FindTarget : BTNode
     {
+        private const int MaxHits = 32;
+
         private readonly float _radius;
         private readonly LayerMask _layer;
+        private readonly Collider[] _hitBuffer = new Collider[MaxHits];
 
         public FindTarget(float radius, LayerMask layer)
         {
@@ -95,9 +98,9 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         protected override NodeStatus Process()
         {
             Transform transform = Blackboard.Get<Transform>(BrainKeys.Transform);
-            Collider[] colliders = Physics.OverlapSphere(transform.position, _radius, _layer);
+            int hitCount = Physics.OverlapSphereNonAlloc(transform.position, _radius, _hitBuffer, _layer);
 
-            if (colliders.Length == 0)
+            if (hitCount == 0)
             {
                 Blackboard.Set<Transform>(BrainKeys.Target, null);
                 return Status = NodeStatus.Failure;
@@ -106,13 +109,13 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             Transform closest = null;
             float closestDistance = float.MaxValue;
 
-            foreach (var col in colliders)
+            for (int i = 0; i < hitCount; i++)
             {
-                float dist = Vector3.Distance(transform.position, col.transform.position);
+                float dist = Vector3.Distance(transform.position, _hitBuffer[i].transform.position);
                 if (dist < closestDistance)
                 {
                     closestDistance = dist;
-                    closest = col.transform;
+                    closest = _hitBuffer[i].transform;
                 }
             }
 

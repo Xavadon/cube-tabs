@@ -6,9 +6,13 @@ namespace Game.Scripts.Core.Gameplay.Enemy
 {
     public class TargetDetector
     {
+        private const int MaxHits = 32;
+
         private readonly Transform _transform;
         private readonly float _detectionRadius;
         private readonly float _fieldOfView;
+        private readonly int _playerLayerMask;
+        private readonly Collider[] _hitBuffer = new Collider[MaxHits];
 
         private IDamageAble _currentTarget;
         private float _updateInterval = 0.5f;
@@ -19,6 +23,7 @@ namespace Game.Scripts.Core.Gameplay.Enemy
             _transform = transform;
             _detectionRadius = detectionRadius;
             _fieldOfView = fieldOfView;
+            _playerLayerMask = LayerMask.GetMask("Player");
 
             Debug.Log($"[TargetDetector] Создан для {transform.name}. Radius: {detectionRadius}, FOV: {fieldOfView}");
         }
@@ -36,13 +41,14 @@ namespace Game.Scripts.Core.Gameplay.Enemy
 
         private void UpdateTarget()
         {
-            int playerLayer = LayerMask.GetMask("Player");
-            Collider[] hits = Physics.OverlapSphere(_transform.position, _detectionRadius, playerLayer);
+            int hitCount = Physics.OverlapSphereNonAlloc(_transform.position, _detectionRadius, _hitBuffer, _playerLayerMask);
             IDamageAble closestTarget = null;
             float closestDistance = float.MaxValue;
 
-            foreach (var hit in hits)
+            for (int i = 0; i < hitCount; i++)
             {
+                Collider hit = _hitBuffer[i];
+
                 if (!hit.TryGetComponent<IDamageAble>(out var target))
                 {
                     continue;

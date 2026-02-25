@@ -8,11 +8,13 @@ namespace _Project.Scripts.Gameplay.Character.Components.Abilities
         [field: SerializeField]
         public float HitDistance { get; private set; } = 0.5f;
 
+        [field: SerializeField]
+        public float Lifetime { get; private set; } = 5f;
+
         private Transform _target;
         private float _speed;
         private float _damage;
         private DamageType _damageType;
-        private float _lifetime = 5f;
 
         public void Init(Transform target, float speed, float damage, DamageType damageType)
         {
@@ -21,7 +23,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.Abilities
             _damage = damage;
             _damageType = damageType;
 
-            Destroy(gameObject, _lifetime);
+            Destroy(gameObject, Lifetime);
         }
 
         private void Update()
@@ -33,18 +35,26 @@ namespace _Project.Scripts.Gameplay.Character.Components.Abilities
             }
 
             Vector3 targetPosition = _target.position + Vector3.up;
-            Vector3 direction = (targetPosition - transform.position).normalized;
-            transform.position += direction * (_speed * Time.deltaTime);
-            transform.rotation = Quaternion.LookRotation(direction);
+            Vector3 toTarget = targetPosition - transform.position;
+            float distanceThisFrame = _speed * Time.deltaTime;
 
-            float distance = Vector3.Distance(transform.position, targetPosition);
-
-            if (distance <= HitDistance)
+            if (toTarget.sqrMagnitude <= distanceThisFrame * distanceThisFrame)
             {
-                IDamageAble damageable = _target.GetComponent<IDamageAble>();
-                damageable?.ApplyDamage(_damage, targetPosition, _damageType);
-                Destroy(gameObject);
+                Hit(targetPosition);
+                return;
             }
+
+            Vector3 direction = toTarget.normalized;
+            transform.position += direction * distanceThisFrame;
+            transform.rotation = Quaternion.LookRotation(direction);
+        }
+
+        private void Hit(Vector3 hitPoint)
+        {
+            IDamageAble damageable = _target.GetComponent<IDamageAble>();
+            damageable?.ApplyDamage(_damage, hitPoint, _damageType);
+            // TODO: Возвращать в пул вместо Destroy
+            Destroy(gameObject);
         }
     }
 }

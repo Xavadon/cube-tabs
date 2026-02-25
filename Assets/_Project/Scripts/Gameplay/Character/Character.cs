@@ -15,19 +15,18 @@ namespace _Project.Scripts.Gameplay.Character
 {
     public class Character : MonoBehaviour, IDamageAble
     {
-        //public AbilityContainer Abilities { get; private set; } //TODO
         public CharacterType CharacterType { get; private set; }
-        
+
         [SerializeField]
         private Animator _animator;
-        
+
         [SerializeField]
         private NavMeshAgent _navMeshAgent;
 
         [SerializeField]
-        public SkinChanger SkinChanger; 
-        
-        private CharacterBrain _brain; 
+        public SkinChanger SkinChanger;
+
+        private CharacterBrain _brain;
         private AnimatorConroller _animatorController;
         private NavMeshMovementComponent _movement;
         private HealthComponent _health;

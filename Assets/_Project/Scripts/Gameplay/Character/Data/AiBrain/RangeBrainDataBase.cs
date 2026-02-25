@@ -45,6 +45,11 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
             );
         }
 
+        protected virtual BTNode CreateAttackNode()
+        {
+            return new RangedAttack(WindUpDuration, AttackDuration, AttackRange);
+        }
+
         private BTNode BuildAttackSequence()
         {
             return new Sequence(
@@ -52,7 +57,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
                 new Selector(
                     new Cooldown(AttackCooldown,
                         new Parallel(
-                            new RangedAttack(WindUpDuration, AttackDuration, AttackRange),
+                            CreateAttackNode(),
                             new RotateTowardsTarget()
                         )
                     ),
