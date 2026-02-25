@@ -2,6 +2,7 @@ using _Project.Scripts.Architecture.BehaviorTree;
 using _Project.Scripts.Architecture.State_Machine;
 using _Project.Scripts.Gameplay.Character.Components.Health;
 using _Project.Scripts.Gameplay.Character.Data;
+using _Project.Scripts.Gameplay.Character.Data.Abilities;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -436,6 +437,30 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             }
 
             damageable.ApplyDamage(damage, target.position, type);
+        }
+    }
+
+    public class AbilityAttack : AttackBase
+    {
+        private readonly AbilityDataBase _abilityDataBase;
+
+        public AbilityAttack(AbilityDataBase abilityDataBase, float windUpDuration, float attackDuration, float stoppingDistance)
+            : base(windUpDuration, attackDuration, stoppingDistance)
+        {
+            _abilityDataBase = abilityDataBase;
+        }
+
+        protected override void Enter()
+        {
+            base.Enter();
+
+            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
+            animator.PlayRangeAttack();
+        }
+
+        protected override void PerformAttack()
+        {
+            _abilityDataBase.Execute(Blackboard);
         }
     }
 }
