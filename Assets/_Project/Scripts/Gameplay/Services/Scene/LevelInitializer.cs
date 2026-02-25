@@ -1,8 +1,8 @@
 using _Project.Scripts.Architecture.Services.Scene;
+using _Project.Scripts.Gameplay.Character.Components.UI;
 using _Project.Scripts.Gameplay.Character.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-
 
 namespace _Project.Scripts.Gameplay.Services.Scene
 {
@@ -35,7 +35,9 @@ namespace _Project.Scripts.Gameplay.Services.Scene
                 return;
             }
 
-            _characterSpawner.SpawnFromConfig(config);
+            // TODO: Убрать Find — грузить HealthBarPool-префаб из Resources/SO и инстанциировать из кода
+            var healthBarPool = Object.FindAnyObjectByType<HealthBarPool>();
+            _characterSpawner.SpawnFromConfig(config, healthBarPool);
 
             Debug.Log("[LevelInitializer] Level initialized successfully");
         }

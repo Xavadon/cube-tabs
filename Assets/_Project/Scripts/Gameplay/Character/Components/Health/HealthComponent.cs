@@ -34,6 +34,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.Health
         private string _charaName;  // Debug (TODO: удалить в релизе)
 
         public event Action OnDeath;
+        public event Action<float, float> OnHealthChanged;
         
         public HealthComponent(CharacterData characterData)
         {
@@ -69,8 +70,12 @@ namespace _Project.Scripts.Gameplay.Character.Components.Health
             if (_currentHealth <= 0f)
             {
                 _currentHealth = 0f;
+                OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
                 Die();
+                return;
             }
+
+            OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
         }
 
         public void Heal(float amount)
@@ -89,6 +94,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.Health
 
             float healedAmount = Mathf.Min(amount, _maxHealth - _currentHealth);
             _currentHealth += healedAmount;
+            OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
         }
         
         private void Die()

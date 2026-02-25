@@ -3,6 +3,7 @@ using System.Diagnostics;
 using _Project.Scripts.Gameplay.Character.Components;
 using _Project.Scripts.Gameplay.Character.Components.AiBrain;
 using _Project.Scripts.Gameplay.Character.Components.Health;
+using _Project.Scripts.Gameplay.Character.Components.UI;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Character.Services;
 using ICharacterRegistry = global::_Project.Scripts.Gameplay.Character.Services.ICharacterRegistry;
@@ -32,6 +33,7 @@ namespace _Project.Scripts.Gameplay.Character
         private HealthComponent _health;
         private ResistanceComponent _resistance;
         private ICharacterRegistry _registry;
+        private HealthBarElement _healthBar;
         
         public void ApplyDamage(float amount, Vector3 hitPoint, DamageType type = DamageType.Physical)
         {
@@ -87,8 +89,15 @@ namespace _Project.Scripts.Gameplay.Character
             _registry = registry;
         }
 
+        public void SetHealthBarPool(HealthBarPool pool)
+        {
+            _healthBar = pool.Get();
+            _healthBar.Bind(transform, _health, pool.GetCamera(), pool);
+        }
+
         private void HandleDeath()
         {
+            _healthBar?.Release();
             _registry?.Unregister(this);
             _movement.Stop();
 

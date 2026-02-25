@@ -1,5 +1,6 @@
 using System;
 using _Project.Scripts.Architecture.Services;
+using _Project.Scripts.Gameplay.Character.Components.UI;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Services.Scene;
 using Cysharp.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
     public interface ICharacterSpawner : IService
     {
-        void SpawnFromConfig(LevelConfig config);
+        void SpawnFromConfig(LevelConfig config, HealthBarPool healthBarPool);
     }
 
     public class CharacterSpawner : ICharacterSpawner
@@ -25,6 +26,8 @@ namespace _Project.Scripts.Gameplay.Character.Services
         private readonly ISpawnPointProvider _spawnPointProvider;
         private readonly ICharacterFactory _characterFactory;
         private readonly ICharacterRegistry _characterRegistry;
+
+        private HealthBarPool _healthBarPool;
 
         public CharacterSpawner(ISpawnPointProvider spawnPointProvider, ICharacterFactory characterFactory, ICharacterRegistry characterRegistry)
         {
@@ -39,8 +42,9 @@ namespace _Project.Scripts.Gameplay.Character.Services
             return UniTask.CompletedTask;
         }
 
-        public void SpawnFromConfig(LevelConfig config)
+        public void SpawnFromConfig(LevelConfig config, HealthBarPool healthBarPool)
         {
+            _healthBarPool = healthBarPool;
             SpawnGroup(config.Enemies, CharacterType.Enemy, _spawnPointProvider.GetEnemySpawns());
             SpawnGroup(config.Allies, CharacterType.Ally, _spawnPointProvider.GetAllySpawns());
         }
@@ -58,6 +62,8 @@ namespace _Project.Scripts.Gameplay.Character.Services
                 {
                     Character character = _characterFactory.Create(type, entry.CharacterData);
                     character.SetRegistry(_characterRegistry);
+                    if (_healthBarPool != null)
+                        character.SetHealthBarPool(_healthBarPool);
                     _characterRegistry.Register(character);
 
                     var (position, rotation) = spawnPoints[spawnIndex % spawnPoints.Length];
