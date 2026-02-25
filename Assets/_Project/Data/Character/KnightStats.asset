@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 019b1592037247208687ce564e6ea33b, type: 3}
   m_Name: KnightStats
   m_EditorClassIdentifier: 
-  <Health>k__BackingField: 150
+  <Health>k__BackingField: 9000
   <Mana>k__BackingField: 100
   <Stamina>k__BackingField: 100

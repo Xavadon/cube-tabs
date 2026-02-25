@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DetectionRadius>k__BackingField: 200
   <WindUpDuration>k__BackingField: 0.3
-  <AttackDuration>k__BackingField: 0.5
+  <AttackDuration>k__BackingField: 0.8
   <AttackRange>k__BackingField: 2
   <AttackCooldown>k__BackingField: 0.25

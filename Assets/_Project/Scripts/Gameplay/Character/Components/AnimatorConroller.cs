@@ -17,7 +17,7 @@ namespace _Project.Scripts.Gameplay.Character.Components
             _animator = animator;
         }
 
-        private void CrossFade(int hash, float fadeTime = 0f)
+        private void CrossFade(int hash, float fadeTime = 0.1f)
         {
             _animator.CrossFade(hash, fadeTime);
         }
