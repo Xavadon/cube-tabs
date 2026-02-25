@@ -18,7 +18,7 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
     public interface ICharacterSpawner : IService
     {
-        void SpawnFromConfig(LevelConfig config, HealthBarPool healthBarPool);
+        void SpawnFromConfig(LevelConfig levelConfig, ArmyConfig armyConfig, HealthBarPool healthBarPool);
     }
 
     public class CharacterSpawner : ICharacterSpawner
@@ -42,11 +42,11 @@ namespace _Project.Scripts.Gameplay.Character.Services
             return UniTask.CompletedTask;
         }
 
-        public void SpawnFromConfig(LevelConfig config, HealthBarPool healthBarPool)
+        public void SpawnFromConfig(LevelConfig levelConfig, ArmyConfig armyConfig, HealthBarPool healthBarPool)
         {
             _healthBarPool = healthBarPool;
-            SpawnGroup(config.Enemies, CharacterType.Enemy, _spawnPointProvider.GetEnemySpawns());
-            SpawnGroup(config.Allies, CharacterType.Ally, _spawnPointProvider.GetAllySpawns());
+            SpawnGroup(levelConfig.Enemies, CharacterType.Enemy, _spawnPointProvider.GetEnemySpawns());
+            SpawnGroup(armyConfig.Units, CharacterType.Ally, _spawnPointProvider.GetAllySpawns());
         }
 
         private void SpawnGroup(SpawnEntry[] entries, CharacterType type, (Vector3 position, Quaternion rotation)[] spawnPoints)

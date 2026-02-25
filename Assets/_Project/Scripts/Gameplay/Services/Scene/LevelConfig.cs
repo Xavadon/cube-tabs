@@ -7,8 +7,13 @@ namespace _Project.Scripts.Gameplay.Services.Scene
     [CreateAssetMenu(menuName = "Config/LevelConfig")]
     public class LevelConfig : ScriptableObject
     {
+        [field: SerializeField]
+        public string LevelName { get; private set; } = "Level";
+
+        [field: SerializeField]
+        public int LevelIndex { get; private set; }
+
         public SpawnEntry[] Enemies;
-        public SpawnEntry[] Allies;
     }
 
     [Serializable]

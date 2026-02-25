@@ -8,8 +8,11 @@ public static class EditorSceneSwitcher
     [MenuItem("SceneSwitcher/Boot ^&0", false, 0)]
     private static void SwitchToBoot() => SwitchToScene(0);
 
-    [MenuItem("SceneSwitcher/Game ^&1", false, 1)]
-    private static void SwitchToGame() => SwitchToScene(1);
+    [MenuItem("SceneSwitcher/Menu ^&1", false, 1)]
+    private static void SwitchToMenu() => SwitchToScene(1);
+
+    [MenuItem("SceneSwitcher/Game ^&2", false, 2)]
+    private static void SwitchToGame() => SwitchToScene(2);
 
     private static void SwitchToScene(int index)
     {

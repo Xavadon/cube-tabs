@@ -34,6 +34,12 @@ namespace _Project.Scripts.Architecture.Services.Scene
             Debug.Log("[GameSceneManager] Game scene loaded and initialized");
         }
 
+        public async UniTask LoadMenuScene()
+        {
+            await LoadSceneAsync("Menu");
+            Debug.Log("[SceneService] Menu scene loaded");
+        }
+
         public async UniTask LoadDemoLevelScene()
         {
             await LoadSceneAsync("DemoLevel");
