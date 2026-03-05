@@ -14,7 +14,7 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
     public class CharacterRegistry : ICharacterRegistry
     {
-        private readonly List<Character> _allies = new();
+        private readonly List<Character> _characters = new();
 
         public UniTask Initialize()
         {
@@ -23,17 +23,17 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
         public void Register(Character character)
         {
-            if (character.CharacterType == CharacterType.Ally)
-            {
-                _allies.Add(character);
-            }
+            //if (character.CharacterType == CharacterType.Ally)
+            //{
+                _characters.Add(character);
+            //}
         }
 
         public void Unregister(Character character)
         {
-            _allies.Remove(character);
+            _characters.Remove(character);
         }
 
-        public IReadOnlyList<Character> GetAllies() => _allies;
+        public IReadOnlyList<Character> GetAllies() => _characters;
     }
 }

@@ -9,17 +9,35 @@ namespace _Project.Scripts.Gameplay.Character.Components
         private int _attackHash = Animator.StringToHash("Attack");
         private int _rangeAttackHash = Animator.StringToHash("RangeAttack");
         private int _hitHash = Animator.StringToHash("HitReaction");
+        private int _hitHash1 = Animator.StringToHash("HitReaction1");
+
+        private int _baseLayerIndex;
+        private int _hitLayerIndex;
         
         private readonly Animator _animator;
 
         public AnimatorConroller(Animator animator)
         {
             _animator = animator;
+            _baseLayerIndex = _animator.GetLayerIndex("Base Layer");
+            _hitLayerIndex = _animator.GetLayerIndex("Hit Layer");
         }
 
-        private void CrossFade(int hash, float fadeTime = 0.1f)
+        private void CrossFade(int hash, float fadeTime = 0.1f, int layerIndex = -1)
         {
-            _animator.CrossFade(hash, fadeTime);
+            _animator.CrossFade(hash, fadeTime, layerIndex);
+        }
+        
+        public bool IsInState(int hash, int layer = 0)
+        {
+            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(layer);
+
+            if (stateInfo.shortNameHash == hash)
+            {
+                return true;
+            }
+
+            return false;
         }
         
         public void PlayIdle()
@@ -44,7 +62,14 @@ namespace _Project.Scripts.Gameplay.Character.Components
         
         public void PlayHitReact()
         {
-            CrossFade(_hitHash);
+            if (!IsInState(_hitHash, _hitLayerIndex))
+            {
+                CrossFade(_hitHash, 0.15f, _hitLayerIndex);
+            }
+            else
+            {
+                CrossFade(_hitHash1, 0.15f, _hitLayerIndex);
+            }
         }
     }
 }
