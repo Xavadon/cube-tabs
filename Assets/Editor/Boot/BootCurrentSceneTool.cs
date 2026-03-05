@@ -16,12 +16,12 @@ namespace Game.Scripts.Utils.Editor
         [MenuItem("Tools/Boot/Set loading scene To boot")]
         public static void Boot()
         {
-            var path = "Assets/Game/Scenes/BootStrap.unity";
+            var path = "Assets/_Project/Scenes/Boot.unity";
             SceneAsset myWantedStartScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
             if (myWantedStartScene != null)
                 EditorSceneManager.playModeStartScene = myWantedStartScene;
             else
-                Debug.Log("Could not find Scene " + path);
+                Debug.LogError("Could not find Scene " + path);
         }
     }
 }
