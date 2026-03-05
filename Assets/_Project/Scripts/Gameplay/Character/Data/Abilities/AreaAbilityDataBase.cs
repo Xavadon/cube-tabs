@@ -15,21 +15,19 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
         public float Duration { get; private set; } = 1f;
 
         [field: SerializeField]
-        public LayerMask AffectedLayers { get; private set; }
-
-        [field: SerializeField]
         public AreaWave Prefab { get; private set; }
 
         public override void Execute(Blackboard blackboard)
         {
             Transform caster = blackboard.Get<Transform>(BrainKeys.Transform);
+            LayerMask targetLayer = blackboard.Get<LayerMask>(BrainKeys.TargetLayer);
 
             if (caster == null)
                 return;
 
             // TODO: Заменить Instantiate на пулинг (массовые касты — GC-спайки)
             AreaWave wave = Instantiate(Prefab, caster.position, Quaternion.identity);
-            wave.Init(Radius, Duration, Damage, DamageType, AffectedLayers);
+            wave.Init(Radius, Duration, Damage, DamageType, targetLayer);
         }
     }
 }

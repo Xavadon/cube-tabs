@@ -11,10 +11,10 @@ namespace _Project.Scripts.Architecture.Services.Camera
     {
         private const float SmoothTime = 0.5f;
         private const float MinDistance = 12f;
-        private const float MaxDistance = 30f;
+        private const float MaxDistance = 20f;
         private const float BoundsPadding = 3f;
 
-        private static readonly Vector3 BaseOffset = new(0f, 15f, -10f);
+        private static readonly Vector3 BaseOffset = new(0f, 7f, -5f);
 
         public bool CameraLocked { get; private set; }
 

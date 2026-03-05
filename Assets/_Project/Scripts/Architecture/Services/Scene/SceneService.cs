@@ -1,16 +1,31 @@
+using _Project.Scripts.Gameplay.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace _Project.Scripts.Architecture.Services.Scene
 {
-    public class SceneService : IService
+    public interface ISceneService : IService
+    {
+        UniTask LoadGameScene();
+        UniTask LoadMenuScene();
+        UniTask LoadDemoLevelScene();
+    }
+    
+    public class SceneService : ISceneService
     {
         private readonly ILevelInitializer _levelInitializer;
+        private readonly IMenuInitializer _menuInitializer;
+        private readonly IPlayerProgressService _playerProgressService;
 
-        public SceneService(ILevelInitializer levelInitializer)
+        public SceneService(
+            ILevelInitializer levelInitializer,
+            IMenuInitializer menuInitializer,
+            IPlayerProgressService playerProgressService)
         {
             _levelInitializer = levelInitializer;
+            _menuInitializer = menuInitializer;
+            _playerProgressService = playerProgressService;
         }
         
         public UniTask Initialize()
@@ -36,8 +51,10 @@ namespace _Project.Scripts.Architecture.Services.Scene
 
         public async UniTask LoadMenuScene()
         {
+            _playerProgressService.Save();
             await LoadSceneAsync("Menu");
-            Debug.Log("[SceneService] Menu scene loaded");
+            _menuInitializer.InitializeMenu(this);
+            Debug.Log("[SceneService] Menu scene loaded and initialized");
         }
 
         public async UniTask LoadDemoLevelScene()

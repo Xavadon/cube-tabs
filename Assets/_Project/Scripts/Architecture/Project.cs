@@ -18,7 +18,7 @@ namespace _Project.Scripts.Architecture
             RegisterServices();
             await InitializeServices();
             
-            var sceneService = _container.Resolve<SceneService>();
+            var sceneService = _container.Resolve<ISceneService>();
             await sceneService.LoadMenuScene();
 
             Debug.Log("[Project] Приложение инициализировано успешно");

@@ -13,6 +13,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         public const string AnimatorController = "AnimatorController";
         public const string Transform = "Transform";
         public const string WeaponData = "WeaponData";
+        public const string TargetLayer = "TargetLayer";
     }
     
     public class CharacterBrain
@@ -25,6 +26,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             _tree.Blackboard.Set(BrainKeys.Agent, agent);
             _tree.Blackboard.Set(BrainKeys.Transform, transform);
             _tree.Blackboard.Set(BrainKeys.AnimatorController, animatorController);
+            _tree.Blackboard.Set(BrainKeys.TargetLayer, layerMask);
             if (weaponData != null)
                 _tree.Blackboard.Set(BrainKeys.WeaponData, weaponData);
         }

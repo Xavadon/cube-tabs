@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a268af6429472dd43a8c35ae75dc2274, type: 3}
   m_Name: Level 1 Config
   m_EditorClassIdentifier: 
-  <LevelName>k__BackingField: Level 1
+  <LevelName>k__BackingField: Dirt
   <LevelIndex>k__BackingField: 0
   Enemies:
-  - CharacterData: {fileID: 11400000, guid: 6e01f01e4701f964b8cbb4e62d225483, type: 2}
-    Count: 2
-  - CharacterData: {fileID: 11400000, guid: e79c235fe17a5e24fbcedecc9027d630, type: 2}
-    Count: 0
+  - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
+    Count: 15

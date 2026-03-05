@@ -1,6 +1,5 @@
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Character.Components.UI;
-using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Character.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -9,15 +8,18 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 {
     public class LevelInitializer : ILevelInitializer
     {
-        private const string ArmyConfigPath = "Data/ArmyConfig";
-
         private readonly ICharacterSpawner _characterSpawner;
         private readonly IGameSessionService _gameSessionService;
+        private readonly IPlayerProgressService _playerProgressService;
 
-        public LevelInitializer(ICharacterSpawner characterSpawner, IGameSessionService gameSessionService)
+        public LevelInitializer(
+            ICharacterSpawner characterSpawner,
+            IGameSessionService gameSessionService,
+            IPlayerProgressService playerProgressService)
         {
             _characterSpawner = characterSpawner;
             _gameSessionService = gameSessionService;
+            _playerProgressService = playerProgressService;
         }
 
         public UniTask Initialize()
@@ -38,20 +40,19 @@ namespace _Project.Scripts.Gameplay.Services.Scene
                 return;
             }
 
-            var armyConfig = Resources.Load<ArmyConfig>(ArmyConfigPath);
+            var armyUnits = _playerProgressService.ArmyUnits;
 
-            if (armyConfig == null)
+            if (armyUnits.Count == 0)
             {
-                Debug.LogError($"[LevelInitializer] ArmyConfig not found at '{ArmyConfigPath}'");
-                return;
+                Debug.LogWarning("[LevelInitializer] No units in army");
             }
 
             // TODO: Убрать Find — грузить HealthBarPool-префаб из Resources/SO и инстанциировать из кода
             var healthBarPool = Object.FindAnyObjectByType<HealthBarPool>();
 
-            _characterSpawner.SpawnFromConfig(levelConfig, armyConfig, healthBarPool);
+            _characterSpawner.SpawnFromConfig(levelConfig, armyUnits, healthBarPool);
 
-            Debug.Log($"[LevelInitializer] Level '{levelConfig.LevelName}' initialized successfully");
+            Debug.Log($"[LevelInitializer] Level '{levelConfig.LevelName}' initialized with {armyUnits.Count} ally units");
         }
     }
 }

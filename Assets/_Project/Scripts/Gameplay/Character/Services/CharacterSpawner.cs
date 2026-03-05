@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using _Project.Scripts.Architecture.Services;
 using _Project.Scripts.Gameplay.Character.Components.UI;
 using _Project.Scripts.Gameplay.Character.Data;
@@ -19,6 +20,7 @@ namespace _Project.Scripts.Gameplay.Character.Services
     public interface ICharacterSpawner : IService
     {
         void SpawnFromConfig(LevelConfig levelConfig, ArmyConfig armyConfig, HealthBarPool healthBarPool);
+        void SpawnFromConfig(LevelConfig levelConfig, List<CharacterData> allyUnits, HealthBarPool healthBarPool);
     }
 
     public class CharacterSpawner : ICharacterSpawner
@@ -47,6 +49,38 @@ namespace _Project.Scripts.Gameplay.Character.Services
             _healthBarPool = healthBarPool;
             SpawnGroup(levelConfig.Enemies, CharacterType.Enemy, _spawnPointProvider.GetEnemySpawns());
             SpawnGroup(armyConfig.Units, CharacterType.Ally, _spawnPointProvider.GetAllySpawns());
+        }
+
+        public void SpawnFromConfig(LevelConfig levelConfig, List<CharacterData> allyUnits, HealthBarPool healthBarPool)
+        {
+            _healthBarPool = healthBarPool;
+            SpawnGroup(levelConfig.Enemies, CharacterType.Enemy, _spawnPointProvider.GetEnemySpawns());
+            SpawnCharacters(allyUnits, CharacterType.Ally, _spawnPointProvider.GetAllySpawns());
+        }
+
+        private void SpawnCharacters(List<CharacterData> units, CharacterType type, (Vector3 position, Quaternion rotation)[] spawnPoints)
+        {
+            if (units == null || units.Count == 0)
+                return;
+
+            for (int i = 0; i < units.Count; i++)
+            {
+                Character character = _characterFactory.Create(type, units[i]);
+                character.SetRegistry(_characterRegistry);
+                if (_healthBarPool != null)
+                    character.SetHealthBarPool(_healthBarPool);
+                _characterRegistry.Register(character);
+
+                var (position, rotation) = spawnPoints[i % spawnPoints.Length];
+
+                Vector3 offset = new Vector3(
+                    UnityEngine.Random.Range(-1.5f, 1.5f),
+                    0f,
+                    UnityEngine.Random.Range(-1.5f, 1.5f)
+                );
+
+                character.transform.SetPositionAndRotation(position + offset, rotation);
+            }
         }
 
         private void SpawnGroup(SpawnEntry[] entries, CharacterType type, (Vector3 position, Quaternion rotation)[] spawnPoints)

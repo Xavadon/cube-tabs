@@ -1,12 +1,12 @@
 using System;
-using System.Diagnostics;
+using _Project.Scripts.Architecture;
 using _Project.Scripts.Gameplay.Character.Components;
 using _Project.Scripts.Gameplay.Character.Components.AiBrain;
 using _Project.Scripts.Gameplay.Character.Components.Health;
 using _Project.Scripts.Gameplay.Character.Components.UI;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Character.Services;
-using ICharacterRegistry = global::_Project.Scripts.Gameplay.Character.Services.ICharacterRegistry;
+using _Project.Scripts.Gameplay.Services;
 using Game.Scripts.Core.Gameplay.Enemies.Components;
 using MinecraftModels.Scripts;
 using UnityEngine;
@@ -23,9 +23,15 @@ namespace _Project.Scripts.Gameplay.Character
 
         [SerializeField]
         private NavMeshAgent _navMeshAgent;
+        
+        [SerializeField]
+        private ParticleSystem _hitEffect;
 
         [SerializeField]
         public SkinChanger SkinChanger;
+        
+        [SerializeField]
+        public SkinChanger ArmorChanger;
 
         private CharacterBrain _brain;
         private AnimatorConroller _animatorController;
@@ -34,16 +40,19 @@ namespace _Project.Scripts.Gameplay.Character
         private ResistanceComponent _resistance;
         private ICharacterRegistry _registry;
         private HealthBarElement _healthBar;
+        private CharacterData _characterData;
         
         public void ApplyDamage(float amount, Vector3 hitPoint, DamageType type = DamageType.Physical)
         {
             _health.ApplyDamage(amount, hitPoint, type);
             _animatorController.PlayHitReact();
+            _hitEffect.Play();
         }
 
         public void Initialize(CharacterType characterType, CharacterData characterData)
         {
             CharacterType = characterType;
+            _characterData = characterData;
 
             (int ownLayer, LayerMask targetLayer) = characterType switch
             {
@@ -77,6 +86,15 @@ namespace _Project.Scripts.Gameplay.Character
             _health.OnDeath += HandleDeath;
             
             SkinChanger.ChangeSkin(characterData.SkinMaterial);
+
+            if (characterData.ArmorMaterial != null)
+            {
+                ArmorChanger.ChangeSkin(characterData.ArmorMaterial);
+            }
+            else
+            {
+                ArmorChanger.ChangeSkin(characterData.SkinMaterial);
+            }
         }
 
         private void Update()
@@ -97,6 +115,9 @@ namespace _Project.Scripts.Gameplay.Character
 
         private void HandleDeath()
         {
+            if (CharacterType == CharacterType.Enemy && _characterData.KillReward > 0)
+                Project.Get<IPlayerProgressService>().AddGold(_characterData.KillReward);
+
             _healthBar?.Release();
             _registry?.Unregister(this);
             _movement.Stop();

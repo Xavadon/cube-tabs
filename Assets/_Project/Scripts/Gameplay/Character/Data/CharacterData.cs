@@ -14,6 +14,12 @@ namespace _Project.Scripts.Gameplay.Character.Data
         
         [field: SerializeField]
         public float MoveSpeed { get; private set; } = 5f;
+
+        [field: SerializeField]
+        public int Price { get; private set; } = 100;
+
+        [field: SerializeField]
+        public int KillReward { get; private set; } = 10;
         
         [field: SerializeField]
         public CharacterStatsData CharacterStatsData { get; private set; }
@@ -29,5 +35,8 @@ namespace _Project.Scripts.Gameplay.Character.Data
         
         [Header("Skin")]
         public Material SkinMaterial;
+        
+        [Header("Skin")]
+        public Material ArmorMaterial;
     }
 }
