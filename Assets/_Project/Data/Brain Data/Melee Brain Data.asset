@@ -15,5 +15,5 @@ MonoBehaviour:
   <DetectionRadius>k__BackingField: 200
   <WindUpDuration>k__BackingField: 0.3
   <AttackDuration>k__BackingField: 0.8
-  <AttackRange>k__BackingField: 2.5
+  <AttackRange>k__BackingField: 1.75
   <AttackCooldown>k__BackingField: 0.25
