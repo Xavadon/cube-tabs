@@ -1,21 +1,27 @@
+using _Project.Scripts.Gameplay.Character.Data;
 using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Character
 {
     public class WeaponChanger : MonoBehaviour
     {
-        //TODO: research
         [SerializeField]
-        private GameObject[] _weapons;
+        private Transform _weaponSocket;
 
-        public void SetWeapon(int index)
+        private GameObject _currentWeapon;
+
+        public void SetWeapon(WeaponData weaponData)
         {
-            foreach (var weapon in _weapons)
-            {
-                weapon.gameObject.SetActive(false);
-            }
-            
-            _weapons[index].SetActive(true);
+            if (_currentWeapon != null)
+                Destroy(_currentWeapon); // TODO: пул когда будет Pool<T>
+
+            if (weaponData?.Prefab == null)
+                return;
+
+            _currentWeapon = Instantiate(weaponData.Prefab, _weaponSocket);
+            _currentWeapon.transform.localPosition = weaponData.LocalPosition;
+            _currentWeapon.transform.localRotation = Quaternion.Euler(weaponData.LocalRotation);
+            _currentWeapon.transform.localScale = weaponData.LocalScale;
         }
     }
 }

@@ -33,6 +33,9 @@ namespace _Project.Scripts.Gameplay.Character
         [SerializeField]
         public SkinChanger ArmorChanger;
 
+        [SerializeField]
+        private WeaponChanger _weaponChanger;
+
         private CharacterBrain _brain;
         private AnimatorConroller _animatorController;
         private NavMeshMovementComponent _movement;
@@ -95,6 +98,9 @@ namespace _Project.Scripts.Gameplay.Character
             {
                 ArmorChanger.ChangeSkin(characterData.SkinMaterial);
             }
+
+            if (weapon != null)
+                _weaponChanger.SetWeapon(weapon);
         }
 
         private void Update()
