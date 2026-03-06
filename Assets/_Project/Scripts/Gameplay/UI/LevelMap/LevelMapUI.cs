@@ -1,3 +1,4 @@
+using System;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Services;
 using _Project.Scripts.Gameplay.Services.Scene;
@@ -12,29 +13,27 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
         private LevelPointUI _levelPointPrefab;
 
         [SerializeField]
+        private LevelInfoUI _levelInfo;
+
+        [SerializeField]
         private Transform _pointsContainer;
-
-        private IGameSessionService _sessionService;
-        private ISceneService _sceneService;
-
+        
         public void Initalize(LevelCatalog catalog, IGameSessionService sessionService, ISceneService sceneService)
         {
-            _sessionService = sessionService;
-            _sceneService = sceneService;
-
             foreach (var level in catalog.Levels)
             {
                 LevelPointUI point = Instantiate(_levelPointPrefab, _pointsContainer);
                 point.Initialize(level.LevelName, () => OnLevelSelected(level));
             }
+
+            _levelInfo.Initalize(sessionService, sceneService);
             
             gameObject.SetActive(false);
         }
 
         private void OnLevelSelected(LevelConfig level)
         {
-            _sessionService.SelectLevel(level);
-            _sceneService.LoadGameScene().Forget();
+            _levelInfo.SelectLevel(level);
         }
     }
 }

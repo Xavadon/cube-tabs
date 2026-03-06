@@ -15,21 +15,25 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
 
         private Action _onClick;
 
+        private void OnEnable()
+        {
+            _button.onClick.AddListener(HandleClick);
+        }
+
+        private void OnDisable()
+        {
+            _button.onClick.RemoveListener(HandleClick);
+        }
+
         public void Initialize(string levelName, Action onClick)
         {
             _label.text = levelName;
             _onClick = onClick;
-            _button.onClick.AddListener(HandleClick);
         }
 
         private void HandleClick()
         {
             _onClick?.Invoke();
-        }
-
-        private void OnDestroy()
-        {
-            _button.onClick.RemoveListener(HandleClick);
         }
     }
 }

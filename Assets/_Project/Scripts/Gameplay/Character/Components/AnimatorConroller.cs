@@ -42,6 +42,11 @@ namespace _Project.Scripts.Gameplay.Character.Components
         
         public void PlayIdle()
         {
+            if (IsInState(_idleHash, _baseLayerIndex))
+            {
+                return;
+            }
+            
             CrossFade(_idleHash);
         }
         
