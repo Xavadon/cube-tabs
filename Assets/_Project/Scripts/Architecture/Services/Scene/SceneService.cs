@@ -7,6 +7,7 @@ namespace _Project.Scripts.Architecture.Services.Scene
 {
     public interface ISceneService : IService
     {
+        UniTask LoadBootScene();
         UniTask LoadGameScene();
         UniTask LoadMenuScene();
         UniTask LoadDemoLevelScene();
@@ -40,11 +41,17 @@ namespace _Project.Scripts.Architecture.Services.Scene
             await SceneManager.LoadSceneAsync(name).ToUniTask();
             Debug.Log($"[SceneService] Scene loaded: {name}");
         }
+
+        public async UniTask LoadBootScene()
+        {
+            _playerProgressService.Save();
+            await LoadSceneAsync("Boot");
+        }
         
         public async UniTask LoadGameScene()
         {
             await LoadSceneAsync("Game");
-            _levelInitializer.InitializeLevel();
+            _levelInitializer.InitializeLevel(this);
 
             Debug.Log("[GameSceneManager] Game scene loaded and initialized");
         }
@@ -60,7 +67,7 @@ namespace _Project.Scripts.Architecture.Services.Scene
         public async UniTask LoadDemoLevelScene()
         {
             await LoadSceneAsync("DemoLevel");
-            _levelInitializer.InitializeLevel();
+            _levelInitializer.InitializeLevel(this);
 
             Debug.Log("[GameSceneManager] DemoLevel scene loaded and initialized");
         }

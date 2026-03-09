@@ -13,6 +13,9 @@ namespace _Project.Scripts.Gameplay.Services.Scene
         [field: SerializeField]
         public int LevelIndex { get; private set; }
 
+        [field: SerializeField]
+        public int KillsToComplete { get; private set; } = 100;
+
         public SpawnEntry[] Enemies;
     }
 

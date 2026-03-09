@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using IDisposable = _Project.Scripts.Architecture.Services.IDisposable;
 
 namespace _Project.Scripts.Architecture.Services
 {

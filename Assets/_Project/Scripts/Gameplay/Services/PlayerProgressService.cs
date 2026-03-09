@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using _Project.Scripts.Architecture.Services;
 using _Project.Scripts.Architecture.Services.Save;
+using _Project.Scripts.Gameplay.Services.Scene;
 using _Project.Scripts.Gameplay.Character.Data;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -26,6 +27,10 @@ namespace _Project.Scripts.Gameplay.Services
         int GetOwnedCount(CharacterData unit);
         int GetBacklogCount(CharacterData unit);
         int GetSlotUpgradeCost();
+        void AddLevelKills(int levelIndex, int kills);
+        int GetLevelKills(int levelIndex);
+        bool IsLevelCompleted(int levelIndex);
+        void MarkLevelCompleted(int levelIndex);
         void Save();
 
         event Action OnGoldChanged;
@@ -181,6 +186,33 @@ namespace _Project.Scripts.Gameplay.Services
 
         public int GetSlotUpgradeCost() => _catalog.SlotUpgradeCost;
 
+        public void AddLevelKills(int levelIndex, int kills)
+        {
+            var entry = FindOrCreateKillEntry(levelIndex);
+            entry.Kills += kills;
+            Save();
+        }
+
+        public int GetLevelKills(int levelIndex)
+        {
+            var entry = _saveData.LevelKillProgress.Find(e => e.LevelIndex == levelIndex);
+            return entry?.Kills ?? 0;
+        }
+
+        public bool IsLevelCompleted(int levelIndex)
+        {
+            return _saveData.CompletedLevelIndices.Contains(levelIndex);
+        }
+
+        public void MarkLevelCompleted(int levelIndex)
+        {
+            if (!_saveData.CompletedLevelIndices.Contains(levelIndex))
+            {
+                _saveData.CompletedLevelIndices.Add(levelIndex);
+                Save();
+            }
+        }
+
         public void Save()
         {
             _saveService.Save(_saveData);
@@ -229,6 +261,18 @@ namespace _Project.Scripts.Gameplay.Services
             }
 
             return count;
+        }
+
+        private LevelKillEntry FindOrCreateKillEntry(int levelIndex)
+        {
+            var entry = _saveData.LevelKillProgress.Find(e => e.LevelIndex == levelIndex);
+            if (entry == null)
+            {
+                entry = new LevelKillEntry { LevelIndex = levelIndex, Kills = 0 };
+                _saveData.LevelKillProgress.Add(entry);
+            }
+
+            return entry;
         }
 
         private static Dictionary<int, int> CountById(List<int> ids)

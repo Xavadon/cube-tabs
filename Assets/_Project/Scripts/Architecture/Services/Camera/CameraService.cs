@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using _Project.Scripts.Gameplay.Character;
 using _Project.Scripts.Gameplay.Character.Services;
-using _Project.Scripts.Gameplay.Services.Input;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -36,6 +35,12 @@ namespace _Project.Scripts.Architecture.Services.Camera
             return UniTask.CompletedTask;
         }
 
+        public void Dispose()
+        {
+            _allies = null;
+            _playerCamera = null;
+        }
+
         public void Tick(float deltaTime)
         {
             if (_playerCamera == null)
@@ -47,16 +52,32 @@ namespace _Project.Scripts.Architecture.Services.Camera
             if (_allies == null || _allies.Count == 0) return;
 
             Vector3 rawCenter = Vector3.zero;
-            Bounds bounds = new Bounds(_allies[0].transform.position, Vector3.zero);
+            int aliveCount = 0;
+            Bounds bounds = default;
+            bool boundsInitialized = false;
 
             for (int i = 0; i < _allies.Count; i++)
             {
+                if (_allies[i] == null) continue;
+
                 Vector3 pos = _allies[i].transform.position;
                 rawCenter += pos;
-                bounds.Encapsulate(pos);
+                aliveCount++;
+
+                if (!boundsInitialized)
+                {
+                    bounds = new Bounds(pos, Vector3.zero);
+                    boundsInitialized = true;
+                }
+                else
+                {
+                    bounds.Encapsulate(pos);
+                }
             }
 
-            rawCenter /= _allies.Count;
+            if (aliveCount == 0) return;
+
+            rawCenter /= aliveCount;
 
             _smoothCenter = Vector3.SmoothDamp(_smoothCenter, rawCenter, ref _centerVelocity, SmoothTime);
 

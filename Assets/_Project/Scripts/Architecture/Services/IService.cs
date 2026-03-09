@@ -4,8 +4,8 @@ namespace _Project.Scripts.Architecture.Services
 {
     public interface IService
     {
-        public abstract UniTask Initialize();
-        public virtual void PostInitialize(){}
-        public virtual void Dispose(){}
+        abstract UniTask Initialize();
+        virtual void PostInitialize(){}
+        virtual void Dispose(){}
     }
 }
