@@ -72,7 +72,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 
             if (army != null)
             {
-                army.Initialize(_playerProgressService);
+                army.Initialize(_playerProgressService, shopCatalog, previewConfig);
             }
             else
             {

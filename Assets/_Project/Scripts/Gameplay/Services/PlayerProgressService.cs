@@ -9,6 +9,13 @@ using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Services
 {
+    public struct UnitInstance
+    {
+        public int OwnedIndex;
+        public CharacterData Data;
+        public bool IsInArmy;
+    }
+
     public interface IPlayerProgressService : IService
     {
         int Gold { get; }
@@ -21,6 +28,9 @@ namespace _Project.Scripts.Gameplay.Services
         void AddGold(int amount);
         void SpendGold(int amount);
         bool BuyUnit(CharacterData unit);
+        bool BuyBaseUnit();
+        bool EvolveUnit(int ownedIndex, CharacterData target, int cost);
+        List<UnitInstance> GetAllUnitInstances();
         bool UpgradeArmySlots();
         bool AddToArmy(CharacterData unit);
         void RemoveFromArmy(CharacterData unit);
@@ -135,6 +145,76 @@ namespace _Project.Scripts.Gameplay.Services
             OnOwnedChanged?.Invoke();
             Save();
             return true;
+        }
+
+        public bool BuyBaseUnit()
+        {
+            var baseUnit = _catalog.BaseUnit;
+
+            if (baseUnit == null || !CanAfford(baseUnit.Price))
+                return false;
+
+            SpendGold(baseUnit.Price);
+            _saveData.OwnedUnitIds.Add(baseUnit.Id);
+
+            if (_saveData.ArmyUnitIds.Count < _saveData.ArmySlots)
+                _saveData.ArmyUnitIds.Add(baseUnit.Id);
+
+            OnOwnedChanged?.Invoke();
+            OnArmyChanged?.Invoke();
+            Save();
+            return true;
+        }
+
+        public bool EvolveUnit(int ownedIndex, CharacterData target, int cost)
+        {
+            if (ownedIndex < 0 || ownedIndex >= _saveData.OwnedUnitIds.Count)
+                return false;
+
+            if (!CanAfford(cost))
+                return false;
+
+            int oldId = _saveData.OwnedUnitIds[ownedIndex];
+            _saveData.OwnedUnitIds[ownedIndex] = target.Id;
+
+            int armyIdx = _saveData.ArmyUnitIds.IndexOf(oldId);
+            if (armyIdx >= 0)
+                _saveData.ArmyUnitIds[armyIdx] = target.Id;
+
+            SpendGold(cost);
+            OnOwnedChanged?.Invoke();
+            OnArmyChanged?.Invoke();
+            Save();
+            return true;
+        }
+
+        public List<UnitInstance> GetAllUnitInstances()
+        {
+            var armyCounts = CountById(_saveData.ArmyUnitIds);
+            var result = new List<UnitInstance>(_saveData.OwnedUnitIds.Count);
+
+            for (int i = 0; i < _saveData.OwnedUnitIds.Count; i++)
+            {
+                int id = _saveData.OwnedUnitIds[i];
+                var data = _catalog.GetUnitById(id);
+
+                if (data == null)
+                    continue;
+
+                bool isInArmy = armyCounts.TryGetValue(id, out int remaining) && remaining > 0;
+
+                if (isInArmy)
+                    armyCounts[id] = remaining - 1;
+
+                result.Add(new UnitInstance
+                {
+                    OwnedIndex = i,
+                    Data = data,
+                    IsInArmy = isInArmy
+                });
+            }
+
+            return result;
         }
 
         public bool UpgradeArmySlots()

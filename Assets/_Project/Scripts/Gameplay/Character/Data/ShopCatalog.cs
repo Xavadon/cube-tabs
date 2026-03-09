@@ -9,6 +9,12 @@ namespace _Project.Scripts.Gameplay.Character.Data
         public CharacterData[] AvailableUnits { get; private set; }
 
         [field: SerializeField]
+        public CharacterData BaseUnit { get; private set; }
+
+        [field: SerializeField]
+        public EvolutionCatalog EvolutionCatalog { get; private set; }
+
+        [field: SerializeField]
         public int BaseArmySlots { get; private set; } = 3;
 
         [field: SerializeField]
