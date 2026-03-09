@@ -13,7 +13,7 @@ namespace Game.Scripts.Editor.ArchitectureVisualizer
 {
     public class ArchitectureVisualizerWindow : EditorWindow
     {
-        private const string DefaultScriptsPath = "Assets/Game/Scripts";
+        private const string DefaultScriptsPath = "Assets/_Project/Scripts";
         private const string WindowTitle = "Architecture Visualizer";
         private const int MinWindowWidth = 1100;
         private const int MinWindowHeight = 700;
