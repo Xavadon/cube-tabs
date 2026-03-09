@@ -47,7 +47,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 
             var levelMap = canvas.GetComponentInChildren<LevelMapUI>();
             var shop = canvas.GetComponentInChildren<ShopScreenUI>();
-            var army = canvas.GetComponentInChildren<ArmyScreenUI>();
+            var army = canvas.GetComponentInChildren<ArmyScreenView>();
 
             var levelCatalog = Resources.Load<LevelCatalog>(LevelCatalogPath);
             var shopCatalog = Resources.Load<ShopCatalog>(ShopCatalogPath);
