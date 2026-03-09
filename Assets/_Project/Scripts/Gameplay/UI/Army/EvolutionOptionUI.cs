@@ -14,14 +14,20 @@ namespace _Project.Scripts.Gameplay.UI.Army
         private TextMeshProUGUI _costLabel;
 
         [SerializeField]
+        private RawImage _previewImage;
+
+        [SerializeField]
         private Button _button;
 
         private Action _onEvolve;
 
-        public void Init(string unitName, int cost, bool canAfford, Action onEvolve)
+        public void Init(string unitName, int cost, bool canAfford, RenderTexture portrait, Action onEvolve)
         {
             _nameLabel.text = unitName;
             _costLabel.text = cost.ToString();
+
+            if (_previewImage != null && portrait != null)
+                _previewImage.texture = portrait;
             _button.interactable = canAfford;
             _onEvolve = onEvolve;
             _button.onClick.AddListener(HandleClick);

@@ -36,26 +36,44 @@ namespace _Project.Scripts.Gameplay.UI.Army
         [SerializeField]
         private TextMeshProUGUI _goldLabel;
 
+        [Header("Transfer")]
+        [SerializeField]
+        private Button _transferButton;
+
+        [SerializeField]
+        private TextMeshProUGUI _transferButtonLabel;
+
+        [Header("Full Body Preview")]
+        [SerializeField]
+        private RawImage _fullBodyPreviewImage;
+
         [Header("Evolution")]
         [SerializeField]
         private EvolutionPanelUI _evolutionPanel;
 
         private IPlayerProgressService _progress;
         private ShopCatalog _catalog;
-        private UnitPreviewFactory _previewFactory;
+        private UnitPreviewFactory _portraitFactory;
+        private UnitPreviewFactory _fullBodyFactory;
         private readonly Dictionary<int, RenderTexture> _portraitCache = new();
+        private readonly Dictionary<int, RenderTexture> _fullBodyCache = new();
+        private ArmyUnitCardUI _selectedCard;
         private CharacterData _selectedUnit;
-        private readonly List<(ArmyUnitCardUI card, CharacterData data)> _activeCards = new();
+        private bool _selectedIsInArmy;
+        private readonly List<(ArmyUnitCardUI card, CharacterData data, bool isInArmy)> _activeCards = new();
 
-        public void Initialize(IPlayerProgressService progress, ShopCatalog catalog, UnitPreviewConfig previewConfig)
+        public void Initialize(IPlayerProgressService progress, ShopCatalog catalog,
+            UnitPreviewConfig portraitConfig, UnitPreviewConfig fullBodyConfig)
         {
             _progress = progress;
             _catalog = catalog;
-            _previewFactory = new UnitPreviewFactory(previewConfig);
+            _portraitFactory = new UnitPreviewFactory(portraitConfig);
+            _fullBodyFactory = new UnitPreviewFactory(fullBodyConfig);
 
-            _evolutionPanel.Initialize(progress, catalog.EvolutionCatalog);
+            _evolutionPanel.Initialize(progress, catalog.EvolutionCatalog, _portraitFactory, _portraitCache);
 
             _buyButton.onClick.AddListener(OnBuyClicked);
+            _transferButton.onClick.AddListener(OnTransferClicked);
             _progress.OnGoldChanged += RefreshGold;
             _progress.OnArmyChanged += Rebuild;
             _progress.OnOwnedChanged += Rebuild;
@@ -76,7 +94,9 @@ namespace _Project.Scripts.Gameplay.UI.Army
         private void OnDestroy()
         {
             _buyButton.onClick.RemoveListener(OnBuyClicked);
-            _previewFactory?.Dispose();
+            _transferButton.onClick.RemoveListener(OnTransferClicked);
+            _portraitFactory?.Dispose();
+            _fullBodyFactory?.Dispose();
 
             if (_progress != null)
             {
@@ -88,7 +108,25 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
         private void OnBuyClicked()
         {
-            _progress.BuyBaseUnit();
+            _selectedUnit = _catalog.BaseUnit;
+            bool hadSlots = _progress.ArmyUnits.Count < _progress.ArmySlots;
+            _selectedIsInArmy = hadSlots;
+
+            if (!_progress.BuyBaseUnit())
+            {
+                _selectedUnit = null;
+            }
+        }
+
+        private void OnTransferClicked()
+        {
+            if (_selectedUnit == null)
+                return;
+
+            if (_selectedIsInArmy)
+                _progress.RemoveFromArmy(_selectedUnit);
+            else
+                _progress.AddToArmy(_selectedUnit);
         }
 
         private void Rebuild()
@@ -104,33 +142,65 @@ namespace _Project.Scripts.Gameplay.UI.Army
             {
                 var card = Instantiate(_cardPrefab, _armyContainer);
                 var capturedUnit = unit;
-                var portrait = GetOrCreatePortrait(unit);
-                card.Init(unit.Name, count, portrait, () => SelectUnit(capturedUnit));
-                _activeCards.Add((card, unit));
+                var capturedCard = card;
+                var portrait = GetOrCreatePreview(_portraitFactory, _portraitCache, unit);
+                card.Init(unit.Name, count, portrait, () => SelectCard(capturedCard, capturedUnit, true));
+                _activeCards.Add((card, unit, true));
             }
 
             foreach (var (unit, count) in backlogStacks)
             {
                 var card = Instantiate(_cardPrefab, _reserveContainer);
                 var capturedUnit = unit;
-                var portrait = GetOrCreatePortrait(unit);
-                card.Init(unit.Name, count, portrait, () => SelectUnit(capturedUnit));
-                _activeCards.Add((card, unit));
+                var capturedCard = card;
+                var portrait = GetOrCreatePreview(_portraitFactory, _portraitCache, unit);
+                card.Init(unit.Name, count, portrait, () => SelectCard(capturedCard, capturedUnit, false));
+                _activeCards.Add((card, unit, false));
             }
 
             _slotCountLabel.text = $"{_progress.ArmyUnits.Count}/{_progress.ArmySlots}";
             RefreshGold();
+
+            if (_selectedUnit != null)
+            {
+                bool found = false;
+
+                foreach (var (card, data, isInArmy) in _activeCards)
+                {
+                    bool match = data.Id == _selectedUnit.Id && isInArmy == _selectedIsInArmy;
+                    card.SetSelected(match);
+
+                    if (match)
+                    {
+                        _selectedCard = card;
+                        found = true;
+                    }
+                }
+
+                if (!found)
+                {
+                    _selectedCard = null;
+                    _selectedUnit = null;
+                }
+            }
+
+            RefreshFullBodyPreview();
             RefreshEvolutionPanel();
+            RefreshTransferButton();
         }
 
-        private void SelectUnit(CharacterData unit)
+        private void SelectCard(ArmyUnitCardUI clickedCard, CharacterData unit, bool isInArmy)
         {
+            _selectedCard = clickedCard;
             _selectedUnit = unit;
+            _selectedIsInArmy = isInArmy;
 
-            foreach (var (card, data) in _activeCards)
-                card.SetSelected(data.Id == unit.Id);
+            foreach (var (card, _, _) in _activeCards)
+                card.SetSelected(card == clickedCard);
 
+            RefreshFullBodyPreview();
             RefreshEvolutionPanel();
+            RefreshTransferButton();
         }
 
         private void RefreshEvolutionPanel()
@@ -150,14 +220,53 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 _evolutionPanel.Hide();
         }
 
-        private RenderTexture GetOrCreatePortrait(CharacterData data)
+        private void RefreshFullBodyPreview()
         {
-            if (_portraitCache.TryGetValue(data.Id, out var existing))
+            if (_fullBodyPreviewImage == null)
+                return;
+
+            if (_selectedUnit == null)
+            {
+                _fullBodyPreviewImage.gameObject.SetActive(false);
+                return;
+            }
+
+            var rt = GetOrCreatePreview(_fullBodyFactory, _fullBodyCache, _selectedUnit);
+            _fullBodyPreviewImage.texture = rt;
+            _fullBodyPreviewImage.gameObject.SetActive(true);
+        }
+
+        private static RenderTexture GetOrCreatePreview(
+            UnitPreviewFactory factory, Dictionary<int, RenderTexture> cache, CharacterData data)
+        {
+            if (cache.TryGetValue(data.Id, out var existing))
                 return existing;
 
-            var rt = _previewFactory.CreatePreview(data, _portraitCache.Count);
-            _portraitCache[data.Id] = rt;
+            var rt = factory.CreatePreview(data, cache.Count);
+            cache[data.Id] = rt;
             return rt;
+        }
+
+        private void RefreshTransferButton()
+        {
+            if (_selectedUnit == null)
+            {
+                _transferButton.gameObject.SetActive(false);
+                return;
+            }
+
+            _transferButton.gameObject.SetActive(true);
+
+            if (_selectedIsInArmy)
+            {
+                _transferButtonLabel.text = "В резерв";
+                _transferButton.interactable = true;
+            }
+            else
+            {
+                _transferButtonLabel.text = "В армию";
+                _transferButton.interactable = _progress.ArmyUnits.Count < _progress.ArmySlots;
+            }
         }
 
         private void RefreshGold()

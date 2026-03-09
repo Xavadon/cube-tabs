@@ -30,6 +30,9 @@ namespace _Project.Scripts.Gameplay.UI.Shop
         public float CameraFar { get; private set; } = 20f;
 
         [field: SerializeField]
+        public Color CameraBackgroundColor { get; private set; } = Color.clear;
+
+        [field: SerializeField]
         public int TextureSize { get; private set; } = 256;
 
         [field: SerializeField]

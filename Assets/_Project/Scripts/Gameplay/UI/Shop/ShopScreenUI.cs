@@ -35,6 +35,9 @@ namespace _Project.Scripts.Gameplay.UI.Shop
 
         public void Initialize(ShopCatalog catalog, IPlayerProgressService progress, UnitPreviewConfig previewConfig)
         {
+            
+            return;
+            
             _progress = progress;
             _catalog = catalog;
             _previewFactory = new UnitPreviewFactory(previewConfig);

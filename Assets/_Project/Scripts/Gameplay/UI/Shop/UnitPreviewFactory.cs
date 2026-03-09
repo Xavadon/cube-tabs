@@ -101,7 +101,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             var cam = camGO.AddComponent<Camera>();
             cam.targetTexture = rt;
             cam.clearFlags = CameraClearFlags.SolidColor;
-            cam.backgroundColor = Color.clear;
+            cam.backgroundColor = _config.CameraBackgroundColor;
             cam.nearClipPlane = _config.CameraNear;
             cam.farClipPlane = _config.CameraFar;
             cam.fieldOfView = _config.CameraFov;

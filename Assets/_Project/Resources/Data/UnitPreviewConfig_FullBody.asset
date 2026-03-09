@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 55a0afb37c7c5754d8d33329edcd21b6, type: 3}
-  m_Name: UnitPreviewConfig
+  m_Name: UnitPreviewConfig_FullBody
   m_EditorClassIdentifier: 
-  <RoomOrigin>k__BackingField: {x: 1000, y: -1000, z: 1000}
+  <RoomOrigin>k__BackingField: {x: 1000, y: -1000, z: 2000}
   <RoomSpacing>k__BackingField: 10
   <ModelRotation>k__BackingField: {x: 0, y: 180, z: 0}
-  <CameraOffset>k__BackingField: {x: 0.61, y: 1.62, z: -1.08}
-  <CameraLookOffset>k__BackingField: {x: 0, y: 1.62, z: 0}
+  <CameraOffset>k__BackingField: {x: 0.61, y: 1.1, z: -2.25}
+  <CameraLookOffset>k__BackingField: {x: 0, y: 1.1, z: 0}
   <CameraFov>k__BackingField: 60
   <CameraNear>k__BackingField: 0.1
   <CameraFar>k__BackingField: 20
-  <CameraBackgroundColor>k__BackingField: {r: 0.55, g: 0.55, b: 0.55, a: 1}
-  <TextureSize>k__BackingField: 256
+  <CameraBackgroundColor>k__BackingField: {r: 0.5529412, g: 0.5529412, b: 0.5529412, a: 1}
+  <TextureSize>k__BackingField: 512
   <LightOffset>k__BackingField: {x: -2, y: 3, z: -2}
   <LightIntensity>k__BackingField: 2
   <LightRange>k__BackingField: 15

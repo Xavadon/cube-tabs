@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Services;
+using _Project.Scripts.Gameplay.UI.Shop;
 using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.UI.Army
@@ -14,11 +16,16 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
         private IPlayerProgressService _progress;
         private EvolutionCatalog _evolutionCatalog;
+        private UnitPreviewFactory _portraitFactory;
+        private Dictionary<int, RenderTexture> _portraitCache;
 
-        public void Initialize(IPlayerProgressService progress, EvolutionCatalog evolutionCatalog)
+        public void Initialize(IPlayerProgressService progress, EvolutionCatalog evolutionCatalog,
+            UnitPreviewFactory portraitFactory, Dictionary<int, RenderTexture> portraitCache)
         {
             _progress = progress;
             _evolutionCatalog = evolutionCatalog;
+            _portraitFactory = portraitFactory;
+            _portraitCache = portraitCache;
         }
 
         public void Show(int ownedIndex, CharacterData currentData)
@@ -42,10 +49,13 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 var capturedTarget = option.Target;
                 int capturedCost = option.Cost;
 
+                var portrait = GetOrCreatePortrait(option.Target);
+
                 optionUI.Init(
                     option.Target.Name,
                     option.Cost,
                     _progress.CanAfford(option.Cost),
+                    portrait,
                     () => _progress.EvolveUnit(capturedIndex, capturedTarget, capturedCost));
             }
         }
@@ -54,6 +64,16 @@ namespace _Project.Scripts.Gameplay.UI.Army
         {
             gameObject.SetActive(false);
             Clear();
+        }
+
+        private RenderTexture GetOrCreatePortrait(CharacterData data)
+        {
+            if (_portraitCache.TryGetValue(data.Id, out var existing))
+                return existing;
+
+            var rt = _portraitFactory.CreatePreview(data, _portraitCache.Count);
+            _portraitCache[data.Id] = rt;
+            return rt;
         }
 
         private void Clear()
