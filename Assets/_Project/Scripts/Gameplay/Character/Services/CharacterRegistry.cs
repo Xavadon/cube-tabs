@@ -12,6 +12,7 @@ namespace _Project.Scripts.Gameplay.Character.Services
         void StartBattle();
         IReadOnlyList<Character> GetAllies();
         IReadOnlyList<Character> GetEnemies();
+        IReadOnlyList<Character> GetAll();
         event Action<Character> OnCharacterDied;
     }
 
@@ -19,6 +20,7 @@ namespace _Project.Scripts.Gameplay.Character.Services
     {
         private readonly List<Character> _allies = new();
         private readonly List<Character> _enemies = new();
+        private readonly List<Character> _all = new();
         private bool _battleStarted;
 
         public event Action<Character> OnCharacterDied;
@@ -30,6 +32,8 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
         public void Register(Character character)
         {
+            _all.Add(character);
+
             switch (character.CharacterType)
             {
                 case CharacterType.Ally:
@@ -43,6 +47,8 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
         public void Unregister(Character character)
         {
+            _all.Remove(character);
+
             switch (character.CharacterType)
             {
                 case CharacterType.Ally:
@@ -64,5 +70,6 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
         public IReadOnlyList<Character> GetAllies() => _allies;
         public IReadOnlyList<Character> GetEnemies() => _enemies;
+        public IReadOnlyList<Character> GetAll() => _all;
     }
 }

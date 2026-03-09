@@ -13,6 +13,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
         private const string CanvasPrefabPath = "Prefab/MenuCanvas";
         private const string LevelCatalogPath = "Data/LevelCatalog";
         private const string ShopCatalogPath = "Data/ShopCatalog";
+        private const string PreviewConfigPath = "Data/UnitPreviewConfig";
 
         private readonly IGameSessionService _gameSessionService;
         private readonly IPlayerProgressService _playerProgressService;
@@ -49,6 +50,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 
             var levelCatalog = Resources.Load<LevelCatalog>(LevelCatalogPath);
             var shopCatalog = Resources.Load<ShopCatalog>(ShopCatalogPath);
+            var previewConfig = Resources.Load<UnitPreviewConfig>(PreviewConfigPath);
 
             if (levelMap != null)
             {
@@ -61,7 +63,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 
             if (shop != null)
             {
-                shop.Initialize(shopCatalog, _playerProgressService);
+                shop.Initialize(shopCatalog, _playerProgressService, previewConfig);
             }
             else
             {

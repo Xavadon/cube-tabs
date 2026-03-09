@@ -17,15 +17,22 @@ namespace _Project.Scripts.Gameplay.UI.Shop
         private TextMeshProUGUI _ownedCountLabel;
 
         [SerializeField]
+        private RawImage _previewImage;
+
+        [SerializeField]
         private Button _buyButton;
 
         private Action _onBuy;
 
-        public void Init(string unitName, int price, int ownedCount, bool canAfford, Action onBuy)
+        public void Init(string unitName, int price, int ownedCount, bool canAfford, Action onBuy,
+            RenderTexture previewTexture)
         {
             _nameLabel.text = unitName;
             _priceLabel.text = price.ToString();
             _onBuy = onBuy;
+
+            if (_previewImage != null && previewTexture != null)
+                _previewImage.texture = previewTexture;
 
             _buyButton.onClick.AddListener(HandleBuy);
 

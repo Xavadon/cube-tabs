@@ -31,11 +31,13 @@ namespace _Project.Scripts.Gameplay.UI.Shop
         private IPlayerProgressService _progress;
         private ShopCatalog _catalog;
         private readonly List<(ShopUnitCardUI card, CharacterData data)> _cards = new();
+        private UnitPreviewFactory _previewFactory;
 
-        public void Initialize(ShopCatalog catalog, IPlayerProgressService progress)
+        public void Initialize(ShopCatalog catalog, IPlayerProgressService progress, UnitPreviewConfig previewConfig)
         {
             _progress = progress;
             _catalog = catalog;
+            _previewFactory = new UnitPreviewFactory(previewConfig);
 
             _progress.OnGoldChanged += RefreshAll;
             _progress.OnOwnedChanged += RefreshAll;
@@ -44,7 +46,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
 
             BuildCards();
             RefreshAll();
-            
+
             gameObject.SetActive(false);
         }
 
@@ -58,16 +60,18 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             }
 
             _upgradeSlotButton.onClick.RemoveListener(HandleUpgradeSlot);
+            _previewFactory?.Dispose();
         }
 
         private void BuildCards()
         {
-            foreach (var unit in _catalog.AvailableUnits)
+            for (int i = 0; i < _catalog.AvailableUnits.Length; i++)
             {
+                var unit = _catalog.AvailableUnits[i];
                 var card = Instantiate(_cardPrefab, _cardsContainer);
-                var capturedUnit = unit;
+                var rt = _previewFactory.CreatePreview(unit, i);
                 card.Init(unit.Name, unit.Price, _progress.GetOwnedCount(unit), _progress.CanAfford(unit.Price),
-                    () => OnBuyUnit(capturedUnit));
+                    () => OnBuyUnit(unit), rt);
                 _cards.Add((card, unit));
             }
         }

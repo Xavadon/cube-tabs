@@ -18,7 +18,7 @@ namespace _Project.Scripts.Architecture.Services.Camera
         public bool CameraLocked { get; private set; }
 
         private readonly ICharacterRegistry _characterRegistry;
-        private IReadOnlyList<Character> _allies;
+        private IReadOnlyList<Character> _characters;
         private UnityEngine.Camera _playerCamera;
         private Vector3 _smoothCenter;
         private Vector3 _centerVelocity;
@@ -31,13 +31,13 @@ namespace _Project.Scripts.Architecture.Services.Camera
         public UniTask Initialize()
         {
             _playerCamera = UnityEngine.Camera.main;
-            _allies = _characterRegistry.GetAllies();
+            _characters = _characterRegistry.GetAll();
             return UniTask.CompletedTask;
         }
 
         public void Dispose()
         {
-            _allies = null;
+            _characters = null;
             _playerCamera = null;
         }
 
@@ -49,18 +49,18 @@ namespace _Project.Scripts.Architecture.Services.Camera
                 if (_playerCamera == null) return;
             }
 
-            if (_allies == null || _allies.Count == 0) return;
+            if (_characters == null || _characters.Count == 0) return;
 
             Vector3 rawCenter = Vector3.zero;
             int aliveCount = 0;
             Bounds bounds = default;
             bool boundsInitialized = false;
 
-            for (int i = 0; i < _allies.Count; i++)
+            for (int i = 0; i < _characters.Count; i++)
             {
-                if (_allies[i] == null) continue;
+                if (_characters[i] == null) continue;
 
-                Vector3 pos = _allies[i].transform.position;
+                Vector3 pos = _characters[i].transform.position;
                 rawCenter += pos;
                 aliveCount++;
 

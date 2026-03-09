@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55a0afb37c7c5754d8d33329edcd21b6, type: 3}
+  m_Name: UnitPreviewConfig
+  m_EditorClassIdentifier: 
+  <RoomOrigin>k__BackingField: {x: 1000, y: -1000, z: 1000}
+  <RoomSpacing>k__BackingField: 10
+  <ModelRotation>k__BackingField: {x: 0, y: 180, z: 0}
+  <CameraOffset>k__BackingField: {x: 0.61, y: 1.62, z: -1.08}
+  <CameraLookOffset>k__BackingField: {x: 0, y: 1.62, z: 0}
+  <CameraFov>k__BackingField: 60
+  <CameraNear>k__BackingField: 0.1
+  <CameraFar>k__BackingField: 20
+  <TextureSize>k__BackingField: 256
+  <LightOffset>k__BackingField: {x: -2, y: 3, z: -2}
+  <LightIntensity>k__BackingField: 2
+  <LightRange>k__BackingField: 15
+  <LightSpotAngle>k__BackingField: 60

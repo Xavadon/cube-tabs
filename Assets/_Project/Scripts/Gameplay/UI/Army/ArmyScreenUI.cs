@@ -3,6 +3,7 @@ using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Services;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Project.Scripts.Gameplay.UI.Army
 {
@@ -15,9 +16,10 @@ namespace _Project.Scripts.Gameplay.UI.Army
         [SerializeField]
         private Transform _armyContainer;
 
-        [Header("Backlog")]
+        [FormerlySerializedAs("_backlogContainer")]
+        [Header("Reserve")]
         [SerializeField]
-        private Transform _backlogContainer;
+        private Transform _reserveContainer;
 
         [SerializeField]
         private TextMeshProUGUI _slotCountLabel;
@@ -52,7 +54,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
         private void Rebuild()
         {
             ClearContainer(_armyContainer);
-            ClearContainer(_backlogContainer);
+            ClearContainer(_reserveContainer);
 
             var armyStacks = GroupUnits(_progress.ArmyUnits);
             var backlogStacks = GroupUnits(_progress.BacklogUnits);
@@ -66,7 +68,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
             foreach (var (unit, count) in backlogStacks)
             {
-                var card = Instantiate(_cardPrefab, _backlogContainer);
+                var card = Instantiate(_cardPrefab, _reserveContainer);
                 var capturedUnit = unit;
                 card.Init(unit.Name, count, () => _progress.AddToArmy(capturedUnit));
             }

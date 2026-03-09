@@ -370,7 +370,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cardPrefab: {fileID: 4017978865104152696, guid: 42c60b1764ceee749878691cf336ea8f, type: 3}
   _armyContainer: {fileID: 668261924425556396}
-  _backlogContainer: {fileID: 1269194939028506412}
+  _reserveContainer: {fileID: 1269194939028506412}
   _slotCountLabel: {fileID: 2765165625555851140}
 --- !u!1 &1555416734165256287
 GameObject:
@@ -1858,7 +1858,7 @@ GameObject:
   - component: {fileID: 1269194939028506412}
   - component: {fileID: 8116587567211672044}
   m_Layer: 5
-  m_Name: Backlog Container
+  m_Name: Reserve Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3526,7 +3526,7 @@ GameObject:
   - component: {fileID: 668261924425556396}
   - component: {fileID: 4341450855092793493}
   m_Layer: 5
-  m_Name: Cards Container
+  m_Name: Army Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
