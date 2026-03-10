@@ -72,9 +72,9 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             {
                 var unit = _catalog.AvailableUnits[i];
                 var card = Instantiate(_cardPrefab, _cardsContainer);
-                var rt = _previewFactory.CreatePreview(unit, i);
+                var handle = _previewFactory.CreatePreview(unit, i);
                 card.Init(unit.Name, unit.Price, _progress.GetOwnedCount(unit), _progress.CanAfford(unit.Price),
-                    () => OnBuyUnit(unit), rt);
+                    () => OnBuyUnit(unit), handle.Texture);
                 _cards.Add((card, unit));
             }
         }

@@ -5,6 +5,7 @@ using _Project.Scripts.Gameplay.Services;
 using _Project.Scripts.Gameplay.UI.Shop;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -48,60 +49,124 @@ namespace _Project.Scripts.Gameplay.UI.Army
         [SerializeField]
         private RawImage _fullBodyPreviewImage;
 
+        [SerializeField]
+        private float _dragRotationSpeed = 0.5f;
+
         [Header("Evolution")]
         [SerializeField]
         private EvolutionPanelUI _evolutionPanel;
 
-        private ArmyScreenPresenter _presenter;
+        private ArmyScreenController _controller;
+        private IPlayerProgressService _progress;
+        private ShopCatalog _catalog;
         private readonly List<ArmyUnitCardUI> _cards = new();
+
+        private Transform _currentPreviewModel;
+        private Quaternion _defaultFullBodyRotation;
 
         public event Action BuyClicked;
         public event Action TransferClicked;
         public event Action<int> CardClicked;
         public event Action ViewEnabled;
 
-        public EvolutionPanelUI EvolutionPanel => _evolutionPanel;
-
         public void Initialize(IPlayerProgressService progress, ShopCatalog catalog,
             UnitPreviewConfig portraitConfig, UnitPreviewConfig fullBodyConfig)
         {
-            _presenter = new ArmyScreenPresenter(this, progress, catalog, portraitConfig, fullBodyConfig);
+            _progress = progress;
+            _catalog = catalog;
+            _defaultFullBodyRotation = Quaternion.Euler(fullBodyConfig.ModelRotation);
+
+            var portraitFactory = new UnitPreviewFactory(portraitConfig);
+            var fullBodyFactory = new UnitPreviewFactory(fullBodyConfig);
+            var portraitCache = new Dictionary<int, RenderTexture>();
+
+            // View binds to Model directly for simple data display (Supervising Controller)
+            _progress.OnGoldChanged += RefreshGold;
+            _progress.OnArmyChanged += RefreshSlotCount;
+
+            if (_evolutionPanel != null)
+                _evolutionPanel.Initialize(progress, catalog.EvolutionCatalog, portraitFactory, portraitCache);
+
+            RefreshGold();
+            RefreshSlotCount();
+
+            if (_catalog.BaseUnit != null)
+                _buyButtonCostLabel.text = _catalog.BaseUnit.Price.ToString();
+
+            SetupPreviewDrag();
+
+            _controller = new ArmyScreenController(
+                this, progress, catalog, portraitFactory, fullBodyFactory, portraitCache);
 
             _buyButton.onClick.AddListener(OnBuyButtonClicked);
             _transferButton.onClick.AddListener(OnTransferButtonClicked);
         }
 
-        private void OnEnable()
+        // --- Simple data binding (View → Model) ---
+
+        private void RefreshGold()
         {
-            ViewEnabled?.Invoke();
+            if (_goldLabel != null)
+                _goldLabel.text = _progress.Gold.ToString();
+
+            _buyButton.interactable = _catalog.BaseUnit != null
+                                      && _progress.CanAfford(_catalog.BaseUnit.Price);
         }
 
-        private void LateUpdate()
+        private void RefreshSlotCount()
         {
-            _presenter?.OnLateUpdate();
+            _slotCountLabel.text = $"{_progress.ArmyUnits.Count}/{_progress.ArmySlots}";
         }
+
+        // --- Preview drag rotation ---
+
+        private void SetupPreviewDrag()
+        {
+            if (_fullBodyPreviewImage == null)
+                return;
+
+            var trigger = _fullBodyPreviewImage.gameObject.AddComponent<EventTrigger>();
+
+            var dragEntry = new EventTrigger.Entry { eventID = EventTriggerType.Drag };
+            dragEntry.callback.AddListener(OnPreviewDrag);
+            trigger.triggers.Add(dragEntry);
+        }
+
+        private void OnPreviewDrag(BaseEventData data)
+        {
+            if (_currentPreviewModel == null)
+                return;
+
+            var pointerData = (PointerEventData)data;
+            _currentPreviewModel.Rotate(Vector3.up, -pointerData.delta.x * _dragRotationSpeed, Space.World);
+        }
+
+        // --- Lifecycle ---
+
+        private void OnEnable() => ViewEnabled?.Invoke();
+
+        private void LateUpdate() => _controller?.OnLateUpdate();
 
         private void OnDestroy()
         {
             _buyButton.onClick.RemoveListener(OnBuyButtonClicked);
             _transferButton.onClick.RemoveListener(OnTransferButtonClicked);
-            _presenter?.Dispose();
+
+            if (_progress != null)
+            {
+                _progress.OnGoldChanged -= RefreshGold;
+                _progress.OnArmyChanged -= RefreshSlotCount;
+            }
+
+            _controller?.Dispose();
         }
 
-        private void OnBuyButtonClicked()
-        {
-            BuyClicked?.Invoke();
-        }
+        private void OnBuyButtonClicked() => BuyClicked?.Invoke();
+        private void OnTransferButtonClicked() => TransferClicked?.Invoke();
 
-        private void OnTransferButtonClicked()
-        {
-            TransferClicked?.Invoke();
-        }
+        // --- IArmyScreenView (commanded by Controller) ---
 
-        public void SetActive(bool active)
-        {
-            gameObject.SetActive(active);
-        }
+        public void SetActive(bool active) => gameObject.SetActive(active);
 
         public void ClearCards()
         {
@@ -125,67 +190,46 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 _cards[index].SetSelected(selected);
         }
 
-        public void SetSlotCount(string text)
-        {
-            _slotCountLabel.text = text;
-        }
+        public void SetTransferVisible(bool visible) => _transferButton.gameObject.SetActive(visible);
+        public void SetTransferLabel(string text) => _transferButtonLabel.text = text;
+        public void SetTransferInteractable(bool interactable) => _transferButton.interactable = interactable;
 
-        public void SetGoldText(string text)
-        {
-            if (_goldLabel != null)
-                _goldLabel.text = text;
-        }
-
-        public void SetBuyInteractable(bool interactable)
-        {
-            _buyButton.interactable = interactable;
-        }
-
-        public void SetBuyCost(string text)
-        {
-            _buyButtonCostLabel.text = text;
-        }
-
-        public void SetTransferVisible(bool visible)
-        {
-            _transferButton.gameObject.SetActive(visible);
-        }
-
-        public void SetTransferLabel(string text)
-        {
-            _transferButtonLabel.text = text;
-        }
-
-        public void SetTransferInteractable(bool interactable)
-        {
-            _transferButton.interactable = interactable;
-        }
-
-        public void ShowFullBodyPreview(RenderTexture rt)
+        public void ShowFullBodyPreview(PreviewHandle handle)
         {
             if (_fullBodyPreviewImage == null)
-            {
                 return;
-            }
 
-            _fullBodyPreviewImage.texture = rt;
+            _fullBodyPreviewImage.texture = handle.Texture;
             _fullBodyPreviewImage.gameObject.SetActive(true);
+
+            _currentPreviewModel = handle.Model;
+            _currentPreviewModel.rotation = _defaultFullBodyRotation;
         }
 
         public void HideFullBodyPreview()
         {
             if (_fullBodyPreviewImage != null)
-            {
                 _fullBodyPreviewImage.gameObject.SetActive(false);
-            }
+
+            _currentPreviewModel = null;
+        }
+
+        public void ShowEvolution(int ownedIndex, CharacterData data)
+        {
+            if (_evolutionPanel != null)
+                _evolutionPanel.Show(ownedIndex, data);
+        }
+
+        public void HideEvolution()
+        {
+            if (_evolutionPanel != null)
+                _evolutionPanel.Hide();
         }
 
         private static void ClearContainer(Transform container)
         {
             for (int i = container.childCount - 1; i >= 0; i--)
-            {
                 Destroy(container.GetChild(i).gameObject);
-            }
         }
     }
 }

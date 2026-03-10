@@ -1,4 +1,6 @@
 using System;
+using _Project.Scripts.Gameplay.Character.Data;
+using _Project.Scripts.Gameplay.UI.Shop;
 using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.UI.Army
@@ -10,20 +12,16 @@ namespace _Project.Scripts.Gameplay.UI.Army
         event Action<int> CardClicked;
         event Action ViewEnabled;
 
-        EvolutionPanelUI EvolutionPanel { get; }
-
         void SetActive(bool active);
         void ClearCards();
         void AddCard(string name, int count, RenderTexture portrait, bool isInArmy);
         void SetCardSelected(int index, bool selected);
-        void SetSlotCount(string text);
-        void SetGoldText(string text);
-        void SetBuyInteractable(bool interactable);
-        void SetBuyCost(string text);
         void SetTransferVisible(bool visible);
         void SetTransferLabel(string text);
         void SetTransferInteractable(bool interactable);
-        void ShowFullBodyPreview(RenderTexture rt);
+        void ShowFullBodyPreview(PreviewHandle handle);
         void HideFullBodyPreview();
+        void ShowEvolution(int ownedIndex, CharacterData data);
+        void HideEvolution();
     }
 }

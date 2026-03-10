@@ -6,6 +6,18 @@ using UnityEngine.AI;
 
 namespace _Project.Scripts.Gameplay.UI.Shop
 {
+    public readonly struct PreviewHandle
+    {
+        public readonly RenderTexture Texture;
+        public readonly Transform Model;
+
+        public PreviewHandle(RenderTexture texture, Transform model)
+        {
+            Texture = texture;
+            Model = model;
+        }
+    }
+
     public class UnitPreviewFactory
     {
         private const string CharacterPrefabPath = "Prefab/DefaultCharacter";
@@ -20,7 +32,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             _config = config;
         }
 
-        public RenderTexture CreatePreview(CharacterData data, int index)
+        public PreviewHandle CreatePreview(CharacterData data, int index)
         {
             LoadPrefabIfNeeded();
 
@@ -41,7 +53,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             CreateLight(root.transform, roomPos);
 
             _rooms.Add(new PreviewRoom(root, rt));
-            return rt;
+            return new PreviewHandle(rt, modelGO.transform);
         }
 
         public void Dispose()

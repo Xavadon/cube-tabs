@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d188752bcbac3446a8e0c42974cdc3f, type: 3}
   m_Name: Bow
   m_EditorClassIdentifier: 
-  <Damage>k__BackingField: 15
+  <Damage>k__BackingField: 40
   <DamageType>k__BackingField: 0
   <Prefab>k__BackingField: {fileID: 919132149155446097, guid: 7c4cf84b0809d1044ae6f6565e81f37d, type: 3}
   <LocalPosition>k__BackingField: {x: 0, y: 0, z: 0}

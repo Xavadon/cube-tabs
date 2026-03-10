@@ -22,5 +22,5 @@ MonoBehaviour:
   <BrainData>k__BackingField: {fileID: 11400000, guid: 480d01bedecf65c4d96a76a709148b56, type: 2}
   WeaponData:
   - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
-  SkinMaterial: {fileID: 2100000, guid: defc4bc62f05eb849bdaf6fb64505ee6, type: 2}
+  SkinMaterial: {fileID: 2100000, guid: 98d902b932d21ff4b8fc69cdedf5afff, type: 2}
   ArmorMaterial: {fileID: 0}

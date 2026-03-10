@@ -17,8 +17,8 @@ MonoBehaviour:
   <MoveSpeed>k__BackingField: 5.5
   <Price>k__BackingField: 100
   <KillReward>k__BackingField: 50
-  <CharacterStatsData>k__BackingField: {fileID: 11400000, guid: 9ce97777155df4f439fd06552851965b, type: 2}
-  <CharacterResistancesData>k__BackingField: {fileID: 11400000, guid: 6129dff1e3ddec140834a17ccb5795f9, type: 2}
+  <CharacterStatsData>k__BackingField: {fileID: 11400000, guid: d008f2a2f948fd34aa4a71172594a8bc, type: 2}
+  <CharacterResistancesData>k__BackingField: {fileID: 11400000, guid: 3e45788b2057cf14caf2dbe18ef8f2e7, type: 2}
   <BrainData>k__BackingField: {fileID: 11400000, guid: 9b4258595442995419e87b9cd45b7363, type: 2}
   WeaponData:
   - {fileID: 11400000, guid: 124931b82fa90084ab2fc6f1fe73b9de, type: 2}

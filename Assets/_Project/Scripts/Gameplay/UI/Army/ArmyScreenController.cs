@@ -7,15 +7,15 @@ using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.UI.Army
 {
-    public class ArmyScreenPresenter : IDisposable
+    public class ArmyScreenController : IDisposable
     {
         private readonly IArmyScreenView _view;
         private readonly IPlayerProgressService _progress;
         private readonly ShopCatalog _catalog;
         private readonly UnitPreviewFactory _portraitFactory;
         private readonly UnitPreviewFactory _fullBodyFactory;
-        private readonly Dictionary<int, RenderTexture> _portraitCache = new();
-        private readonly Dictionary<int, RenderTexture> _fullBodyCache = new();
+        private readonly Dictionary<int, RenderTexture> _portraitCache;
+        private readonly Dictionary<int, PreviewHandle> _fullBodyCache = new();
         private readonly List<CardEntry> _cardEntries = new();
         private readonly List<(CharacterData unit, int count)> _groupBuffer = new();
         private readonly Dictionary<int, int> _groupCounts = new();
@@ -24,32 +24,28 @@ namespace _Project.Scripts.Gameplay.UI.Army
         private CardSelection _selection;
         private bool _dirty;
 
-        public ArmyScreenPresenter(
+        public ArmyScreenController(
             IArmyScreenView view,
             IPlayerProgressService progress,
             ShopCatalog catalog,
-            UnitPreviewConfig portraitConfig,
-            UnitPreviewConfig fullBodyConfig)
+            UnitPreviewFactory portraitFactory,
+            UnitPreviewFactory fullBodyFactory,
+            Dictionary<int, RenderTexture> portraitCache)
         {
             _view = view;
             _progress = progress;
             _catalog = catalog;
-            _portraitFactory = new UnitPreviewFactory(portraitConfig);
-            _fullBodyFactory = new UnitPreviewFactory(fullBodyConfig);
-
-            _view.EvolutionPanel.Initialize(progress, catalog.EvolutionCatalog, _portraitFactory, _portraitCache);
+            _portraitFactory = portraitFactory;
+            _fullBodyFactory = fullBodyFactory;
+            _portraitCache = portraitCache;
 
             _view.CardClicked += OnCardClicked;
             _view.BuyClicked += OnBuyClicked;
             _view.TransferClicked += OnTransferClicked;
             _view.ViewEnabled += OnViewEnabled;
 
-            _progress.OnGoldChanged += RefreshGold;
             _progress.OnArmyChanged += ScheduleRebuild;
             _progress.OnOwnedChanged += ScheduleRebuild;
-
-            if (_catalog.BaseUnit != null)
-                _view.SetBuyCost(_catalog.BaseUnit.Price.ToString());
 
             Rebuild();
             _view.SetActive(false);
@@ -74,7 +70,6 @@ namespace _Project.Scripts.Gameplay.UI.Army
             _view.CardClicked -= OnCardClicked;
             _view.ViewEnabled -= OnViewEnabled;
 
-            _progress.OnGoldChanged -= RefreshGold;
             _progress.OnArmyChanged -= ScheduleRebuild;
             _progress.OnOwnedChanged -= ScheduleRebuild;
         }
@@ -129,8 +124,6 @@ namespace _Project.Scripts.Gameplay.UI.Army
             SpawnCards(_progress.ArmyUnits, true);
             SpawnCards(_progress.BacklogUnits, false);
 
-            _view.SetSlotCount($"{_progress.ArmyUnits.Count}/{_progress.ArmySlots}");
-            RefreshGold();
             RestoreSelection();
             RefreshFullBodyPreview();
             RefreshEvolutionPanel();
@@ -143,7 +136,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
             foreach (var (unit, count) in _groupBuffer)
             {
-                var portrait = GetOrCreatePreview(_portraitFactory, _portraitCache, unit);
+                var portrait = GetOrCreatePortrait(unit);
                 _view.AddCard(unit.Name, count, portrait, isInArmy);
                 _cardEntries.Add(new CardEntry { Data = unit, IsInArmy = isInArmy });
             }
@@ -174,17 +167,14 @@ namespace _Project.Scripts.Gameplay.UI.Army
         {
             if (!_selection.HasValue)
             {
-                _view.EvolutionPanel.Hide();
+                _view.HideEvolution();
                 return;
             }
 
-            var instances = _progress.GetAllUnitInstances();
-            var instance = instances.Find(u => u.Data.Id == _selection.Unit.Id);
-
-            if (instance.Data != null)
-                _view.EvolutionPanel.Show(instance.OwnedIndex, instance.Data);
+            if (_progress.TryGetUnitInstance(_selection.Unit.Id, out var instance))
+                _view.ShowEvolution(instance.OwnedIndex, instance.Data);
             else
-                _view.EvolutionPanel.Hide();
+                _view.HideEvolution();
         }
 
         private void RefreshFullBodyPreview()
@@ -195,8 +185,8 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 return;
             }
 
-            var rt = GetOrCreatePreview(_fullBodyFactory, _fullBodyCache, _selection.Unit);
-            _view.ShowFullBodyPreview(rt);
+            var handle = GetOrCreateFullBody(_selection.Unit);
+            _view.ShowFullBodyPreview(handle);
         }
 
         private void RefreshTransferButton()
@@ -219,12 +209,6 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 _view.SetTransferLabel("В армию");
                 _view.SetTransferInteractable(_progress.ArmyUnits.Count < _progress.ArmySlots);
             }
-        }
-
-        private void RefreshGold()
-        {
-            _view.SetGoldText(_progress.Gold.ToString());
-            _view.SetBuyInteractable(_catalog.BaseUnit != null && _progress.CanAfford(_catalog.BaseUnit.Price));
         }
 
         private void GroupUnits(List<CharacterData> units)
@@ -250,15 +234,24 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 _groupBuffer.Add((kvp.Value, _groupCounts[kvp.Key]));
         }
 
-        private static RenderTexture GetOrCreatePreview(
-            UnitPreviewFactory factory, Dictionary<int, RenderTexture> cache, CharacterData data)
+        private RenderTexture GetOrCreatePortrait(CharacterData data)
         {
-            if (cache.TryGetValue(data.Id, out var existing))
+            if (_portraitCache.TryGetValue(data.Id, out var existing))
                 return existing;
 
-            var rt = factory.CreatePreview(data, cache.Count);
-            cache[data.Id] = rt;
-            return rt;
+            var handle = _portraitFactory.CreatePreview(data, _portraitCache.Count);
+            _portraitCache[data.Id] = handle.Texture;
+            return handle.Texture;
+        }
+
+        private PreviewHandle GetOrCreateFullBody(CharacterData data)
+        {
+            if (_fullBodyCache.TryGetValue(data.Id, out var existing))
+                return existing;
+
+            var handle = _fullBodyFactory.CreatePreview(data, _fullBodyCache.Count);
+            _fullBodyCache[data.Id] = handle;
+            return handle;
         }
 
         private struct CardSelection

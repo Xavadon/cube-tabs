@@ -71,9 +71,9 @@ namespace _Project.Scripts.Gameplay.UI.Army
             if (_portraitCache.TryGetValue(data.Id, out var existing))
                 return existing;
 
-            var rt = _portraitFactory.CreatePreview(data, _portraitCache.Count);
-            _portraitCache[data.Id] = rt;
-            return rt;
+            var handle = _portraitFactory.CreatePreview(data, _portraitCache.Count);
+            _portraitCache[data.Id] = handle.Texture;
+            return handle.Texture;
         }
 
         private void Clear()

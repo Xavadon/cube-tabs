@@ -31,6 +31,7 @@ namespace _Project.Scripts.Gameplay.Services
         bool BuyBaseUnit();
         bool EvolveUnit(int ownedIndex, CharacterData target, int cost);
         List<UnitInstance> GetAllUnitInstances();
+        bool TryGetUnitInstance(int unitId, out UnitInstance instance);
         bool UpgradeArmySlots();
         bool AddToArmy(CharacterData unit);
         void RemoveFromArmy(CharacterData unit);
@@ -215,6 +216,30 @@ namespace _Project.Scripts.Gameplay.Services
             }
 
             return result;
+        }
+
+        public bool TryGetUnitInstance(int unitId, out UnitInstance instance)
+        {
+            for (int i = 0; i < _saveData.OwnedUnitIds.Count; i++)
+            {
+                if (_saveData.OwnedUnitIds[i] != unitId)
+                    continue;
+
+                var data = _catalog.GetUnitById(unitId);
+                if (data == null)
+                    continue;
+
+                instance = new UnitInstance
+                {
+                    OwnedIndex = i,
+                    Data = data,
+                    IsInArmy = _saveData.ArmyUnitIds.Contains(unitId)
+                };
+                return true;
+            }
+
+            instance = default;
+            return false;
         }
 
         public bool UpgradeArmySlots()

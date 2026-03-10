@@ -458,7 +458,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             base.Enter();
 
             AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
-            animator.PlayRangeAttack();
+            animator.PlayAbilityAttack();
         }
 
         protected override void PerformAttack()

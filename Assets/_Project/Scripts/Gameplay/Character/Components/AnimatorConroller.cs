@@ -8,6 +8,7 @@ namespace _Project.Scripts.Gameplay.Character.Components
         private int _moveHash = Animator.StringToHash("Move");
         private int _attackHash = Animator.StringToHash("Attack");
         private int _rangeAttackHash = Animator.StringToHash("RangeAttack");
+        private int _abilityAttackHash = Animator.StringToHash("AbilityAttack");
         private int _hitHash = Animator.StringToHash("HitReaction");
         private int _hitHash1 = Animator.StringToHash("HitReaction1");
 
@@ -63,6 +64,11 @@ namespace _Project.Scripts.Gameplay.Character.Components
         public void PlayRangeAttack()
         {
             CrossFade(_rangeAttackHash);
+        }
+        
+        public void PlayAbilityAttack()
+        {
+            CrossFade(_abilityAttackHash);
         }
         
         public void PlayHitReact()
