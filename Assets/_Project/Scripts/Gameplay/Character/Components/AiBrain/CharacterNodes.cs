@@ -1,3 +1,4 @@
+using System;
 using _Project.Scripts.Architecture.BehaviorTree;
 using _Project.Scripts.Architecture.State_Machine;
 using _Project.Scripts.Gameplay.Character.Components.Health;
@@ -446,11 +447,14 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
     public class AbilityAttack : AttackBase
     {
         private readonly AbilityDataBase _abilityDataBase;
+        private readonly Action<AnimatorConroller> _playAnimation;
 
-        public AbilityAttack(AbilityDataBase abilityDataBase, float windUpDuration, float attackDuration, float stoppingDistance)
+        public AbilityAttack(AbilityDataBase abilityDataBase, float windUpDuration, float attackDuration,
+            float stoppingDistance, Action<AnimatorConroller> playAnimation)
             : base(windUpDuration, attackDuration, stoppingDistance)
         {
             _abilityDataBase = abilityDataBase;
+            _playAnimation = playAnimation;
         }
 
         protected override void Enter()
@@ -458,7 +462,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             base.Enter();
 
             AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
-            animator.PlayAbilityAttack();
+            _playAnimation(animator);
         }
 
         protected override void PerformAttack()

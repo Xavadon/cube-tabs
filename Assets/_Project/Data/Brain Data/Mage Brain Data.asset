@@ -19,3 +19,4 @@ MonoBehaviour:
   <AttackRange>k__BackingField: 10
   <AttackCooldown>k__BackingField: 0.5
   <Ability>k__BackingField: {fileID: 11400000, guid: 9af8400a218aa4446a3188898e7e941d, type: 2}
+  <AnimationType>k__BackingField: 1
