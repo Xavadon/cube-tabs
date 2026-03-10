@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b574c7249b5861d43abc286ee8fcc848, type: 3}
-  m_Name: Knight
+  m_Name: Berserk
   m_EditorClassIdentifier: 
-  <Id>k__BackingField: 6
-  <Name>k__BackingField: Knight
+  <Id>k__BackingField: 5
+  <Name>k__BackingField: Berserk
   <Price>k__BackingField: 100
   <Tiers>k__BackingField:
   - <Stats>k__BackingField:
@@ -33,8 +33,8 @@ MonoBehaviour:
     <MoveSpeed>k__BackingField: 5.6
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 0
-    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: a8b7974956cc52a458e42f6902521aa7, type: 2}
-    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: a8b7974956cc52a458e42f6902521aa7, type: 2}
+    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 61498577775a3424ca2ab8e161b88523, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 61498577775a3424ca2ab8e161b88523, type: 2}
   - <Stats>k__BackingField:
       <Health>k__BackingField: 400
       <Mana>k__BackingField: 0
@@ -52,8 +52,8 @@ MonoBehaviour:
     <MoveSpeed>k__BackingField: 5.8
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 0
-    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: a8b7974956cc52a458e42f6902521aa7, type: 2}
-    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: a8b7974956cc52a458e42f6902521aa7, type: 2}
+    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 61498577775a3424ca2ab8e161b88523, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 61498577775a3424ca2ab8e161b88523, type: 2}
   - <Stats>k__BackingField:
       <Health>k__BackingField: 450
       <Mana>k__BackingField: 0
@@ -71,9 +71,9 @@ MonoBehaviour:
     <MoveSpeed>k__BackingField: 6
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 0
-    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: a8b7974956cc52a458e42f6902521aa7, type: 2}
-    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: a8b7974956cc52a458e42f6902521aa7, type: 2}
-  BaseMaterial: {fileID: 2100000, guid: a8b7974956cc52a458e42f6902521aa7, type: 2}
+    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 61498577775a3424ca2ab8e161b88523, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 61498577775a3424ca2ab8e161b88523, type: 2}
+  BaseMaterial: {fileID: 2100000, guid: 61498577775a3424ca2ab8e161b88523, type: 2}
   BaseWeapon: {fileID: 11400000, guid: 7984b5a34478b3b4fbaf92d78807396a, type: 2}
   BaseBrain: {fileID: 11400000, guid: 9b4258595442995419e87b9cd45b7363, type: 2}
   BaseAbilityAnimation: 0

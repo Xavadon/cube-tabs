@@ -77,7 +77,7 @@ namespace _Project.Scripts.Gameplay.Character
 
             _animatorController = new(_animator);
 
-            _brain = new(targetLayer, tier.BrainData, _navMeshAgent, _animatorController, transform, weapon);
+            _brain = new(targetLayer, tier.BrainData, tier, _navMeshAgent, _animatorController, transform, weapon);
             _movement = new(_navMeshAgent, transform, tier.MoveSpeed);
             _health = new(tier);
             _resistance = new(tier);

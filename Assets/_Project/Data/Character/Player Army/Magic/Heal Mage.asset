@@ -26,8 +26,10 @@ MonoBehaviour:
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
     <WeaponData>k__BackingField:
-    - {fileID: 11400000, guid: 124931b82fa90084ab2fc6f1fe73b9de, type: 2}
-    <BrainData>k__BackingField: {fileID: 11400000, guid: c54867ea57e6233499caeb1c4793ac01, type: 2}
+    - {fileID: 0}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: 480d01bedecf65c4d96a76a709148b56, type: 2}
+    <Ability>k__BackingField: {fileID: 11400000, guid: 0dd51e9a35c2cb344b27db11a4173f6a, type: 2}
+    <AnimationType>k__BackingField: 2
     <MoveSpeed>k__BackingField: 4
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 0
@@ -43,8 +45,10 @@ MonoBehaviour:
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
     <WeaponData>k__BackingField:
-    - {fileID: 11400000, guid: 124931b82fa90084ab2fc6f1fe73b9de, type: 2}
-    <BrainData>k__BackingField: {fileID: 11400000, guid: c54867ea57e6233499caeb1c4793ac01, type: 2}
+    - {fileID: 0}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: 480d01bedecf65c4d96a76a709148b56, type: 2}
+    <Ability>k__BackingField: {fileID: 11400000, guid: c12bb70e5a2da1c40aced2dfdbd0602a, type: 2}
+    <AnimationType>k__BackingField: 2
     <MoveSpeed>k__BackingField: 4.2
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 0
@@ -60,11 +64,16 @@ MonoBehaviour:
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
     <WeaponData>k__BackingField:
-    - {fileID: 11400000, guid: 124931b82fa90084ab2fc6f1fe73b9de, type: 2}
-    <BrainData>k__BackingField: {fileID: 11400000, guid: c54867ea57e6233499caeb1c4793ac01, type: 2}
+    - {fileID: 0}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: 480d01bedecf65c4d96a76a709148b56, type: 2}
+    <Ability>k__BackingField: {fileID: 11400000, guid: cac0e2dae8a23df4c8be13b7bc690652, type: 2}
+    <AnimationType>k__BackingField: 2
     <MoveSpeed>k__BackingField: 4.5
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 0
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 7731a99802704aa46a132b3ca0193275, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 7731a99802704aa46a132b3ca0193275, type: 2}
   BaseMaterial: {fileID: 2100000, guid: 7731a99802704aa46a132b3ca0193275, type: 2}
+  BaseWeapon: {fileID: 0}
+  BaseBrain: {fileID: 11400000, guid: 480d01bedecf65c4d96a76a709148b56, type: 2}
+  BaseAbilityAnimation: 2

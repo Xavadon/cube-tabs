@@ -1,7 +1,6 @@
 using _Project.Scripts.Architecture.BehaviorTree;
 using _Project.Scripts.Architecture.BehaviorTree.Composites;
 using _Project.Scripts.Architecture.BehaviorTree.Decorators;
-using _Project.Scripts.Architecture.BehaviorTree.Leaves;
 using _Project.Scripts.Gameplay.Character.Components.AiBrain;
 using UnityEngine;
 
@@ -25,7 +24,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
         [field: SerializeField] 
         public float AttackCooldown { get; private set; } = 0.5f;
         
-        public override BTNode BuildTree(LayerMask targetLayer)
+        public override BTNode BuildTree(LayerMask targetLayer, TierData tier)
         {
             return new Selector(
                 new Sequence(

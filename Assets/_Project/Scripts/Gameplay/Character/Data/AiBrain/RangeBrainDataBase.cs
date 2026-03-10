@@ -22,14 +22,14 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
 
         [field: SerializeField] public float AttackCooldown { get; private set; } = 2f;
         
-        public override BTNode BuildTree(LayerMask targetLayer)
+        public override BTNode BuildTree(LayerMask targetLayer, TierData tier)
         {
             return new Selector(
                 new Sequence(
                     new FindTarget(DetectionRadius, targetLayer),
                     new Selector(
                         BuildFleeSequence(),
-                        BuildAttackSequence(),
+                        BuildAttackSequence(tier),
                         BuildChaseSequence()
                     )
                 ),
@@ -45,19 +45,19 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
             );
         }
 
-        protected virtual BTNode CreateAttackNode()
+        protected virtual BTNode CreateAttackNode(TierData tier)
         {
             return new RangedAttack(WindUpDuration, AttackDuration, AttackRange);
         }
 
-        private BTNode BuildAttackSequence()
+        private BTNode BuildAttackSequence(TierData tier)
         {
             return new Sequence(
                 new IsInRange(AttackRange),
                 new Selector(
                     new Cooldown(AttackCooldown,
                         new Parallel(
-                            CreateAttackNode(),
+                            CreateAttackNode(tier),
                             new RotateTowardsTarget()
                         )
                     ),

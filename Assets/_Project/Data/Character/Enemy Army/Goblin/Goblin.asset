@@ -27,8 +27,14 @@ MonoBehaviour:
       <FaithResist>k__BackingField: 0
     <WeaponData>k__BackingField: []
     <BrainData>k__BackingField: {fileID: 11400000, guid: 9b4258595442995419e87b9cd45b7363, type: 2}
-    <MoveSpeed>k__BackingField: 0
-    <KillReward>k__BackingField: 0
+    <Ability>k__BackingField: {fileID: 0}
+    <AnimationType>k__BackingField: 0
+    <MoveSpeed>k__BackingField: 4
+    <KillReward>k__BackingField: 1
     <EvolutionCost>k__BackingField: 0
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: b5eb0a9ecbd2a4f42ac4d356ca078d45, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: b5eb0a9ecbd2a4f42ac4d356ca078d45, type: 2}
+  BaseMaterial: {fileID: 0}
+  BaseWeapon: {fileID: 0}
+  BaseBrain: {fileID: 0}
+  BaseAbilityAnimation: 0

@@ -13,11 +13,17 @@ MonoBehaviour:
   m_Name: ShopCatalog
   m_EditorClassIdentifier: 
   <AvailableUnits>k__BackingField:
-  - {fileID: 11400000, guid: 6e01f01e4701f964b8cbb4e62d225483, type: 2}
-  - {fileID: 11400000, guid: e79c235fe17a5e24fbcedecc9027d630, type: 2}
   - {fileID: 11400000, guid: 06c7381e5ef22a442bdfb288681fd962, type: 2}
-  - {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
-  <BaseUnit>k__BackingField: {fileID: 11400000, guid: 06c7381e5ef22a442bdfb288681fd962, type: 2}
+  - {fileID: 11400000, guid: 495c036998547ce47aa9f3594663f819, type: 2}
+  - {fileID: 11400000, guid: 763666ad108b37e4eb01b7f3e86fb497, type: 2}
+  - {fileID: 11400000, guid: 223a79dfa42cdbc49b0582527ea13f77, type: 2}
+  - {fileID: 11400000, guid: 559a0b67e07f7b342a04b33891ce482e, type: 2}
+  - {fileID: 11400000, guid: b6467dd37c1bf67459f85ad5c967064b, type: 2}
+  - {fileID: 11400000, guid: e79c235fe17a5e24fbcedecc9027d630, type: 2}
+  - {fileID: 11400000, guid: 596f97acd9a2d48458e5836d8c9be7aa, type: 2}
+  - {fileID: 11400000, guid: 6e01f01e4701f964b8cbb4e62d225483, type: 2}
+  - {fileID: 11400000, guid: bdf6d4b84d650514488104946a498409, type: 2}
+  <BaseUnit>k__BackingField: {fileID: 11400000, guid: bdf6d4b84d650514488104946a498409, type: 2}
   <EvolutionCatalog>k__BackingField: {fileID: 11400000, guid: 8bf77b34c2191ba4c8b6f7ec6adfaa8d, type: 2}
   <BaseArmySlots>k__BackingField: 200
   <SlotUpgradeCost>k__BackingField: 10

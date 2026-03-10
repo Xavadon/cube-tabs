@@ -1,5 +1,8 @@
+using _Project.Scripts.Gameplay.Character.Data.Abilities;
+using _Project.Scripts.Gameplay.Character.Data.AiBrain;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Project.Scripts.Gameplay.Character.Data
 {
@@ -32,9 +35,20 @@ namespace _Project.Scripts.Gameplay.Character.Data
         }
         
 #if UNITY_EDITOR
-        
-        [Header("Editor")] [SerializeField]
+
+        [Header("Editor Defaults")]
+        [SerializeField] 
         public Material BaseMaterial;
+
+        [SerializeField]
+        public WeaponData BaseWeapon;
+
+        [SerializeField] 
+        public BrainDataBase BaseBrain;
+
+        [FormerlySerializedAs("BaseAnimationType")]
+        [SerializeField] 
+        public AbilityAnimationType BaseAbilityAnimation;
 
         [Button]
         private void SetDefaultMaterial()
@@ -44,7 +58,43 @@ namespace _Project.Scripts.Gameplay.Character.Data
                 tier.SetMaterial(BaseMaterial);
             }
         }
-        
+
+        [Button]
+        private void SetDefaultWeapon()
+        {
+            foreach (var tier in Tiers)
+            {
+                tier.SetWeapon(BaseWeapon);
+            }
+        }
+
+        [Button]
+        private void SetDefaultBrain()
+        {
+            foreach (var tier in Tiers)
+            {
+                tier.SetBrain(BaseBrain);
+            }
+        }
+
+        [Button]
+        private void SetDefaultAbilityAnimation()
+        {
+            foreach (var tier in Tiers)
+            {
+                tier.SetAbilityAnimation(BaseAbilityAnimation);
+            }
+        }
+
+        [Button]
+        private void SetAllDefaults()
+        {
+            SetDefaultMaterial();
+            SetDefaultWeapon();
+            SetDefaultBrain();
+            SetDefaultAbilityAnimation();
+        }
+
 #endif
         
     }

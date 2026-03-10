@@ -5,6 +5,6 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
 {
     public abstract class BrainDataBase : ScriptableObject
     {
-        public abstract BTNode BuildTree(LayerMask targetLayer);
+        public abstract BTNode BuildTree(LayerMask targetLayer, TierData tier);
     }
 }
