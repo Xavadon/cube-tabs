@@ -137,7 +137,10 @@ namespace _Project.Scripts.Gameplay.UI.Army
             foreach (var (unit, count) in _groupBuffer)
             {
                 var portrait = GetOrCreatePortrait(unit.Data, unit.TierIndex);
-                _view.AddCard(unit.Data.Name, count, portrait, isInArmy);
+                string displayName = unit.Data.MaxTier > 0
+                    ? $"{unit.Data.Name} T{unit.TierIndex + 1}"
+                    : unit.Data.Name;
+                _view.AddCard(displayName, count, portrait, isInArmy);
                 _cardEntries.Add(new CardEntry { Resolved = unit, IsInArmy = isInArmy });
             }
         }
@@ -158,7 +161,10 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 _view.SetCardSelected(i, match);
 
                 if (match)
+                {
+                    _selection.InstanceId = entry.Resolved.InstanceId;
                     found = true;
+                }
             }
 
             if (!found)
@@ -174,7 +180,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
             }
 
             if (_progress.TryGetUnitInstance(_selection.InstanceId, out var instance))
-                _view.ShowEvolution(instance.InstanceId, instance.Data);
+                _view.ShowEvolution(instance.InstanceId, instance.Data, instance.TierIndex);
             else
                 _view.HideEvolution();
         }

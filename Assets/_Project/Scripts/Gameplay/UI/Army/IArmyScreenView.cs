@@ -21,7 +21,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
         void SetTransferInteractable(bool interactable);
         void ShowFullBodyPreview(PreviewHandle handle);
         void HideFullBodyPreview();
-        void ShowEvolution(int instanceId, CharacterData data);
+        void ShowEvolution(int instanceId, CharacterData data, int tierIndex);
         void HideEvolution();
     }
 }

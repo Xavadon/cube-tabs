@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Character.Data
@@ -29,5 +30,22 @@ namespace _Project.Scripts.Gameplay.Character.Data
 
             return Tiers[Mathf.Clamp(tierIndex, 0, Tiers.Length - 1)];
         }
+        
+#if UNITY_EDITOR
+        
+        [Header("Editor")] [SerializeField]
+        public Material BaseMaterial;
+
+        [Button]
+        private void SetDefaultMaterial()
+        {
+            foreach (var tier in Tiers)
+            {
+                tier.SetMaterial(BaseMaterial);
+            }
+        }
+        
+#endif
+        
     }
 }

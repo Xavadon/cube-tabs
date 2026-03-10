@@ -28,10 +28,55 @@ namespace _Project.Scripts.Gameplay.UI.Army
             _portraitCache = portraitCache;
         }
 
-        public void Show(int instanceId, CharacterData currentData)
+        public void Show(int instanceId, CharacterData currentData, int tierIndex)
         {
             Clear();
 
+            bool canUpgradeTier = tierIndex < currentData.MaxTier;
+
+            if (canUpgradeTier)
+            {
+                ShowTierUpgrade(instanceId, currentData, tierIndex);
+            }
+            else
+            {
+                ShowEvolutions(instanceId, currentData);
+            }
+        }
+
+        public void Hide()
+        {
+            gameObject.SetActive(false);
+            Clear();
+        }
+
+        private void ShowTierUpgrade(int instanceId, CharacterData data, int tierIndex)
+        {
+            var nextTier = data.GetTier(tierIndex + 1);
+            if (nextTier == null)
+            {
+                gameObject.SetActive(false);
+                return;
+            }
+
+            gameObject.SetActive(true);
+
+            int cost = nextTier.EvolutionCost;
+            var portrait = GetOrCreatePortrait(data, tierIndex + 1);
+
+            var optionUI = Instantiate(_optionPrefab, _optionsContainer);
+            int capturedId = instanceId;
+
+            optionUI.Init(
+                $"{data.Name} T{tierIndex + 2}",
+                cost,
+                _progress.CanAfford(cost),
+                portrait,
+                () => _progress.UpgradeTier(capturedId));
+        }
+
+        private void ShowEvolutions(int instanceId, CharacterData currentData)
+        {
             var options = _evolutionCatalog.GetEvolutions(currentData.Id);
 
             if (options.Length == 0)
@@ -45,34 +90,30 @@ namespace _Project.Scripts.Gameplay.UI.Army
             foreach (var option in options)
             {
                 var optionUI = Instantiate(_optionPrefab, _optionsContainer);
-                int capturedIndex = instanceId;
+                int capturedId = instanceId;
                 var capturedTarget = option.Target;
                 int capturedCost = option.Cost;
 
-                var portrait = GetOrCreatePortrait(option.Target);
+                var portrait = GetOrCreatePortrait(option.Target, 0);
 
                 optionUI.Init(
                     option.Target.Name,
-                    option.Cost,
-                    _progress.CanAfford(option.Cost),
+                    capturedCost,
+                    _progress.CanAfford(capturedCost),
                     portrait,
-                    () => _progress.EvolveUnit(capturedIndex, capturedTarget, capturedCost));
+                    () => _progress.EvolveUnit(capturedId, capturedTarget, capturedCost));
             }
         }
 
-        public void Hide()
+        private RenderTexture GetOrCreatePortrait(CharacterData data, int tierIndex)
         {
-            gameObject.SetActive(false);
-            Clear();
-        }
+            int key = data.Id * 100 + tierIndex;
 
-        private RenderTexture GetOrCreatePortrait(CharacterData data)
-        {
-            if (_portraitCache.TryGetValue(data.Id, out var existing))
+            if (_portraitCache.TryGetValue(key, out var existing))
                 return existing;
 
-            var handle = _portraitFactory.CreatePreview(data, 0, _portraitCache.Count);
-            _portraitCache[data.Id] = handle.Texture;
+            var handle = _portraitFactory.CreatePreview(data, tierIndex, _portraitCache.Count);
+            _portraitCache[key] = handle.Texture;
             return handle.Texture;
         }
 

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b574c7249b5861d43abc286ee8fcc848, type: 3}
-  m_Name: Archer
+  m_Name: Warrior
   m_EditorClassIdentifier: 
-  <Id>k__BackingField: 7
-  <Name>k__BackingField: Archer
+  <Id>k__BackingField: 6
+  <Name>k__BackingField: Knight
   <Price>k__BackingField: 100
   <Tiers>k__BackingField:
   - <Stats>k__BackingField:
@@ -26,9 +26,9 @@ MonoBehaviour:
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
     <WeaponData>k__BackingField: []
-    <BrainData>k__BackingField: {fileID: 0}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: 9b4258595442995419e87b9cd45b7363, type: 2}
     <MoveSpeed>k__BackingField: 0
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 0
-    <SkinMaterial>k__BackingField: {fileID: 0}
-    <ArmorMaterial>k__BackingField: {fileID: 0}
+    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: a8b7974956cc52a458e42f6902521aa7, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: a8b7974956cc52a458e42f6902521aa7, type: 2}
