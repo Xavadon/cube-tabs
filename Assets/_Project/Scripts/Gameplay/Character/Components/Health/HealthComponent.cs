@@ -11,21 +11,21 @@ namespace _Project.Scripts.Gameplay.Character.Components.Health
     {
         void ApplyDamage(float amount, Vector3 hitPoint, DamageType type = DamageType.Physical);
     }
-    
+
     public enum DamageType
     {
-        Physical, 
-        Magic, 
-        Fire, 
-        Faith 
+        Physical,
+        Magic,
+        Fire,
+        Faith
     }
-    
+
     public class HealthComponent
     {
         public float CurrentHealth => _currentHealth;
         public float MaxHealth => _maxHealth;
         public bool IsAlive => _currentHealth > 0;
-        
+
         private readonly CharacterResistances _resistances;
         private readonly DamageStrategyFactory _damageStrategyFactory;
         private readonly float _maxHealth;
@@ -35,15 +35,15 @@ namespace _Project.Scripts.Gameplay.Character.Components.Health
 
         public event Action OnDeath;
         public event Action<float, float> OnHealthChanged;
-        
-        public HealthComponent(CharacterData characterData)
+
+        public HealthComponent(TierData tier)
         {
             _damageStrategyFactory = new();
-            _maxHealth = characterData.CharacterStatsData.Health;
+            _maxHealth = tier.Stats.Health;
             _currentHealth = _maxHealth;
-            _resistances = CharacterResistances.FromCharacterData(characterData);
+            _resistances = CharacterResistances.FromTierData(tier);
         }
-        
+
         public void ApplyDamage(float amount, Vector3 hitPoint, DamageType type = DamageType.Physical)
         {
             if (amount < 0)
@@ -96,7 +96,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.Health
             _currentHealth += healedAmount;
             OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
         }
-        
+
         private void Die()
         {
             OnDeath?.Invoke();
@@ -105,7 +105,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.Health
         public void DebugPrintStatus(string charaName)
         {
             _charaName = charaName;
-            
+
             Debug.Log($"[CharacterHealth] === Статус {_charaName} ===" +
                      $"\n  HP: {_currentHealth:F1}/{_maxHealth}" +
                      $"\n  Жив: {IsAlive}" +

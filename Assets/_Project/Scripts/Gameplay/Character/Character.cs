@@ -23,13 +23,13 @@ namespace _Project.Scripts.Gameplay.Character
 
         [SerializeField]
         private NavMeshAgent _navMeshAgent;
-        
+
         [SerializeField]
         private ParticleSystem _hitEffect;
 
         [SerializeField]
         public SkinChanger SkinChanger;
-        
+
         [SerializeField]
         public SkinChanger ArmorChanger;
 
@@ -44,7 +44,8 @@ namespace _Project.Scripts.Gameplay.Character
         private ICharacterRegistry _registry;
         private HealthBarElement _healthBar;
         private CharacterData _characterData;
-        
+        private int _tierIndex;
+
         public void ApplyDamage(float amount, Vector3 hitPoint, DamageType type = DamageType.Physical)
         {
             _health.ApplyDamage(amount, hitPoint, type);
@@ -52,10 +53,13 @@ namespace _Project.Scripts.Gameplay.Character
             _hitEffect.Play();
         }
 
-        public void Initialize(CharacterType characterType, CharacterData characterData)
+        public void Initialize(CharacterType characterType, CharacterData characterData, int tierIndex)
         {
             CharacterType = characterType;
             _characterData = characterData;
+            _tierIndex = tierIndex;
+
+            var tier = characterData.GetTier(tierIndex);
 
             (int ownLayer, LayerMask targetLayer) = characterType switch
             {
@@ -66,38 +70,28 @@ namespace _Project.Scripts.Gameplay.Character
 
             gameObject.layer = ownLayer;
 
-            WeaponData weapon;
-            
-            if (characterData.WeaponData?.Length > 0)
-            {
-                weapon = characterData.WeaponData[0];
-            }
-            else
-            {
-                weapon = null;
-            }
+            WeaponData weapon = null;
+
+            if (tier.WeaponData is { Length: > 0 })
+                weapon = tier.WeaponData[0];
 
             _animatorController = new(_animator);
 
-            _brain = new(targetLayer, characterData.BrainData, _navMeshAgent, _animatorController, transform, weapon);
-            _movement = new(_navMeshAgent, transform, characterData.MoveSpeed);
-            _health = new(characterData);
-            _resistance = new(characterData);
+            _brain = new(targetLayer, tier.BrainData, _navMeshAgent, _animatorController, transform, weapon);
+            _movement = new(_navMeshAgent, transform, tier.MoveSpeed);
+            _health = new(tier);
+            _resistance = new(tier);
 
-            _navMeshAgent.speed = characterData.MoveSpeed;
+            _navMeshAgent.speed = tier.MoveSpeed;
             _navMeshAgent.acceleration = 1000f;
             _health.OnDeath += HandleDeath;
-            
-            SkinChanger.ChangeSkin(characterData.SkinMaterial);
 
-            if (characterData.ArmorMaterial != null)
-            {
-                ArmorChanger.ChangeSkin(characterData.ArmorMaterial);
-            }
+            SkinChanger.ChangeSkin(tier.SkinMaterial);
+
+            if (tier.ArmorMaterial != null)
+                ArmorChanger.ChangeSkin(tier.ArmorMaterial);
             else
-            {
-                ArmorChanger.ChangeSkin(characterData.SkinMaterial);
-            }
+                ArmorChanger.ChangeSkin(tier.SkinMaterial);
 
             if (weapon != null)
                 _weaponChanger.SetWeapon(weapon);
@@ -121,8 +115,10 @@ namespace _Project.Scripts.Gameplay.Character
 
         private void HandleDeath()
         {
-            if (CharacterType == CharacterType.Enemy && _characterData.KillReward > 0)
-                Project.Get<IPlayerProgressService>().AddGold(_characterData.KillReward);
+            var tier = _characterData.GetTier(_tierIndex);
+
+            if (CharacterType == CharacterType.Enemy && tier.KillReward > 0)
+                Project.Get<IPlayerProgressService>().AddGold(tier.KillReward);
 
             _healthBar?.Release();
             _registry?.Unregister(this);

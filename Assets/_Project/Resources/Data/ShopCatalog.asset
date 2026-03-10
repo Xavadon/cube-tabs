@@ -19,7 +19,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
   - {fileID: 11400000, guid: 346750f32a2047d42bfeacf400dec9ee, type: 2}
   - {fileID: 11400000, guid: 2da6ebff934bc0c4ea730ea9184f1514, type: 2}
-  <BaseUnit>k__BackingField: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
+  <BaseUnit>k__BackingField: {fileID: 11400000, guid: 06c7381e5ef22a442bdfb288681fd962, type: 2}
   <EvolutionCatalog>k__BackingField: {fileID: 11400000, guid: 8bf77b34c2191ba4c8b6f7ec6adfaa8d, type: 2}
   <BaseArmySlots>k__BackingField: 200
   <SlotUpgradeCost>k__BackingField: 10

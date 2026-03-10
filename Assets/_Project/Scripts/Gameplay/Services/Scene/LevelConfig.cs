@@ -23,6 +23,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
     public class SpawnEntry
     {
         public CharacterData CharacterData;
+        public int TierIndex;
         public int Count = 1;
     }
 }

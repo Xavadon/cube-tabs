@@ -23,13 +23,13 @@ namespace _Project.Scripts.Gameplay.Character.Health.DamageStrategies
             FaithResist = faith;
         }
         
-        public static CharacterResistances FromCharacterData(CharacterData data)
+        public static CharacterResistances FromTierData(TierData tier)
         {
             return new CharacterResistances(
-                data.CharacterResistancesData.PhysicalResist,
-                data.CharacterResistancesData.MagicResist,
-                data.CharacterResistancesData.FireResist,
-                data.CharacterResistancesData.FaithResist
+                tier.Resistances.PhysicalResist,
+                tier.Resistances.MagicResist,
+                tier.Resistances.FireResist,
+                tier.Resistances.FaithResist
             );
         }
     }

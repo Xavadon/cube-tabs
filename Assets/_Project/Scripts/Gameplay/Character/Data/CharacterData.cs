@@ -1,4 +1,3 @@
-using _Project.Scripts.Gameplay.Character.Data.AiBrain;
 using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Character.Data
@@ -7,36 +6,28 @@ namespace _Project.Scripts.Gameplay.Character.Data
     public class CharacterData : ScriptableObject
     {
         [field: SerializeField]
-        public int Id { get; private set; } = 0;
-        
+        public int Id { get; private set; }
+
         [field: SerializeField]
-        public string Name { get; private set; } = "DefaultCharacter";
-        
-        [field: SerializeField]
-        public float MoveSpeed { get; private set; } = 5f;
+        public string Name { get; private set; } = "Unit";
 
         [field: SerializeField]
         public int Price { get; private set; } = 100;
 
         [field: SerializeField]
-        public int KillReward { get; private set; } = 10;
-        
-        [field: SerializeField]
-        public CharacterStatsData CharacterStatsData { get; private set; }
-        
-        [field: SerializeField]
-        public CharacterResistancesData CharacterResistancesData { get; private set; }
-        
-        [field: SerializeField]
-        public BrainDataBase BrainData { get; private set; }
-        
-        [Header("Equipment")]
-        public WeaponData[] WeaponData;
-        
-        [Header("Skin")]
-        public Material SkinMaterial;
-        
-        [Header("Skin")]
-        public Material ArmorMaterial;
+        public TierData[] Tiers { get; private set; }
+
+        public int MaxTier => Tiers is { Length: > 0 } ? Tiers.Length - 1 : 0;
+
+        public TierData GetTier(int tierIndex)
+        {
+            if (Tiers == null || Tiers.Length == 0)
+            {
+                Debug.LogError($"[CharacterData] '{Name}' (Id={Id}) has no Tiers configured!");
+                return null;
+            }
+
+            return Tiers[Mathf.Clamp(tierIndex, 0, Tiers.Length - 1)];
+        }
     }
 }

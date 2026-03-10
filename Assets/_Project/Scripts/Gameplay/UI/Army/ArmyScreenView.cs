@@ -214,10 +214,10 @@ namespace _Project.Scripts.Gameplay.UI.Army
             _currentPreviewModel = null;
         }
 
-        public void ShowEvolution(int ownedIndex, CharacterData data)
+        public void ShowEvolution(int instanceId, CharacterData data)
         {
             if (_evolutionPanel != null)
-                _evolutionPanel.Show(ownedIndex, data);
+                _evolutionPanel.Show(instanceId, data);
         }
 
         public void HideEvolution()

@@ -11,8 +11,9 @@ namespace _Project.Scripts.Gameplay.Services
 {
     public struct UnitInstance
     {
-        public int OwnedIndex;
+        public int InstanceId;
         public CharacterData Data;
+        public int TierIndex;
         public bool IsInArmy;
     }
 
@@ -20,23 +21,19 @@ namespace _Project.Scripts.Gameplay.Services
     {
         int Gold { get; }
         int ArmySlots { get; }
-        List<CharacterData> OwnedUnits { get; }
-        List<CharacterData> ArmyUnits { get; }
-        List<CharacterData> BacklogUnits { get; }
+        List<ResolvedUnit> ArmyUnits { get; }
+        List<ResolvedUnit> BacklogUnits { get; }
 
         bool CanAfford(int cost);
         void AddGold(int amount);
         void SpendGold(int amount);
-        bool BuyUnit(CharacterData unit);
         bool BuyBaseUnit();
-        bool EvolveUnit(int ownedIndex, CharacterData target, int cost);
-        List<UnitInstance> GetAllUnitInstances();
+        bool EvolveUnit(int instanceId, CharacterData target, int cost);
+        bool UpgradeTier(int instanceId);
         bool TryGetUnitInstance(int unitId, out UnitInstance instance);
         bool UpgradeArmySlots();
-        bool AddToArmy(CharacterData unit);
-        void RemoveFromArmy(CharacterData unit);
-        int GetOwnedCount(CharacterData unit);
-        int GetBacklogCount(CharacterData unit);
+        bool AddToArmy(int instanceId);
+        void RemoveFromArmy(int instanceId);
         int GetSlotUpgradeCost();
         void AddLevelKills(int levelIndex, int kills);
         int GetLevelKills(int levelIndex);
@@ -90,34 +87,42 @@ namespace _Project.Scripts.Gameplay.Services
                 _saveService.Save(_saveData);
             }
 
-            Debug.Log($"[PlayerProgressService] Initialized. Gold: {Gold}, Owned: {_saveData.OwnedUnitIds.Count}, Army: {_saveData.ArmyUnitIds.Count}, Slots: {ArmySlots}");
+            Debug.Log($"[PlayerProgressService] Initialized. Gold: {Gold}, Owned: {_saveData.OwnedUnits.Count}, Army: {_saveData.ArmyInstanceIds.Count}, Slots: {ArmySlots}");
             return UniTask.CompletedTask;
         }
 
-        public List<CharacterData> OwnedUnits => ResolveUnits(_saveData.OwnedUnitIds);
-        public List<CharacterData> ArmyUnits => ResolveUnits(_saveData.ArmyUnitIds);
-
-        public List<CharacterData> BacklogUnits
+        public List<ResolvedUnit> ArmyUnits
         {
             get
             {
-                // Мультисет-разница: owned минус army (по количеству копий каждого Id)
-                var armyCounts = CountById(_saveData.ArmyUnitIds);
-                var backlog = new List<CharacterData>();
-
-                foreach (int id in _saveData.OwnedUnitIds)
+                var result = new List<ResolvedUnit>();
+                foreach (int instanceId in _saveData.ArmyInstanceIds)
                 {
-                    if (armyCounts.TryGetValue(id, out int remaining) && remaining > 0)
-                    {
-                        armyCounts[id] = remaining - 1;
-                        continue;
-                    }
+                    var owned = FindOwnedUnit(instanceId);
+                    if (owned == null) continue;
 
-                    var unit = _catalog.GetUnitById(id);
-                    if (unit != null)
-                        backlog.Add(unit);
+                    var data = _catalog.GetUnitById(owned.UnitId);
+                    if (data != null)
+                        result.Add(new ResolvedUnit { InstanceId = owned.InstanceId, Data = data, TierIndex = owned.TierIndex });
                 }
+                return result;
+            }
+        }
 
+        public List<ResolvedUnit> BacklogUnits
+        {
+            get
+            {
+                var backlog = new List<ResolvedUnit>();
+                foreach (var owned in _saveData.OwnedUnits)
+                {
+                    if (_saveData.ArmyInstanceIds.Contains(owned.InstanceId))
+                        continue;
+
+                    var data = _catalog.GetUnitById(owned.UnitId);
+                    if (data != null)
+                        backlog.Add(new ResolvedUnit { InstanceId = owned.InstanceId, Data = data, TierIndex = owned.TierIndex });
+                }
                 return backlog;
             }
         }
@@ -136,18 +141,6 @@ namespace _Project.Scripts.Gameplay.Services
             OnGoldChanged?.Invoke();
         }
 
-        public bool BuyUnit(CharacterData unit)
-        {
-            if (!CanAfford(unit.Price))
-                return false;
-
-            SpendGold(unit.Price);
-            _saveData.OwnedUnitIds.Add(unit.Id);
-            OnOwnedChanged?.Invoke();
-            Save();
-            return true;
-        }
-
         public bool BuyBaseUnit()
         {
             var baseUnit = _catalog.BaseUnit;
@@ -156,10 +149,17 @@ namespace _Project.Scripts.Gameplay.Services
                 return false;
 
             SpendGold(baseUnit.Price);
-            _saveData.OwnedUnitIds.Add(baseUnit.Id);
 
-            if (_saveData.ArmyUnitIds.Count < _saveData.ArmySlots)
-                _saveData.ArmyUnitIds.Add(baseUnit.Id);
+            int instanceId = _saveData.NextInstanceId++;
+            _saveData.OwnedUnits.Add(new OwnedUnit
+            {
+                InstanceId = instanceId,
+                UnitId = baseUnit.Id,
+                TierIndex = 0
+            });
+
+            if (_saveData.ArmyInstanceIds.Count < _saveData.ArmySlots)
+                _saveData.ArmyInstanceIds.Add(instanceId);
 
             OnOwnedChanged?.Invoke();
             OnArmyChanged?.Invoke();
@@ -167,20 +167,17 @@ namespace _Project.Scripts.Gameplay.Services
             return true;
         }
 
-        public bool EvolveUnit(int ownedIndex, CharacterData target, int cost)
+        public bool EvolveUnit(int instanceId, CharacterData target, int cost)
         {
-            if (ownedIndex < 0 || ownedIndex >= _saveData.OwnedUnitIds.Count)
+            var owned = FindOwnedUnit(instanceId);
+            if (owned == null)
                 return false;
 
             if (!CanAfford(cost))
                 return false;
 
-            int oldId = _saveData.OwnedUnitIds[ownedIndex];
-            _saveData.OwnedUnitIds[ownedIndex] = target.Id;
-
-            int armyIdx = _saveData.ArmyUnitIds.IndexOf(oldId);
-            if (armyIdx >= 0)
-                _saveData.ArmyUnitIds[armyIdx] = target.Id;
+            owned.UnitId = target.Id;
+            owned.TierIndex = 0;
 
             SpendGold(cost);
             OnOwnedChanged?.Invoke();
@@ -189,57 +186,55 @@ namespace _Project.Scripts.Gameplay.Services
             return true;
         }
 
-        public List<UnitInstance> GetAllUnitInstances()
+        public bool UpgradeTier(int instanceId)
         {
-            var armyCounts = CountById(_saveData.ArmyUnitIds);
-            var result = new List<UnitInstance>(_saveData.OwnedUnitIds.Count);
+            var owned = FindOwnedUnit(instanceId);
+            if (owned == null)
+                return false;
 
-            for (int i = 0; i < _saveData.OwnedUnitIds.Count; i++)
-            {
-                int id = _saveData.OwnedUnitIds[i];
-                var data = _catalog.GetUnitById(id);
+            var data = _catalog.GetUnitById(owned.UnitId);
+            if (data == null || owned.TierIndex >= data.MaxTier)
+                return false;
 
-                if (data == null)
-                    continue;
+            var currentTier = data.GetTier(owned.TierIndex);
+            int nextTierCost = data.GetTier(owned.TierIndex + 1).EvolutionCost;
 
-                bool isInArmy = armyCounts.TryGetValue(id, out int remaining) && remaining > 0;
+            if (!CanAfford(nextTierCost))
+                return false;
 
-                if (isInArmy)
-                    armyCounts[id] = remaining - 1;
+            SpendGold(nextTierCost);
+            owned.TierIndex++;
 
-                result.Add(new UnitInstance
-                {
-                    OwnedIndex = i,
-                    Data = data,
-                    IsInArmy = isInArmy
-                });
-            }
-
-            return result;
+            OnOwnedChanged?.Invoke();
+            OnArmyChanged?.Invoke();
+            Save();
+            return true;
         }
 
-        public bool TryGetUnitInstance(int unitId, out UnitInstance instance)
+        public bool TryGetUnitInstance(int instanceId, out UnitInstance instance)
         {
-            for (int i = 0; i < _saveData.OwnedUnitIds.Count; i++)
+            var owned = FindOwnedUnit(instanceId);
+            if (owned == null)
             {
-                if (_saveData.OwnedUnitIds[i] != unitId)
-                    continue;
-
-                var data = _catalog.GetUnitById(unitId);
-                if (data == null)
-                    continue;
-
-                instance = new UnitInstance
-                {
-                    OwnedIndex = i,
-                    Data = data,
-                    IsInArmy = _saveData.ArmyUnitIds.Contains(unitId)
-                };
-                return true;
+                instance = default;
+                return false;
             }
 
-            instance = default;
-            return false;
+            var data = _catalog.GetUnitById(owned.UnitId);
+            if (data == null)
+            {
+                instance = default;
+                return false;
+            }
+
+            instance = new UnitInstance
+            {
+                InstanceId = owned.InstanceId,
+                Data = data,
+                TierIndex = owned.TierIndex,
+                IsInArmy = _saveData.ArmyInstanceIds.Contains(owned.InstanceId)
+            };
+            return true;
         }
 
         public bool UpgradeArmySlots()
@@ -259,34 +254,29 @@ namespace _Project.Scripts.Gameplay.Services
             return true;
         }
 
-        public bool AddToArmy(CharacterData unit)
+        public bool AddToArmy(int instanceId)
         {
-            if (GetBacklogCount(unit) <= 0)
+            var owned = FindOwnedUnit(instanceId);
+            if (owned == null)
                 return false;
 
-            if (_saveData.ArmyUnitIds.Count >= _saveData.ArmySlots)
+            if (_saveData.ArmyInstanceIds.Contains(instanceId))
                 return false;
 
-            _saveData.ArmyUnitIds.Add(unit.Id);
+            if (_saveData.ArmyInstanceIds.Count >= _saveData.ArmySlots)
+                return false;
+
+            _saveData.ArmyInstanceIds.Add(instanceId);
             OnArmyChanged?.Invoke();
             Save();
             return true;
         }
 
-        public void RemoveFromArmy(CharacterData unit)
+        public void RemoveFromArmy(int instanceId)
         {
-            _saveData.ArmyUnitIds.Remove(unit.Id);
+            _saveData.ArmyInstanceIds.Remove(instanceId);
             OnArmyChanged?.Invoke();
             Save();
-        }
-
-        public int GetOwnedCount(CharacterData unit) => CountOccurrences(_saveData.OwnedUnitIds, unit.Id);
-
-        public int GetBacklogCount(CharacterData unit)
-        {
-            int owned = CountOccurrences(_saveData.OwnedUnitIds, unit.Id);
-            int inArmy = CountOccurrences(_saveData.ArmyUnitIds, unit.Id);
-            return owned - inArmy;
         }
 
         public int GetSlotUpgradeCost() => _catalog.SlotUpgradeCost;
@@ -331,41 +321,29 @@ namespace _Project.Scripts.Gameplay.Services
                 ArmySlots = _catalog.BaseArmySlots
             };
 
-            if (_catalog.AvailableUnits.Length > 0)
+            if (_catalog.BaseUnit != null)
             {
-                var starterUnit = _catalog.AvailableUnits[0];
-                data.OwnedUnitIds.Add(starterUnit.Id);
-                data.ArmyUnitIds.Add(starterUnit.Id);
+                int instanceId = data.NextInstanceId++;
+                data.OwnedUnits.Add(new OwnedUnit
+                {
+                    InstanceId = instanceId,
+                    UnitId = _catalog.BaseUnit.Id,
+                    TierIndex = 0
+                });
+                data.ArmyInstanceIds.Add(instanceId);
             }
 
             return data;
         }
 
-        private List<CharacterData> ResolveUnits(List<int> ids)
+        private OwnedUnit FindOwnedUnit(int instanceId)
         {
-            var result = new List<CharacterData>(ids.Count);
-            foreach (int id in ids)
+            foreach (var owned in _saveData.OwnedUnits)
             {
-                var unit = _catalog.GetUnitById(id);
-                if (unit != null)
-                    result.Add(unit);
-                else
-                    Debug.LogWarning($"[PlayerProgressService] Unit with Id={id} not found in catalog");
+                if (owned.InstanceId == instanceId)
+                    return owned;
             }
-
-            return result;
-        }
-
-        private static int CountOccurrences(List<int> list, int value)
-        {
-            int count = 0;
-            foreach (int item in list)
-            {
-                if (item == value)
-                    count++;
-            }
-
-            return count;
+            return null;
         }
 
         private LevelKillEntry FindOrCreateKillEntry(int levelIndex)
@@ -378,20 +356,6 @@ namespace _Project.Scripts.Gameplay.Services
             }
 
             return entry;
-        }
-
-        private static Dictionary<int, int> CountById(List<int> ids)
-        {
-            var counts = new Dictionary<int, int>();
-            foreach (int id in ids)
-            {
-                if (counts.ContainsKey(id))
-                    counts[id]++;
-                else
-                    counts[id] = 1;
-            }
-
-            return counts;
         }
     }
 }

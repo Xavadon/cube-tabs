@@ -19,8 +19,7 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
     public interface ICharacterSpawner : IService
     {
-        void SpawnFromConfig(LevelConfig levelConfig, ArmyConfig armyConfig, HealthBarPool healthBarPool);
-        void SpawnFromConfig(LevelConfig levelConfig, List<CharacterData> allyUnits, HealthBarPool healthBarPool);
+        void SpawnFromConfig(LevelConfig levelConfig, List<ResolvedUnit> allyUnits, HealthBarPool healthBarPool);
     }
 
     public class CharacterSpawner : ICharacterSpawner
@@ -44,28 +43,22 @@ namespace _Project.Scripts.Gameplay.Character.Services
             return UniTask.CompletedTask;
         }
 
-        public void SpawnFromConfig(LevelConfig levelConfig, ArmyConfig armyConfig, HealthBarPool healthBarPool)
-        {
-            _healthBarPool = healthBarPool;
-            SpawnGroup(levelConfig.Enemies, CharacterType.Enemy, _spawnPointProvider.GetEnemySpawns());
-            SpawnGroup(armyConfig.Units, CharacterType.Ally, _spawnPointProvider.GetAllySpawns());
-        }
-
-        public void SpawnFromConfig(LevelConfig levelConfig, List<CharacterData> allyUnits, HealthBarPool healthBarPool)
+        public void SpawnFromConfig(LevelConfig levelConfig, List<ResolvedUnit> allyUnits, HealthBarPool healthBarPool)
         {
             _healthBarPool = healthBarPool;
             SpawnGroup(levelConfig.Enemies, CharacterType.Enemy, _spawnPointProvider.GetEnemySpawns());
             SpawnCharacters(allyUnits, CharacterType.Ally, _spawnPointProvider.GetAllySpawns());
         }
 
-        private void SpawnCharacters(List<CharacterData> units, CharacterType type, (Vector3 position, Quaternion rotation)[] spawnPoints)
+        private void SpawnCharacters(List<ResolvedUnit> units, CharacterType type, (Vector3 position, Quaternion rotation)[] spawnPoints)
         {
             if (units == null || units.Count == 0)
                 return;
 
             for (int i = 0; i < units.Count; i++)
             {
-                Character character = _characterFactory.Create(type, units[i]);
+                var resolved = units[i];
+                Character character = _characterFactory.Create(type, resolved.Data, resolved.TierIndex);
                 character.SetRegistry(_characterRegistry);
                 if (_healthBarPool != null)
                     character.SetHealthBarPool(_healthBarPool);
@@ -94,7 +87,7 @@ namespace _Project.Scripts.Gameplay.Character.Services
             {
                 for (int i = 0; i < entry.Count; i++)
                 {
-                    Character character = _characterFactory.Create(type, entry.CharacterData);
+                    Character character = _characterFactory.Create(type, entry.CharacterData, entry.TierIndex);
                     character.SetRegistry(_characterRegistry);
                     if (_healthBarPool != null)
                         character.SetHealthBarPool(_healthBarPool);
@@ -117,7 +110,7 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
     public interface ICharacterFactory : IService
     {
-        Character Create(CharacterType type, CharacterData data);
+        Character Create(CharacterType type, CharacterData data, int tierIndex);
     }
 
     public class CharacterFactory : ICharacterFactory
@@ -130,7 +123,7 @@ namespace _Project.Scripts.Gameplay.Character.Services
             return UniTask.CompletedTask;
         }
 
-        public Character Create(CharacterType type, CharacterData data)
+        public Character Create(CharacterType type, CharacterData data, int tierIndex)
         {
             int layer = type switch
             {
@@ -139,10 +132,10 @@ namespace _Project.Scripts.Gameplay.Character.Services
                 _                   => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };
 
-            return CreateCharacter(type, data, layer);
+            return CreateCharacter(type, data, tierIndex, layer);
         }
 
-        private Character CreateCharacter(CharacterType type, CharacterData data, int layer)
+        private Character CreateCharacter(CharacterType type, CharacterData data, int tierIndex, int layer)
         {
             GameObject prefab = Resources.Load<GameObject>(CharacterPrefabPath);
             GameObject characterGO = Object.Instantiate(prefab);
@@ -152,7 +145,7 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
             if (characterGO.TryGetComponent(out Character character))
             {
-                character.Initialize(type, data);
+                character.Initialize(type, data, tierIndex);
                 return character;
             }
 

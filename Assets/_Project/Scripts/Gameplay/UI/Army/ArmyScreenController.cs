@@ -17,9 +17,9 @@ namespace _Project.Scripts.Gameplay.UI.Army
         private readonly Dictionary<int, RenderTexture> _portraitCache;
         private readonly Dictionary<int, PreviewHandle> _fullBodyCache = new();
         private readonly List<CardEntry> _cardEntries = new();
-        private readonly List<(CharacterData unit, int count)> _groupBuffer = new();
+        private readonly List<(ResolvedUnit unit, int count)> _groupBuffer = new();
         private readonly Dictionary<int, int> _groupCounts = new();
-        private readonly Dictionary<int, CharacterData> _groupFirst = new();
+        private readonly Dictionary<int, ResolvedUnit> _groupFirst = new();
 
         private CardSelection _selection;
         private bool _dirty;
@@ -80,13 +80,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
         private void OnBuyClicked()
         {
-            var baseUnit = _catalog.BaseUnit;
-            bool hadSlots = _progress.ArmyUnits.Count < _progress.ArmySlots;
-
-            if (!_progress.BuyBaseUnit())
-                return;
-
-            _selection = new CardSelection { Unit = baseUnit, IsInArmy = hadSlots };
+            _progress.BuyBaseUnit();
         }
 
         private void OnTransferClicked()
@@ -95,9 +89,9 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 return;
 
             if (_selection.IsInArmy)
-                _progress.RemoveFromArmy(_selection.Unit);
+                _progress.RemoveFromArmy(_selection.InstanceId);
             else
-                _progress.AddToArmy(_selection.Unit);
+                _progress.AddToArmy(_selection.InstanceId);
         }
 
         private void OnCardClicked(int cardIndex)
@@ -106,7 +100,13 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 return;
 
             var entry = _cardEntries[cardIndex];
-            _selection = new CardSelection { Unit = entry.Data, IsInArmy = entry.IsInArmy };
+            _selection = new CardSelection
+            {
+                InstanceId = entry.Resolved.InstanceId,
+                Unit = entry.Resolved.Data,
+                TierIndex = entry.Resolved.TierIndex,
+                IsInArmy = entry.IsInArmy
+            };
 
             for (int i = 0; i < _cardEntries.Count; i++)
                 _view.SetCardSelected(i, i == cardIndex);
@@ -130,15 +130,15 @@ namespace _Project.Scripts.Gameplay.UI.Army
             RefreshTransferButton();
         }
 
-        private void SpawnCards(List<CharacterData> units, bool isInArmy)
+        private void SpawnCards(List<ResolvedUnit> units, bool isInArmy)
         {
             GroupUnits(units);
 
             foreach (var (unit, count) in _groupBuffer)
             {
-                var portrait = GetOrCreatePortrait(unit);
-                _view.AddCard(unit.Name, count, portrait, isInArmy);
-                _cardEntries.Add(new CardEntry { Data = unit, IsInArmy = isInArmy });
+                var portrait = GetOrCreatePortrait(unit.Data, unit.TierIndex);
+                _view.AddCard(unit.Data.Name, count, portrait, isInArmy);
+                _cardEntries.Add(new CardEntry { Resolved = unit, IsInArmy = isInArmy });
             }
         }
 
@@ -152,7 +152,9 @@ namespace _Project.Scripts.Gameplay.UI.Army
             for (int i = 0; i < _cardEntries.Count; i++)
             {
                 var entry = _cardEntries[i];
-                bool match = entry.Data.Id == _selection.Unit.Id && entry.IsInArmy == _selection.IsInArmy;
+                bool match = entry.Resolved.Data.Id == _selection.Unit.Id
+                             && entry.Resolved.TierIndex == _selection.TierIndex
+                             && entry.IsInArmy == _selection.IsInArmy;
                 _view.SetCardSelected(i, match);
 
                 if (match)
@@ -171,8 +173,8 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 return;
             }
 
-            if (_progress.TryGetUnitInstance(_selection.Unit.Id, out var instance))
-                _view.ShowEvolution(instance.OwnedIndex, instance.Data);
+            if (_progress.TryGetUnitInstance(_selection.InstanceId, out var instance))
+                _view.ShowEvolution(instance.InstanceId, instance.Data);
             else
                 _view.HideEvolution();
         }
@@ -185,7 +187,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 return;
             }
 
-            var handle = GetOrCreateFullBody(_selection.Unit);
+            var handle = GetOrCreateFullBody(_selection.Unit, _selection.TierIndex);
             _view.ShowFullBodyPreview(handle);
         }
 
@@ -211,7 +213,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
             }
         }
 
-        private void GroupUnits(List<CharacterData> units)
+        private void GroupUnits(List<ResolvedUnit> units)
         {
             _groupBuffer.Clear();
             _groupCounts.Clear();
@@ -219,14 +221,16 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
             foreach (var unit in units)
             {
-                if (_groupCounts.ContainsKey(unit.Id))
+                int key = HashUnitTier(unit.Data.Id, unit.TierIndex);
+
+                if (_groupCounts.ContainsKey(key))
                 {
-                    _groupCounts[unit.Id]++;
+                    _groupCounts[key]++;
                 }
                 else
                 {
-                    _groupCounts[unit.Id] = 1;
-                    _groupFirst[unit.Id] = unit;
+                    _groupCounts[key] = 1;
+                    _groupFirst[key] = unit;
                 }
             }
 
@@ -234,29 +238,40 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 _groupBuffer.Add((kvp.Value, _groupCounts[kvp.Key]));
         }
 
-        private RenderTexture GetOrCreatePortrait(CharacterData data)
+        private static int HashUnitTier(int unitId, int tierIndex)
         {
-            if (_portraitCache.TryGetValue(data.Id, out var existing))
+            return unitId * 100 + tierIndex;
+        }
+
+        private RenderTexture GetOrCreatePortrait(CharacterData data, int tierIndex)
+        {
+            int key = HashUnitTier(data.Id, tierIndex);
+
+            if (_portraitCache.TryGetValue(key, out var existing))
                 return existing;
 
-            var handle = _portraitFactory.CreatePreview(data, _portraitCache.Count);
-            _portraitCache[data.Id] = handle.Texture;
+            var handle = _portraitFactory.CreatePreview(data, tierIndex, _portraitCache.Count);
+            _portraitCache[key] = handle.Texture;
             return handle.Texture;
         }
 
-        private PreviewHandle GetOrCreateFullBody(CharacterData data)
+        private PreviewHandle GetOrCreateFullBody(CharacterData data, int tierIndex)
         {
-            if (_fullBodyCache.TryGetValue(data.Id, out var existing))
+            int key = HashUnitTier(data.Id, tierIndex);
+
+            if (_fullBodyCache.TryGetValue(key, out var existing))
                 return existing;
 
-            var handle = _fullBodyFactory.CreatePreview(data, _fullBodyCache.Count);
-            _fullBodyCache[data.Id] = handle;
+            var handle = _fullBodyFactory.CreatePreview(data, tierIndex, _fullBodyCache.Count);
+            _fullBodyCache[key] = handle;
             return handle;
         }
 
         private struct CardSelection
         {
+            public int InstanceId;
             public CharacterData Unit;
+            public int TierIndex;
             public bool IsInArmy;
 
             public bool HasValue => Unit != null;
@@ -265,12 +280,14 @@ namespace _Project.Scripts.Gameplay.UI.Army
             {
                 Unit = null;
                 IsInArmy = false;
+                InstanceId = -1;
+                TierIndex = 0;
             }
         }
 
         private struct CardEntry
         {
-            public CharacterData Data;
+            public ResolvedUnit Resolved;
             public bool IsInArmy;
         }
     }

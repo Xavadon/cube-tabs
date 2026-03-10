@@ -72,16 +72,11 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             {
                 var unit = _catalog.AvailableUnits[i];
                 var card = Instantiate(_cardPrefab, _cardsContainer);
-                var handle = _previewFactory.CreatePreview(unit, i);
-                card.Init(unit.Name, unit.Price, _progress.GetOwnedCount(unit), _progress.CanAfford(unit.Price),
-                    () => OnBuyUnit(unit), handle.Texture);
+                var handle = _previewFactory.CreatePreview(unit, 0, i);
+                card.Init(unit.Name, unit.Price, 0, _progress.CanAfford(unit.Price),
+                    () => _progress.BuyBaseUnit(), handle.Texture);
                 _cards.Add((card, unit));
             }
-        }
-
-        private void OnBuyUnit(CharacterData unit)
-        {
-            _progress.BuyUnit(unit);
         }
 
         private void HandleUpgradeSlot()
@@ -94,7 +89,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             _goldLabel.text = _progress.Gold.ToString();
 
             foreach (var (card, data) in _cards)
-                card.Refresh(_progress.GetOwnedCount(data), _progress.CanAfford(data.Price));
+                card.Refresh(0, _progress.CanAfford(data.Price));
 
             RefreshSlotInfo();
         }

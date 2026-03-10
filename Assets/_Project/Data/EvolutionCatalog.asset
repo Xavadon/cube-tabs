@@ -13,17 +13,7 @@ MonoBehaviour:
   m_Name: EvolutionCatalog
   m_EditorClassIdentifier: 
   <Entries>k__BackingField:
-  - <Source>k__BackingField: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
+  - <Source>k__BackingField: {fileID: 11400000, guid: 06c7381e5ef22a442bdfb288681fd962, type: 2}
     <Options>k__BackingField:
     - <Target>k__BackingField: {fileID: 11400000, guid: e79c235fe17a5e24fbcedecc9027d630, type: 2}
       <Cost>k__BackingField: 10
-    - <Target>k__BackingField: {fileID: 11400000, guid: 6e01f01e4701f964b8cbb4e62d225483, type: 2}
-      <Cost>k__BackingField: 20
-    - <Target>k__BackingField: {fileID: 11400000, guid: 346750f32a2047d42bfeacf400dec9ee, type: 2}
-      <Cost>k__BackingField: 20
-  - <Source>k__BackingField: {fileID: 11400000, guid: e79c235fe17a5e24fbcedecc9027d630, type: 2}
-    <Options>k__BackingField:
-    - <Target>k__BackingField: {fileID: 11400000, guid: 06c7381e5ef22a442bdfb288681fd962, type: 2}
-      <Cost>k__BackingField: 30
-    - <Target>k__BackingField: {fileID: 11400000, guid: 2da6ebff934bc0c4ea730ea9184f1514, type: 2}
-      <Cost>k__BackingField: 30

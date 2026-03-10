@@ -11,12 +11,21 @@ namespace _Project.Scripts.Architecture.Services.Save
     }
 
     [Serializable]
+    public class OwnedUnit
+    {
+        public int InstanceId;
+        public int UnitId;
+        public int TierIndex;
+    }
+
+    [Serializable]
     public class SaveData
     {
         public int Gold;
         public int ArmySlots;
-        public List<int> OwnedUnitIds = new();
-        public List<int> ArmyUnitIds = new();
+        public int NextInstanceId;
+        public List<OwnedUnit> OwnedUnits = new();
+        public List<int> ArmyInstanceIds = new();
         public List<LevelKillEntry> LevelKillProgress = new();
         public List<int> CompletedLevelIndices = new();
     }

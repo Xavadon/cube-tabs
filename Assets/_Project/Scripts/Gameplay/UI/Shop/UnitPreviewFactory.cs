@@ -32,17 +32,21 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             _config = config;
         }
 
-        public PreviewHandle CreatePreview(CharacterData data, int index)
+        public PreviewHandle CreatePreview(CharacterData data, int tierIndex, int roomIndex)
         {
             LoadPrefabIfNeeded();
 
-            Vector3 roomPos = _config.RoomOrigin + Vector3.right * (index * _config.RoomSpacing);
+            var tier = data.GetTier(tierIndex);
+            if (tier == null)
+                return default;
+
+            Vector3 roomPos = _config.RoomOrigin + Vector3.right * (roomIndex * _config.RoomSpacing);
 
             var root = new GameObject($"PreviewRoom_{data.Name}");
             root.transform.position = roomPos;
 
             var modelGO = Object.Instantiate(_characterPrefab, roomPos, Quaternion.identity, root.transform);
-            ApplyVisualsAndStrip(modelGO, data);
+            ApplyVisualsAndStrip(modelGO, tier);
 
             var rt = new RenderTexture(_config.TextureSize, _config.TextureSize, TextureDepth);
 
@@ -76,21 +80,21 @@ namespace _Project.Scripts.Gameplay.UI.Shop
                 _characterPrefab = Resources.Load<GameObject>(CharacterPrefabPath);
         }
 
-        private static void ApplyVisualsAndStrip(GameObject go, CharacterData data)
+        private static void ApplyVisualsAndStrip(GameObject go, TierData tier)
         {
             if (go.TryGetComponent(out Character.Character character))
             {
-                character.SkinChanger.ChangeSkin(data.SkinMaterial);
-                character.ArmorChanger.ChangeSkin(data.ArmorMaterial != null ? data.ArmorMaterial : data.SkinMaterial);
+                character.SkinChanger.ChangeSkin(tier.SkinMaterial);
+                character.ArmorChanger.ChangeSkin(tier.ArmorMaterial != null ? tier.ArmorMaterial : tier.SkinMaterial);
                 character.enabled = false;
                 Object.Destroy(character);
             }
 
-            if (data.WeaponData is { Length: > 0 })
+            if (tier.WeaponData is { Length: > 0 })
             {
                 var weaponChanger = go.GetComponentInChildren<WeaponChanger>();
                 if (weaponChanger != null)
-                    weaponChanger.SetWeapon(data.WeaponData[0]);
+                    weaponChanger.SetWeapon(tier.WeaponData[0]);
             }
 
             if (go.TryGetComponent(out NavMeshAgent agent))

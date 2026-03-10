@@ -28,7 +28,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
             _portraitCache = portraitCache;
         }
 
-        public void Show(int ownedIndex, CharacterData currentData)
+        public void Show(int instanceId, CharacterData currentData)
         {
             Clear();
 
@@ -45,7 +45,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
             foreach (var option in options)
             {
                 var optionUI = Instantiate(_optionPrefab, _optionsContainer);
-                int capturedIndex = ownedIndex;
+                int capturedIndex = instanceId;
                 var capturedTarget = option.Target;
                 int capturedCost = option.Cost;
 
@@ -71,7 +71,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
             if (_portraitCache.TryGetValue(data.Id, out var existing))
                 return existing;
 
-            var handle = _portraitFactory.CreatePreview(data, _portraitCache.Count);
+            var handle = _portraitFactory.CreatePreview(data, 0, _portraitCache.Count);
             _portraitCache[data.Id] = handle.Texture;
             return handle.Texture;
         }

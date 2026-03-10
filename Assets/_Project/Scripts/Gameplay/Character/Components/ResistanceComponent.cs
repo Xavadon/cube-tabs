@@ -1,7 +1,6 @@
 using _Project.Scripts.Gameplay.Character.Components.Health;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Character.Health.DamageStrategies;
-using Game.Scripts.Core.Gameplay.Character.Health;
 using Game.Scripts.Core.Gameplay.Character.Health.DamageStrategies;
 
 namespace Game.Scripts.Core.Gameplay.Enemies.Components
@@ -13,13 +12,13 @@ namespace Game.Scripts.Core.Gameplay.Enemies.Components
         private float _magicResist;
         private float _fireResist;
         private float _faithResist;
-        
-        public ResistanceComponent(CharacterData characterData)
+
+        public ResistanceComponent(TierData tier)
         {
-            _physicalResist = characterData.CharacterResistancesData.PhysicalResist;
-            _magicResist = characterData.CharacterResistancesData.MagicResist;
-            _fireResist = characterData.CharacterResistancesData.FireResist;
-            _faithResist = characterData.CharacterResistancesData.FaithResist;
+            _physicalResist = tier.Resistances.PhysicalResist;
+            _magicResist = tier.Resistances.MagicResist;
+            _fireResist = tier.Resistances.FireResist;
+            _faithResist = tier.Resistances.FaithResist;
         }
 
         public void SetResistance(DamageType type, float value)
