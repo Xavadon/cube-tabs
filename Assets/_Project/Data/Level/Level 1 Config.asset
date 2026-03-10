@@ -14,6 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <LevelName>k__BackingField: Dirt
   <LevelIndex>k__BackingField: 0
+  <KillsToComplete>k__BackingField: 100
   Enemies:
   - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
+    TierIndex: 0
     Count: 15
+  - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
+    TierIndex: 0
+    Count: 6

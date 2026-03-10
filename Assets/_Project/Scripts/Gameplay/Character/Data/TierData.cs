@@ -41,6 +41,8 @@ namespace _Project.Scripts.Gameplay.Character.Data
         [field: SerializeField]
         public Material ArmorMaterial { get; private set; }
 
+        //TODO: изучить подходы работы с датой
+        
 #if UNITY_EDITOR
 
         public void SetMaterial(Material material)
