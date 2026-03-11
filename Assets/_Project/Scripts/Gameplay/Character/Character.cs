@@ -1,5 +1,6 @@
 using System;
 using _Project.Scripts.Architecture;
+using _Project.Scripts.Architecture.Services.Input;
 using _Project.Scripts.Gameplay.Character.Components;
 using _Project.Scripts.Gameplay.Character.Components.AiBrain;
 using _Project.Scripts.Gameplay.Character.Components.Health;
@@ -53,7 +54,8 @@ namespace _Project.Scripts.Gameplay.Character
             _hitEffect.Play();
         }
 
-        public void Initialize(CharacterType characterType, CharacterData characterData, int tierIndex)
+        public void Initialize(CharacterType characterType, CharacterData characterData, int tierIndex,
+            IInputService inputService = null)
         {
             CharacterType = characterType;
             _characterData = characterData;
@@ -77,7 +79,7 @@ namespace _Project.Scripts.Gameplay.Character
 
             _animatorController = new(_animator);
 
-            _brain = new(targetLayer, tier.BrainData, tier, _navMeshAgent, _animatorController, transform, weapon);
+            _brain = new(targetLayer, tier.BrainData, tier, _navMeshAgent, _animatorController, transform, weapon, inputService);
             _movement = new(_navMeshAgent, transform, tier.MoveSpeed);
             _health = new(tier);
             _resistance = new(tier);

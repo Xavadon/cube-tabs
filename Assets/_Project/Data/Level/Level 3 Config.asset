@@ -16,9 +16,9 @@ MonoBehaviour:
   <LevelIndex>k__BackingField: 2
   <KillsToComplete>k__BackingField: 100
   Enemies:
-  - CharacterData: {fileID: 11400000, guid: 6e01f01e4701f964b8cbb4e62d225483, type: 2}
+  - CharacterData: {fileID: 11400000, guid: 4e5b13890b17a4d4f96030744cc2d9ac, type: 2}
     TierIndex: 0
-    Count: 15
+    Count: 3
   - CharacterData: {fileID: 11400000, guid: e79c235fe17a5e24fbcedecc9027d630, type: 2}
     TierIndex: 0
     Count: 0

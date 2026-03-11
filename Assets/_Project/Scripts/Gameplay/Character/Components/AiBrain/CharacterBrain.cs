@@ -1,4 +1,5 @@
 using _Project.Scripts.Architecture.BehaviorTree;
+using _Project.Scripts.Architecture.Services.Input;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Character.Data.AiBrain;
 using UnityEngine;
@@ -14,13 +15,16 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         public const string Transform = "Transform";
         public const string WeaponData = "WeaponData";
         public const string TargetLayer = "TargetLayer";
+        public const string InputService = "InputService";
     }
     
     public class CharacterBrain
     {
         private readonly BehaviourTree _tree;
 
-        public CharacterBrain(LayerMask layerMask, BrainDataBase dataBase, TierData tier, NavMeshAgent agent, AnimatorConroller animatorController, Transform transform, WeaponData weaponData)
+        public CharacterBrain(LayerMask layerMask, BrainDataBase dataBase, TierData tier, NavMeshAgent agent,
+            AnimatorConroller animatorController, Transform transform, WeaponData weaponData,
+            IInputService inputService = null)
         {
             _tree = new BehaviourTree(dataBase.BuildTree(layerMask, tier));
             _tree.Blackboard.Set(BrainKeys.Agent, agent);
@@ -29,6 +33,8 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             _tree.Blackboard.Set(BrainKeys.TargetLayer, layerMask);
             if (weaponData != null)
                 _tree.Blackboard.Set(BrainKeys.WeaponData, weaponData);
+            if (inputService != null)
+                _tree.Blackboard.Set(BrainKeys.InputService, inputService);
         }
 
         public void Tick()

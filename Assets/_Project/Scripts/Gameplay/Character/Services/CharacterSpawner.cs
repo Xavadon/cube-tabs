@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using _Project.Scripts.Architecture.Services;
+using _Project.Scripts.Architecture.Services.Input;
 using _Project.Scripts.Gameplay.Character.Components.UI;
 using _Project.Scripts.Gameplay.Character.Data;
+using _Project.Scripts.Gameplay.Character.Data.AiBrain;
 using _Project.Scripts.Gameplay.Services.Scene;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -117,6 +119,13 @@ namespace _Project.Scripts.Gameplay.Character.Services
     {
         private const string CharacterPrefabPath = "Prefab/DefaultCharacter";
 
+        private readonly IInputService _inputService;
+
+        public CharacterFactory(IInputService inputService)
+        {
+            _inputService = inputService;
+        }
+
         public UniTask Initialize()
         {
             Debug.Log("[CharacterFactory] Initialized");
@@ -143,9 +152,12 @@ namespace _Project.Scripts.Gameplay.Character.Services
             characterGO.name  = data.Name;
             characterGO.layer = layer;
 
+            bool isPlayerControlled = data.GetTier(tierIndex).BrainData is PlayerBrainDataBase;
+            IInputService input = isPlayerControlled ? _inputService : null;
+
             if (characterGO.TryGetComponent(out Character character))
             {
-                character.Initialize(type, data, tierIndex);
+                character.Initialize(type, data, tierIndex, input);
                 return character;
             }
 

@@ -1,5 +1,6 @@
 using System;
 using _Project.Scripts.Architecture.BehaviorTree;
+using _Project.Scripts.Architecture.Services.Input;
 using _Project.Scripts.Architecture.State_Machine;
 using _Project.Scripts.Gameplay.Character.Components.Health;
 using _Project.Scripts.Gameplay.Character.Data;
@@ -491,6 +492,73 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         protected override void PerformAttack()
         {
             _abilityDataBase.Execute(Blackboard);
+        }
+    }
+
+    public class HasMoveInput : BTNode
+    {
+        private const float Deadzone = 0.1f;
+
+        protected override NodeStatus Process()
+        {
+            IInputService input = Blackboard.Get<IInputService>(BrainKeys.InputService);
+            return Status = input.MoveInput.sqrMagnitude > Deadzone * Deadzone
+                ? NodeStatus.Success
+                : NodeStatus.Failure;
+        }
+    }
+
+    public class PlayerMove : BTNode
+    {
+        private readonly float _moveSpeed;
+        private readonly float _destinationStep;
+
+        public PlayerMove(float moveSpeed, float destinationStep = 2f)
+        {
+            _moveSpeed = moveSpeed;
+            _destinationStep = destinationStep;
+        }
+
+        protected override void Enter()
+        {
+            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
+            agent.speed = _moveSpeed;
+            agent.stoppingDistance = 0.1f;
+
+            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
+            animator.PlayMove();
+        }
+
+        protected override NodeStatus Process()
+        {
+            IInputService input = Blackboard.Get<IInputService>(BrainKeys.InputService);
+            Vector2 raw = input.MoveInput;
+
+            if (raw.sqrMagnitude < 0.01f)
+                return Status = NodeStatus.Success;
+
+            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
+            Transform self = Blackboard.Get<Transform>(BrainKeys.Transform);
+
+            Vector3 direction = new Vector3(raw.x, 0f, raw.y).normalized;
+            Vector3 destination = self.position + direction * _destinationStep;
+
+            agent.SetDestination(destination);
+            self.rotation = Quaternion.LookRotation(direction);
+
+            Blackboard.Set<Transform>(BrainKeys.Target, null);
+
+            return Status = NodeStatus.Running;
+        }
+
+        protected override void Exit()
+        {
+            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
+            agent.isStopped = true;
+            agent.isStopped = false;
+
+            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
+            animator.PlayIdle();
         }
     }
 }

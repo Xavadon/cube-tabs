@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <LevelName>k__BackingField: Level 2
   <LevelIndex>k__BackingField: 1
+  <KillsToComplete>k__BackingField: 100
   Enemies:
   - CharacterData: {fileID: 11400000, guid: 6e01f01e4701f964b8cbb4e62d225483, type: 2}
+    TierIndex: 0
     Count: 0
   - CharacterData: {fileID: 11400000, guid: e79c235fe17a5e24fbcedecc9027d630, type: 2}
-    Count: 2
+    TierIndex: 0
+    Count: 3

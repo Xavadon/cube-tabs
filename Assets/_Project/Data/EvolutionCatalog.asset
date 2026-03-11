@@ -21,6 +21,8 @@ MonoBehaviour:
       <Cost>k__BackingField: 45
     - <Target>k__BackingField: {fileID: 11400000, guid: 06c7381e5ef22a442bdfb288681fd962, type: 2}
       <Cost>k__BackingField: 100
+    - <Target>k__BackingField: {fileID: 11400000, guid: 4e5b13890b17a4d4f96030744cc2d9ac, type: 2}
+      <Cost>k__BackingField: 0
   - <Source>k__BackingField: {fileID: 11400000, guid: 596f97acd9a2d48458e5836d8c9be7aa, type: 2}
     <Options>k__BackingField:
     - <Target>k__BackingField: {fileID: 11400000, guid: 559a0b67e07f7b342a04b33891ce482e, type: 2}
