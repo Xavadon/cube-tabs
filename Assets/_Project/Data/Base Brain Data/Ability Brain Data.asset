@@ -18,4 +18,3 @@ MonoBehaviour:
   <AttackDuration>k__BackingField: 1.4
   <AttackRange>k__BackingField: 25
   <AttackCooldown>k__BackingField: 0.5
-  <Ability>k__BackingField: {fileID: 11400000, guid: 5ea94822471752241b41744004836279, type: 2}

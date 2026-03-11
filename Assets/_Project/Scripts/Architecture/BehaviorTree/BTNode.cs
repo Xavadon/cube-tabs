@@ -14,7 +14,7 @@ namespace _Project.Scripts.Architecture.BehaviorTree
 
         private bool _isActive;
 
-        public NodeStatus Evaluate()
+        public virtual NodeStatus Evaluate()
         {
             if (!_isActive)
             {

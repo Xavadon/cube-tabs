@@ -17,7 +17,7 @@ MonoBehaviour:
   <Price>k__BackingField: 100
   <Tiers>k__BackingField:
   - <Stats>k__BackingField:
-      <Health>k__BackingField: 0
+      <Health>k__BackingField: 150
       <Mana>k__BackingField: 0
       <Stamina>k__BackingField: 0
     <Resistances>k__BackingField:
@@ -25,7 +25,8 @@ MonoBehaviour:
       <MagicResist>k__BackingField: 0
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-    <WeaponData>k__BackingField: []
+    <WeaponData>k__BackingField:
+    - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 480d01bedecf65c4d96a76a709148b56, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 985f8e9e5699ab842ab5909bbfa14c47, type: 2}
     <AnimationType>k__BackingField: 1
@@ -35,7 +36,7 @@ MonoBehaviour:
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 96765532322262d44af19a5803a314d9, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 96765532322262d44af19a5803a314d9, type: 2}
   - <Stats>k__BackingField:
-      <Health>k__BackingField: 0
+      <Health>k__BackingField: 175
       <Mana>k__BackingField: 0
       <Stamina>k__BackingField: 0
     <Resistances>k__BackingField:
@@ -43,7 +44,8 @@ MonoBehaviour:
       <MagicResist>k__BackingField: 0
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-    <WeaponData>k__BackingField: []
+    <WeaponData>k__BackingField:
+    - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 480d01bedecf65c4d96a76a709148b56, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 985f8e9e5699ab842ab5909bbfa14c47, type: 2}
     <AnimationType>k__BackingField: 1
@@ -53,7 +55,7 @@ MonoBehaviour:
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 96765532322262d44af19a5803a314d9, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 96765532322262d44af19a5803a314d9, type: 2}
   - <Stats>k__BackingField:
-      <Health>k__BackingField: 0
+      <Health>k__BackingField: 200
       <Mana>k__BackingField: 0
       <Stamina>k__BackingField: 0
     <Resistances>k__BackingField:
@@ -61,7 +63,8 @@ MonoBehaviour:
       <MagicResist>k__BackingField: 0
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-    <WeaponData>k__BackingField: []
+    <WeaponData>k__BackingField:
+    - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 480d01bedecf65c4d96a76a709148b56, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 985f8e9e5699ab842ab5909bbfa14c47, type: 2}
     <AnimationType>k__BackingField: 1

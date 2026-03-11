@@ -35,7 +35,7 @@ namespace _Project.Scripts.Architecture.BehaviorTree.Decorators
         public override void Reset()
         {
             base.Reset();
-            _lastSuccessTime = float.NegativeInfinity;
+            //_lastSuccessTime = float.NegativeInfinity;
             _child.Reset();
         }
 

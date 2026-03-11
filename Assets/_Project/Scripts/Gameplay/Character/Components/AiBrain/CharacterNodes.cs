@@ -96,7 +96,25 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             _layer = layer;
         }
 
+        public override NodeStatus Evaluate()
+        {
+            UpdateTarget();
+            return base.Evaluate();
+        }
+
         protected override NodeStatus Process()
+        {
+            Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
+
+            if (target == null)
+            {
+                return Status = NodeStatus.Failure;
+            }
+
+            return Status = NodeStatus.Success;
+        }
+
+        private void UpdateTarget()
         {
             Transform transform = Blackboard.Get<Transform>(BrainKeys.Transform);
             int hitCount = Physics.OverlapSphereNonAlloc(transform.position, _radius, _hitBuffer, _layer);
@@ -104,7 +122,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             if (hitCount == 0)
             {
                 Blackboard.Set<Transform>(BrainKeys.Target, null);
-                return Status = NodeStatus.Failure;
+                return;
             }
 
             Transform closest = null;
@@ -121,7 +139,6 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             }
 
             Blackboard.Set(BrainKeys.Target, closest);
-            return Status = NodeStatus.Success;
         }
     }
 
@@ -215,6 +232,12 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             }
 
             return Status = NodeStatus.Running;
+        }
+
+        protected override void Exit()
+        {
+            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
+            animator.PlayIdle();
         }
     }
 

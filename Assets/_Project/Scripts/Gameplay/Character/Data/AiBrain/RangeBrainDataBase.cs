@@ -24,51 +24,37 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
         
         public override BTNode BuildTree(LayerMask targetLayer, TierData tier)
         {
-            return new Selector(
-                new Sequence(
+            return new Selector
+            (
+                new Sequence
+                (
                     new FindTarget(DetectionRadius, targetLayer),
-                    new Selector(
-                        BuildFleeSequence(),
-                        BuildAttackSequence(tier),
-                        BuildChaseSequence()
+                    new Selector
+                    (
+                        new Sequence
+                        (
+                            new IsInRange(FleeRange),
+                            new Flee(FleeRange)
+                        ),
+                        new Sequence
+                        (
+                            new IsInRange(AttackRange),
+                            new Selector
+                            (
+                                new Cooldown(AttackCooldown, new Parallel(CreateAttackNode(tier), new RotateTowardsTarget())), 
+                                new Wait(0.1f)
+                            )
+                        ),
+                        new ChaseTarget(AttackRange)
                     )
                 ),
                 new Idle()
             );
         }
 
-        private BTNode BuildFleeSequence()
-        {
-            return new Sequence(
-                new IsInRange(FleeRange),
-                new Flee(FleeRange)
-            );
-        }
-
         protected virtual BTNode CreateAttackNode(TierData tier)
         {
             return new RangedAttack(WindUpDuration, AttackDuration, AttackRange);
-        }
-
-        private BTNode BuildAttackSequence(TierData tier)
-        {
-            return new Sequence(
-                new IsInRange(AttackRange),
-                new Selector(
-                    new Cooldown(AttackCooldown,
-                        new Parallel(
-                            CreateAttackNode(tier),
-                            new RotateTowardsTarget()
-                        )
-                    ),
-                    new Wait(0.1f)
-                )
-            );
-        }
-
-        private BTNode BuildChaseSequence()
-        {
-            return new ChaseTarget(AttackRange);
         }
     }
 }
