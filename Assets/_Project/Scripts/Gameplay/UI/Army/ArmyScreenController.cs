@@ -148,7 +148,30 @@ namespace _Project.Scripts.Gameplay.UI.Army
                     displayName = unit.Data.Name;
                 }
                 
-                _view.AddCard(displayName, count, portrait, isInArmy);
+                var tier = unit.Data.GetTier(unit.TierIndex);
+                float hp = tier.Stats.Health;
+                
+                float damage;
+                
+                if (tier.WeaponData[0] != null)
+                {
+                    damage = tier.WeaponData[0].Damage;
+                }
+                else
+                {
+                    if (tier.Ability != null)
+                    {
+                        damage = tier.Ability.Damage;
+                    }
+                    else
+                    {
+                        damage = 0f;
+                    }
+                }
+                
+                float speed = tier.MoveSpeed;
+
+                _view.AddCard(displayName, count, portrait, hp, damage, speed, isInArmy);
                 _cardEntries.Add(new CardEntry { Resolved = unit, IsInArmy = isInArmy });
             }
         }

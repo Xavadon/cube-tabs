@@ -14,7 +14,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
         void SetActive(bool active);
         void ClearCards();
-        void AddCard(string name, int count, RenderTexture portrait, bool isInArmy);
+        void AddCard(string name, int count, RenderTexture portrait, float hp, float damage, float speed, bool isInArmy);
         void SetCardSelected(int index, bool selected);
         void SetTransferVisible(bool visible);
         void SetTransferLabel(string text);

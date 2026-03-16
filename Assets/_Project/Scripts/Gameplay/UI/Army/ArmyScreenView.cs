@@ -178,10 +178,10 @@ namespace _Project.Scripts.Gameplay.UI.Army
             _cards.Clear();
         }
 
-        public void AddCard(string name, int count, RenderTexture portrait, bool isInArmy)
+        public void AddCard(string name, int count, RenderTexture portrait, float hp, float damage, float speed, bool isInArmy)
         {
             Transform container;
-            
+
             if (isInArmy)
             {
                 container = _armyContainer;
@@ -190,10 +190,10 @@ namespace _Project.Scripts.Gameplay.UI.Army
             {
                 container = _reserveContainer;
             }
-            
+
             var card = Instantiate(_cardPrefab, container);
             int index = _cards.Count;
-            card.Init(name, count, portrait, () => CardClicked?.Invoke(index));
+            card.Init(name, count, portrait, hp, damage, speed, () => CardClicked?.Invoke(index));
             _cards.Add(card);
         }
 
