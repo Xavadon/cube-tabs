@@ -48,6 +48,9 @@ namespace _Project.Scripts.Gameplay.UI.Army
         [Header("Full Body Preview")]
         [SerializeField]
         private RawImage _fullBodyPreviewImage;
+        
+        [SerializeField]
+        private Image _fullBodyPreviewFrame;
 
         [SerializeField]
         private float _dragRotationSpeed = 0.5f;
@@ -177,7 +180,17 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
         public void AddCard(string name, int count, RenderTexture portrait, bool isInArmy)
         {
-            var container = isInArmy ? _armyContainer : _reserveContainer;
+            Transform container;
+            
+            if (isInArmy)
+            {
+                container = _armyContainer;
+            }
+            else
+            {
+                container = _reserveContainer;
+            }
+            
             var card = Instantiate(_cardPrefab, container);
             int index = _cards.Count;
             card.Init(name, count, portrait, () => CardClicked?.Invoke(index));
@@ -187,7 +200,9 @@ namespace _Project.Scripts.Gameplay.UI.Army
         public void SetCardSelected(int index, bool selected)
         {
             if (index >= 0 && index < _cards.Count)
+            {
                 _cards[index].SetSelected(selected);
+            }
         }
 
         public void SetTransferVisible(bool visible) => _transferButton.gameObject.SetActive(visible);
@@ -201,6 +216,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
             _fullBodyPreviewImage.texture = handle.Texture;
             _fullBodyPreviewImage.gameObject.SetActive(true);
+            _fullBodyPreviewFrame.gameObject.SetActive(true);
 
             _currentPreviewModel = handle.Model;
             _currentPreviewModel.rotation = _defaultFullBodyRotation;
@@ -209,7 +225,10 @@ namespace _Project.Scripts.Gameplay.UI.Army
         public void HideFullBodyPreview()
         {
             if (_fullBodyPreviewImage != null)
+            {
                 _fullBodyPreviewImage.gameObject.SetActive(false);
+                _fullBodyPreviewFrame.gameObject.SetActive(false);
+            }
 
             _currentPreviewModel = null;
         }
@@ -217,19 +236,25 @@ namespace _Project.Scripts.Gameplay.UI.Army
         public void ShowEvolution(int instanceId, CharacterData data, int tierIndex)
         {
             if (_evolutionPanel != null)
+            {
                 _evolutionPanel.Show(instanceId, data, tierIndex);
+            }
         }
 
         public void HideEvolution()
         {
             if (_evolutionPanel != null)
+            {
                 _evolutionPanel.Hide();
+            }
         }
 
         private static void ClearContainer(Transform container)
         {
             for (int i = container.childCount - 1; i >= 0; i--)
+            {
                 Destroy(container.GetChild(i).gameObject);
+            }
         }
     }
 }

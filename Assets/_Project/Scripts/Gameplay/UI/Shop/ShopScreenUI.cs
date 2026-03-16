@@ -35,6 +35,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
 
         public void Initialize(ShopCatalog catalog, IPlayerProgressService progress, UnitPreviewConfig previewConfig)
         {
+            gameObject.SetActive(false);
             
             return;
             
@@ -49,8 +50,6 @@ namespace _Project.Scripts.Gameplay.UI.Shop
 
             BuildCards();
             RefreshAll();
-
-            gameObject.SetActive(false);
         }
 
         private void OnDestroy()

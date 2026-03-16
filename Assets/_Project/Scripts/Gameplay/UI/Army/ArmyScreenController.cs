@@ -137,9 +137,17 @@ namespace _Project.Scripts.Gameplay.UI.Army
             foreach (var (unit, count) in _groupBuffer)
             {
                 var portrait = GetOrCreatePortrait(unit.Data, unit.TierIndex);
-                string displayName = unit.Data.MaxTier > 0
-                    ? $"{unit.Data.Name} T{unit.TierIndex + 1}"
-                    : unit.Data.Name;
+                string displayName;
+                
+                if (unit.Data.MaxTier > 0)
+                {
+                    displayName = $"{unit.Data.Name} T{unit.TierIndex + 1}";
+                }
+                else
+                {
+                    displayName = unit.Data.Name;
+                }
+                
                 _view.AddCard(displayName, count, portrait, isInArmy);
                 _cardEntries.Add(new CardEntry { Resolved = unit, IsInArmy = isInArmy });
             }

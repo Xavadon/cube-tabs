@@ -33,11 +33,22 @@ namespace _Project.Scripts.Gameplay.UI.Army
         public void Init(string unitName, int count, RenderTexture portrait, Action onClick)
         {
             _nameLabel.text = unitName;
-            _countLabel.text = count > 1 ? $"x{count}" : "";
+            
+            if (count > 1)
+            {
+                _countLabel.text = $"{count}";
+            }
+            else
+            {
+                _countLabel.text = "";
+            }
+            
             _onClick = onClick;
 
             if (_previewImage != null && portrait != null)
+            {
                 _previewImage.texture = portrait;
+            }
 
             _button.onClick.AddListener(HandleClick);
             SetSelected(false);

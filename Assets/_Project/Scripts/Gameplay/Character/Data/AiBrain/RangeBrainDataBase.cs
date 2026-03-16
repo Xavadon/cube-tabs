@@ -33,7 +33,6 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
                     (
                         new Sequence
                         (
-                            //TODO: add condition
                             new IsInRange(FleeRange),
                             new Flee(FleeRange)
                         ),
