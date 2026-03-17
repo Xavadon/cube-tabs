@@ -634,6 +634,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelName: {fileID: 3686973867385887668}
   _levelDescription: {fileID: 5370224916992096474}
+  _levelStats: {fileID: 5370224916992096474}
   _playButton: {fileID: 1366980578628536694}
 --- !u!224 &8614979477395399406 stripped
 RectTransform:

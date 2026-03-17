@@ -18,7 +18,8 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
         [SerializeField]
         private Transform _pointsContainer;
         
-        public void Initalize(LevelCatalog catalog, IGameSessionService sessionService, ISceneService sceneService)
+        public void Initalize(LevelCatalog catalog, IGameSessionService sessionService, ISceneService sceneService,
+            IPlayerProgressService progress)
         {
             foreach (var level in catalog.Levels)
             {
@@ -26,7 +27,7 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
                 point.Initialize(level.LevelName, () => OnLevelSelected(level));
             }
 
-            _levelInfo.Initalize(sessionService, sceneService);
+            _levelInfo.Initalize(sessionService, sceneService, progress);
             
             gameObject.SetActive(false);
         }

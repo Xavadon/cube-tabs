@@ -12,6 +12,9 @@ namespace _Project.Scripts.Gameplay.Character.Data
         public CharacterData BaseUnit { get; private set; }
 
         [field: SerializeField]
+        public CharacterData StartingUnit { get; private set; }
+
+        [field: SerializeField]
         public EvolutionCatalog EvolutionCatalog { get; private set; }
 
         [field: SerializeField]

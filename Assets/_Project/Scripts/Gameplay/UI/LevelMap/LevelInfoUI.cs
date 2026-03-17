@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Services;
 using _Project.Scripts.Gameplay.Services.Scene;
@@ -13,15 +14,18 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
     {
         [SerializeField]
         private TMP_Text _levelName;
-
+        
         [SerializeField]
-        private TMP_Text _levelDescription;
+        private TMP_Text _levelStats;
 
         [SerializeField]
         private Button _playButton;
 
+        private readonly StringBuilder _statsBuilder = new();
+
         private IGameSessionService _sessionService;
         private ISceneService _sceneService;
+        private IPlayerProgressService _progress;
         private LevelConfig _selectedLevel;
         
         private void OnEnable()
@@ -34,10 +38,12 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
             _playButton.onClick.RemoveListener(StartLevel);
         }
 
-        public void Initalize(IGameSessionService sessionService, ISceneService sceneService)
+        public void Initalize(IGameSessionService sessionService, ISceneService sceneService,
+            IPlayerProgressService progress)
         {
             _sessionService = sessionService;
             _sceneService = sceneService;
+            _progress = progress;
 
             gameObject.SetActive(false);
         }
@@ -59,6 +65,35 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
             gameObject.SetActive(true);
             _selectedLevel = level;
             _levelName.text = _selectedLevel.LevelName;
+            RefreshStats();
+        }
+
+        private void RefreshStats()
+        {
+            int levelIndex = _selectedLevel.LevelIndex;
+            int currentKills = _progress.GetLevelKills(levelIndex);
+            int requiredKills = _selectedLevel.KillsToComplete;
+            bool completed = _progress.IsLevelCompleted(levelIndex);
+
+            _statsBuilder.Clear();
+            _statsBuilder.Append("Kills: ").Append(currentKills).Append("/").AppendLine(requiredKills.ToString());
+
+            if (_selectedLevel.Enemies is { Length: > 0 })
+            {
+                _statsBuilder.AppendLine("Enemies:");
+
+                foreach (var entry in _selectedLevel.Enemies)
+                {
+                    string name = entry.CharacterData.MaxTier > 0
+                        ? $"{entry.CharacterData.Name} T{entry.TierIndex + 1}"
+                        : entry.CharacterData.Name;
+
+                    _statsBuilder.Append("  ").Append(name).Append(" x").AppendLine(entry.Count.ToString());
+                }
+            }
+
+            _levelStats.text = _statsBuilder.ToString();
+            _playButton.interactable = !completed;
         }
     }
 }

@@ -56,7 +56,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 
             if (levelMap != null)
             {
-                levelMap.Initalize(levelCatalog, _gameSessionService, sceneService);
+                levelMap.Initalize(levelCatalog, _gameSessionService, sceneService, _playerProgressService);
             }
             else
             {

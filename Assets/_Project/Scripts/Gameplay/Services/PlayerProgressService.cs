@@ -321,13 +321,13 @@ namespace _Project.Scripts.Gameplay.Services
                 ArmySlots = _catalog.BaseArmySlots
             };
 
-            if (_catalog.BaseUnit != null)
+            if (_catalog.StartingUnit != null)
             {
                 int instanceId = data.NextInstanceId++;
                 data.OwnedUnits.Add(new OwnedUnit
                 {
                     InstanceId = instanceId,
-                    UnitId = _catalog.BaseUnit.Id,
+                    UnitId = _catalog.StartingUnit.Id,
                     TierIndex = 0
                 });
                 data.ArmyInstanceIds.Add(instanceId);
