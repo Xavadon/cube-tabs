@@ -9,10 +9,10 @@ namespace _Project.Scripts.Gameplay.Character.Data
     public class TierData
     {
         [field: SerializeField]
-        public CharacterStatsData Stats { get; private set; }
+        public float MoveSpeed { get; private set; } = 5f;
 
         [field: SerializeField]
-        public CharacterResistancesData Resistances { get; private set; }
+        public CharacterStatsData Stats { get; private set; }
 
         [field: SerializeField]
         public WeaponData[] WeaponData { get; private set; }
@@ -25,10 +25,7 @@ namespace _Project.Scripts.Gameplay.Character.Data
 
         [field: SerializeField]
         public AbilityAnimationType AnimationType { get; private set; }
-
-        [field: SerializeField]
-        public float MoveSpeed { get; private set; } = 5f;
-
+        
         [field: SerializeField]
         public int KillReward { get; private set; } = 10;
 

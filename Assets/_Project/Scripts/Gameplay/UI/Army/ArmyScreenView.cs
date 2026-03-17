@@ -90,7 +90,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
             RefreshSlotCount();
 
             if (_catalog.BaseUnit != null)
-                _buyButtonCostLabel.text = _catalog.BaseUnit.Price.ToString();
+                _buyButtonCostLabel.text = _catalog.BaseUnit.PriceAsHero.ToString();
 
             SetupPreviewDrag();
 
@@ -108,7 +108,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 _goldLabel.text = _progress.Gold.ToString();
 
             _buyButton.interactable = _catalog.BaseUnit != null
-                                      && _progress.CanAfford(_catalog.BaseUnit.Price);
+                                      && _progress.CanAfford(_catalog.BaseUnit.PriceAsHero);
         }
 
         private void RefreshSlotCount()

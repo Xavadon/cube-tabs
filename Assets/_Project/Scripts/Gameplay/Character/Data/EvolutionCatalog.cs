@@ -9,7 +9,7 @@ namespace _Project.Scripts.Gameplay.Character.Data
         [field: SerializeField]
         public EvolutionEntry[] Entries { get; private set; }
 
-        public EvolutionOption[] GetEvolutions(int sourceId)
+        public EvolutionOption[] GetEvolutions(string sourceId)
         {
             foreach (var entry in Entries)
             {

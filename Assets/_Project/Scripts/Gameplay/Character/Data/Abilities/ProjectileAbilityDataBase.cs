@@ -1,6 +1,7 @@
 using _Project.Scripts.Architecture.BehaviorTree;
 using _Project.Scripts.Gameplay.Character.Components.Abilities;
 using _Project.Scripts.Gameplay.Character.Components.AiBrain;
+using _Project.Scripts.Gameplay.Character.Components.Health;
 using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Character.Data.Abilities
@@ -17,7 +18,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
         [field: SerializeField]
         public Vector3 SpawnOffset { get; private set; } = new(0f, 2f, 1f);
 
-        public override void Execute(Blackboard blackboard)
+        public override void Execute(Blackboard blackboard, float damage, DamageType damageType)
         {
             Transform caster = blackboard.Get<Transform>(BrainKeys.Transform);
             Transform target = blackboard.Get<Transform>(BrainKeys.Target);
@@ -32,7 +33,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
 
             // TODO: Заменить Instantiate на пулинг (орды лучников — десятки проджектайлов одновременно, GC-спайки)
             Projectile projectile = Instantiate(Prefab, spawnPosition, Quaternion.identity);
-            projectile.Init(target, Speed, Damage, DamageType);
+            projectile.Init(target, Speed, damage, damageType);
         }
     }
 }

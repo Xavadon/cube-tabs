@@ -15,10 +15,11 @@ namespace Game.Scripts.Core.Gameplay.Enemies.Components
 
         public ResistanceComponent(TierData tier)
         {
-            _physicalResist = tier.Resistances.PhysicalResist;
-            _magicResist = tier.Resistances.MagicResist;
-            _fireResist = tier.Resistances.FireResist;
-            _faithResist = tier.Resistances.FaithResist;
+            var stats = tier.Stats;
+            _physicalResist = stats.PhysicalResist;
+            _magicResist = stats.MagicResist;
+            _fireResist = stats.FireResist;
+            _faithResist = stats.FaithResist;
         }
 
         public void SetResistance(DamageType type, float value)

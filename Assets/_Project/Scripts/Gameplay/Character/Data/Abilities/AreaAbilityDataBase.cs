@@ -1,6 +1,7 @@
 using _Project.Scripts.Architecture.BehaviorTree;
 using _Project.Scripts.Gameplay.Character.Components.Abilities;
 using _Project.Scripts.Gameplay.Character.Components.AiBrain;
+using _Project.Scripts.Gameplay.Character.Components.Health;
 using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Character.Data.Abilities
@@ -17,7 +18,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
         [field: SerializeField]
         public AreaWave Prefab { get; private set; }
 
-        public override void Execute(Blackboard blackboard)
+        public override void Execute(Blackboard blackboard, float damage, DamageType damageType)
         {
             Transform caster = blackboard.Get<Transform>(BrainKeys.Transform);
             LayerMask targetLayer = blackboard.Get<LayerMask>(BrainKeys.TargetLayer);
@@ -27,7 +28,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
 
             // TODO: Заменить Instantiate на пулинг (массовые касты — GC-спайки)
             AreaWave wave = Instantiate(Prefab, caster.position, Quaternion.identity);
-            wave.Init(Radius, Duration, Damage, DamageType, targetLayer);
+            wave.Init(Radius, Duration, damage, damageType, targetLayer);
         }
     }
 }

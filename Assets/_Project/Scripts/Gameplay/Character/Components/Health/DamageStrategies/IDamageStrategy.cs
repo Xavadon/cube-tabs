@@ -25,11 +25,12 @@ namespace _Project.Scripts.Gameplay.Character.Health.DamageStrategies
         
         public static CharacterResistances FromTierData(TierData tier)
         {
+            var stats = tier.Stats;
             return new CharacterResistances(
-                tier.Resistances.PhysicalResist,
-                tier.Resistances.MagicResist,
-                tier.Resistances.FireResist,
-                tier.Resistances.FaithResist
+                stats.PhysicalResist,
+                stats.MagicResist,
+                stats.FireResist,
+                stats.FaithResist
             );
         }
     }

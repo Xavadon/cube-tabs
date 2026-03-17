@@ -9,14 +9,13 @@ namespace _Project.Scripts.Gameplay.Character.Data
     [CreateAssetMenu(menuName = "Config/CharacterData")]
     public class CharacterData : ScriptableObject
     {
-        [field: SerializeField]
-        public int Id { get; private set; }
+        public string Id => name;
 
         [field: SerializeField]
         public string Name { get; private set; } = "Unit";
 
         [field: SerializeField]
-        public int Price { get; private set; } = 100;
+        public int PriceAsHero { get; private set; } = 100;
 
         [field: SerializeField]
         public TierData[] Tiers { get; private set; }
@@ -49,7 +48,7 @@ namespace _Project.Scripts.Gameplay.Character.Data
         [FormerlySerializedAs("BaseAnimationType")]
         [SerializeField] 
         public AbilityAnimationType BaseAbilityAnimation;
-
+        
         [Button]
         private void SetDefaultMaterial()
         {

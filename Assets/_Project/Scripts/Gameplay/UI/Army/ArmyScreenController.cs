@@ -14,8 +14,8 @@ namespace _Project.Scripts.Gameplay.UI.Army
         private readonly ShopCatalog _catalog;
         private readonly List<CardEntry> _cardEntries = new();
         private readonly List<(ResolvedUnit unit, int count)> _groupBuffer = new();
-        private readonly Dictionary<int, int> _groupCounts = new();
-        private readonly Dictionary<int, ResolvedUnit> _groupFirst = new();
+        private readonly Dictionary<string, int> _groupCounts = new();
+        private readonly Dictionary<string, ResolvedUnit> _groupFirst = new();
 
         private CardSelection _selection;
         private bool _dirty;
@@ -139,25 +139,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
                 var tier = unit.Data.GetTier(unit.TierIndex);
                 float hp = tier.Stats.Health;
-
-                float damage;
-
-                if (tier.WeaponData[0] != null)
-                {
-                    damage = tier.WeaponData[0].Damage;
-                }
-                else
-                {
-                    if (tier.Ability != null)
-                    {
-                        damage = tier.Ability.Damage;
-                    }
-                    else
-                    {
-                        damage = 0f;
-                    }
-                }
-
+                float damage = tier.Stats.Damage;
                 float speed = tier.MoveSpeed;
 
                 _view.AddCard(displayName, count, portrait, hp, damage, speed, isInArmy);
@@ -247,7 +229,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
             foreach (var unit in units)
             {
-                int key = unit.Data.Id * 100 + unit.TierIndex;
+                string key = $"{unit.Data.Id}_{unit.TierIndex}";
 
                 if (_groupCounts.ContainsKey(key))
                 {

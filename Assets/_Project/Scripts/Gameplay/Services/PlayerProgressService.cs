@@ -29,7 +29,7 @@ namespace _Project.Scripts.Gameplay.Services
         void SpendGold(int amount);
         bool BuyBaseUnit();
         bool BuyUniqueUnit(CharacterData unit);
-        bool IsUnitOwned(int unitId);
+        bool IsUnitOwned(string unitId);
         void GrantItemReward(ShopItemData item);
         bool EvolveUnit(int instanceId, CharacterData target, int cost);
         bool UpgradeTier(int instanceId);
@@ -148,10 +148,10 @@ namespace _Project.Scripts.Gameplay.Services
         {
             var baseUnit = _catalog.BaseUnit;
 
-            if (baseUnit == null || !CanAfford(baseUnit.Price))
+            if (baseUnit == null || !CanAfford(baseUnit.PriceAsHero))
                 return false;
 
-            SpendGold(baseUnit.Price);
+            SpendGold(baseUnit.PriceAsHero);
 
             int instanceId = _saveData.NextInstanceId++;
             _saveData.OwnedUnits.Add(new OwnedUnit
@@ -172,13 +172,13 @@ namespace _Project.Scripts.Gameplay.Services
 
         public bool BuyUniqueUnit(CharacterData unit)
         {
-            if (unit == null || !CanAfford(unit.Price))
+            if (unit == null || !CanAfford(unit.PriceAsHero))
                 return false;
 
             if (IsUnitOwned(unit.Id))
                 return false;
 
-            SpendGold(unit.Price);
+            SpendGold(unit.PriceAsHero);
 
             int instanceId = _saveData.NextInstanceId++;
             _saveData.OwnedUnits.Add(new OwnedUnit
@@ -197,7 +197,7 @@ namespace _Project.Scripts.Gameplay.Services
             return true;
         }
 
-        public bool IsUnitOwned(int unitId)
+        public bool IsUnitOwned(string unitId)
         {
             foreach (var owned in _saveData.OwnedUnits)
             {

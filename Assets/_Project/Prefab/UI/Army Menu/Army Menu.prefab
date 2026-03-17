@@ -535,7 +535,7 @@ MonoBehaviour:
   _buyButtonCostLabel: {fileID: 5191269222819961697}
   _goldLabel: {fileID: 3502563463338616871}
   _transferButton: {fileID: 4445554512997615123}
-  _transferButtonLabel: {fileID: 0}
+  _transferButtonLabel: {fileID: 23198923412330307}
   _fullBodyPreviewImage: {fileID: 7132074832118258815}
   _fullBodyPreviewFrame: {fileID: 487139941360739095}
   _dragRotationSpeed: 0.5
@@ -850,6 +850,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eef94c31131a16f42bd8225423929ddf, type: 3}
+--- !u!114 &23198923412330307 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 165209679910387477, guid: eef94c31131a16f42bd8225423929ddf, type: 3}
+  m_PrefabInstance: {fileID: 151040016891144278}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &110839105659020497 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 257089509775985799, guid: eef94c31131a16f42bd8225423929ddf, type: 3}

@@ -21,8 +21,8 @@ namespace _Project.Scripts.Gameplay.Services
 
         private UnitPreviewFactory _portraitFactory;
         private UnitPreviewFactory _fullBodyFactory;
-        private readonly Dictionary<int, RenderTexture> _portraitCache = new();
-        private readonly Dictionary<int, PreviewHandle> _fullBodyCache = new();
+        private readonly Dictionary<string, RenderTexture> _portraitCache = new();
+        private readonly Dictionary<string, PreviewHandle> _fullBodyCache = new();
 
         public Quaternion DefaultFullBodyRotation { get; private set; }
 
@@ -40,17 +40,11 @@ namespace _Project.Scripts.Gameplay.Services
 
         public RenderTexture GetPortrait(CharacterData data, int tierIndex)
         {
-            int key = HashUnitTier(data.Id);
-
-            //Debug.Log($"[UnitPreviewService] Try get portrait: [Name: <color=\"green\">{data.Name}</color> key: {key}]");
+            string key = data.Id;
 
             if (_portraitCache.TryGetValue(key, out var existing))
-            {
-                //Debug.Log($"[UnitPreviewService] Success get existing portrait: [Name: <color=\"green\">{data.Name}</color> key: {key}]");
                 return existing;
-            }
 
-            //Debug.Log($"[UnitPreviewService] Failed get existing portrait, create: [Name: <color=\"green\">{data.Name}</color> key: {key}]");
             var handle = _portraitFactory.CreatePreview(data, tierIndex, _portraitCache.Count);
             _portraitCache[key] = handle.Texture;
             return handle.Texture;
@@ -58,7 +52,7 @@ namespace _Project.Scripts.Gameplay.Services
 
         public PreviewHandle GetFullBody(CharacterData data, int tierIndex)
         {
-            int key = HashUnitTier(data.Id);
+            string key = data.Id;
 
             if (_fullBodyCache.TryGetValue(key, out var existing))
                 return existing;
@@ -74,11 +68,6 @@ namespace _Project.Scripts.Gameplay.Services
             _fullBodyFactory?.Dispose();
             _portraitCache.Clear();
             _fullBodyCache.Clear();
-        }
-
-        private static int HashUnitTier(int unitId)
-        {
-            return unitId * 100;
         }
     }
 }

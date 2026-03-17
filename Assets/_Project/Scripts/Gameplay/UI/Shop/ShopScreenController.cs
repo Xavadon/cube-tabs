@@ -124,16 +124,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
                 var portrait = _previewService.GetPortrait(hero, 0);
                 var tier = hero.GetTier(0);
                 float hp = tier.Stats.Health;
-
-                float damage;
-
-                if (tier.WeaponData is { Length: > 0 } && tier.WeaponData[0] != null)
-                    damage = tier.WeaponData[0].Damage;
-                else if (tier.Ability != null)
-                    damage = tier.Ability.Damage;
-                else
-                    damage = 0f;
-
+                float damage = tier.Stats.Damage;
                 float speed = tier.MoveSpeed;
 
                 _view.AddHeroCard(hero.Name, portrait, hp, damage, speed);
@@ -219,8 +210,8 @@ namespace _Project.Scripts.Gameplay.UI.Shop
                 }
                 else
                 {
-                    _view.SetBuyLabel($"Купить ({_selection.HeroData.Price})");
-                    _view.SetBuyInteractable(_progress.CanAfford(_selection.HeroData.Price));
+                    _view.SetBuyLabel($"Купить ({_selection.HeroData.PriceAsHero})");
+                    _view.SetBuyInteractable(_progress.CanAfford(_selection.HeroData.PriceAsHero));
                 }
             }
             else

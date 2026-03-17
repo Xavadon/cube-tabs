@@ -14,7 +14,7 @@ namespace _Project.Scripts.Architecture.Services.Save
     public class OwnedUnit
     {
         public int InstanceId;
-        public int UnitId;
+        public string UnitId;
         public int TierIndex;
     }
 

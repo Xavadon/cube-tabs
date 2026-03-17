@@ -35,7 +35,7 @@ namespace _Project.Scripts.Gameplay.Character.Data
         [field: SerializeField]
         public ShopItemData[] ShopItems { get; private set; }
 
-        public CharacterData GetUnitById(int id)
+        public CharacterData GetUnitById(string id)
         {
             foreach (var unit in AvailableUnits)
             {

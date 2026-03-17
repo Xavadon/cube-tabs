@@ -372,13 +372,12 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
     {
         public MeleeAttack(float windUpDuration, float attackDuration, float stoppingDistance) : base(windUpDuration, attackDuration, stoppingDistance)
         {
-            
         }
 
         protected override void Enter()
         {
             base.Enter();
-            
+
             AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
             animator.PlayAttack();
         }
@@ -386,33 +385,17 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         protected override void PerformAttack()
         {
             Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
-            
+
             if (target == null)
-            {
                 return;
-            }
 
             IDamageAble damageable = target.GetComponent<IDamageAble>();
-            
-            if (damageable == null)
-            {
-                return;
-            }
 
-            WeaponData weapon = Blackboard.Get<WeaponData>(BrainKeys.WeaponData);
-            float damage = 10f;
-            
-            if (weapon != null)
-            {
-                damage = weapon.Damage;
-            }
-            
-            DamageType type = DamageType.Physical;
-            
-            if (weapon != null)
-            {
-                type = weapon.DamageType;
-            }
+            if (damageable == null)
+                return;
+
+            float damage = Blackboard.Get<float>(BrainKeys.Damage);
+            DamageType type = Blackboard.Get<DamageType>(BrainKeys.DamageType);
 
             damageable.ApplyDamage(damage, target.position, type);
         }
@@ -422,13 +405,12 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
     {
         public RangedAttack(float windUpDuration, float attackDuration, float stoppingDistance) : base(windUpDuration, attackDuration, stoppingDistance)
         {
-            
         }
 
         protected override void Enter()
         {
             base.Enter();
-            
+
             AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
             animator.PlayRangeAttack();
         }
@@ -436,33 +418,17 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         protected override void PerformAttack()
         {
             Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
-            
+
             if (target == null)
-            {
                 return;
-            }
 
             IDamageAble damageable = target.GetComponent<IDamageAble>();
-            
-            if (damageable == null)
-            {
-                return;
-            }
 
-            WeaponData weapon = Blackboard.Get<WeaponData>(BrainKeys.WeaponData);
-            float damage = 10f;
-            
-            if (weapon != null)
-            {
-                damage = weapon.Damage;
-            }
-            
-            DamageType type = DamageType.Physical;;
-            
-            if (weapon != null)
-            {
-                type = weapon.DamageType;
-            }
+            if (damageable == null)
+                return;
+
+            float damage = Blackboard.Get<float>(BrainKeys.Damage);
+            DamageType type = Blackboard.Get<DamageType>(BrainKeys.DamageType);
 
             damageable.ApplyDamage(damage, target.position, type);
         }
@@ -491,7 +457,9 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
         protected override void PerformAttack()
         {
-            _abilityDataBase.Execute(Blackboard);
+            float damage = Blackboard.Get<float>(BrainKeys.Damage);
+            DamageType type = Blackboard.Get<DamageType>(BrainKeys.DamageType);
+            _abilityDataBase.Execute(Blackboard, damage, type);
         }
     }
 

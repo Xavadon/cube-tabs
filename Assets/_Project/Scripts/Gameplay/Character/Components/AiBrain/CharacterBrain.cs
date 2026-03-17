@@ -14,6 +14,8 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         public const string AnimatorController = "AnimatorController";
         public const string Transform = "Transform";
         public const string WeaponData = "WeaponData";
+        public const string Damage = "Damage";
+        public const string DamageType = "DamageType";
         public const string TargetLayer = "TargetLayer";
         public const string InputService = "InputService";
     }
@@ -31,6 +33,8 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             _tree.Blackboard.Set(BrainKeys.Transform, transform);
             _tree.Blackboard.Set(BrainKeys.AnimatorController, animatorController);
             _tree.Blackboard.Set(BrainKeys.TargetLayer, layerMask);
+            _tree.Blackboard.Set(BrainKeys.Damage, tier.Stats.Damage);
+            _tree.Blackboard.Set(BrainKeys.DamageType, tier.Stats.DamageType);
             if (weaponData != null)
                 _tree.Blackboard.Set(BrainKeys.WeaponData, weaponData);
             if (inputService != null)
