@@ -12,13 +12,7 @@ namespace _Project.Scripts.Gameplay.UI
         private TextMeshProUGUI _titleText;
 
         [SerializeField]
-        private TextMeshProUGUI _goldText;
-
-        [SerializeField]
-        private TextMeshProUGUI _killsText;
-
-        [SerializeField]
-        private TextMeshProUGUI _progressText;
+        private TextMeshProUGUI _statsText;
 
         [SerializeField]
         private Button _menuButton;
@@ -42,14 +36,26 @@ namespace _Project.Scripts.Gameplay.UI
 
         public void Show(GameResultData data, int currentLevelKills, int killsToComplete)
         {
-            _titleText.text = data.Result == GameResult.Victory ? "Победа" : "Поражение";
-            _goldText.text = $"+{data.GoldEarned} золота";
-            _killsText.text = $"{data.EnemiesKilled} врагов убито";
-
-            if (killsToComplete > 0)
-                _progressText.text = $"{currentLevelKills}/{killsToComplete} убийств до завершения";
+            if (data.Result == GameResult.Victory)
+            {
+                _titleText.text = "Победа";
+            }
             else
-                _progressText.text = string.Empty;
+            {
+                _titleText.text = "Поражение";
+            }
+
+            string progress;
+            if (killsToComplete > 0)
+            {
+                progress = $"\n\n{currentLevelKills}/{killsToComplete} убийств до завершения";
+            }
+            else
+            {
+                progress = string.Empty;
+            }
+
+            _statsText.text = $"+{data.GoldEarned} золота\n\n{data.EnemiesKilled} врагов убито{progress}";
 
             gameObject.SetActive(true);
         }

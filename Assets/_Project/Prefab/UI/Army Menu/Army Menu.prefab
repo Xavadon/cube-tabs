@@ -535,7 +535,7 @@ MonoBehaviour:
   _buyButtonCostLabel: {fileID: 5191269222819961697}
   _goldLabel: {fileID: 3502563463338616871}
   _transferButton: {fileID: 4445554512997615123}
-  _transferButtonLabel: {fileID: 3796123897483540500}
+  _transferButtonLabel: {fileID: 0}
   _fullBodyPreviewImage: {fileID: 7132074832118258815}
   _fullBodyPreviewFrame: {fileID: 487139941360739095}
   _dragRotationSpeed: 0.5
@@ -864,17 +864,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3796123897483540500 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3942356709393748034, guid: eef94c31131a16f42bd8225423929ddf, type: 3}
-  m_PrefabInstance: {fileID: 151040016891144278}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &4445554512997615123 stripped
@@ -1279,6 +1268,10 @@ PrefabInstance:
     - target: {fileID: 189274185299797386, guid: 802852df06a3d594a9d4ee55428f62d4, type: 3}
       propertyPath: m_Name
       value: Buy Pawn Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 3809703093794392511, guid: 802852df06a3d594a9d4ee55428f62d4, type: 3}
+      propertyPath: m_text
+      value: Buy Pawn
       objectReference: {fileID: 0}
     - target: {fileID: 5889004737978453246, guid: 802852df06a3d594a9d4ee55428f62d4, type: 3}
       propertyPath: m_Pivot.x

@@ -213,12 +213,28 @@ PrefabInstance:
       value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 3722084675503112286, guid: e6f2d3882a28f794f9f1e266071e8a7b, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722084675503112286, guid: e6f2d3882a28f794f9f1e266071e8a7b, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722084675503112286, guid: e6f2d3882a28f794f9f1e266071e8a7b, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722084675503112286, guid: e6f2d3882a28f794f9f1e266071e8a7b, type: 3}
       propertyPath: m_fontSizeMax
       value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 3722084675503112286, guid: e6f2d3882a28f794f9f1e266071e8a7b, type: 3}
       propertyPath: m_enableAutoSizing
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722084675503112286, guid: e6f2d3882a28f794f9f1e266071e8a7b, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4282400832
       objectReference: {fileID: 0}
     - target: {fileID: 5354372165525577792, guid: e6f2d3882a28f794f9f1e266071e8a7b, type: 3}
       propertyPath: m_Pivot.x
@@ -633,7 +649,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelName: {fileID: 3686973867385887668}
-  _levelDescription: {fileID: 5370224916992096474}
   _levelStats: {fileID: 5370224916992096474}
   _playButton: {fileID: 1366980578628536694}
 --- !u!224 &8614979477395399406 stripped
@@ -656,6 +671,10 @@ PrefabInstance:
     - target: {fileID: 189274185299797386, guid: 802852df06a3d594a9d4ee55428f62d4, type: 3}
       propertyPath: m_Name
       value: Base_button
+      objectReference: {fileID: 0}
+    - target: {fileID: 3809703093794392511, guid: 802852df06a3d594a9d4ee55428f62d4, type: 3}
+      propertyPath: m_text
+      value: Attack
       objectReference: {fileID: 0}
     - target: {fileID: 5889004737978453246, guid: 802852df06a3d594a9d4ee55428f62d4, type: 3}
       propertyPath: m_Pivot.x
@@ -887,6 +906,22 @@ PrefabInstance:
         Reward: 1000
 
         Progress: 100/1000'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722084675503112286, guid: e6f2d3882a28f794f9f1e266071e8a7b, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722084675503112286, guid: e6f2d3882a28f794f9f1e266071e8a7b, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722084675503112286, guid: e6f2d3882a28f794f9f1e266071e8a7b, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722084675503112286, guid: e6f2d3882a28f794f9f1e266071e8a7b, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4282400832
       objectReference: {fileID: 0}
     - target: {fileID: 3722084675503112286, guid: e6f2d3882a28f794f9f1e266071e8a7b, type: 3}
       propertyPath: m_VerticalAlignment
