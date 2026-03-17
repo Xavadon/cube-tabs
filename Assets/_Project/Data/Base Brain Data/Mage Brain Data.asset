@@ -16,7 +16,5 @@ MonoBehaviour:
   <FleeRange>k__BackingField: 5
   <WindUpDuration>k__BackingField: 0.7
   <AttackDuration>k__BackingField: 1.2
-  <AttackRange>k__BackingField: 10
+  <AttackRange>k__BackingField: 17
   <AttackCooldown>k__BackingField: 0.5
-  <Ability>k__BackingField: {fileID: 11400000, guid: 9af8400a218aa4446a3188898e7e941d, type: 2}
-  <AnimationType>k__BackingField: 1

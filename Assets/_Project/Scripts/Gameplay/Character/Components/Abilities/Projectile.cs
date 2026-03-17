@@ -1,3 +1,4 @@
+using System;
 using _Project.Scripts.Gameplay.Character.Components.Health;
 using UnityEngine;
 
@@ -15,13 +16,16 @@ namespace _Project.Scripts.Gameplay.Character.Components.Abilities
         private float _speed;
         private float _damage;
         private DamageType _damageType;
+        private Action<Vector3> _onHit;
 
-        public void Init(Transform target, float speed, float damage, DamageType damageType)
+        public void Init(Transform target, float speed, float damage, DamageType damageType,
+            Action<Vector3> onHit = null)
         {
             _target = target;
             _speed = speed;
             _damage = damage;
             _damageType = damageType;
+            _onHit = onHit;
 
             Destroy(gameObject, Lifetime);
         }
@@ -53,6 +57,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.Abilities
         {
             IDamageAble damageable = _target.GetComponent<IDamageAble>();
             damageable?.ApplyDamage(_damage, hitPoint, _damageType);
+            _onHit?.Invoke(hitPoint);
             // TODO: Возвращать в пул вместо Destroy
             Destroy(gameObject);
         }

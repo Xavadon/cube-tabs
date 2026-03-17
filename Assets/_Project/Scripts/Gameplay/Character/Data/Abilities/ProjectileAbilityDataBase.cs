@@ -18,6 +18,9 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
         [field: SerializeField]
         public Vector3 SpawnOffset { get; private set; } = new(0f, 2f, 1f);
 
+        [field: SerializeField]
+        public AbilityDataBase OnHitAbility { get; private set; }
+
         public override void Execute(Blackboard blackboard, float damage, DamageType damageType)
         {
             Transform caster = blackboard.Get<Transform>(BrainKeys.Transform);
@@ -26,14 +29,25 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
             if (caster == null || target == null)
                 return;
 
+            Projectile projectile = SpawnProjectile(caster);
+            projectile.Init(target, Speed, damage, damageType, onHit: OnHitAbility == null ? null : _ =>
+            {
+                Transform originalTransform = blackboard.Get<Transform>(BrainKeys.Transform);
+                blackboard.Set(BrainKeys.Transform, target);
+                OnHitAbility.Execute(blackboard, damage, damageType);
+                blackboard.Set(BrainKeys.Transform, originalTransform);
+            });
+        }
+
+        // TODO: Заменить Instantiate на пулинг (орды лучников — десятки проджектайлов одновременно, GC-спайки)
+        protected Projectile SpawnProjectile(Transform caster)
+        {
             Vector3 spawnPosition = caster.position
                                     + caster.forward * SpawnOffset.z
                                     + caster.up * SpawnOffset.y
                                     + caster.right * SpawnOffset.x;
 
-            // TODO: Заменить Instantiate на пулинг (орды лучников — десятки проджектайлов одновременно, GC-спайки)
-            Projectile projectile = Instantiate(Prefab, spawnPosition, Quaternion.identity);
-            projectile.Init(target, Speed, damage, damageType);
+            return Instantiate(Prefab, spawnPosition, Quaternion.identity);
         }
     }
 }

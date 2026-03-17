@@ -14,6 +14,9 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
 
         [field: SerializeField]
         public float Duration { get; private set; } = 1f;
+        
+        [field: SerializeField]
+        public Vector3 SpawnOffset { get; private set; } = new(0f, 2f, 1f);
 
         [field: SerializeField]
         public AreaWave Prefab { get; private set; }
@@ -27,7 +30,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
                 return;
 
             // TODO: Заменить Instantiate на пулинг (массовые касты — GC-спайки)
-            AreaWave wave = Instantiate(Prefab, caster.position, Quaternion.identity);
+            AreaWave wave = Instantiate(Prefab, caster.position + SpawnOffset, Quaternion.identity);
             wave.Init(Radius, Duration, damage, damageType, targetLayer);
         }
     }

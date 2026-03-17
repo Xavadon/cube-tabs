@@ -12,11 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d7402c2c9edf404e86fd6b69c52d8e7, type: 3}
   m_Name: Area Ability Data
   m_EditorClassIdentifier: 
-  <Damage>k__BackingField: 50
-  <DamageType>k__BackingField: 1
-  <Radius>k__BackingField: 5
-  <Duration>k__BackingField: 1
-  <AffectedLayers>k__BackingField:
-    serializedVersion: 2
-    m_Bits: 128
+  <Radius>k__BackingField: 2.25
+  <Duration>k__BackingField: 0.3
+  <SpawnOffset>k__BackingField: {x: 0, y: 1, z: 0}
   <Prefab>k__BackingField: {fileID: -6825192595806764821, guid: eb4f9d038f7eb4d499f1d25c6a394f16, type: 3}
