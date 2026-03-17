@@ -16,5 +16,5 @@ MonoBehaviour:
   <FleeRange>k__BackingField: 5
   <WindUpDuration>k__BackingField: 0.7
   <AttackDuration>k__BackingField: 1.4
-  <AttackRange>k__BackingField: 25
+  <AttackRange>k__BackingField: 10
   <AttackCooldown>k__BackingField: 0.5

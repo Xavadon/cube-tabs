@@ -32,7 +32,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
         {
             return new Selector
             (
-                new Sequence
+                new Parallel
                 (
                     new FindTarget(DetectionRadius, targetLayer),
                     new Selector

@@ -46,7 +46,10 @@ namespace _Project.Scripts.Architecture.Services.Camera
             if (_playerCamera == null)
             {
                 _playerCamera = UnityEngine.Camera.main;
-                if (_playerCamera == null) return;
+                if (_playerCamera == null)
+                {
+                    return;
+                }
             }
 
             if (_characters == null || _characters.Count == 0) return;

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a268af6429472dd43a8c35ae75dc2274, type: 3}
-  m_Name: Level 2 Config
+  m_Name: Goblin Cave
   m_EditorClassIdentifier: 
   <LevelName>k__BackingField: Goblin Cave
   <LevelIndex>k__BackingField: 1
@@ -18,7 +18,7 @@ MonoBehaviour:
   Enemies:
   - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
     TierIndex: 0
-    Count: 4
+    Count: 5
   - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
     TierIndex: 0
-    Count: 3
+    Count: 2

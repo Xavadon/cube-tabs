@@ -470,9 +470,15 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         protected override NodeStatus Process()
         {
             IInputService input = Blackboard.Get<IInputService>(BrainKeys.InputService);
-            return Status = input.MoveInput.sqrMagnitude > Deadzone * Deadzone
-                ? NodeStatus.Success
-                : NodeStatus.Failure;
+            
+            if (input.MoveInput.sqrMagnitude > Deadzone * Deadzone)
+            {
+                return Status = NodeStatus.Success;
+            }
+            else
+            {
+                return Status = NodeStatus.Failure;
+            }
         }
     }
 

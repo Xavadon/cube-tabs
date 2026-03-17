@@ -19,7 +19,12 @@ namespace _Project.Scripts.Gameplay.Character.Components.UI
             _camera = Camera.main;
 
             _pool = new Pool<HealthBarElement>(
-                createFunc: () => Instantiate(_prefab, transform),
+                createFunc: () =>
+                {
+                    HealthBarElement element = Instantiate(_prefab, transform);
+                    element.gameObject.SetActive(false);
+                    return element;
+                },
                 onGet: null,
                 onReturn: element => element.gameObject.SetActive(false),
                 preloadCount: _preloadCount);

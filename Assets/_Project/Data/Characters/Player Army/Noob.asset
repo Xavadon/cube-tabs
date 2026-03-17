@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: noob
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Noob
-  <PriceAsHero>k__BackingField: 60
+  <PriceAsHero>k__BackingField: 25
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 3.5
     <Stats>k__BackingField:

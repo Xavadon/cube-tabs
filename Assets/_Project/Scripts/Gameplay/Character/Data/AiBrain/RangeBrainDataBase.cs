@@ -26,7 +26,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
         {
             return new Selector
             (
-                new Sequence
+                new Parallel
                 (
                     new FindTarget(DetectionRadius, targetLayer),
                     new Selector
@@ -41,7 +41,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
                             new IsInRange(AttackRange),
                             new Selector
                             (
-                                new Cooldown(AttackCooldown, new Parallel(CreateAttackNode(tier), new RotateTowardsTarget())), 
+                                new Cooldown(AttackCooldown, new Parallel(CreateAttackNode(tier), new RotateTowardsTarget())),
                                 new Wait(0.1f)
                             )
                         ),

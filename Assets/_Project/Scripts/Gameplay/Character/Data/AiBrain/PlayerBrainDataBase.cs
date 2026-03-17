@@ -31,14 +31,22 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
                     new HasMoveInput(),
                     new PlayerMove(tier.MoveSpeed)
                 ),
-                new Sequence
+                new Parallel
                 (
+                    new Inverter(new HasMoveInput()),
                     new FindTarget(DetectionRadius, targetLayer),
-                    new IsInRange(AttackStopRange),
                     new Selector
                     (
-                        new Cooldown(AttackCooldown, new Parallel(CreateAttackNode(tier), new RotateTowardsTarget())),
-                        new Wait(0.1f)
+                        new Sequence
+                        (
+                            new IsInRange(AttackStopRange),
+                            new Selector
+                            (
+                                new Cooldown(AttackCooldown, new Parallel(CreateAttackNode(tier), new RotateTowardsTarget())),
+                                new Wait(0.1f)
+                            )
+                        ),
+                        new ChaseTarget(AttackRange)
                     )
                 ),
                 new Idle()

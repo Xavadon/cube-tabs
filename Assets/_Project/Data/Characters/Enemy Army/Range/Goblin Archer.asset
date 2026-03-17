@@ -12,25 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b574c7249b5861d43abc286ee8fcc848, type: 3}
   m_Name: Goblin Archer
   m_EditorClassIdentifier: 
-  <Id>k__BackingField: 11
   <Name>k__BackingField: Goblin Archer
-  <Price>k__BackingField: 100
+  <PriceAsHero>k__BackingField: 100
   <Tiers>k__BackingField:
-  - <Stats>k__BackingField:
+  - <MoveSpeed>k__BackingField: 4
+    <Stats>k__BackingField:
       <Health>k__BackingField: 200
-      <Mana>k__BackingField: 0
-      <Stamina>k__BackingField: 0
-    <Resistances>k__BackingField:
       <PhysicalResist>k__BackingField: 0
       <MagicResist>k__BackingField: 0
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-    <WeaponData>k__BackingField: []
+      <Damage>k__BackingField: 20
+      <DamageType>k__BackingField: 0
+    <WeaponData>k__BackingField:
+    - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 480d01bedecf65c4d96a76a709148b56, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 985f8e9e5699ab842ab5909bbfa14c47, type: 2}
-    <AnimationType>k__BackingField: 0
-    <MoveSpeed>k__BackingField: 4
-    <KillReward>k__BackingField: 1
+    <AnimationType>k__BackingField: 1
+    <KillReward>k__BackingField: 7
     <EvolutionCost>k__BackingField: 0
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: b5eb0a9ecbd2a4f42ac4d356ca078d45, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: b5eb0a9ecbd2a4f42ac4d356ca078d45, type: 2}

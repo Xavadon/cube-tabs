@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a268af6429472dd43a8c35ae75dc2274, type: 3}
-  m_Name: Level 1 Config
+  m_Name: Goblin Camp
   m_EditorClassIdentifier: 
-  <LevelName>k__BackingField: Dirt
+  <LevelName>k__BackingField: Goblin Camp
   <LevelIndex>k__BackingField: 0
-  <KillsToComplete>k__BackingField: 100
+  <KillsToComplete>k__BackingField: 90
   Enemies:
   - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
     TierIndex: 0
-    Count: 15
+    Count: 7
   - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
     TierIndex: 0
-    Count: 6
+    Count: 4
