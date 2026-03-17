@@ -14,21 +14,22 @@ namespace _Project.Scripts.Gameplay.Services.Scene
         private const string CanvasPrefabPath = "Prefab/MenuCanvas";
         private const string LevelCatalogPath = "Data/LevelCatalog";
         private const string ShopCatalogPath = "Data/ShopCatalog";
-        private const string PreviewConfigPath = "Data/UnitPreviewConfig";
-        private const string FullBodyPreviewConfigPath = "Data/UnitPreviewConfig_FullBody";
 
         private readonly IGameSessionService _gameSessionService;
         private readonly IPlayerProgressService _playerProgressService;
         private readonly IPurchaseService _purchaseService;
+        private readonly IUnitPreviewService _unitPreviewService;
 
         public MenuInitializer(
             IGameSessionService gameSessionService,
             IPlayerProgressService playerProgressService,
-            IPurchaseService purchaseService)
+            IPurchaseService purchaseService,
+            IUnitPreviewService unitPreviewService)
         {
             _gameSessionService = gameSessionService;
             _playerProgressService = playerProgressService;
             _purchaseService = purchaseService;
+            _unitPreviewService = unitPreviewService;
         }
 
         public UniTask Initialize()
@@ -55,8 +56,6 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 
             var levelCatalog = Resources.Load<LevelCatalog>(LevelCatalogPath);
             var shopCatalog = Resources.Load<ShopCatalog>(ShopCatalogPath);
-            var previewConfig = Resources.Load<UnitPreviewConfig>(PreviewConfigPath);
-            var fullBodyPreviewConfig = Resources.Load<UnitPreviewConfig>(FullBodyPreviewConfigPath);
 
             if (levelMap != null)
             {
@@ -69,7 +68,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 
             if (shop != null)
             {
-                shop.Initialize(_playerProgressService, _purchaseService, shopCatalog, previewConfig, fullBodyPreviewConfig);
+                shop.Initialize(_playerProgressService, _purchaseService, _unitPreviewService, shopCatalog);
             }
             else
             {
@@ -78,7 +77,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 
             if (army != null)
             {
-                army.Initialize(_playerProgressService, shopCatalog, previewConfig, fullBodyPreviewConfig);
+                army.Initialize(_playerProgressService, shopCatalog, _unitPreviewService);
             }
             else
             {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using _Project.Scripts.Architecture.Services;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Services;
-using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.UI.Shop
 {
@@ -12,11 +11,8 @@ namespace _Project.Scripts.Gameplay.UI.Shop
         private readonly IShopScreenView _view;
         private readonly IPlayerProgressService _progress;
         private readonly IPurchaseService _purchaseService;
+        private readonly IUnitPreviewService _previewService;
         private readonly ShopCatalog _catalog;
-        private readonly UnitPreviewFactory _portraitFactory;
-        private readonly UnitPreviewFactory _fullBodyFactory;
-        private readonly Dictionary<int, RenderTexture> _portraitCache;
-        private readonly Dictionary<int, PreviewHandle> _fullBodyCache = new();
         private readonly List<CardEntry> _cardEntries = new();
 
         private Selection _selection;
@@ -26,18 +22,14 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             IShopScreenView view,
             IPlayerProgressService progress,
             IPurchaseService purchaseService,
-            ShopCatalog catalog,
-            UnitPreviewFactory portraitFactory,
-            UnitPreviewFactory fullBodyFactory,
-            Dictionary<int, RenderTexture> portraitCache)
+            IUnitPreviewService previewService,
+            ShopCatalog catalog)
         {
             _view = view;
             _progress = progress;
             _purchaseService = purchaseService;
+            _previewService = previewService;
             _catalog = catalog;
-            _portraitFactory = portraitFactory;
-            _fullBodyFactory = fullBodyFactory;
-            _portraitCache = portraitCache;
 
             _view.CardClicked += OnCardClicked;
             _view.BuyClicked += OnBuyClicked;
@@ -61,9 +53,6 @@ namespace _Project.Scripts.Gameplay.UI.Shop
 
         public void Dispose()
         {
-            _portraitFactory?.Dispose();
-            _fullBodyFactory?.Dispose();
-
             _view.CardClicked -= OnCardClicked;
             _view.BuyClicked -= OnBuyClicked;
             _view.ViewEnabled -= OnViewEnabled;
@@ -132,7 +121,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
 
             foreach (var hero in _catalog.UniqueHeroes)
             {
-                var portrait = GetOrCreatePortrait(hero, 0);
+                var portrait = _previewService.GetPortrait(hero, 0);
                 var tier = hero.GetTier(0);
                 float hp = tier.Stats.Health;
 
@@ -197,7 +186,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
 
             if (_selection.IsHero)
             {
-                var handle = GetOrCreateFullBody(_selection.HeroData, 0);
+                var handle = _previewService.GetFullBody(_selection.HeroData, 0);
                 _view.ShowUnitPreview(handle);
             }
             else
@@ -239,30 +228,6 @@ namespace _Project.Scripts.Gameplay.UI.Shop
                 _view.SetBuyLabel($"Купить ({_selection.ItemData.PriceLabel})");
                 _view.SetBuyInteractable(true);
             }
-        }
-
-        private RenderTexture GetOrCreatePortrait(CharacterData data, int tierIndex)
-        {
-            int key = data.Id * 100 + tierIndex;
-
-            if (_portraitCache.TryGetValue(key, out var existing))
-                return existing;
-
-            var handle = _portraitFactory.CreatePreview(data, tierIndex, _portraitCache.Count);
-            _portraitCache[key] = handle.Texture;
-            return handle.Texture;
-        }
-
-        private PreviewHandle GetOrCreateFullBody(CharacterData data, int tierIndex)
-        {
-            int key = data.Id * 100 + tierIndex;
-
-            if (_fullBodyCache.TryGetValue(key, out var existing))
-                return existing;
-
-            var handle = _fullBodyFactory.CreatePreview(data, tierIndex, _fullBodyCache.Count);
-            _fullBodyCache[key] = handle;
-            return handle;
         }
 
         private struct Selection

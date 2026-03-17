@@ -48,7 +48,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
         [Header("Full Body Preview")]
         [SerializeField]
         private RawImage _fullBodyPreviewImage;
-        
+
         [SerializeField]
         private Image _fullBodyPreviewFrame;
 
@@ -73,22 +73,18 @@ namespace _Project.Scripts.Gameplay.UI.Army
         public event Action ViewEnabled;
 
         public void Initialize(IPlayerProgressService progress, ShopCatalog catalog,
-            UnitPreviewConfig portraitConfig, UnitPreviewConfig fullBodyConfig)
+            IUnitPreviewService previewService)
         {
             _progress = progress;
             _catalog = catalog;
-            _defaultFullBodyRotation = Quaternion.Euler(fullBodyConfig.ModelRotation);
-
-            var portraitFactory = new UnitPreviewFactory(portraitConfig);
-            var fullBodyFactory = new UnitPreviewFactory(fullBodyConfig);
-            var portraitCache = new Dictionary<int, RenderTexture>();
+            _defaultFullBodyRotation = previewService.DefaultFullBodyRotation;
 
             // View binds to Model directly for simple data display (Supervising Controller)
             _progress.OnGoldChanged += RefreshGold;
             _progress.OnArmyChanged += RefreshSlotCount;
 
             if (_evolutionPanel != null)
-                _evolutionPanel.Initialize(progress, catalog.EvolutionCatalog, portraitFactory, portraitCache);
+                _evolutionPanel.Initialize(progress, catalog.EvolutionCatalog, previewService);
 
             RefreshGold();
             RefreshSlotCount();
@@ -98,8 +94,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
             SetupPreviewDrag();
 
-            _controller = new ArmyScreenController(
-                this, progress, catalog, portraitFactory, fullBodyFactory, portraitCache);
+            _controller = new ArmyScreenController(this, progress, previewService, catalog);
 
             _buyButton.onClick.AddListener(OnBuyButtonClicked);
             _transferButton.onClick.AddListener(OnTransferButtonClicked);

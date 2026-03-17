@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Services;
-using _Project.Scripts.Gameplay.UI.Shop;
 using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.UI.Army
@@ -11,11 +10,8 @@ namespace _Project.Scripts.Gameplay.UI.Army
     {
         private readonly IArmyScreenView _view;
         private readonly IPlayerProgressService _progress;
+        private readonly IUnitPreviewService _previewService;
         private readonly ShopCatalog _catalog;
-        private readonly UnitPreviewFactory _portraitFactory;
-        private readonly UnitPreviewFactory _fullBodyFactory;
-        private readonly Dictionary<int, RenderTexture> _portraitCache;
-        private readonly Dictionary<int, PreviewHandle> _fullBodyCache = new();
         private readonly List<CardEntry> _cardEntries = new();
         private readonly List<(ResolvedUnit unit, int count)> _groupBuffer = new();
         private readonly Dictionary<int, int> _groupCounts = new();
@@ -27,17 +23,13 @@ namespace _Project.Scripts.Gameplay.UI.Army
         public ArmyScreenController(
             IArmyScreenView view,
             IPlayerProgressService progress,
-            ShopCatalog catalog,
-            UnitPreviewFactory portraitFactory,
-            UnitPreviewFactory fullBodyFactory,
-            Dictionary<int, RenderTexture> portraitCache)
+            IUnitPreviewService previewService,
+            ShopCatalog catalog)
         {
             _view = view;
             _progress = progress;
+            _previewService = previewService;
             _catalog = catalog;
-            _portraitFactory = portraitFactory;
-            _fullBodyFactory = fullBodyFactory;
-            _portraitCache = portraitCache;
 
             _view.CardClicked += OnCardClicked;
             _view.BuyClicked += OnBuyClicked;
@@ -62,9 +54,6 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
         public void Dispose()
         {
-            _portraitFactory?.Dispose();
-            _fullBodyFactory?.Dispose();
-
             _view.BuyClicked -= OnBuyClicked;
             _view.TransferClicked -= OnTransferClicked;
             _view.CardClicked -= OnCardClicked;
@@ -136,9 +125,9 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
             foreach (var (unit, count) in _groupBuffer)
             {
-                var portrait = GetOrCreatePortrait(unit.Data, unit.TierIndex);
+                var portrait = _previewService.GetPortrait(unit.Data, unit.TierIndex);
                 string displayName;
-                
+
                 if (unit.Data.MaxTier > 0)
                 {
                     displayName = $"{unit.Data.Name} T{unit.TierIndex + 1}";
@@ -147,12 +136,12 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 {
                     displayName = unit.Data.Name;
                 }
-                
+
                 var tier = unit.Data.GetTier(unit.TierIndex);
                 float hp = tier.Stats.Health;
-                
+
                 float damage;
-                
+
                 if (tier.WeaponData[0] != null)
                 {
                     damage = tier.WeaponData[0].Damage;
@@ -168,7 +157,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
                         damage = 0f;
                     }
                 }
-                
+
                 float speed = tier.MoveSpeed;
 
                 _view.AddCard(displayName, count, portrait, hp, damage, speed, isInArmy);
@@ -224,7 +213,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 return;
             }
 
-            var handle = GetOrCreateFullBody(_selection.Unit, _selection.TierIndex);
+            var handle = _previewService.GetFullBody(_selection.Unit, _selection.TierIndex);
             _view.ShowFullBodyPreview(handle);
         }
 
@@ -258,7 +247,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
             foreach (var unit in units)
             {
-                int key = HashUnitTier(unit.Data.Id, unit.TierIndex);
+                int key = unit.Data.Id * 100 + unit.TierIndex;
 
                 if (_groupCounts.ContainsKey(key))
                 {
@@ -273,35 +262,6 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
             foreach (var kvp in _groupFirst)
                 _groupBuffer.Add((kvp.Value, _groupCounts[kvp.Key]));
-        }
-
-        private static int HashUnitTier(int unitId, int tierIndex)
-        {
-            return unitId * 100 + tierIndex;
-        }
-
-        private RenderTexture GetOrCreatePortrait(CharacterData data, int tierIndex)
-        {
-            int key = HashUnitTier(data.Id, tierIndex);
-
-            if (_portraitCache.TryGetValue(key, out var existing))
-                return existing;
-
-            var handle = _portraitFactory.CreatePreview(data, tierIndex, _portraitCache.Count);
-            _portraitCache[key] = handle.Texture;
-            return handle.Texture;
-        }
-
-        private PreviewHandle GetOrCreateFullBody(CharacterData data, int tierIndex)
-        {
-            int key = HashUnitTier(data.Id, tierIndex);
-
-            if (_fullBodyCache.TryGetValue(key, out var existing))
-                return existing;
-
-            var handle = _fullBodyFactory.CreatePreview(data, tierIndex, _fullBodyCache.Count);
-            _fullBodyCache[key] = handle;
-            return handle;
         }
 
         private struct CardSelection

@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Services;
-using _Project.Scripts.Gameplay.UI.Shop;
 using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.UI.Army
@@ -16,16 +14,14 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
         private IPlayerProgressService _progress;
         private EvolutionCatalog _evolutionCatalog;
-        private UnitPreviewFactory _portraitFactory;
-        private Dictionary<int, RenderTexture> _portraitCache;
+        private IUnitPreviewService _previewService;
 
         public void Initialize(IPlayerProgressService progress, EvolutionCatalog evolutionCatalog,
-            UnitPreviewFactory portraitFactory, Dictionary<int, RenderTexture> portraitCache)
+            IUnitPreviewService previewService)
         {
             _progress = progress;
             _evolutionCatalog = evolutionCatalog;
-            _portraitFactory = portraitFactory;
-            _portraitCache = portraitCache;
+            _previewService = previewService;
         }
 
         public void Show(int instanceId, CharacterData currentData, int tierIndex)
@@ -62,7 +58,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
             gameObject.SetActive(true);
 
             int cost = nextTier.EvolutionCost;
-            var portrait = GetOrCreatePortrait(data, tierIndex + 1);
+            var portrait = _previewService.GetPortrait(data, tierIndex + 1);
 
             var optionUI = Instantiate(_optionPrefab, _optionsContainer);
             int capturedId = instanceId;
@@ -94,7 +90,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 var capturedTarget = option.Target;
                 int capturedCost = option.Cost;
 
-                var portrait = GetOrCreatePortrait(option.Target, 0);
+                var portrait = _previewService.GetPortrait(option.Target, 0);
 
                 optionUI.Init(
                     option.Target.Name,
@@ -103,18 +99,6 @@ namespace _Project.Scripts.Gameplay.UI.Army
                     portrait,
                     () => _progress.EvolveUnit(capturedId, capturedTarget, capturedCost));
             }
-        }
-
-        private RenderTexture GetOrCreatePortrait(CharacterData data, int tierIndex)
-        {
-            int key = data.Id * 100 + tierIndex;
-
-            if (_portraitCache.TryGetValue(key, out var existing))
-                return existing;
-
-            var handle = _portraitFactory.CreatePreview(data, tierIndex, _portraitCache.Count);
-            _portraitCache[key] = handle.Texture;
-            return handle.Texture;
         }
 
         private void Clear()

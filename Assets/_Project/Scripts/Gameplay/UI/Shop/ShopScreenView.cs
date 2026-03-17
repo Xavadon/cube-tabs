@@ -62,16 +62,11 @@ namespace _Project.Scripts.Gameplay.UI.Shop
         public void Initialize(
             IPlayerProgressService progress,
             IPurchaseService purchaseService,
-            ShopCatalog catalog,
-            UnitPreviewConfig portraitConfig,
-            UnitPreviewConfig fullBodyConfig)
+            IUnitPreviewService previewService,
+            ShopCatalog catalog)
         {
             _progress = progress;
-            _defaultFullBodyRotation = Quaternion.Euler(fullBodyConfig.ModelRotation);
-
-            var portraitFactory = new UnitPreviewFactory(portraitConfig);
-            var fullBodyFactory = new UnitPreviewFactory(fullBodyConfig);
-            var portraitCache = new Dictionary<int, RenderTexture>();
+            _defaultFullBodyRotation = previewService.DefaultFullBodyRotation;
 
             _progress.OnGoldChanged += RefreshGold;
             RefreshGold();
@@ -79,8 +74,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             SetupPreviewDrag();
 
             _controller = new ShopScreenController(
-                this, progress, purchaseService, catalog,
-                portraitFactory, fullBodyFactory, portraitCache);
+                this, progress, purchaseService, previewService, catalog);
 
             _buyButton.onClick.AddListener(OnBuyButtonClicked);
             gameObject.SetActive(false);
