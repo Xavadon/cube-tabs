@@ -1,11 +1,12 @@
 using System;
+using _Project.Scripts.Gameplay.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.Gameplay.UI.Army
 {
-    public class ArmyUnitCardUI : MonoBehaviour
+    public class ArmyUnitCardUI : MonoBehaviour, ISelectableCard
     {
         [SerializeField]
         private TextMeshProUGUI _nameLabel;

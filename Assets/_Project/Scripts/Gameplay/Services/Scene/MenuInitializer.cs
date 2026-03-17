@@ -1,3 +1,4 @@
+using _Project.Scripts.Architecture.Services;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.UI.Army;
@@ -18,13 +19,16 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 
         private readonly IGameSessionService _gameSessionService;
         private readonly IPlayerProgressService _playerProgressService;
+        private readonly IPurchaseService _purchaseService;
 
         public MenuInitializer(
             IGameSessionService gameSessionService,
-            IPlayerProgressService playerProgressService)
+            IPlayerProgressService playerProgressService,
+            IPurchaseService purchaseService)
         {
             _gameSessionService = gameSessionService;
             _playerProgressService = playerProgressService;
+            _purchaseService = purchaseService;
         }
 
         public UniTask Initialize()
@@ -46,7 +50,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
             var canvas = Object.Instantiate(canvasPrefab);
 
             var levelMap = canvas.GetComponentInChildren<LevelMapUI>();
-            var shop = canvas.GetComponentInChildren<ShopScreenUI>();
+            var shop = canvas.GetComponentInChildren<ShopScreenView>();
             var army = canvas.GetComponentInChildren<ArmyScreenView>();
 
             var levelCatalog = Resources.Load<LevelCatalog>(LevelCatalogPath);
@@ -65,11 +69,11 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 
             if (shop != null)
             {
-                shop.Initialize(shopCatalog, _playerProgressService, previewConfig);
+                shop.Initialize(_playerProgressService, _purchaseService, shopCatalog, previewConfig, fullBodyPreviewConfig);
             }
             else
             {
-                Debug.LogError("[MenuInitializer] ShopScreenUI not found on MenuCanvas prefab");
+                Debug.LogError("[MenuInitializer] ShopScreenView not found on MenuCanvas prefab");
             }
 
             if (army != null)
@@ -78,7 +82,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
             }
             else
             {
-                Debug.LogError("[MenuInitializer] ArmyScreenUI not found on MenuCanvas prefab");
+                Debug.LogError("[MenuInitializer] ArmyScreenView not found on MenuCanvas prefab");
             }
 
             Debug.Log("[MenuInitializer] Menu initialized");

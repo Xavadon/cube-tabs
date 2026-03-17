@@ -28,6 +28,9 @@ namespace _Project.Scripts.Gameplay.Services
         void AddGold(int amount);
         void SpendGold(int amount);
         bool BuyBaseUnit();
+        bool BuyUniqueUnit(CharacterData unit);
+        bool IsUnitOwned(int unitId);
+        void GrantItemReward(ShopItemData item);
         bool EvolveUnit(int instanceId, CharacterData target, int cost);
         bool UpgradeTier(int instanceId);
         bool TryGetUnitInstance(int unitId, out UnitInstance instance);
@@ -165,6 +168,59 @@ namespace _Project.Scripts.Gameplay.Services
             OnArmyChanged?.Invoke();
             Save();
             return true;
+        }
+
+        public bool BuyUniqueUnit(CharacterData unit)
+        {
+            if (unit == null || !CanAfford(unit.Price))
+                return false;
+
+            if (IsUnitOwned(unit.Id))
+                return false;
+
+            SpendGold(unit.Price);
+
+            int instanceId = _saveData.NextInstanceId++;
+            _saveData.OwnedUnits.Add(new OwnedUnit
+            {
+                InstanceId = instanceId,
+                UnitId = unit.Id,
+                TierIndex = 0
+            });
+
+            if (_saveData.ArmyInstanceIds.Count < _saveData.ArmySlots)
+                _saveData.ArmyInstanceIds.Add(instanceId);
+
+            OnOwnedChanged?.Invoke();
+            OnArmyChanged?.Invoke();
+            Save();
+            return true;
+        }
+
+        public bool IsUnitOwned(int unitId)
+        {
+            foreach (var owned in _saveData.OwnedUnits)
+            {
+                if (owned.UnitId == unitId)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public void GrantItemReward(ShopItemData item)
+        {
+            switch (item.RewardType)
+            {
+                case ShopItemRewardType.Gold:
+                    AddGold(item.RewardAmount);
+                    break;
+                case ShopItemRewardType.ArmySlot:
+                    _saveData.ArmySlots += item.RewardAmount;
+                    OnArmyChanged?.Invoke();
+                    Save();
+                    break;
+            }
         }
 
         public bool EvolveUnit(int instanceId, CharacterData target, int cost)

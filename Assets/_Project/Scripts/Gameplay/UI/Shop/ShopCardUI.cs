@@ -1,0 +1,59 @@
+using System;
+using _Project.Scripts.Gameplay.UI;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace _Project.Scripts.Gameplay.UI.Shop
+{
+    public class ShopCardUI : MonoBehaviour, ISelectableCard
+    {
+        [SerializeField]
+        private TextMeshProUGUI _nameLabel;
+
+        [SerializeField]
+        private Image _iconImage;
+
+        [SerializeField]
+        private Button _button;
+
+        [SerializeField]
+        private Image _background;
+
+        [SerializeField]
+        private Color _normalColor = new(0.2f, 0.2f, 0.2f, 1f);
+
+        [SerializeField]
+        private Color _selectedColor = new(0.4f, 0.6f, 1f, 1f);
+
+        private Action _onClick;
+
+        public void Init(string itemName, Sprite icon, Action onClick)
+        {
+            _nameLabel.text = itemName;
+            _onClick = onClick;
+
+            if (_iconImage != null && icon != null)
+                _iconImage.sprite = icon;
+
+            _button.onClick.AddListener(HandleClick);
+            SetSelected(false);
+        }
+
+        public void SetSelected(bool selected)
+        {
+            if (_background != null)
+                _background.color = selected ? _selectedColor : _normalColor;
+        }
+
+        private void HandleClick()
+        {
+            _onClick?.Invoke();
+        }
+
+        private void OnDestroy()
+        {
+            _button.onClick.RemoveListener(HandleClick);
+        }
+    }
+}

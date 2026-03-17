@@ -29,12 +29,27 @@ namespace _Project.Scripts.Gameplay.Character.Data
         [field: SerializeField]
         public int StartingGold { get; private set; } = 300;
 
+        [field: SerializeField]
+        public CharacterData[] UniqueHeroes { get; private set; }
+
+        [field: SerializeField]
+        public ShopItemData[] ShopItems { get; private set; }
+
         public CharacterData GetUnitById(int id)
         {
             foreach (var unit in AvailableUnits)
             {
                 if (unit.Id == id)
                     return unit;
+            }
+
+            if (UniqueHeroes != null)
+            {
+                foreach (var unit in UniqueHeroes)
+                {
+                    if (unit.Id == id)
+                        return unit;
+                }
             }
 
             return null;
