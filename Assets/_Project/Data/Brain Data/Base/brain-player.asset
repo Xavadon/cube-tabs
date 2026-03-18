@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64ed3c6ac3514b9f877542eadacf3b1d, type: 3}
-  m_Name: Mage Brain Data
+  m_Script: {fileID: 11500000, guid: ce6fcb14216d6c942aa990f7fab839b0, type: 3}
+  m_Name: brain-player
   m_EditorClassIdentifier: 
   <DetectionRadius>k__BackingField: 200
-  <FleeRange>k__BackingField: 5
-  <WindUpDuration>k__BackingField: 0.7
-  <AttackDuration>k__BackingField: 1.2
-  <AttackRange>k__BackingField: 17
+  <WindUpDuration>k__BackingField: 0.3
+  <AttackDuration>k__BackingField: 1
+  <AttackRange>k__BackingField: 1.75
+  <AttackStopRange>k__BackingField: 3
   <AttackCooldown>k__BackingField: 0.5

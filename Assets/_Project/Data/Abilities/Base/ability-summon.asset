@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bec0c3704b04a04d817ca0ba04d9796, type: 3}
-  m_Name: Arrow
+  m_Script: {fileID: 11500000, guid: ecc70fa2eadced34a9ca8ba7ebdbdb36, type: 3}
+  m_Name: ability-summon
   m_EditorClassIdentifier: 
-  <Prefab>k__BackingField: {fileID: 6780703374543443096, guid: 3a16e042c36dc484ba187836ff03120e, type: 3}
-  <Speed>k__BackingField: 55
-  <SpawnOffset>k__BackingField: {x: 0, y: 1, z: 1}
+  <SummonData>k__BackingField: {fileID: 11400000, guid: bdf6d4b84d650514488104946a498409, type: 2}
+  <TierIndex>k__BackingField: 0
+  <Count>k__BackingField: 2
+  <SpawnRadius>k__BackingField: 2

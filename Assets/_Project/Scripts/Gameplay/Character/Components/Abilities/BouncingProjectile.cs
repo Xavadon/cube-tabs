@@ -12,6 +12,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.Abilities
         public float Lifetime { get; private set; } = 5f;
 
         private Transform _target;
+        private Vector3 _lastDirection;
         private float _speed;
         private float _damage;
         private DamageType _damageType;
@@ -32,21 +33,23 @@ namespace _Project.Scripts.Gameplay.Character.Components.Abilities
             _remainingBounces = bounceCount;
             _bounceSearchRadius = bounceSearchRadius;
             _targetLayer = targetLayer;
+            _lastDirection = transform.forward;
 
             Destroy(gameObject, Lifetime);
         }
 
         private void Update()
         {
+            float distanceThisFrame = _speed * Time.deltaTime;
+
             if (_target == null)
             {
-                Destroy(gameObject);
+                transform.position += _lastDirection * distanceThisFrame;
                 return;
             }
 
             Vector3 targetPosition = _target.position + Vector3.up;
             Vector3 toTarget = targetPosition - transform.position;
-            float distanceThisFrame = _speed * Time.deltaTime;
 
             if (toTarget.sqrMagnitude <= distanceThisFrame * distanceThisFrame)
             {
@@ -54,9 +57,9 @@ namespace _Project.Scripts.Gameplay.Character.Components.Abilities
                 return;
             }
 
-            Vector3 direction = toTarget.normalized;
-            transform.position += direction * distanceThisFrame;
-            transform.rotation = Quaternion.LookRotation(direction);
+            _lastDirection = toTarget.normalized;
+            transform.position += _lastDirection * distanceThisFrame;
+            transform.rotation = Quaternion.LookRotation(_lastDirection);
         }
 
         private void Hit()
