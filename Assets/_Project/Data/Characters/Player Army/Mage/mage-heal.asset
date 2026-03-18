@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b574c7249b5861d43abc286ee8fcc848, type: 3}
   m_Name: mage-heal
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   <Name>k__BackingField: Heal Mage
   <PriceAsHero>k__BackingField: 100
   <Tiers>k__BackingField:
@@ -27,7 +27,7 @@ MonoBehaviour:
     <WeaponData>k__BackingField:
     - {fileID: 0}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 480d01bedecf65c4d96a76a709148b56, type: 2}
-    <Ability>k__BackingField: {fileID: 11400000, guid: 0dd51e9a35c2cb344b27db11a4173f6a, type: 2}
+    <Ability>k__BackingField: {fileID: 11400000, guid: 691721d5730fd054ba8d16491988f05d, type: 2}
     <AnimationType>k__BackingField: 2
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
     <WeaponData>k__BackingField:
     - {fileID: 0}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 480d01bedecf65c4d96a76a709148b56, type: 2}
-    <Ability>k__BackingField: {fileID: 11400000, guid: c12bb70e5a2da1c40aced2dfdbd0602a, type: 2}
+    <Ability>k__BackingField: {fileID: 11400000, guid: 691721d5730fd054ba8d16491988f05d, type: 2}
     <AnimationType>k__BackingField: 2
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 0
@@ -63,7 +63,7 @@ MonoBehaviour:
     <WeaponData>k__BackingField:
     - {fileID: 0}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 480d01bedecf65c4d96a76a709148b56, type: 2}
-    <Ability>k__BackingField: {fileID: 11400000, guid: cac0e2dae8a23df4c8be13b7bc690652, type: 2}
+    <Ability>k__BackingField: {fileID: 11400000, guid: 691721d5730fd054ba8d16491988f05d, type: 2}
     <AnimationType>k__BackingField: 2
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 0
@@ -72,4 +72,5 @@ MonoBehaviour:
   BaseMaterial: {fileID: 2100000, guid: 7731a99802704aa46a132b3ca0193275, type: 2}
   BaseWeapon: {fileID: 0}
   BaseBrain: {fileID: 11400000, guid: 480d01bedecf65c4d96a76a709148b56, type: 2}
+  BaseAbility: {fileID: 11400000, guid: 691721d5730fd054ba8d16491988f05d, type: 2}
   BaseAbilityAnimation: 2

@@ -15,7 +15,7 @@ using UnityEngine.AI;
 
 namespace _Project.Scripts.Gameplay.Character
 {
-    public class Character : MonoBehaviour, IDamageAble
+    public class Character : MonoBehaviour, IDamageAble, IHealable
     {
         public CharacterType CharacterType { get; private set; }
 
@@ -53,6 +53,8 @@ namespace _Project.Scripts.Gameplay.Character
             _animatorController.PlayHitReact();
             _hitEffect.Play();
         }
+
+        public void Heal(float amount) => _health.Heal(amount);
 
         public void Initialize(CharacterType characterType, CharacterData characterData, int tierIndex,
             IInputService inputService = null)

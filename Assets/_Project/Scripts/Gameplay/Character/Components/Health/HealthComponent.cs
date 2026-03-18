@@ -12,6 +12,11 @@ namespace _Project.Scripts.Gameplay.Character.Components.Health
         void ApplyDamage(float amount, Vector3 hitPoint, DamageType type = DamageType.Physical);
     }
 
+    public interface IHealable
+    {
+        void Heal(float amount);
+    }
+
     public enum DamageType
     {
         Physical,

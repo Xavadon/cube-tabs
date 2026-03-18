@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4230324883104877355}
   - component: {fileID: -6825192595806764821}
   m_Layer: 0
-  m_Name: AreaWave
+  m_Name: AreaDamage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

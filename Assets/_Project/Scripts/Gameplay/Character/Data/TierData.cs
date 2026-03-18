@@ -52,6 +52,11 @@ namespace _Project.Scripts.Gameplay.Character.Data
         {
             BrainData = brain;
         }
+        
+        public void SetAbility(AbilityDataBase ability)
+        {
+            Ability = ability;
+        }
 
         public void SetAbilityAnimation(AbilityAnimationType animationType)
         {

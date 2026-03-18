@@ -39,16 +39,6 @@ namespace _Project.Scripts.Gameplay.Character.Data
         [SerializeField] 
         public Material BaseMaterial;
 
-        [SerializeField]
-        public WeaponData BaseWeapon;
-
-        [SerializeField] 
-        public BrainDataBase BaseBrain;
-
-        [FormerlySerializedAs("BaseAnimationType")]
-        [SerializeField] 
-        public AbilityAnimationType BaseAbilityAnimation;
-        
         [Button]
         private void SetDefaultMaterial()
         {
@@ -57,6 +47,9 @@ namespace _Project.Scripts.Gameplay.Character.Data
                 tier.SetMaterial(BaseMaterial);
             }
         }
+
+        [SerializeField]
+        public WeaponData BaseWeapon;
 
         [Button]
         private void SetDefaultWeapon()
@@ -67,17 +60,11 @@ namespace _Project.Scripts.Gameplay.Character.Data
             }
         }
 
-        [Button]
-        private void SetDefaultBrain()
-        {
-            foreach (var tier in Tiers)
-            {
-                tier.SetBrain(BaseBrain);
-            }
-        }
+        [SerializeField] 
+        public AbilityDataBase BaseAbility;
 
         [Button]
-        private void SetDefaultAbilityAnimation()
+        private void SetDefaultAbility()
         {
             foreach (var tier in Tiers)
             {
@@ -85,13 +72,29 @@ namespace _Project.Scripts.Gameplay.Character.Data
             }
         }
 
+        [FormerlySerializedAs("BaseAnimationType")]
+        [SerializeField] 
+        public AbilityAnimationType BaseAbilityAnimation;
+
         [Button]
-        private void SetAllDefaults()
+        private void SetDefaultAbilityAnimation()
         {
-            SetDefaultMaterial();
-            SetDefaultWeapon();
-            SetDefaultBrain();
-            SetDefaultAbilityAnimation();
+            foreach (var tier in Tiers)
+            {
+                tier.SetAbility(BaseAbility);
+            }
+        }
+
+        [SerializeField] 
+        public BrainDataBase BaseBrain;
+
+        [Button]
+        private void SetDefaultBrain()
+        {
+            foreach (var tier in Tiers)
+            {
+                tier.SetBrain(BaseBrain);
+            }
         }
 
 #endif

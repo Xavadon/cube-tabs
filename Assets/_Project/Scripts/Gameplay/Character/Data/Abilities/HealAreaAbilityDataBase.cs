@@ -6,32 +6,34 @@ using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Character.Data.Abilities
 {
-    [CreateAssetMenu(menuName = "Config/Abilities/Area")]
-    public class AreaAbilityDataBase : AbilityDataBase
+    [CreateAssetMenu(menuName = "Config/Abilities/Heal Area")]
+    public class HealAreaAbilityDataBase : AbilityDataBase
     {
         [field: SerializeField]
         public float Radius { get; private set; } = 5f;
 
         [field: SerializeField]
         public float Duration { get; private set; } = 1f;
-        
-        [field: SerializeField]
-        public Vector3 SpawnOffset { get; private set; } = new(0f, 2f, 1f);
 
         [field: SerializeField]
-        public AreaWave Prefab { get; private set; }
+        public Vector3 SpawnOffset { get; private set; } = new(0f, 0.1f, 0f);
 
-        public override void Execute(Blackboard blackboard, float damage, DamageType affectedLayers)
+        [field: SerializeField]
+        public HealWave Prefab { get; private set; }
+
+        public override void Execute(Blackboard blackboard, float damage, DamageType damageType)
         {
             Transform caster = blackboard.Get<Transform>(BrainKeys.Transform);
-            LayerMask targetLayer = blackboard.Get<LayerMask>(BrainKeys.TargetLayer);
 
             if (caster == null)
                 return;
 
+            // Союзники находятся на том же слое, что и кастер
+            LayerMask allyLayer = 1 << caster.gameObject.layer;
+
             // TODO: Заменить Instantiate на пулинг (массовые касты — GC-спайки)
-            AreaWave wave = Instantiate(Prefab, caster.position + SpawnOffset, Quaternion.identity);
-            wave.Init(Radius, Duration, damage, affectedLayers, targetLayer);
+            HealWave wave = Instantiate(Prefab, caster.position + SpawnOffset, Quaternion.identity);
+            wave.Init(Radius, Duration, damage, allyLayer);
         }
     }
 }

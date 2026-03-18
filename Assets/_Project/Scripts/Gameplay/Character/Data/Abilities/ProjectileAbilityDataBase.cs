@@ -21,7 +21,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
         [field: SerializeField]
         public AbilityDataBase OnHitAbility { get; private set; }
 
-        public override void Execute(Blackboard blackboard, float damage, DamageType damageType)
+        public override void Execute(Blackboard blackboard, float damage, DamageType affectedLayers)
         {
             Transform caster = blackboard.Get<Transform>(BrainKeys.Transform);
             Transform target = blackboard.Get<Transform>(BrainKeys.Target);
@@ -30,11 +30,11 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
                 return;
 
             Projectile projectile = SpawnProjectile(caster);
-            projectile.Init(target, Speed, damage, damageType, onHit: OnHitAbility == null ? null : _ =>
+            projectile.Init(target, Speed, damage, affectedLayers, onHit: OnHitAbility == null ? null : _ =>
             {
                 Transform originalTransform = blackboard.Get<Transform>(BrainKeys.Transform);
                 blackboard.Set(BrainKeys.Transform, target);
-                OnHitAbility.Execute(blackboard, damage, damageType);
+                OnHitAbility.Execute(blackboard, damage, affectedLayers);
                 blackboard.Set(BrainKeys.Transform, originalTransform);
             });
         }
