@@ -10,7 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d188752bcbac3446a8e0c42974cdc3f, type: 3}
-  m_Name: Stick
+  m_Name: stick
   m_EditorClassIdentifier: 
-  <Damage>k__BackingField: 15
-  <DamageType>k__BackingField: 0
+  <Prefab>k__BackingField: {fileID: 919132149155446097, guid: 5e0e6ba2dfbb3b14a982ca8f3fcc3b83, type: 3}
+  <LocalPosition>k__BackingField: {x: 0, y: 0.15, z: 0.06}
+  <LocalRotation>k__BackingField: {x: -45, y: 0, z: 90}
+  <LocalScale>k__BackingField: {x: 1, y: 1, z: 1}

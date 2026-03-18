@@ -29,7 +29,7 @@ MonoBehaviour:
     <BrainData>k__BackingField: {fileID: 11400000, guid: ba624ccb0781e5044bb1d57fdcab11c3, type: 2}
     <Ability>k__BackingField: {fileID: 0}
     <AnimationType>k__BackingField: 0
-    <KillReward>k__BackingField: 0
+    <KillReward>k__BackingField: 200
     <EvolutionCost>k__BackingField: 0
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 2ad55463a2a1c5343b8b4afe96c6e5f5, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 3cfe6773e68a46c49ada9a658ecb5bb8, type: 2}
@@ -47,7 +47,7 @@ MonoBehaviour:
     <BrainData>k__BackingField: {fileID: 11400000, guid: ba624ccb0781e5044bb1d57fdcab11c3, type: 2}
     <Ability>k__BackingField: {fileID: 0}
     <AnimationType>k__BackingField: 0
-    <KillReward>k__BackingField: 0
+    <KillReward>k__BackingField: 200
     <EvolutionCost>k__BackingField: 300
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 2ad55463a2a1c5343b8b4afe96c6e5f5, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 3cfe6773e68a46c49ada9a658ecb5bb8, type: 2}
@@ -65,7 +65,7 @@ MonoBehaviour:
     <BrainData>k__BackingField: {fileID: 11400000, guid: ba624ccb0781e5044bb1d57fdcab11c3, type: 2}
     <Ability>k__BackingField: {fileID: 0}
     <AnimationType>k__BackingField: 0
-    <KillReward>k__BackingField: 0
+    <KillReward>k__BackingField: 200
     <EvolutionCost>k__BackingField: 600
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 2ad55463a2a1c5343b8b4afe96c6e5f5, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: a8b7974956cc52a458e42f6902521aa7, type: 2}

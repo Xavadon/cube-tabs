@@ -92,8 +92,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45
-  m_fontSizeBase: 45
+  m_fontSize: 48
+  m_fontSizeBase: 48
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -833,18 +833,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8378199142312508432}
     m_Modifications:
-    - target: {fileID: 621711624690713035, guid: ffb15a58117cd9f4fb72efac9d83dfec, type: 3}
-      propertyPath: m_fontSize
-      value: 28
-      objectReference: {fileID: 0}
-    - target: {fileID: 621711624690713035, guid: ffb15a58117cd9f4fb72efac9d83dfec, type: 3}
-      propertyPath: m_margin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 621711624690713035, guid: ffb15a58117cd9f4fb72efac9d83dfec, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 28
-      objectReference: {fileID: 0}
     - target: {fileID: 1309021063088045583, guid: ffb15a58117cd9f4fb72efac9d83dfec, type: 3}
       propertyPath: m_Name
       value: hp_stat
@@ -974,18 +962,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8378199142312508432}
     m_Modifications:
-    - target: {fileID: 621711624690713035, guid: ffb15a58117cd9f4fb72efac9d83dfec, type: 3}
-      propertyPath: m_fontSize
-      value: 28
-      objectReference: {fileID: 0}
-    - target: {fileID: 621711624690713035, guid: ffb15a58117cd9f4fb72efac9d83dfec, type: 3}
-      propertyPath: m_margin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 621711624690713035, guid: ffb15a58117cd9f4fb72efac9d83dfec, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 28
-      objectReference: {fileID: 0}
     - target: {fileID: 1309021063088045583, guid: ffb15a58117cd9f4fb72efac9d83dfec, type: 3}
       propertyPath: m_Name
       value: spd_stat
@@ -1082,6 +1058,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9001584958399801631, guid: ffb15a58117cd9f4fb72efac9d83dfec, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 29a1226f7b5e20240942612e151c3c4c, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1111,18 +1091,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8378199142312508432}
     m_Modifications:
-    - target: {fileID: 621711624690713035, guid: ffb15a58117cd9f4fb72efac9d83dfec, type: 3}
-      propertyPath: m_fontSize
-      value: 28
-      objectReference: {fileID: 0}
-    - target: {fileID: 621711624690713035, guid: ffb15a58117cd9f4fb72efac9d83dfec, type: 3}
-      propertyPath: m_margin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 621711624690713035, guid: ffb15a58117cd9f4fb72efac9d83dfec, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 28
-      objectReference: {fileID: 0}
     - target: {fileID: 1309021063088045583, guid: ffb15a58117cd9f4fb72efac9d83dfec, type: 3}
       propertyPath: m_Name
       value: dmg_stat
@@ -1223,6 +1191,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9001584958399801631, guid: ffb15a58117cd9f4fb72efac9d83dfec, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8f28955d92038974a9b04aafaeea79b0, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

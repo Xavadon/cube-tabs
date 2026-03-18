@@ -8,6 +8,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
     public interface IArmyScreenView
     {
         event Action BuyClicked;
+        event Action SlotUpgradeClicked;
         event Action TransferClicked;
         event Action<int> CardClicked;
         event Action ViewEnabled;
@@ -23,5 +24,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
         void HideFullBodyPreview();
         void ShowEvolution(int instanceId, CharacterData data, int tierIndex);
         void HideEvolution();
+        void SetSlotUpgradeInteractable(bool interactable);
+        void SetSlotUpgradeCost(string text);
     }
 }

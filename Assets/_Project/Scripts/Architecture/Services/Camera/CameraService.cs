@@ -14,14 +14,20 @@ namespace _Project.Scripts.Architecture.Services.Camera
         private const float BoundsPadding = 3f;
 
         private static readonly Vector3 BaseOffset = new(0f, 7f, -10f);
+        private static readonly Vector3 ThirdPersonOffset = new(0f, 3f, -5f);
+        private static readonly Vector3 FirstPersonOffset = new(0f, 1.6f, 0f);
 
         public bool CameraLocked { get; private set; }
+        public CameraMode CurrentMode { get; private set; } = CameraMode.TopDown;
 
         private readonly ICharacterRegistry _characterRegistry;
         private IReadOnlyList<Character> _characters;
         private UnityEngine.Camera _playerCamera;
         private Vector3 _smoothCenter;
         private Vector3 _centerVelocity;
+        private Vector3 _smoothPosition;
+        private Vector3 _positionVelocity;
+        private Transform _target;
 
         public CameraService(ICharacterRegistry characterRegistry)
         {
@@ -39,6 +45,23 @@ namespace _Project.Scripts.Architecture.Services.Camera
         {
             _characters = null;
             _playerCamera = null;
+            _target = null;
+        }
+
+        public void SetTarget(Transform target)
+        {
+            _target = target;
+        }
+
+        public void CycleMode()
+        {
+            CurrentMode = CurrentMode switch
+            {
+                CameraMode.TopDown => CameraMode.ThirdPerson,
+                CameraMode.ThirdPerson => CameraMode.FirstPerson,
+                CameraMode.FirstPerson => CameraMode.TopDown,
+                _ => CameraMode.TopDown
+            };
         }
 
         public void Tick(float deltaTime)
@@ -47,11 +70,28 @@ namespace _Project.Scripts.Architecture.Services.Camera
             {
                 _playerCamera = UnityEngine.Camera.main;
                 if (_playerCamera == null)
-                {
                     return;
-                }
             }
 
+            if (CurrentMode != CameraMode.TopDown && _target == null)
+                CurrentMode = CameraMode.TopDown;
+
+            switch (CurrentMode)
+            {
+                case CameraMode.TopDown:
+                    TickTopDown();
+                    break;
+                case CameraMode.ThirdPerson:
+                    TickThirdPerson();
+                    break;
+                case CameraMode.FirstPerson:
+                    TickFirstPerson();
+                    break;
+            }
+        }
+
+        private void TickTopDown()
+        {
             if (_characters == null || _characters.Count == 0) return;
 
             Vector3 rawCenter = Vector3.zero;
@@ -91,6 +131,27 @@ namespace _Project.Scripts.Architecture.Services.Camera
             Transform camTransform = _playerCamera.transform;
             camTransform.position = _smoothCenter + offset;
             camTransform.LookAt(_smoothCenter);
+        }
+
+        private void TickThirdPerson()
+        {
+            Vector3 targetPos = _target.position;
+            Vector3 desiredPosition = targetPos
+                                      + _target.right * ThirdPersonOffset.x
+                                      + Vector3.up * ThirdPersonOffset.y
+                                      + _target.forward * ThirdPersonOffset.z;
+
+            Transform camTransform = _playerCamera.transform;
+            _smoothPosition = Vector3.SmoothDamp(_smoothPosition, desiredPosition, ref _positionVelocity, SmoothTime);
+            camTransform.position = _smoothPosition;
+            camTransform.LookAt(targetPos + Vector3.up * FirstPersonOffset.y);
+        }
+
+        private void TickFirstPerson()
+        {
+            Transform camTransform = _playerCamera.transform;
+            camTransform.position = _target.TransformPoint(FirstPersonOffset);
+            camTransform.rotation = _target.rotation;
         }
     }
 }

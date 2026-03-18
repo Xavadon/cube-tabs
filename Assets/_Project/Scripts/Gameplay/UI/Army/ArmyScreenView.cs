@@ -38,6 +38,13 @@ namespace _Project.Scripts.Gameplay.UI.Army
         [SerializeField]
         private TextMeshProUGUI _goldLabel;
 
+        [Header("Slot Upgrade")]
+        [SerializeField]
+        private Button _slotUpgradeButton;
+
+        [SerializeField]
+        private TextMeshProUGUI _slotUpgradeCostLabel;
+
         [Header("Transfer")]
         [SerializeField]
         private Button _transferButton;
@@ -68,6 +75,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
         private Quaternion _defaultFullBodyRotation;
 
         public event Action BuyClicked;
+        public event Action SlotUpgradeClicked;
         public event Action TransferClicked;
         public event Action<int> CardClicked;
         public event Action ViewEnabled;
@@ -81,13 +89,16 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
             // View binds to Model directly for simple data display (Supervising Controller)
             _progress.OnGoldChanged += RefreshGold;
+            _progress.OnGoldChanged += RefreshSlotUpgrade;
             _progress.OnArmyChanged += RefreshSlotCount;
+            _progress.OnArmyChanged += RefreshSlotUpgrade;
 
             if (_evolutionPanel != null)
                 _evolutionPanel.Initialize(progress, catalog.EvolutionCatalog, previewService);
 
             RefreshGold();
             RefreshSlotCount();
+            RefreshSlotUpgrade();
 
             if (_catalog.BaseUnit != null)
                 _buyButtonCostLabel.text = _catalog.BaseUnit.PriceAsHero.ToString();
@@ -97,6 +108,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
             _controller = new ArmyScreenController(this, progress, previewService, catalog);
 
             _buyButton.onClick.AddListener(OnBuyButtonClicked);
+            _slotUpgradeButton.onClick.AddListener(OnSlotUpgradeButtonClicked);
             _transferButton.onClick.AddListener(OnTransferButtonClicked);
         }
 
@@ -113,7 +125,21 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
         private void RefreshSlotCount()
         {
-            _slotCountLabel.text = $"{_progress.ArmyUnits.Count}/{_progress.ArmySlots}";
+            _slotCountLabel.text = $"Army {_progress.ArmyUnits.Count}/{_progress.ArmySlots}";
+        }
+
+        private void RefreshSlotUpgrade()
+        {
+            bool maxed = _progress.ArmySlots >= _catalog.MaxArmySlots;
+            int cost = _progress.GetSlotUpgradeCost();
+
+            _slotUpgradeButton.gameObject.SetActive(!maxed);
+
+            if (!maxed)
+            {
+                _slotUpgradeCostLabel.text = cost.ToString();
+                _slotUpgradeButton.interactable = _progress.CanAfford(cost);
+            }
         }
 
         // --- Preview drag rotation ---
@@ -148,18 +174,22 @@ namespace _Project.Scripts.Gameplay.UI.Army
         private void OnDestroy()
         {
             _buyButton.onClick.RemoveListener(OnBuyButtonClicked);
+            _slotUpgradeButton.onClick.RemoveListener(OnSlotUpgradeButtonClicked);
             _transferButton.onClick.RemoveListener(OnTransferButtonClicked);
 
             if (_progress != null)
             {
                 _progress.OnGoldChanged -= RefreshGold;
+                _progress.OnGoldChanged -= RefreshSlotUpgrade;
                 _progress.OnArmyChanged -= RefreshSlotCount;
+                _progress.OnArmyChanged -= RefreshSlotUpgrade;
             }
 
             _controller?.Dispose();
         }
 
         private void OnBuyButtonClicked() => BuyClicked?.Invoke();
+        private void OnSlotUpgradeButtonClicked() => SlotUpgradeClicked?.Invoke();
         private void OnTransferButtonClicked() => TransferClicked?.Invoke();
 
         // --- IArmyScreenView (commanded by Controller) ---
@@ -243,6 +273,12 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 _evolutionPanel.Hide();
             }
         }
+
+        public void SetSlotUpgradeInteractable(bool interactable) =>
+            _slotUpgradeButton.interactable = interactable;
+
+        public void SetSlotUpgradeCost(string text) =>
+            _slotUpgradeCostLabel.text = text;
 
         private static void ClearContainer(Transform container)
         {

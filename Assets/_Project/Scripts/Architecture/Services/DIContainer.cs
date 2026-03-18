@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using _Project.Scripts.Architecture.Services.Tick;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -61,6 +62,7 @@ namespace _Project.Scripts.Architecture.Services
             var interfaces = serviceType.GetInterfaces()
                 .Where(i => i != typeof(IService)
                          && i != typeof(IDisposable)
+                         && i != typeof(ITickable)
                          && !i.IsGenericType
                          && i.Namespace != null
                          && !i.Namespace.StartsWith("System"))

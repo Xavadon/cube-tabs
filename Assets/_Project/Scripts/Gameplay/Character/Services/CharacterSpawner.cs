@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using _Project.Scripts.Architecture.Services;
+using _Project.Scripts.Architecture.Services.Camera;
 using _Project.Scripts.Architecture.Services.Input;
 using _Project.Scripts.Gameplay.Character.Components.UI;
 using _Project.Scripts.Gameplay.Character.Data;
@@ -120,10 +121,12 @@ namespace _Project.Scripts.Gameplay.Character.Services
         private const string CharacterPrefabPath = "Prefab/DefaultCharacter";
 
         private readonly IInputService _inputService;
+        private readonly ICameraService _cameraService;
 
-        public CharacterFactory(IInputService inputService)
+        public CharacterFactory(IInputService inputService, ICameraService cameraService)
         {
             _inputService = inputService;
+            _cameraService = cameraService;
         }
 
         public UniTask Initialize()
@@ -158,6 +161,10 @@ namespace _Project.Scripts.Gameplay.Character.Services
             if (characterGO.TryGetComponent(out Character character))
             {
                 character.Initialize(type, data, tierIndex, input);
+
+                if (isPlayerControlled)
+                    _cameraService.SetTarget(character.transform);
+
                 return character;
             }
 

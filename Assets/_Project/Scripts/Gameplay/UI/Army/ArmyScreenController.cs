@@ -33,6 +33,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
             _view.CardClicked += OnCardClicked;
             _view.BuyClicked += OnBuyClicked;
+            _view.SlotUpgradeClicked += OnSlotUpgradeClicked;
             _view.TransferClicked += OnTransferClicked;
             _view.ViewEnabled += OnViewEnabled;
 
@@ -55,6 +56,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
         public void Dispose()
         {
             _view.BuyClicked -= OnBuyClicked;
+            _view.SlotUpgradeClicked -= OnSlotUpgradeClicked;
             _view.TransferClicked -= OnTransferClicked;
             _view.CardClicked -= OnCardClicked;
             _view.ViewEnabled -= OnViewEnabled;
@@ -70,6 +72,11 @@ namespace _Project.Scripts.Gameplay.UI.Army
         private void OnBuyClicked()
         {
             _progress.BuyBaseUnit();
+        }
+
+        private void OnSlotUpgradeClicked()
+        {
+            _progress.UpgradeArmySlots();
         }
 
         private void OnTransferClicked()

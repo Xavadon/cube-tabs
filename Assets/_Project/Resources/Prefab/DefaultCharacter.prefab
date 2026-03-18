@@ -436,6 +436,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hit Effect
       objectReference: {fileID: 0}
+    - target: {fileID: 2627632971650431197, guid: 7ad570ba72f033a43bc17cf1a915efec, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
