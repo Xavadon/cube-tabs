@@ -14,6 +14,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.Health
 
     public interface IHealable
     {
+        float HealthRatio { get; }
         void Heal(float amount);
     }
 
@@ -29,6 +30,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.Health
     {
         public float CurrentHealth => _currentHealth;
         public float MaxHealth => _maxHealth;
+        public float HealthRatio => _maxHealth > 0f ? _currentHealth / _maxHealth : 0f;
         public bool IsAlive => _currentHealth > 0;
 
         private readonly CharacterResistances _resistances;

@@ -54,6 +54,7 @@ namespace _Project.Scripts.Gameplay.Character
             _hitEffect.Play();
         }
 
+        public float HealthRatio => _health.HealthRatio;
         public void Heal(float amount) => _health.Heal(amount);
 
         public void Initialize(CharacterType characterType, CharacterData characterData, int tierIndex,

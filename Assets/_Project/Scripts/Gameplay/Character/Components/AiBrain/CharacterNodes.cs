@@ -143,6 +143,133 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         }
     }
 
+    public class FindWeakestAlly : BTNode
+    {
+        private const int MaxHits = 32;
+
+        private readonly float _radius;
+        private readonly LayerMask _allyLayer;
+        private readonly Collider[] _hitBuffer = new Collider[MaxHits];
+
+        public FindWeakestAlly(float radius, LayerMask allyLayer)
+        {
+            _radius = radius;
+            _allyLayer = allyLayer;
+        }
+
+        public override NodeStatus Evaluate()
+        {
+            UpdateTarget();
+            return base.Evaluate();
+        }
+
+        protected override NodeStatus Process()
+        {
+            Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
+
+            if (target == null)
+                return Status = NodeStatus.Failure;
+
+            return Status = NodeStatus.Success;
+        }
+
+        private void UpdateTarget()
+        {
+            Transform self = Blackboard.Get<Transform>(BrainKeys.Transform);
+
+            int hitCount = Physics.OverlapSphereNonAlloc(self.position, _radius, _hitBuffer, _allyLayer);
+
+            if (hitCount == 0)
+            {
+                Blackboard.Set<Transform>(BrainKeys.Target, null);
+                return;
+            }
+
+            Transform weakest = null;
+            float lowestRatio = 1f;
+
+            for (int i = 0; i < hitCount; i++)
+            {
+                Collider hit = _hitBuffer[i];
+
+                // Пропускаем себя
+                if (hit.transform == self)
+                    continue;
+
+                if (!hit.TryGetComponent(out IHealable healable))
+                    continue;
+
+                // Пропускаем союзников с полным HP
+                if (healable.HealthRatio >= 1f)
+                    continue;
+
+                if (healable.HealthRatio < lowestRatio)
+                {
+                    lowestRatio = healable.HealthRatio;
+                    weakest = hit.transform;
+                }
+            }
+
+            Blackboard.Set(BrainKeys.Target, weakest);
+        }
+    }
+
+    public class FindClosestAlly : BTNode
+    {
+        private const int MaxHits = 32;
+
+        private readonly float _radius;
+        private readonly LayerMask _allyLayer;
+        private readonly Collider[] _hitBuffer = new Collider[MaxHits];
+
+        public FindClosestAlly(float radius, LayerMask allyLayer)
+        {
+            _radius = radius;
+            _allyLayer = allyLayer;
+        }
+
+        public override NodeStatus Evaluate()
+        {
+            UpdateTarget();
+            return base.Evaluate();
+        }
+
+        protected override NodeStatus Process()
+        {
+            Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
+
+            if (target == null)
+                return Status = NodeStatus.Failure;
+
+            return Status = NodeStatus.Success;
+        }
+
+        private void UpdateTarget()
+        {
+            Transform self = Blackboard.Get<Transform>(BrainKeys.Transform);
+
+            int hitCount = Physics.OverlapSphereNonAlloc(self.position, _radius, _hitBuffer, _allyLayer);
+
+            Transform closest = null;
+            float closestDistance = float.MaxValue;
+
+            for (int i = 0; i < hitCount; i++)
+            {
+                if (_hitBuffer[i].transform == self)
+                    continue;
+
+                float dist = Vector3.Distance(self.position, _hitBuffer[i].transform.position);
+                if (dist < closestDistance)
+                {
+                    closestDistance = dist;
+                    closest = _hitBuffer[i].transform;
+                }
+            }
+
+            Blackboard.Set(BrainKeys.Target, closest);
+        }
+    }
+
     public class RotateTowardsTarget : BTNode
     {
         private readonly float _threshold;

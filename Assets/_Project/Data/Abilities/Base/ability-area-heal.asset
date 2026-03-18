@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7671c98321dc76c488ff767d77288976, type: 3}
   m_Name: ability-area-heal
   m_EditorClassIdentifier: 
-  <Radius>k__BackingField: 7
+  <Radius>k__BackingField: 6
   <Duration>k__BackingField: 0.75
   <SpawnOffset>k__BackingField: {x: 0, y: 0.1, z: 0}
   <Prefab>k__BackingField: {fileID: 2993080915794543359, guid: 245b7a84249b7214f9807f882d50e3f2, type: 3}

@@ -22,7 +22,7 @@ MonoBehaviour:
       <MagicResist>k__BackingField: 0
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-      <Damage>k__BackingField: 1
+      <Damage>k__BackingField: 6
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 23edcfb0ed13ccd4b93c19975fcf79c7, type: 2}
@@ -35,5 +35,6 @@ MonoBehaviour:
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 996cb6d326818b345899879d43742d6e, type: 2}
   BaseMaterial: {fileID: 2100000, guid: 996cb6d326818b345899879d43742d6e, type: 2}
   BaseWeapon: {fileID: 11400000, guid: 23edcfb0ed13ccd4b93c19975fcf79c7, type: 2}
-  BaseBrain: {fileID: 11400000, guid: 9b4258595442995419e87b9cd45b7363, type: 2}
+  BaseAbility: {fileID: 0}
   BaseAbilityAnimation: 0
+  BaseBrain: {fileID: 11400000, guid: 9b4258595442995419e87b9cd45b7363, type: 2}
