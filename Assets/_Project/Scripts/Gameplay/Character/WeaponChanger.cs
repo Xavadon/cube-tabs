@@ -6,22 +6,26 @@ namespace _Project.Scripts.Gameplay.Character
     public class WeaponChanger : MonoBehaviour
     {
         [SerializeField]
-        private Transform _weaponSocket;
+        private Transform[] _weaponSockets;
 
-        private GameObject _currentWeapon;
+        private readonly GameObject[] _currentWeapons = new GameObject[2];
 
-        public void SetWeapon(WeaponData weaponData)
+        public void SetWeapon(WeaponData weaponData, int slotIndex = 0)
         {
-            if (_currentWeapon != null)
-                Destroy(_currentWeapon); // TODO: пул когда будет Pool<T>
+            if (slotIndex < 0 || slotIndex >= _weaponSockets.Length)
+                return;
+
+            if (_currentWeapons[slotIndex] != null)
+                Destroy(_currentWeapons[slotIndex]); // TODO: пул когда будет Pool<T>
 
             if (weaponData?.Prefab == null)
                 return;
 
-            _currentWeapon = Instantiate(weaponData.Prefab, _weaponSocket);
-            _currentWeapon.transform.localPosition = weaponData.LocalPosition;
-            _currentWeapon.transform.localRotation = Quaternion.Euler(weaponData.LocalRotation);
-            _currentWeapon.transform.localScale = weaponData.LocalScale;
+            var weapon = Instantiate(weaponData.Prefab, _weaponSockets[slotIndex]);
+            weapon.transform.localPosition = weaponData.LocalPosition;
+            weapon.transform.localRotation = Quaternion.Euler(weaponData.LocalRotation);
+            weapon.transform.localScale = weaponData.LocalScale;
+            _currentWeapons[slotIndex] = weapon;
         }
     }
 }

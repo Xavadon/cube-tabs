@@ -98,8 +98,9 @@ namespace _Project.Scripts.Gameplay.Character
             else
                 ArmorChanger.ChangeSkin(tier.SkinMaterial);
 
-            if (weapon != null)
-                _weaponChanger.SetWeapon(weapon);
+            if (tier.WeaponData != null)
+                for (int i = 0; i < tier.WeaponData.Length; i++)
+                    _weaponChanger.SetWeapon(tier.WeaponData[i], i);
         }
 
         private void Update()

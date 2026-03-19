@@ -18,7 +18,7 @@ MonoBehaviour:
   Enemies:
   - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
     TierIndex: 0
-    Count: 7
+    Count: 12
   - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
     TierIndex: 0
-    Count: 4
+    Count: 12

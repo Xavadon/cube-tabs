@@ -94,7 +94,8 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             {
                 var weaponChanger = go.GetComponentInChildren<WeaponChanger>();
                 if (weaponChanger != null)
-                    weaponChanger.SetWeapon(tier.WeaponData[0]);
+                    for (int i = 0; i < tier.WeaponData.Length; i++)
+                        weaponChanger.SetWeapon(tier.WeaponData[i], i);
             }
 
             if (go.TryGetComponent(out NavMeshAgent agent))
