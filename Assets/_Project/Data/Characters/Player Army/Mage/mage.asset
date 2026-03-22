@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b574c7249b5861d43abc286ee8fcc848, type: 3}
-  m_Name: _mage
+  m_Name: mage
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Apprentice
   <PriceAsHero>k__BackingField: 100
@@ -35,7 +35,7 @@ MonoBehaviour:
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 9b0bafa8fdb41414b9d44167589d4a0e, type: 2}
   - <MoveSpeed>k__BackingField: 3.4
     <Stats>k__BackingField:
-      <Health>k__BackingField: 156
+      <Health>k__BackingField: 155
       <PhysicalResist>k__BackingField: 0
       <MagicResist>k__BackingField: 0.1
       <FireResist>k__BackingField: 0
@@ -53,7 +53,7 @@ MonoBehaviour:
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 9b0bafa8fdb41414b9d44167589d4a0e, type: 2}
   - <MoveSpeed>k__BackingField: 3.4
     <Stats>k__BackingField:
-      <Health>k__BackingField: 203
+      <Health>k__BackingField: 200
       <PhysicalResist>k__BackingField: 0
       <MagicResist>k__BackingField: 0.1
       <FireResist>k__BackingField: 0

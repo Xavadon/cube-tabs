@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b574c7249b5861d43abc286ee8fcc848, type: 3}
-  m_Name: _warrior
+  m_Name: warrior
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Warrior
   <PriceAsHero>k__BackingField: 100
@@ -58,7 +58,7 @@ MonoBehaviour:
       <MagicResist>k__BackingField: 0.05
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-      <Damage>k__BackingField: 38
+      <Damage>k__BackingField: 35
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 2609461451f571f488176b574bb3b33e, type: 2}
