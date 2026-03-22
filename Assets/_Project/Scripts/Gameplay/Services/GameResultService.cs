@@ -24,6 +24,7 @@ namespace _Project.Scripts.Gameplay.Services
     {
         void StartBattle(LevelConfig levelConfig);
         event Action<GameResultData> OnGameFinished;
+        event Action<int, int> OnWaveStarted;
     }
 
     public class GameResultService : IGameResultService
@@ -31,22 +32,28 @@ namespace _Project.Scripts.Gameplay.Services
         private readonly ICharacterRegistry _characterRegistry;
         private readonly IPlayerProgressService _playerProgressService;
         private readonly IGameSessionService _gameSessionService;
+        private readonly ICharacterSpawner _characterSpawner;
 
         private int _enemiesKilled;
         private int _goldBefore;
         private bool _battleActive;
         private LevelConfig _levelConfig;
+        private WaveData[] _waves;
+        private int _currentWaveIndex;
 
         public event Action<GameResultData> OnGameFinished;
+        public event Action<int, int> OnWaveStarted;
 
         public GameResultService(
             ICharacterRegistry characterRegistry,
             IPlayerProgressService playerProgressService,
-            IGameSessionService gameSessionService)
+            IGameSessionService gameSessionService,
+            ICharacterSpawner characterSpawner)
         {
             _characterRegistry = characterRegistry;
             _playerProgressService = playerProgressService;
             _gameSessionService = gameSessionService;
+            _characterSpawner = characterSpawner;
         }
 
         public UniTask Initialize()
@@ -59,12 +66,22 @@ namespace _Project.Scripts.Gameplay.Services
         public void StartBattle(LevelConfig levelConfig)
         {
             _levelConfig = levelConfig;
+            _waves = levelConfig.Waves;
+            _currentWaveIndex = 0;
             _enemiesKilled = 0;
             _goldBefore = _playerProgressService.Gold;
             _battleActive = true;
 
             _characterRegistry.StartBattle();
+            SpawnCurrentWave();
             Debug.Log("[GameResultService] Battle started");
+        }
+
+        private void SpawnCurrentWave()
+        {
+            _characterSpawner.SpawnEnemyWave(_waves[_currentWaveIndex].Entries);
+            OnWaveStarted?.Invoke(_currentWaveIndex, _waves.Length);
+            Debug.Log($"[GameResultService] Wave {_currentWaveIndex + 1}/{_waves.Length} started");
         }
 
         private void HandleCharacterDied(Character.Character character)
@@ -77,7 +94,14 @@ namespace _Project.Scripts.Gameplay.Services
                 _enemiesKilled++;
 
                 if (_characterRegistry.GetEnemies().Count == 0)
-                    FinishBattle(GameResult.Victory);
+                {
+                    _currentWaveIndex++;
+
+                    if (_currentWaveIndex >= _waves.Length)
+                        FinishBattle(GameResult.Victory);
+                    else
+                        SpawnCurrentWave();
+                }
             }
             else if (character.CharacterType == CharacterType.Ally)
             {
@@ -92,7 +116,7 @@ namespace _Project.Scripts.Gameplay.Services
 
             int goldEarned = _playerProgressService.Gold - _goldBefore;
 
-            if (result == GameResult.Victory && _levelConfig != null)
+            if (_levelConfig != null)
             {
                 _playerProgressService.AddLevelKills(_levelConfig.LevelIndex, _enemiesKilled);
 

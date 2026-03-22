@@ -22,7 +22,7 @@ MonoBehaviour:
       <MagicResist>k__BackingField: 0.05
       <FireResist>k__BackingField: 0.3
       <FaithResist>k__BackingField: 0
-      <Damage>k__BackingField: 31.1
+      <Damage>k__BackingField: 40
       <DamageType>k__BackingField: 2
     <WeaponData>k__BackingField:
     - {fileID: 0}

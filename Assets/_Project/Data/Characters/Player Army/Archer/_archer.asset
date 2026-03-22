@@ -35,12 +35,12 @@ MonoBehaviour:
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 96765532322262d44af19a5803a314d9, type: 2}
   - <MoveSpeed>k__BackingField: 3.6
     <Stats>k__BackingField:
-      <Health>k__BackingField: 182
+      <Health>k__BackingField: 180
       <PhysicalResist>k__BackingField: 0.05
       <MagicResist>k__BackingField: 0.05
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-      <Damage>k__BackingField: 28.3
+      <Damage>k__BackingField: 55
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
@@ -48,17 +48,17 @@ MonoBehaviour:
     <Ability>k__BackingField: {fileID: 11400000, guid: 985f8e9e5699ab842ab5909bbfa14c47, type: 2}
     <AnimationType>k__BackingField: 1
     <KillReward>k__BackingField: 0
-    <EvolutionCost>k__BackingField: 0
+    <EvolutionCost>k__BackingField: 50
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 96765532322262d44af19a5803a314d9, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 96765532322262d44af19a5803a314d9, type: 2}
   - <MoveSpeed>k__BackingField: 3.6
     <Stats>k__BackingField:
-      <Health>k__BackingField: 236
+      <Health>k__BackingField: 240
       <PhysicalResist>k__BackingField: 0.05
       <MagicResist>k__BackingField: 0.05
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-      <Damage>k__BackingField: 36.7
+      <Damage>k__BackingField: 55
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
@@ -66,7 +66,7 @@ MonoBehaviour:
     <Ability>k__BackingField: {fileID: 11400000, guid: 985f8e9e5699ab842ab5909bbfa14c47, type: 2}
     <AnimationType>k__BackingField: 1
     <KillReward>k__BackingField: 0
-    <EvolutionCost>k__BackingField: 0
+    <EvolutionCost>k__BackingField: 60
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 96765532322262d44af19a5803a314d9, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 96765532322262d44af19a5803a314d9, type: 2}
   BaseMaterial: {fileID: 2100000, guid: 96765532322262d44af19a5803a314d9, type: 2}

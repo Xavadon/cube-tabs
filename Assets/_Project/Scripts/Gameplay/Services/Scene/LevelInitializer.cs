@@ -62,7 +62,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
             // TODO: Убрать Find — грузить HealthBarPool-префаб из Resources/SO и инстанциировать из кода
             var healthBarPool = Object.FindAnyObjectByType<HealthBarPool>();
 
-            _characterSpawner.SpawnFromConfig(levelConfig, armyUnits, healthBarPool);
+            _characterSpawner.SpawnAllies(armyUnits, healthBarPool);
 
             InitializeGameCanvas(levelConfig, sceneService);
 

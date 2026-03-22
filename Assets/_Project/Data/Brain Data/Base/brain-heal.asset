@@ -17,7 +17,7 @@ MonoBehaviour:
   <WindUpDuration>k__BackingField: 0.3
   <AttackDuration>k__BackingField: 2
   <HealRange>k__BackingField: 3
-  <HealCooldown>k__BackingField: 3
+  <HealCooldown>k__BackingField: 1
   <FollowDistance>k__BackingField: 4
   <AllyLayer>k__BackingField:
     serializedVersion: 2

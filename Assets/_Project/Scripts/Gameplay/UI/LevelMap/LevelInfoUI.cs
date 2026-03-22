@@ -78,17 +78,25 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
             _statsBuilder.Clear();
             _statsBuilder.Append("Kills: ").Append(currentKills).Append("/").AppendLine(requiredKills.ToString());
 
-            if (_selectedLevel.Enemies is { Length: > 0 })
+            if (_selectedLevel.Waves is { Length: > 0 })
             {
-                _statsBuilder.AppendLine("Enemies:");
-
-                foreach (var entry in _selectedLevel.Enemies)
+                for (int w = 0; w < _selectedLevel.Waves.Length; w++)
                 {
-                    string name = entry.CharacterData.MaxTier > 0
-                        ? $"{entry.CharacterData.Name} T{entry.TierIndex + 1}"
-                        : entry.CharacterData.Name;
+                    var wave = _selectedLevel.Waves[w];
 
-                    _statsBuilder.Append("  ").Append(name).Append(" x").AppendLine(entry.Count.ToString());
+                    if (wave.Entries == null || wave.Entries.Length == 0)
+                        continue;
+
+                    _statsBuilder.Append("Wave ").Append(w + 1).AppendLine(":");
+
+                    foreach (var entry in wave.Entries)
+                    {
+                        string name = entry.CharacterData.MaxTier > 0
+                            ? $"{entry.CharacterData.Name} T{entry.TierIndex + 1}"
+                            : entry.CharacterData.Name;
+
+                        _statsBuilder.Append("  ").Append(name).Append(" x").AppendLine(entry.Count.ToString());
+                    }
                 }
             }
 

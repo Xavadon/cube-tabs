@@ -17,12 +17,12 @@ MonoBehaviour:
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 5
     <Stats>k__BackingField:
-      <Health>k__BackingField: 150
+      <Health>k__BackingField: 200
       <PhysicalResist>k__BackingField: 0
       <MagicResist>k__BackingField: 0.1
       <FireResist>k__BackingField: 0.05
       <FaithResist>k__BackingField: 0.2
-      <Damage>k__BackingField: 200
+      <Damage>k__BackingField: 50
       <DamageType>k__BackingField: 3
     <WeaponData>k__BackingField:
     - {fileID: 0}
@@ -35,12 +35,12 @@ MonoBehaviour:
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 7731a99802704aa46a132b3ca0193275, type: 2}
   - <MoveSpeed>k__BackingField: 5
     <Stats>k__BackingField:
-      <Health>k__BackingField: 195
+      <Health>k__BackingField: 225
       <PhysicalResist>k__BackingField: 0
       <MagicResist>k__BackingField: 0.15
       <FireResist>k__BackingField: 0.05
       <FaithResist>k__BackingField: 0.25
-      <Damage>k__BackingField: 200
+      <Damage>k__BackingField: 55
       <DamageType>k__BackingField: 3
     <WeaponData>k__BackingField:
     - {fileID: 0}
@@ -53,12 +53,12 @@ MonoBehaviour:
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 7731a99802704aa46a132b3ca0193275, type: 2}
   - <MoveSpeed>k__BackingField: 5
     <Stats>k__BackingField:
-      <Health>k__BackingField: 254
+      <Health>k__BackingField: 250
       <PhysicalResist>k__BackingField: 0
       <MagicResist>k__BackingField: 0.2
       <FireResist>k__BackingField: 0.05
       <FaithResist>k__BackingField: 0.3
-      <Damage>k__BackingField: 200
+      <Damage>k__BackingField: 60
       <DamageType>k__BackingField: 3
     <WeaponData>k__BackingField:
     - {fileID: 0}

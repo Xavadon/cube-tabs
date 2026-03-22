@@ -14,11 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <LevelName>k__BackingField: Goblin Cave
   <LevelIndex>k__BackingField: 1
-  <KillsToComplete>k__BackingField: 200
-  Enemies:
-  - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
-    TierIndex: 0
-    Count: 5
-  - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
-    TierIndex: 0
-    Count: 2
+  <KillsToComplete>k__BackingField: 6000
+  Waves:
+  - Entries:
+    - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
+      TierIndex: 0
+      Count: 7
+    - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
+      TierIndex: 0
+      Count: 2
+  - Entries:
+    - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
+      TierIndex: 0
+      Count: 12
+    - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
+      TierIndex: 0
+      Count: 6
+  - Entries:
+    - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
+      TierIndex: 0
+      Count: 17
+    - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
+      TierIndex: 0
+      Count: 10

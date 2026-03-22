@@ -22,7 +22,8 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
     public interface ICharacterSpawner : IService
     {
-        void SpawnFromConfig(LevelConfig levelConfig, List<ResolvedUnit> allyUnits, HealthBarPool healthBarPool);
+        void SpawnAllies(List<ResolvedUnit> allyUnits, HealthBarPool healthBarPool);
+        void SpawnEnemyWave(SpawnEntry[] entries);
     }
 
     public class CharacterSpawner : ICharacterSpawner
@@ -46,11 +47,15 @@ namespace _Project.Scripts.Gameplay.Character.Services
             return UniTask.CompletedTask;
         }
 
-        public void SpawnFromConfig(LevelConfig levelConfig, List<ResolvedUnit> allyUnits, HealthBarPool healthBarPool)
+        public void SpawnAllies(List<ResolvedUnit> allyUnits, HealthBarPool healthBarPool)
         {
             _healthBarPool = healthBarPool;
-            SpawnGroup(levelConfig.Enemies, CharacterType.Enemy, _spawnPointProvider.GetEnemySpawns());
             SpawnCharacters(allyUnits, CharacterType.Ally, _spawnPointProvider.GetAllySpawns());
+        }
+
+        public void SpawnEnemyWave(SpawnEntry[] entries)
+        {
+            SpawnGroup(entries, CharacterType.Enemy, _spawnPointProvider.GetEnemySpawns());
         }
 
         private void SpawnCharacters(List<ResolvedUnit> units, CharacterType type, (Vector3 position, Quaternion rotation)[] spawnPoints)

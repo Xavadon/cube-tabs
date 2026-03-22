@@ -16,7 +16,13 @@ namespace _Project.Scripts.Gameplay.Services.Scene
         [field: SerializeField]
         public int KillsToComplete { get; private set; } = 100;
 
-        public SpawnEntry[] Enemies;
+        public WaveData[] Waves;
+    }
+
+    [Serializable]
+    public class WaveData
+    {
+        public SpawnEntry[] Entries;
     }
 
     [Serializable]

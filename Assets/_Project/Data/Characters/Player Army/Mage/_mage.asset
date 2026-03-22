@@ -40,7 +40,7 @@ MonoBehaviour:
       <MagicResist>k__BackingField: 0.1
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-      <Damage>k__BackingField: 50
+      <Damage>k__BackingField: 40
       <DamageType>k__BackingField: 1
     <WeaponData>k__BackingField:
     - {fileID: 0}
@@ -48,7 +48,7 @@ MonoBehaviour:
     <Ability>k__BackingField: {fileID: 11400000, guid: 00001d3d3c98de64e8c48654f8796a4c, type: 2}
     <AnimationType>k__BackingField: 2
     <KillReward>k__BackingField: 0
-    <EvolutionCost>k__BackingField: 150
+    <EvolutionCost>k__BackingField: 60
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 9b0bafa8fdb41414b9d44167589d4a0e, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 9b0bafa8fdb41414b9d44167589d4a0e, type: 2}
   - <MoveSpeed>k__BackingField: 3.4
@@ -58,7 +58,7 @@ MonoBehaviour:
       <MagicResist>k__BackingField: 0.1
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-      <Damage>k__BackingField: 70
+      <Damage>k__BackingField: 45
       <DamageType>k__BackingField: 1
     <WeaponData>k__BackingField:
     - {fileID: 0}
@@ -66,7 +66,7 @@ MonoBehaviour:
     <Ability>k__BackingField: {fileID: 11400000, guid: 00001d3d3c98de64e8c48654f8796a4c, type: 2}
     <AnimationType>k__BackingField: 2
     <KillReward>k__BackingField: 0
-    <EvolutionCost>k__BackingField: 300
+    <EvolutionCost>k__BackingField: 70
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 9b0bafa8fdb41414b9d44167589d4a0e, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 9b0bafa8fdb41414b9d44167589d4a0e, type: 2}
   BaseMaterial: {fileID: 2100000, guid: 9b0bafa8fdb41414b9d44167589d4a0e, type: 2}
