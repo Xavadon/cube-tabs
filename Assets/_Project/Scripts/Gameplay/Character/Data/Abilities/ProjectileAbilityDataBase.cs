@@ -13,6 +13,9 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
         public Projectile Prefab { get; private set; }
 
         [field: SerializeField]
+        public bool DealDirectDamage { get; private set; } = true;
+        
+        [field: SerializeField]
         public float Speed { get; private set; } = 10f;
 
         [field: SerializeField]
@@ -30,7 +33,10 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
                 return;
 
             Projectile projectile = SpawnProjectile(caster);
-            projectile.Init(target, Speed, damage, affectedLayers, onHit: OnHitAbility == null ? null : _ =>
+
+            float projectileDamage = DealDirectDamage ? damage : 0f;
+
+            projectile.Init(target, Speed, projectileDamage, affectedLayers, onHit: OnHitAbility == null ? null : _ =>
             {
                 Transform originalTransform = blackboard.Get<Transform>(BrainKeys.Transform);
                 blackboard.Set(BrainKeys.Transform, target);

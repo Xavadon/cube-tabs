@@ -1,4 +1,5 @@
 using System;
+using _Project.Scripts.Gameplay.UI.Shop;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,15 +20,30 @@ namespace _Project.Scripts.Gameplay.UI.Army
         [SerializeField]
         private Button _button;
 
+        [Header("Stats")]
+        [SerializeField]
+        private TextMeshProUGUI _hpLabel;
+
+        [SerializeField]
+        private TextMeshProUGUI _damageLabel;
+
+        [SerializeField]
+        private TextMeshProUGUI _speedLabel;
+
         private Action _onEvolve;
 
-        public void Init(string unitName, int cost, bool canAfford, RenderTexture portrait, Action onEvolve)
+        public void Init(string unitName, int cost, bool canAfford, PreviewHandle preview,
+            float hp, float damage, float speed, Action onEvolve)
         {
             _nameLabel.text = unitName;
             _costLabel.text = cost.ToString();
 
-            if (_previewImage != null && portrait != null)
-                _previewImage.texture = portrait;
+            _hpLabel.text = hp.ToString("0");
+            _damageLabel.text = damage.ToString("0");
+            _speedLabel.text = speed.ToString("0.#");
+
+            if (_previewImage != null && preview.Texture != null)
+                _previewImage.texture = preview.Texture;
             _button.interactable = canAfford;
             _onEvolve = onEvolve;
             _button.onClick.AddListener(HandleClick);

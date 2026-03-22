@@ -29,35 +29,21 @@ namespace _Project.Scripts.Gameplay.UI.Army
         [SerializeField]
         private Color _selectedColor = new(0.4f, 0.6f, 1f, 1f);
 
-        [Header("Stats")]
-        [SerializeField]
-        private TextMeshProUGUI _hpLabel;
-
-        [SerializeField]
-        private TextMeshProUGUI _damageLabel;
-
-        [SerializeField]
-        private TextMeshProUGUI _speedLabel;
-
         private Action _onClick;
 
-        public void Init(string unitName, int count, RenderTexture portrait,
-            float hp, float damage, float speed, Action onClick)
+        public void Init(string unitName, int count, RenderTexture portrait, Action onClick)
         {
             _nameLabel.text = unitName;
 
             if (count > 1)
             {
+                _nameLabel.text = $"{unitName} x{count}";
                 _countLabel.text = $"{count}";
             }
             else
             {
                 _countLabel.text = "";
             }
-
-            _hpLabel.text = hp.ToString("0");
-            _damageLabel.text = damage.ToString("0");
-            _speedLabel.text = speed.ToString("0.#");
 
             _onClick = onClick;
 

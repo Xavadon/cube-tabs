@@ -34,7 +34,8 @@ namespace _Project.Scripts.Gameplay.UI.Army
             _view.CardClicked += OnCardClicked;
             _view.BuyClicked += OnBuyClicked;
             _view.SlotUpgradeClicked += OnSlotUpgradeClicked;
-            _view.TransferClicked += OnTransferClicked;
+            _view.ToArmyClicked += OnToArmyClicked;
+            _view.ToReserveClicked += OnToReserveClicked;
             _view.ViewEnabled += OnViewEnabled;
 
             _progress.OnArmyChanged += ScheduleRebuild;
@@ -57,7 +58,8 @@ namespace _Project.Scripts.Gameplay.UI.Army
         {
             _view.BuyClicked -= OnBuyClicked;
             _view.SlotUpgradeClicked -= OnSlotUpgradeClicked;
-            _view.TransferClicked -= OnTransferClicked;
+            _view.ToArmyClicked -= OnToArmyClicked;
+            _view.ToReserveClicked -= OnToReserveClicked;
             _view.CardClicked -= OnCardClicked;
             _view.ViewEnabled -= OnViewEnabled;
 
@@ -79,15 +81,20 @@ namespace _Project.Scripts.Gameplay.UI.Army
             _progress.UpgradeArmySlots();
         }
 
-        private void OnTransferClicked()
+        private void OnToArmyClicked()
         {
-            if (!_selection.HasValue)
+            if (!_selection.HasValue || _selection.IsInArmy)
                 return;
 
-            if (_selection.IsInArmy)
-                _progress.RemoveFromArmy(_selection.InstanceId);
-            else
-                _progress.AddToArmy(_selection.InstanceId);
+            _progress.AddToArmy(_selection.InstanceId);
+        }
+
+        private void OnToReserveClicked()
+        {
+            if (!_selection.HasValue || !_selection.IsInArmy)
+                return;
+
+            _progress.RemoveFromArmy(_selection.InstanceId);
         }
 
         private void OnCardClicked(int cardIndex)
@@ -107,6 +114,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
             for (int i = 0; i < _cardEntries.Count; i++)
                 _view.SetCardSelected(i, i == cardIndex);
 
+            RefreshSelectedStats();
             RefreshFullBodyPreview();
             RefreshEvolutionPanel();
             RefreshTransferButton();
@@ -121,6 +129,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
             SpawnCards(_progress.BacklogUnits, false);
 
             RestoreSelection();
+            RefreshSelectedStats();
             RefreshFullBodyPreview();
             RefreshEvolutionPanel();
             RefreshTransferButton();
@@ -144,12 +153,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
                     displayName = unit.Data.Name;
                 }
 
-                var tier = unit.Data.GetTier(unit.TierIndex);
-                float hp = tier.Stats.Health;
-                float damage = tier.Stats.Damage;
-                float speed = tier.MoveSpeed;
-
-                _view.AddCard(displayName, count, portrait, hp, damage, speed, isInArmy);
+                _view.AddCard(displayName, count, portrait, isInArmy);
                 _cardEntries.Add(new CardEntry { Resolved = unit, IsInArmy = isInArmy });
             }
         }
@@ -194,6 +198,21 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 _view.HideEvolution();
         }
 
+        private void RefreshSelectedStats()
+        {
+            if (!_selection.HasValue)
+            {
+                _view.HideSelectedStats();
+                return;
+            }
+
+            var tier = _selection.Unit.GetTier(_selection.TierIndex);
+            string displayName = _selection.Unit.MaxTier > 0
+                ? $"{_selection.Unit.Name} T{_selection.TierIndex + 1}"
+                : _selection.Unit.Name;
+            _view.ShowSelectedStats(displayName, tier.Stats.Health, tier.Stats.Damage, tier.MoveSpeed);
+        }
+
         private void RefreshFullBodyPreview()
         {
             if (!_selection.HasValue)
@@ -208,24 +227,11 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
         private void RefreshTransferButton()
         {
-            if (!_selection.HasValue)
-            {
-                _view.SetTransferVisible(false);
-                return;
-            }
+            bool hasSelection = _selection.HasValue;
 
-            _view.SetTransferVisible(true);
-
-            if (_selection.IsInArmy)
-            {
-                _view.SetTransferLabel("В резерв");
-                _view.SetTransferInteractable(true);
-            }
-            else
-            {
-                _view.SetTransferLabel("В армию");
-                _view.SetTransferInteractable(_progress.ArmyUnits.Count < _progress.ArmySlots);
-            }
+            _view.SetToArmyInteractable(hasSelection && !_selection.IsInArmy
+                                         && _progress.ArmyUnits.Count < _progress.ArmySlots);
+            _view.SetToReserveInteractable(hasSelection && _selection.IsInArmy);
         }
 
         private void GroupUnits(List<ResolvedUnit> units)

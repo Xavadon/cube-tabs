@@ -149,11 +149,11 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             _cards.Clear();
         }
 
-        public void AddHeroCard(string name, RenderTexture portrait, float hp, float damage, float speed)
+        public void AddHeroCard(string name, RenderTexture portrait)
         {
             var card = Instantiate(_heroCardPrefab, _cardsContainer);
             int index = _cards.Count;
-            card.Init(name, 1, portrait, hp, damage, speed, () => CardClicked?.Invoke(index));
+            card.Init(name, 1, portrait, () => CardClicked?.Invoke(index));
             _cards.Add(card);
         }
 

@@ -10,7 +10,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
         event Action ViewEnabled;
 
         void ClearCards();
-        void AddHeroCard(string name, RenderTexture portrait, float hp, float damage, float speed);
+        void AddHeroCard(string name, RenderTexture portrait);
         void AddItemCard(string name, Sprite icon);
         void SetCardSelected(int index, bool selected);
         void ShowUnitPreview(PreviewHandle handle);

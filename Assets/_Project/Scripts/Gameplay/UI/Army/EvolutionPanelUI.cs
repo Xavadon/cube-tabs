@@ -58,7 +58,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
             gameObject.SetActive(true);
 
             int cost = nextTier.EvolutionCost;
-            var portrait = _previewService.GetPortrait(data, tierIndex + 1);
+            var preview = _previewService.GetFullBody(data, tierIndex + 1);
 
             var optionUI = Instantiate(_optionPrefab, _optionsContainer);
             int capturedId = instanceId;
@@ -67,7 +67,10 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 $"{data.Name} T{tierIndex + 2}",
                 cost,
                 _progress.CanAfford(cost),
-                portrait,
+                preview,
+                nextTier.Stats.Health,
+                nextTier.Stats.Damage,
+                nextTier.MoveSpeed,
                 () => _progress.UpgradeTier(capturedId));
         }
 
@@ -90,13 +93,17 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 var capturedTarget = option.Target;
                 int capturedCost = option.Cost;
 
-                var portrait = _previewService.GetPortrait(option.Target, 0);
+                var preview = _previewService.GetFullBody(option.Target, 0);
+                var tier = option.Target.GetTier(0);
 
                 optionUI.Init(
                     option.Target.Name,
                     capturedCost,
                     _progress.CanAfford(capturedCost),
-                    portrait,
+                    preview,
+                    tier.Stats.Health,
+                    tier.Stats.Damage,
+                    tier.MoveSpeed,
                     () => _progress.EvolveUnit(capturedId, capturedTarget, capturedCost));
             }
         }

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ability-fire-arrow-explosive
   m_EditorClassIdentifier: 
   <Prefab>k__BackingField: {fileID: 6780703374543443096, guid: 91b969e4ee237fa4fa29c58fba9d690b, type: 3}
+  <DealDirectDamage>k__BackingField: 0
   <Speed>k__BackingField: 6
   <SpawnOffset>k__BackingField: {x: 0, y: 1, z: 0.5}
   <OnHitAbility>k__BackingField: {fileID: 11400000, guid: 3edf6212e89954245a4f7614ef2a6a31, type: 2}

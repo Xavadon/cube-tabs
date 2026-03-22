@@ -47,10 +47,26 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
         [Header("Transfer")]
         [SerializeField]
-        private Button _transferButton;
+        private Button _toArmyButton;
 
         [SerializeField]
-        private TextMeshProUGUI _transferButtonLabel;
+        private Button _toReserveButton;
+
+        [Header("Selected Stats")]
+        [SerializeField]
+        private GameObject _selectedStatsPanel;
+
+        [SerializeField]
+        private TextMeshProUGUI _selectedNameLabel;
+
+        [SerializeField]
+        private TextMeshProUGUI _selectedHpLabel;
+
+        [SerializeField]
+        private TextMeshProUGUI _selectedDamageLabel;
+
+        [SerializeField]
+        private TextMeshProUGUI _selectedSpeedLabel;
 
         [Header("Full Body Preview")]
         [SerializeField]
@@ -76,7 +92,8 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
         public event Action BuyClicked;
         public event Action SlotUpgradeClicked;
-        public event Action TransferClicked;
+        public event Action ToArmyClicked;
+        public event Action ToReserveClicked;
         public event Action<int> CardClicked;
         public event Action ViewEnabled;
 
@@ -109,7 +126,8 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
             _buyButton.onClick.AddListener(OnBuyButtonClicked);
             _slotUpgradeButton.onClick.AddListener(OnSlotUpgradeButtonClicked);
-            _transferButton.onClick.AddListener(OnTransferButtonClicked);
+            _toArmyButton.onClick.AddListener(OnToArmyButtonClicked);
+            _toReserveButton.onClick.AddListener(OnToReserveButtonClicked);
         }
 
         // --- Simple data binding (View → Model) ---
@@ -175,7 +193,8 @@ namespace _Project.Scripts.Gameplay.UI.Army
         {
             _buyButton.onClick.RemoveListener(OnBuyButtonClicked);
             _slotUpgradeButton.onClick.RemoveListener(OnSlotUpgradeButtonClicked);
-            _transferButton.onClick.RemoveListener(OnTransferButtonClicked);
+            _toArmyButton.onClick.RemoveListener(OnToArmyButtonClicked);
+            _toReserveButton.onClick.RemoveListener(OnToReserveButtonClicked);
 
             if (_progress != null)
             {
@@ -190,7 +209,8 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
         private void OnBuyButtonClicked() => BuyClicked?.Invoke();
         private void OnSlotUpgradeButtonClicked() => SlotUpgradeClicked?.Invoke();
-        private void OnTransferButtonClicked() => TransferClicked?.Invoke();
+        private void OnToArmyButtonClicked() => ToArmyClicked?.Invoke();
+        private void OnToReserveButtonClicked() => ToReserveClicked?.Invoke();
 
         // --- IArmyScreenView (commanded by Controller) ---
 
@@ -203,7 +223,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
             _cards.Clear();
         }
 
-        public void AddCard(string name, int count, RenderTexture portrait, float hp, float damage, float speed, bool isInArmy)
+        public void AddCard(string name, int count, RenderTexture portrait, bool isInArmy)
         {
             Transform container;
 
@@ -218,7 +238,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
             var card = Instantiate(_cardPrefab, container);
             int index = _cards.Count;
-            card.Init(name, count, portrait, hp, damage, speed, () => CardClicked?.Invoke(index));
+            card.Init(name, count, portrait, () => CardClicked?.Invoke(index));
             _cards.Add(card);
         }
 
@@ -230,9 +250,22 @@ namespace _Project.Scripts.Gameplay.UI.Army
             }
         }
 
-        public void SetTransferVisible(bool visible) => _transferButton.gameObject.SetActive(visible);
-        public void SetTransferLabel(string text) => _transferButtonLabel.text = text;
-        public void SetTransferInteractable(bool interactable) => _transferButton.interactable = interactable;
+        public void SetToArmyInteractable(bool interactable) => _toArmyButton.interactable = interactable;
+        public void SetToReserveInteractable(bool interactable) => _toReserveButton.interactable = interactable;
+
+        public void ShowSelectedStats(string name, float hp, float damage, float speed)
+        {
+            _selectedStatsPanel.SetActive(true);
+            _selectedNameLabel.text = name;
+            _selectedHpLabel.text = hp.ToString("0");
+            _selectedDamageLabel.text = damage.ToString("0");
+            _selectedSpeedLabel.text = speed.ToString("0.#");
+        }
+
+        public void HideSelectedStats()
+        {
+            _selectedStatsPanel.SetActive(false);
+        }
 
         public void ShowFullBodyPreview(PreviewHandle handle)
         {

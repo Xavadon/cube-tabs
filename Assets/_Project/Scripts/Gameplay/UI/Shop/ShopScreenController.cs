@@ -122,12 +122,8 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             foreach (var hero in _catalog.UniqueHeroes)
             {
                 var portrait = _previewService.GetPortrait(hero, 0);
-                var tier = hero.GetTier(0);
-                float hp = tier.Stats.Health;
-                float damage = tier.Stats.Damage;
-                float speed = tier.MoveSpeed;
 
-                _view.AddHeroCard(hero.Name, portrait, hp, damage, speed);
+                _view.AddHeroCard(hero.Name, portrait);
                 _cardEntries.Add(CardEntry.ForHero(hero));
             }
         }
