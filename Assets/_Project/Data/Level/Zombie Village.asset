@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a268af6429472dd43a8c35ae75dc2274, type: 3}
+  m_Name: Zombie Village
+  m_EditorClassIdentifier: 
+  <LevelName>k__BackingField: Zombie Village
+  <LevelIndex>k__BackingField: 1
+  <KillsToComplete>k__BackingField: 12000
+  Waves:
+  - Entries:
+    - CharacterData: {fileID: 11400000, guid: 2c1cc6a738eb41d4484a4a981bf61391, type: 2}
+      TierIndex: 0
+      Count: 12
+    - CharacterData: {fileID: 11400000, guid: 23bd883c6cb45e24c9088c3fe88df052, type: 2}
+      TierIndex: 0
+      Count: 10
+    - CharacterData: {fileID: 11400000, guid: 57e229345e74138499770ff3edbde6d4, type: 2}
+      TierIndex: 0
+      Count: 10
+  - Entries:
+    - CharacterData: {fileID: 11400000, guid: 2c1cc6a738eb41d4484a4a981bf61391, type: 2}
+      TierIndex: 0
+      Count: 15
+    - CharacterData: {fileID: 11400000, guid: 7bbdeab44b5b4394dbf4269e4ad43977, type: 2}
+      TierIndex: 0
+      Count: 6
+    - CharacterData: {fileID: 11400000, guid: 23bd883c6cb45e24c9088c3fe88df052, type: 2}
+      TierIndex: 0
+      Count: 12
+  - Entries:
+    - CharacterData: {fileID: 11400000, guid: 1cbb885b7a2bcd54f81d3350cec92604, type: 2}
+      TierIndex: 0
+      Count: 20
+    - CharacterData: {fileID: 11400000, guid: 7bbdeab44b5b4394dbf4269e4ad43977, type: 2}
+      TierIndex: 0
+      Count: 20

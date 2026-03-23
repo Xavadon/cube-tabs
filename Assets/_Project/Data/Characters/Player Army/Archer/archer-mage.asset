@@ -17,7 +17,7 @@ MonoBehaviour:
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 4
     <Stats>k__BackingField:
-      <Health>k__BackingField: 200
+      <Health>k__BackingField: 255
       <PhysicalResist>k__BackingField: 0
       <MagicResist>k__BackingField: 0
       <FireResist>k__BackingField: 0
@@ -28,14 +28,13 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 600d209020f8a06429b110c7dea92be3, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 5618c94c742f15748930ebd7afe61d10, type: 2}
-    <AnimationType>k__BackingField: 1
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 70
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 85f3ac7d55b5c7646999710ed049ec1c, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 85f3ac7d55b5c7646999710ed049ec1c, type: 2}
   - <MoveSpeed>k__BackingField: 4
     <Stats>k__BackingField:
-      <Health>k__BackingField: 220
+      <Health>k__BackingField: 265
       <PhysicalResist>k__BackingField: 0
       <MagicResist>k__BackingField: 0
       <FireResist>k__BackingField: 0
@@ -46,14 +45,13 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 600d209020f8a06429b110c7dea92be3, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 5618c94c742f15748930ebd7afe61d10, type: 2}
-    <AnimationType>k__BackingField: 1
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 80
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 85f3ac7d55b5c7646999710ed049ec1c, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 85f3ac7d55b5c7646999710ed049ec1c, type: 2}
   - <MoveSpeed>k__BackingField: 4
     <Stats>k__BackingField:
-      <Health>k__BackingField: 240
+      <Health>k__BackingField: 280
       <PhysicalResist>k__BackingField: 0
       <MagicResist>k__BackingField: 0
       <FireResist>k__BackingField: 0
@@ -64,7 +62,6 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 600d209020f8a06429b110c7dea92be3, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 5618c94c742f15748930ebd7afe61d10, type: 2}
-    <AnimationType>k__BackingField: 1
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 90
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 85f3ac7d55b5c7646999710ed049ec1c, type: 2}
@@ -72,5 +69,4 @@ MonoBehaviour:
   BaseMaterial: {fileID: 2100000, guid: 85f3ac7d55b5c7646999710ed049ec1c, type: 2}
   BaseWeapon: {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
   BaseAbility: {fileID: 11400000, guid: 5618c94c742f15748930ebd7afe61d10, type: 2}
-  BaseAbilityAnimation: 1
   BaseBrain: {fileID: 11400000, guid: 600d209020f8a06429b110c7dea92be3, type: 2}

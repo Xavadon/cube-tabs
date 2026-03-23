@@ -51,7 +51,7 @@ MonoBehaviour:
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 96765532322262d44af19a5803a314d9, type: 2}
   - <MoveSpeed>k__BackingField: 3.6
     <Stats>k__BackingField:
-      <Health>k__BackingField: 240
+      <Health>k__BackingField: 220
       <PhysicalResist>k__BackingField: 0.05
       <MagicResist>k__BackingField: 0.05
       <FireResist>k__BackingField: 0

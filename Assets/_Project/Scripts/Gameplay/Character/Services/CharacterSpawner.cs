@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using _Project.Scripts.Architecture.Services;
 using _Project.Scripts.Architecture.Services.Camera;
 using _Project.Scripts.Architecture.Services.Input;
@@ -28,6 +29,10 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
     public class CharacterSpawner : ICharacterSpawner
     {
+        private const float InitialDelay = 0.5f;
+        private const float SpawnInterval = 0.2f;
+        private const float SpawnOffsetRange = 1.5f;
+
         private readonly ISpawnPointProvider _spawnPointProvider;
         private readonly ICharacterFactory _characterFactory;
         private readonly ICharacterRegistry _characterRegistry;
@@ -50,41 +55,38 @@ namespace _Project.Scripts.Gameplay.Character.Services
         public void SpawnAllies(List<ResolvedUnit> allyUnits, HealthBarPool healthBarPool)
         {
             _healthBarPool = healthBarPool;
-            SpawnCharacters(allyUnits, CharacterType.Ally, _spawnPointProvider.GetAllySpawns());
+
+            var spawnPoints = _spawnPointProvider.GetAllySpawns();
+            SpawnAlliesAsync(allyUnits, spawnPoints).Forget();
         }
 
         public void SpawnEnemyWave(SpawnEntry[] entries)
         {
-            SpawnGroup(entries, CharacterType.Enemy, _spawnPointProvider.GetEnemySpawns());
+            var spawnPoints = _spawnPointProvider.GetEnemySpawns();
+            SpawnWaveAsync(entries, spawnPoints).Forget();
         }
 
-        private void SpawnCharacters(List<ResolvedUnit> units, CharacterType type, (Vector3 position, Quaternion rotation)[] spawnPoints)
+        private async UniTaskVoid SpawnAlliesAsync(List<ResolvedUnit> units, (Vector3 position, Quaternion rotation)[] spawnPoints)
         {
+            Debug.Log($"[TEST]{units == null || units.Count == 0}");
+            
             if (units == null || units.Count == 0)
                 return;
+
+            //await UniTask.WaitForSeconds(InitialDelay, cancellationToken: ct);
 
             for (int i = 0; i < units.Count; i++)
             {
                 var resolved = units[i];
-                Character character = _characterFactory.Create(type, resolved.Data, resolved.TierIndex);
-                character.SetRegistry(_characterRegistry);
-                if (_healthBarPool != null)
-                    character.SetHealthBarPool(_healthBarPool);
-                _characterRegistry.Register(character);
+                PlaceCharacter(
+                    _characterFactory.Create(CharacterType.Ally, resolved.Data, resolved.TierIndex),
+                    spawnPoints[i % spawnPoints.Length]);
 
-                var (position, rotation) = spawnPoints[i % spawnPoints.Length];
-
-                Vector3 offset = new Vector3(
-                    UnityEngine.Random.Range(-1.5f, 1.5f),
-                    0f,
-                    UnityEngine.Random.Range(-1.5f, 1.5f)
-                );
-
-                character.transform.SetPositionAndRotation(position + offset, rotation);
+                await UniTask.WaitForSeconds(SpawnInterval);
             }
         }
 
-        private void SpawnGroup(SpawnEntry[] entries, CharacterType type, (Vector3 position, Quaternion rotation)[] spawnPoints)
+        private async UniTaskVoid SpawnWaveAsync(SpawnEntry[] entries, (Vector3 position, Quaternion rotation)[] spawnPoints)
         {
             if (entries == null || entries.Length == 0)
                 return;
@@ -95,24 +97,31 @@ namespace _Project.Scripts.Gameplay.Character.Services
             {
                 for (int i = 0; i < entry.Count; i++)
                 {
-                    Character character = _characterFactory.Create(type, entry.CharacterData, entry.TierIndex);
-                    character.SetRegistry(_characterRegistry);
-                    if (_healthBarPool != null)
-                        character.SetHealthBarPool(_healthBarPool);
-                    _characterRegistry.Register(character);
+                    PlaceCharacter(
+                        _characterFactory.Create(CharacterType.Enemy, entry.CharacterData, entry.TierIndex),
+                        spawnPoints[spawnIndex % spawnPoints.Length]);
 
-                    var (position, rotation) = spawnPoints[spawnIndex % spawnPoints.Length];
-
-                    Vector3 offset = new Vector3(
-                        UnityEngine.Random.Range(-1.5f, 1.5f),
-                        0f,
-                        UnityEngine.Random.Range(-1.5f, 1.5f)
-                    );
-
-                    character.transform.SetPositionAndRotation(position + offset, rotation);
                     spawnIndex++;
+                    await UniTask.WaitForSeconds(SpawnInterval);
                 }
             }
+        }
+
+        private void PlaceCharacter(Character character, (Vector3 position, Quaternion rotation) spawn)
+        {
+            character.SetRegistry(_characterRegistry);
+
+            if (_healthBarPool != null)
+                character.SetHealthBarPool(_healthBarPool);
+
+            _characterRegistry.Register(character);
+
+            Vector3 offset = new Vector3(
+                UnityEngine.Random.Range(-SpawnOffsetRange, SpawnOffsetRange),
+                0f,
+                UnityEngine.Random.Range(-SpawnOffsetRange, SpawnOffsetRange));
+
+            character.transform.SetPositionAndRotation(spawn.position + offset, spawn.rotation);
         }
     }
 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecc70fa2eadced34a9ca8ba7ebdbdb36, type: 3}
   m_Name: ability-summon
   m_EditorClassIdentifier: 
-  <SummonData>k__BackingField: {fileID: 11400000, guid: bdf6d4b84d650514488104946a498409, type: 2}
+  <SummonData>k__BackingField: {fileID: 11400000, guid: ba54b48306460af47a6ae0fb13814821, type: 2}
   <TierIndex>k__BackingField: 0
   <Count>k__BackingField: 2
   <SpawnRadius>k__BackingField: 2
