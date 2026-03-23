@@ -25,10 +25,9 @@ MonoBehaviour:
       <Damage>k__BackingField: 50
       <DamageType>k__BackingField: 3
     <WeaponData>k__BackingField:
-    - {fileID: 0}
+    - {fileID: 11400000, guid: 39b52cf0783bfea4d96479ef83720d16, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 5cb94f971eb6b7d49bd0e4627c704b80, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 691721d5730fd054ba8d16491988f05d, type: 2}
-    <AnimationType>k__BackingField: 2
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 80
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 7731a99802704aa46a132b3ca0193275, type: 2}
@@ -43,10 +42,9 @@ MonoBehaviour:
       <Damage>k__BackingField: 55
       <DamageType>k__BackingField: 3
     <WeaponData>k__BackingField:
-    - {fileID: 0}
+    - {fileID: 11400000, guid: 39b52cf0783bfea4d96479ef83720d16, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 5cb94f971eb6b7d49bd0e4627c704b80, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 691721d5730fd054ba8d16491988f05d, type: 2}
-    <AnimationType>k__BackingField: 2
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 90
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 7731a99802704aa46a132b3ca0193275, type: 2}
@@ -61,16 +59,14 @@ MonoBehaviour:
       <Damage>k__BackingField: 60
       <DamageType>k__BackingField: 3
     <WeaponData>k__BackingField:
-    - {fileID: 0}
+    - {fileID: 11400000, guid: 39b52cf0783bfea4d96479ef83720d16, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 5cb94f971eb6b7d49bd0e4627c704b80, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 691721d5730fd054ba8d16491988f05d, type: 2}
-    <AnimationType>k__BackingField: 2
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 100
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 7731a99802704aa46a132b3ca0193275, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 7731a99802704aa46a132b3ca0193275, type: 2}
   BaseMaterial: {fileID: 2100000, guid: 7731a99802704aa46a132b3ca0193275, type: 2}
-  BaseWeapon: {fileID: 0}
+  BaseWeapon: {fileID: 11400000, guid: 39b52cf0783bfea4d96479ef83720d16, type: 2}
   BaseAbility: {fileID: 11400000, guid: 691721d5730fd054ba8d16491988f05d, type: 2}
-  BaseAbilityAnimation: 2
   BaseBrain: {fileID: 11400000, guid: 5cb94f971eb6b7d49bd0e4627c704b80, type: 2}
