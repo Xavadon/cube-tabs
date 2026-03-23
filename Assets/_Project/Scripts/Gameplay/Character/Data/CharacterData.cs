@@ -2,7 +2,7 @@ using _Project.Scripts.Gameplay.Character.Data.Abilities;
 using _Project.Scripts.Gameplay.Character.Data.AiBrain;
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.Serialization;
+
 
 namespace _Project.Scripts.Gameplay.Character.Data
 {
@@ -60,24 +60,11 @@ namespace _Project.Scripts.Gameplay.Character.Data
             }
         }
 
-        [SerializeField] 
+        [SerializeField]
         public AbilityDataBase BaseAbility;
 
         [Button]
         private void SetDefaultAbility()
-        {
-            foreach (var tier in Tiers)
-            {
-                tier.SetAbilityAnimation(BaseAbilityAnimation);
-            }
-        }
-
-        [FormerlySerializedAs("BaseAnimationType")]
-        [SerializeField] 
-        public AbilityAnimationType BaseAbilityAnimation;
-
-        [Button]
-        private void SetDefaultAbilityAnimation()
         {
             foreach (var tier in Tiers)
             {

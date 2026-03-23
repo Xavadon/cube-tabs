@@ -15,10 +15,8 @@ MonoBehaviour:
   <LevelName>k__BackingField: Level 3
   <LevelIndex>k__BackingField: 2
   <KillsToComplete>k__BackingField: 100
-  Enemies:
-  - CharacterData: {fileID: 11400000, guid: 98980eef4b253e34ba01c746e502f781, type: 2}
-    TierIndex: 0
-    Count: 3
-  - CharacterData: {fileID: 11400000, guid: e79c235fe17a5e24fbcedecc9027d630, type: 2}
-    TierIndex: 0
-    Count: 0
+  Waves:
+  - Entries:
+    - CharacterData: {fileID: 11400000, guid: 98980eef4b253e34ba01c746e502f781, type: 2}
+      TierIndex: 0
+      Count: 2

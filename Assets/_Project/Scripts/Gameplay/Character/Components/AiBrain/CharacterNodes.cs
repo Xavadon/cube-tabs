@@ -143,6 +143,67 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         }
     }
 
+    public class FindPriorityTarget : BTNode
+    {
+        private const int MaxHits = 32;
+
+        private readonly float _radius;
+        private readonly LayerMask _layer;
+        private readonly Collider[] _hitBuffer = new Collider[MaxHits];
+
+        public FindPriorityTarget(float radius, LayerMask layer)
+        {
+            _radius = radius;
+            _layer = layer;
+        }
+
+        public override NodeStatus Evaluate()
+        {
+            UpdateTarget();
+            return base.Evaluate();
+        }
+
+        protected override NodeStatus Process()
+        {
+            Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
+            return Status = target != null ? NodeStatus.Success : NodeStatus.Failure;
+        }
+
+        private void UpdateTarget()
+        {
+            Transform self = Blackboard.Get<Transform>(BrainKeys.Transform);
+            int hitCount = Physics.OverlapSphereNonAlloc(self.position, _radius, _hitBuffer, _layer);
+
+            if (hitCount == 0)
+            {
+                Blackboard.Set<Transform>(BrainKeys.Target, null);
+                return;
+            }
+
+            Transform bestTarget = null;
+            float bestScore = float.MaxValue;
+
+            for (int i = 0; i < hitCount; i++)
+            {
+                Transform candidate = _hitBuffer[i].transform;
+                float dist = Vector3.Distance(self.position, candidate.position);
+
+                bool isRanged = candidate.TryGetComponent(out Character character) && character.IsRanged;
+
+                // Ranged targets get priority: scored lower so they sort first
+                float score = isRanged ? dist : dist + 10000f;
+
+                if (score < bestScore)
+                {
+                    bestScore = score;
+                    bestTarget = candidate;
+                }
+            }
+
+            Blackboard.Set(BrainKeys.Target, bestTarget);
+        }
+    }
+
     public class FindWeakestAlly : BTNode
     {
         private const int MaxHits = 32;
@@ -497,8 +558,13 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
     public class MeleeAttack : AttackBase
     {
-        public MeleeAttack(float windUpDuration, float attackDuration, float stoppingDistance) : base(windUpDuration, attackDuration, stoppingDistance)
+        private readonly Action<AnimatorConroller> _playAnimation;
+
+        public MeleeAttack(float windUpDuration, float attackDuration, float stoppingDistance,
+            MeleeAnimationType animationType = MeleeAnimationType.OneHanded)
+            : base(windUpDuration, attackDuration, stoppingDistance)
         {
+            _playAnimation = ResolveAnimation(animationType);
         }
 
         protected override void Enter()
@@ -506,8 +572,14 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             base.Enter();
 
             AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
-            animator.PlayAttack();
+            _playAnimation(animator);
         }
+
+        public static Action<AnimatorConroller> ResolveAnimation(MeleeAnimationType type) => type switch
+        {
+            MeleeAnimationType.TwoHanded => a => a.PlayTwoHanded(),
+            _ => a => a.PlayOneHanded()
+        };
 
         protected override void PerformAttack()
         {

@@ -9,10 +9,13 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
     [CreateAssetMenu(menuName = "Config/Ai/AbilityBrain")]
     public class AbilityBrainDataBase : RangeBrainDataBase
     {
+        [field: SerializeField]
+        public AbilityAnimationType AbilityAnimation { get; private set; } = AbilityAnimationType.AbilityAttack;
+
         protected override BTNode CreateAttackNode(TierData tier)
         {
             return new AbilityAttack(tier.Ability, WindUpDuration, AttackDuration, AttackRange,
-                ResolveAnimation(tier.AnimationType));
+                ResolveAnimation(AbilityAnimation));
         }
 
         public static Action<AnimatorConroller> ResolveAnimation(AbilityAnimationType type) => type switch

@@ -24,9 +24,6 @@ namespace _Project.Scripts.Gameplay.Character.Data
         public AbilityDataBase Ability { get; private set; }
 
         [field: SerializeField]
-        public AbilityAnimationType AnimationType { get; private set; }
-        
-        [field: SerializeField]
         public int KillReward { get; private set; } = 10;
 
         [field: SerializeField]
@@ -58,11 +55,6 @@ namespace _Project.Scripts.Gameplay.Character.Data
             Ability = ability;
         }
 
-        public void SetAbilityAnimation(AbilityAnimationType animationType)
-        {
-            AnimationType = animationType;
-        }
-        
         public void SetWeapon(WeaponData weaponData)
         {
             WeaponData = new[] { weaponData };

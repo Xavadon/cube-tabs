@@ -6,4 +6,10 @@ namespace _Project.Scripts.Gameplay.Character.Data
         RangeAttack,
         AbilityAttack,
     }
+
+    public enum MeleeAnimationType
+    {
+        OneHanded,
+        TwoHanded,
+    }
 }

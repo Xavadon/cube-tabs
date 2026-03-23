@@ -6,6 +6,7 @@ using _Project.Scripts.Gameplay.Character.Components.AiBrain;
 using _Project.Scripts.Gameplay.Character.Components.Health;
 using _Project.Scripts.Gameplay.Character.Components.UI;
 using _Project.Scripts.Gameplay.Character.Data;
+using _Project.Scripts.Gameplay.Character.Data.AiBrain;
 using _Project.Scripts.Gameplay.Character.Services;
 using _Project.Scripts.Gameplay.Services;
 using Game.Scripts.Core.Gameplay.Enemies.Components;
@@ -18,6 +19,7 @@ namespace _Project.Scripts.Gameplay.Character
     public class Character : MonoBehaviour, IDamageAble, IHealable
     {
         public CharacterType CharacterType { get; private set; }
+        public bool IsRanged { get; private set; }
 
         [SerializeField]
         private Animator _animator;
@@ -82,6 +84,7 @@ namespace _Project.Scripts.Gameplay.Character
 
             _animatorController = new(_animator);
 
+            IsRanged = tier.BrainData is RangeBrainDataBase;
             _brain = new(targetLayer, tier.BrainData, tier, _navMeshAgent, _animatorController, transform, weapon, inputService);
             _movement = new(_navMeshAgent, transform, tier.MoveSpeed);
             _health = new(tier);

@@ -17,6 +17,10 @@ namespace _Project.Scripts.Editor
             HP,
             Damage,
             DamageType,
+            PhysRes,
+            MagRes,
+            FireRes,
+            FaithRes,
             Speed,
             Cooldown,
             DPS,
@@ -32,6 +36,10 @@ namespace _Project.Scripts.Editor
             public float HP;
             public float Damage;
             public string DamageType;
+            public float PhysRes;
+            public float MagRes;
+            public float FireRes;
+            public float FaithRes;
             public float Speed;
             public float Cooldown;
             public float DPS;
@@ -41,16 +49,20 @@ namespace _Project.Scripts.Editor
 
         private static readonly ColumnDef[] Columns =
         {
-            new("Unit",  SortColumn.Name,       130, false),
-            new("T",     SortColumn.Tier,        28, false),
-            new("HP",    SortColumn.HP,          60, true),
-            new("Dmg",   SortColumn.Damage,      55, true),
-            new("Type",  SortColumn.DamageType,  65, false),
-            new("Spd",   SortColumn.Speed,       45, true),
-            new("CD",    SortColumn.Cooldown,    45, false),
-            new("DPS",   SortColumn.DPS,         55, false),
-            new("Evol$", SortColumn.EvolCost,    55, true),
-            new("Kill$", SortColumn.KillReward,  50, true),
+            new("Unit",   SortColumn.Name,       130, false),
+            new("T",      SortColumn.Tier,        28, false),
+            new("HP",     SortColumn.HP,          60, true),
+            new("Dmg",    SortColumn.Damage,      55, true),
+            new("Type",   SortColumn.DamageType,  65, false),
+            new("Phys",   SortColumn.PhysRes,     42, true),
+            new("Mag",    SortColumn.MagRes,      42, true),
+            new("Fire",   SortColumn.FireRes,     42, true),
+            new("Faith",  SortColumn.FaithRes,    42, true),
+            new("Spd",    SortColumn.Speed,       45, true),
+            new("CD",     SortColumn.Cooldown,    45, false),
+            new("DPS",    SortColumn.DPS,         55, false),
+            new("Evol$",  SortColumn.EvolCost,    55, true),
+            new("Kill$",  SortColumn.KillReward,  50, true),
         };
 
         private const float RowHeight = 20f;
@@ -102,6 +114,10 @@ namespace _Project.Scripts.Editor
                         HP = tier.Stats.Health,
                         Damage = tier.Stats.Damage,
                         DamageType = tier.Stats.DamageType.ToString(),
+                        PhysRes = tier.Stats.PhysicalResist,
+                        MagRes = tier.Stats.MagicResist,
+                        FireRes = tier.Stats.FireResist,
+                        FaithRes = tier.Stats.FaithResist,
                         Speed = tier.MoveSpeed,
                         Cooldown = cooldown,
                         DPS = dps,
@@ -249,6 +265,12 @@ namespace _Project.Scripts.Editor
                 var typeRect = CellRect(ref x, colIdx++, rowRect.y);
                 EditorGUI.LabelField(typeRect, row.DamageType, Styles.CenterLabel);
 
+                // Resists
+                DrawCellProperty(ref x, ref colIdx, rowRect.y, statsProp, "<PhysicalResist>k__BackingField");
+                DrawCellProperty(ref x, ref colIdx, rowRect.y, statsProp, "<MagicResist>k__BackingField");
+                DrawCellProperty(ref x, ref colIdx, rowRect.y, statsProp, "<FireResist>k__BackingField");
+                DrawCellProperty(ref x, ref colIdx, rowRect.y, statsProp, "<FaithResist>k__BackingField");
+
                 // Speed
                 DrawCellProperty(ref x, ref colIdx, rowRect.y, tierProp, "<MoveSpeed>k__BackingField");
 
@@ -316,6 +338,10 @@ namespace _Project.Scripts.Editor
                     SortColumn.HP => a.HP.CompareTo(b.HP),
                     SortColumn.Damage => a.Damage.CompareTo(b.Damage),
                     SortColumn.DamageType => string.Compare(a.DamageType, b.DamageType, StringComparison.Ordinal),
+                    SortColumn.PhysRes => a.PhysRes.CompareTo(b.PhysRes),
+                    SortColumn.MagRes => a.MagRes.CompareTo(b.MagRes),
+                    SortColumn.FireRes => a.FireRes.CompareTo(b.FireRes),
+                    SortColumn.FaithRes => a.FaithRes.CompareTo(b.FaithRes),
                     SortColumn.Speed => a.Speed.CompareTo(b.Speed),
                     SortColumn.Cooldown => a.Cooldown.CompareTo(b.Cooldown),
                     SortColumn.DPS => a.DPS.CompareTo(b.DPS),

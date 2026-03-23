@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b574c7249b5861d43abc286ee8fcc848, type: 3}
-  m_Name: archer-bomber
+  m_Name: "archer-\u0441rossbowman"
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Bomber
+  <Name>k__BackingField: Crossbowman
   <PriceAsHero>k__BackingField: 100
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 4
@@ -22,55 +22,51 @@ MonoBehaviour:
       <MagicResist>k__BackingField: 0.25
       <FireResist>k__BackingField: 0.1
       <FaithResist>k__BackingField: 0.15
-      <Damage>k__BackingField: 20
+      <Damage>k__BackingField: 60
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
-    - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
-    <BrainData>k__BackingField: {fileID: 11400000, guid: 480d01bedecf65c4d96a76a709148b56, type: 2}
+    - {fileID: 11400000, guid: 2f7a39d7f44bb424f8520f3cea062972, type: 2}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: f6a63d9a1972f7c46ad1fcd4dea520fe, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 985f8e9e5699ab842ab5909bbfa14c47, type: 2}
-    <AnimationType>k__BackingField: 1
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 70
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 7bd0421fac0374243b23a57cba4ba4d1, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 7bd0421fac0374243b23a57cba4ba4d1, type: 2}
-  - <MoveSpeed>k__BackingField: 4
+  - <MoveSpeed>k__BackingField: 4.15
     <Stats>k__BackingField:
       <Health>k__BackingField: 175
       <PhysicalResist>k__BackingField: 0.1
       <MagicResist>k__BackingField: 0.25
       <FireResist>k__BackingField: 0.1
       <FaithResist>k__BackingField: 0.15
-      <Damage>k__BackingField: 20
+      <Damage>k__BackingField: 65
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
-    - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
-    <BrainData>k__BackingField: {fileID: 11400000, guid: 480d01bedecf65c4d96a76a709148b56, type: 2}
+    - {fileID: 11400000, guid: 2f7a39d7f44bb424f8520f3cea062972, type: 2}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: f6a63d9a1972f7c46ad1fcd4dea520fe, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 985f8e9e5699ab842ab5909bbfa14c47, type: 2}
-    <AnimationType>k__BackingField: 1
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 80
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 7bd0421fac0374243b23a57cba4ba4d1, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 7bd0421fac0374243b23a57cba4ba4d1, type: 2}
-  - <MoveSpeed>k__BackingField: 4
+  - <MoveSpeed>k__BackingField: 4.3
     <Stats>k__BackingField:
       <Health>k__BackingField: 200
       <PhysicalResist>k__BackingField: 0.1
       <MagicResist>k__BackingField: 0.25
       <FireResist>k__BackingField: 0.1
       <FaithResist>k__BackingField: 0.15
-      <Damage>k__BackingField: 20
+      <Damage>k__BackingField: 70
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
-    - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
-    <BrainData>k__BackingField: {fileID: 11400000, guid: 480d01bedecf65c4d96a76a709148b56, type: 2}
+    - {fileID: 11400000, guid: 2f7a39d7f44bb424f8520f3cea062972, type: 2}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: f6a63d9a1972f7c46ad1fcd4dea520fe, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 985f8e9e5699ab842ab5909bbfa14c47, type: 2}
-    <AnimationType>k__BackingField: 1
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 90
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 7bd0421fac0374243b23a57cba4ba4d1, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 7bd0421fac0374243b23a57cba4ba4d1, type: 2}
   BaseMaterial: {fileID: 2100000, guid: 7bd0421fac0374243b23a57cba4ba4d1, type: 2}
-  BaseWeapon: {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
+  BaseWeapon: {fileID: 11400000, guid: 2f7a39d7f44bb424f8520f3cea062972, type: 2}
   BaseAbility: {fileID: 0}
-  BaseAbilityAnimation: 1
-  BaseBrain: {fileID: 11400000, guid: 480d01bedecf65c4d96a76a709148b56, type: 2}
+  BaseBrain: {fileID: 11400000, guid: f6a63d9a1972f7c46ad1fcd4dea520fe, type: 2}

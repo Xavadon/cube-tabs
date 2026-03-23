@@ -7,37 +7,16 @@ using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
 {
-    [CreateAssetMenu(menuName = "Config/Ai/MeleeBrain")]
-    public class MeleeBrainDataBase : BrainDataBase
+    [CreateAssetMenu(menuName = "Config/Ai/AssassinBrain")]
+    public class AssassinBrainDataBase : MeleeBrainDataBase
     {
-        [field: SerializeField] 
-        public float DetectionRadius { get; private set; } = 10f;
-
-        [field: SerializeField] 
-        public float WindUpDuration { get; private set; } = 0.3f;
-        
-        [field: SerializeField] 
-        public float AttackDuration { get; private set; } = 1f;
-        
-        [field: SerializeField] 
-        public float AttackRange { get; private set; } = 1.75f;
-        
-        [field: SerializeField] 
-        public float AttackStopRange { get; private set; } = 3f;
-
-        [field: SerializeField]
-        public float AttackCooldown { get; private set; } = 0.5f;
-
-        [field: SerializeField]
-        public MeleeAnimationType AnimationType { get; private set; } = MeleeAnimationType.OneHanded;
-
         public override BTNode BuildTree(LayerMask targetLayer, TierData tier)
         {
             return new Selector
             (
                 new Parallel
                 (
-                    new FindTarget(DetectionRadius, targetLayer),
+                    new FindPriorityTarget(DetectionRadius, targetLayer),
                     new Selector
                     (
                         new Sequence
@@ -54,11 +33,6 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
                 ),
                 new Idle()
             );
-        }
-        
-        protected virtual BTNode CreateAttackNode()
-        {
-            return new MeleeAttack(WindUpDuration, AttackDuration, AttackRange, AnimationType);
         }
     }
 }

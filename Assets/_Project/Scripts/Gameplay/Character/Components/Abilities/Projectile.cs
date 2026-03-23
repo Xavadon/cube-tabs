@@ -13,7 +13,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.Abilities
         public float Lifetime { get; private set; } = 5f;
 
         private Transform _target;
-        private Vector3 _lastDirection;
+        private Vector3 _lastTargetPosition;
         private float _speed;
         private float _damage;
         private DamageType _damageType;
@@ -27,7 +27,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.Abilities
             _damage = damage;
             _damageType = damageType;
             _onHit = onHit;
-            _lastDirection = transform.forward;
+            _lastTargetPosition = target != null ? target.position + Vector3.up : transform.position + transform.forward;
 
             Destroy(gameObject, Lifetime);
         }
@@ -36,30 +36,30 @@ namespace _Project.Scripts.Gameplay.Character.Components.Abilities
         {
             float distanceThisFrame = _speed * Time.deltaTime;
 
-            if (_target == null)
-            {
-                transform.position += _lastDirection * distanceThisFrame;
-                return;
-            }
+            if (_target != null)
+                _lastTargetPosition = _target.position + Vector3.up;
 
-            Vector3 targetPosition = _target.position + Vector3.up;
-            Vector3 toTarget = targetPosition - transform.position;
+            Vector3 toTarget = _lastTargetPosition - transform.position;
 
             if (toTarget.sqrMagnitude <= distanceThisFrame * distanceThisFrame)
             {
-                Hit(targetPosition);
+                Hit(_lastTargetPosition);
                 return;
             }
 
-            _lastDirection = toTarget.normalized;
-            transform.position += _lastDirection * distanceThisFrame;
-            transform.rotation = Quaternion.LookRotation(_lastDirection);
+            Vector3 direction = toTarget.normalized;
+            transform.position += direction * distanceThisFrame;
+            transform.rotation = Quaternion.LookRotation(direction);
         }
 
         private void Hit(Vector3 hitPoint)
         {
-            IDamageAble damageable = _target.GetComponent<IDamageAble>();
-            damageable?.ApplyDamage(_damage, hitPoint, _damageType);
+            if (_target != null)
+            {
+                IDamageAble damageable = _target.GetComponent<IDamageAble>();
+                damageable?.ApplyDamage(_damage, hitPoint, _damageType);
+            }
+
             _onHit?.Invoke(hitPoint);
             // TODO: Возвращать в пул вместо Destroy
             Destroy(gameObject);
