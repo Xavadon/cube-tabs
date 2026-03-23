@@ -17,7 +17,7 @@ MonoBehaviour:
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 3.2
     <Stats>k__BackingField:
-      <Health>k__BackingField: 625
+      <Health>k__BackingField: 700
       <PhysicalResist>k__BackingField: 0.4
       <MagicResist>k__BackingField: 0.1
       <FireResist>k__BackingField: 0

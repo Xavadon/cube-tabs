@@ -28,5 +28,7 @@ namespace _Project.Scripts.Architecture.Services.Save
         public List<int> ArmyInstanceIds = new();
         public List<LevelKillEntry> LevelKillProgress = new();
         public List<int> CompletedLevelIndices = new();
+        public List<int> RewardedLevelIndices = new();
+        public int BonusMaxArmySlots;
     }
 }

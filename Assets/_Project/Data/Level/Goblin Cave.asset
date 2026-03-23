@@ -15,6 +15,12 @@ MonoBehaviour:
   <LevelName>k__BackingField: Goblin Cave
   <LevelIndex>k__BackingField: 0
   <KillsToComplete>k__BackingField: 6000
+  <BonusArmySlots>k__BackingField: 5
+  <FirstCompletionRewards>k__BackingField:
+  - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
+    Count: 5
+  - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
+    Count: 5
   Waves:
   - Entries:
     - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}

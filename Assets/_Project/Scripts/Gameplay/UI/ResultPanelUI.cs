@@ -1,5 +1,7 @@
+using System.Text;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Services;
+using _Project.Scripts.Gameplay.Services.Scene;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +15,9 @@ namespace _Project.Scripts.Gameplay.UI
 
         [SerializeField]
         private TextMeshProUGUI _statsText;
+
+        [SerializeField]
+        private TextMeshProUGUI _rewardText;
 
         [SerializeField]
         private Button _menuButton;
@@ -56,6 +61,39 @@ namespace _Project.Scripts.Gameplay.UI
             }
 
             _statsText.text = $"+{data.GoldEarned} золота\n\n{data.EnemiesKilled} врагов убито{progress}";
+
+            if (_rewardText != null)
+            {
+                bool hasUnits = data.RewardedUnits is { Length: > 0 };
+                bool hasSlots = data.BonusArmySlots > 0;
+
+                if (hasUnits || hasSlots)
+                {
+                    var sb = new StringBuilder();
+
+                    if (hasUnits)
+                    {
+                        sb.AppendLine("Новые юниты:");
+                        foreach (var entry in data.RewardedUnits)
+                        {
+                            sb.Append("• ").Append(entry.CharacterData.Name);
+                            if (entry.Count > 1)
+                                sb.Append(" x").Append(entry.Count);
+                            sb.AppendLine();
+                        }
+                    }
+
+                    if (hasSlots)
+                        sb.Append("+").Append(data.BonusArmySlots).Append(" слотов армии");
+
+                    _rewardText.text = sb.ToString();
+                    _rewardText.gameObject.SetActive(true);
+                }
+                else
+                {
+                    _rewardText.gameObject.SetActive(false);
+                }
+            }
 
             gameObject.SetActive(true);
         }

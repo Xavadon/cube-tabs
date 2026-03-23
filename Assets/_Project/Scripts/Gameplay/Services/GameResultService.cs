@@ -18,6 +18,8 @@ namespace _Project.Scripts.Gameplay.Services
         public GameResult Result;
         public int EnemiesKilled;
         public int GoldEarned;
+        public RewardEntry[] RewardedUnits;
+        public int BonusArmySlots;
     }
 
     public interface IGameResultService : IService
@@ -115,10 +117,22 @@ namespace _Project.Scripts.Gameplay.Services
             _battleActive = false;
 
             int goldEarned = _playerProgressService.Gold - _goldBefore;
+            RewardEntry[] rewardedUnits = null;
+            int bonusSlots = 0;
 
             if (_levelConfig != null)
             {
                 _playerProgressService.AddLevelKills(_levelConfig.LevelIndex, _enemiesKilled);
+
+                if (result == GameResult.Victory && !_playerProgressService.IsLevelRewarded(_levelConfig.LevelIndex))
+                {
+                    rewardedUnits = GrantFirstCompletionRewards();
+                    bonusSlots = _levelConfig.BonusArmySlots;
+                    if (bonusSlots > 0)
+                        _playerProgressService.GrantArmySlots(bonusSlots);
+
+                    _playerProgressService.MarkLevelRewarded(_levelConfig.LevelIndex);
+                }
 
                 int totalKills = _playerProgressService.GetLevelKills(_levelConfig.LevelIndex);
                 if (totalKills >= _levelConfig.KillsToComplete)
@@ -129,11 +143,29 @@ namespace _Project.Scripts.Gameplay.Services
             {
                 Result = result,
                 EnemiesKilled = _enemiesKilled,
-                GoldEarned = goldEarned
+                GoldEarned = goldEarned,
+                RewardedUnits = rewardedUnits,
+                BonusArmySlots = bonusSlots
             };
 
             Debug.Log($"[GameResultService] Battle finished: {result}, Kills: {_enemiesKilled}, Gold: {goldEarned}");
             OnGameFinished?.Invoke(data);
+        }
+
+        private RewardEntry[] GrantFirstCompletionRewards()
+        {
+            var rewards = _levelConfig.FirstCompletionRewards;
+            if (rewards == null || rewards.Length == 0)
+                return null;
+
+            foreach (var entry in rewards)
+            {
+                for (int i = 0; i < entry.Count; i++)
+                    _playerProgressService.GrantUnit(entry.CharacterData);
+            }
+
+            Debug.Log($"[GameResultService] Granted first-completion reward unit(s)");
+            return rewards;
         }
     }
 }

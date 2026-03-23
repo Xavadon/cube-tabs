@@ -21,6 +21,7 @@ namespace _Project.Scripts.Gameplay.Services
     {
         int Gold { get; }
         int ArmySlots { get; }
+        int MaxArmySlots { get; }
         List<ResolvedUnit> ArmyUnits { get; }
         List<ResolvedUnit> BacklogUnits { get; }
 
@@ -31,6 +32,8 @@ namespace _Project.Scripts.Gameplay.Services
         bool BuyUniqueUnit(CharacterData unit);
         bool IsUnitOwned(string unitId);
         void GrantItemReward(ShopItemData item);
+        void GrantUnit(CharacterData unit);
+        void GrantArmySlots(int count);
         bool EvolveUnit(int instanceId, CharacterData target, int cost);
         bool UpgradeTier(int instanceId);
         bool TryGetUnitInstance(int unitId, out UnitInstance instance);
@@ -42,6 +45,8 @@ namespace _Project.Scripts.Gameplay.Services
         int GetLevelKills(int levelIndex);
         bool IsLevelCompleted(int levelIndex);
         void MarkLevelCompleted(int levelIndex);
+        bool IsLevelRewarded(int levelIndex);
+        void MarkLevelRewarded(int levelIndex);
         void Save();
 
         event Action OnGoldChanged;
@@ -60,6 +65,7 @@ namespace _Project.Scripts.Gameplay.Services
 
         public int Gold => _saveData.Gold;
         public int ArmySlots => _saveData.ArmySlots;
+        public int MaxArmySlots => _catalog.MaxArmySlots + _saveData.BonusMaxArmySlots;
 
         public event Action OnGoldChanged;
         public event Action OnArmyChanged;
@@ -197,6 +203,35 @@ namespace _Project.Scripts.Gameplay.Services
             return true;
         }
 
+        public void GrantUnit(CharacterData unit)
+        {
+            if (unit == null)
+                return;
+
+            int instanceId = _saveData.NextInstanceId++;
+            _saveData.OwnedUnits.Add(new OwnedUnit
+            {
+                InstanceId = instanceId,
+                UnitId = unit.Id,
+                TierIndex = 0
+            });
+
+            if (_saveData.ArmyInstanceIds.Count < _saveData.ArmySlots)
+                _saveData.ArmyInstanceIds.Add(instanceId);
+
+            OnOwnedChanged?.Invoke();
+            OnArmyChanged?.Invoke();
+            Save();
+        }
+
+        public void GrantArmySlots(int count)
+        {
+            _saveData.ArmySlots += count;
+            _saveData.BonusMaxArmySlots += count;
+            OnArmyChanged?.Invoke();
+            Save();
+        }
+
         public bool IsUnitOwned(string unitId)
         {
             foreach (var owned in _saveData.OwnedUnits)
@@ -295,7 +330,7 @@ namespace _Project.Scripts.Gameplay.Services
 
         public bool UpgradeArmySlots()
         {
-            if (_saveData.ArmySlots >= _catalog.MaxArmySlots)
+            if (_saveData.ArmySlots >= MaxArmySlots)
                 return false;
 
             int cost = GetSlotUpgradeCost();
@@ -360,6 +395,20 @@ namespace _Project.Scripts.Gameplay.Services
             if (!_saveData.CompletedLevelIndices.Contains(levelIndex))
             {
                 _saveData.CompletedLevelIndices.Add(levelIndex);
+                Save();
+            }
+        }
+
+        public bool IsLevelRewarded(int levelIndex)
+        {
+            return _saveData.RewardedLevelIndices.Contains(levelIndex);
+        }
+
+        public void MarkLevelRewarded(int levelIndex)
+        {
+            if (!_saveData.RewardedLevelIndices.Contains(levelIndex))
+            {
+                _saveData.RewardedLevelIndices.Add(levelIndex);
                 Save();
             }
         }

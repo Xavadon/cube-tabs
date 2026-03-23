@@ -16,7 +16,20 @@ namespace _Project.Scripts.Gameplay.Services.Scene
         [field: SerializeField]
         public int KillsToComplete { get; private set; } = 100;
 
+        [field: SerializeField]
+        public int BonusArmySlots { get; private set; }
+
+        [field: SerializeField]
+        public RewardEntry[] FirstCompletionRewards { get; private set; }
+
         public WaveData[] Waves;
+    }
+
+    [Serializable]
+    public class RewardEntry
+    {
+        public CharacterData CharacterData;
+        public int Count = 1;
     }
 
     [Serializable]

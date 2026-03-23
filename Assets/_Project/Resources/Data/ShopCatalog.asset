@@ -27,6 +27,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4c66042c1aabd76458d8b42a21ef9fff, type: 2}
   - {fileID: 11400000, guid: bdf6d4b84d650514488104946a498409, type: 2}
   - {fileID: 11400000, guid: 4e5b13890b17a4d4f96030744cc2d9ac, type: 2}
+  - {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
+  - {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
+  - {fileID: 11400000, guid: 1cbb885b7a2bcd54f81d3350cec92604, type: 2}
+  - {fileID: 11400000, guid: 7bbdeab44b5b4394dbf4269e4ad43977, type: 2}
+  - {fileID: 11400000, guid: 57e229345e74138499770ff3edbde6d4, type: 2}
   <BaseUnit>k__BackingField: {fileID: 11400000, guid: bdf6d4b84d650514488104946a498409, type: 2}
   <StartingUnit>k__BackingField: {fileID: 11400000, guid: 4e5b13890b17a4d4f96030744cc2d9ac, type: 2}
   <EvolutionCatalog>k__BackingField: {fileID: 11400000, guid: 8bf77b34c2191ba4c8b6f7ec6adfaa8d, type: 2}

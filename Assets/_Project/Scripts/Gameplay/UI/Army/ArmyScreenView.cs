@@ -148,7 +148,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
         private void RefreshSlotUpgrade()
         {
-            bool maxed = _progress.ArmySlots >= _catalog.MaxArmySlots;
+            bool maxed = _progress.ArmySlots >= _progress.MaxArmySlots;
             int cost = _progress.GetSlotUpgradeCost();
 
             _slotUpgradeButton.gameObject.SetActive(!maxed);
