@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: brain-archer-rogue
   m_EditorClassIdentifier: 
   <DetectionRadius>k__BackingField: 200
-  <WindUpDuration>k__BackingField: 0.3
-  <AttackDuration>k__BackingField: 1
+  <WindUpDuration>k__BackingField: 0.4
+  <AttackDuration>k__BackingField: 0.85
   <AttackRange>k__BackingField: 1.75
   <AttackStopRange>k__BackingField: 3
   <AttackCooldown>k__BackingField: 0.5
+  <AnimationType>k__BackingField: 2

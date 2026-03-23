@@ -578,6 +578,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         public static Action<AnimatorConroller> ResolveAnimation(MeleeAnimationType type) => type switch
         {
             MeleeAnimationType.TwoHanded => a => a.PlayTwoHanded(),
+            MeleeAnimationType.Dual => a => a.PlayDual(),
             _ => a => a.PlayOneHanded()
         };
 
