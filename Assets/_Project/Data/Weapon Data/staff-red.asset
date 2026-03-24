@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d188752bcbac3446a8e0c42974cdc3f, type: 3}
   m_Name: staff-red
   m_EditorClassIdentifier: 
-  <Prefab>k__BackingField: {fileID: 3016012483531957517, guid: 2573aba976c601f4db26c231f01eb8c9, type: 3}
+  <Prefab>k__BackingField: {fileID: 3016012483531957517, guid: cc555ae798908994fbe7cb1250b7eb71, type: 3}
   <LocalPosition>k__BackingField: {x: 0, y: 0.151, z: -0.604}
   <LocalRotation>k__BackingField: {x: 0, y: 0, z: 160}
   <LocalScale>k__BackingField: {x: 85, y: 85, z: 85}

@@ -25,8 +25,8 @@ MonoBehaviour:
       <Damage>k__BackingField: 55
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
-    - {fileID: 11400000, guid: 4b6591b98d63a814a8707200b70e3029, type: 2}
-    - {fileID: 11400000, guid: 7e97ecf80ff35b04db6b6285180be640, type: 2}
+    - {fileID: 11400000, guid: 971fd5b473054e84984c37d963da76ff, type: 2}
+    - {fileID: 11400000, guid: c923bab66c9117b41a9b90d67ffa9ae2, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 9b4258595442995419e87b9cd45b7363, type: 2}
     <Ability>k__BackingField: {fileID: 0}
     <DeathAbility>k__BackingField: {fileID: 0}

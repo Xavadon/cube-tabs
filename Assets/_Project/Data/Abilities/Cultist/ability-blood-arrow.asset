@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3bec0c3704b04a04d817ca0ba04d9796, type: 3}
-  m_Name: ability-magic-arrow
+  m_Name: ability-blood-arrow
   m_EditorClassIdentifier: 
   <DamageMultiplier>k__BackingField: 1
-  <Prefab>k__BackingField: {fileID: 6780703374543443096, guid: 47489eb38a0f5a441a573cce4ce5b8ed, type: 3}
+  <Prefab>k__BackingField: {fileID: 6780703374543443096, guid: af83380e76614c447ad45b883b9d4758, type: 3}
   <DealDirectDamage>k__BackingField: 1
   <Speed>k__BackingField: 25
-  <SpawnOffset>k__BackingField: {x: 0, y: 1, z: 0.5}
+  <SpawnOffset>k__BackingField: {x: 0, y: 0, z: 0}
   <OnHitAbility>k__BackingField: {fileID: 0}

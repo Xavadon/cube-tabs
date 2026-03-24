@@ -6,6 +6,8 @@ using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Character.Data.Abilities
 {
+    //TODO: делать наследование от проджектайла
+    
     [CreateAssetMenu(menuName = "Config/Abilities/Bouncing Projectile")]
     public class BouncingProjectileAbilityDataBase : AbilityDataBase
     {

@@ -22,19 +22,19 @@ MonoBehaviour:
   - Entries:
     - CharacterData: {fileID: 11400000, guid: 81557cc91482cfd4d953153090f338ad, type: 2}
       TierIndex: 0
-      Count: 0
+      Count: 1
     - CharacterData: {fileID: 11400000, guid: 2dc08a0193120134dad9042ae1e1fb65, type: 2}
       TierIndex: 0
       Count: 1
     - CharacterData: {fileID: 11400000, guid: 4549d9a49df6e53429bdc6fcd4548f0d, type: 2}
       TierIndex: 0
-      Count: 3
-    - CharacterData: {fileID: 11400000, guid: 6e01f01e4701f964b8cbb4e62d225483, type: 2}
-      TierIndex: 0
-      Count: 3
+      Count: 1
     - CharacterData: {fileID: 11400000, guid: e7c9b05c2a65ccb428eeb13c692e20ca, type: 2}
       TierIndex: 0
       Count: 1
     - CharacterData: {fileID: 11400000, guid: 7232bd23725794e4d8d1b10ab5040363, type: 2}
       TierIndex: 0
-      Count: 5
+      Count: 1
+    - CharacterData: {fileID: 11400000, guid: 3ca566c8d99e17249bdc182676f1dbfa, type: 2}
+      TierIndex: 0
+      Count: 1
