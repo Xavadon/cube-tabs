@@ -22,7 +22,10 @@ MonoBehaviour:
   - Entries:
     - CharacterData: {fileID: 11400000, guid: 81557cc91482cfd4d953153090f338ad, type: 2}
       TierIndex: 0
-      Count: 2
+      Count: 0
     - CharacterData: {fileID: 11400000, guid: 2dc08a0193120134dad9042ae1e1fb65, type: 2}
       TierIndex: 0
-      Count: 1
+      Count: 0
+    - CharacterData: {fileID: 11400000, guid: 4549d9a49df6e53429bdc6fcd4548f0d, type: 2}
+      TierIndex: 0
+      Count: 3

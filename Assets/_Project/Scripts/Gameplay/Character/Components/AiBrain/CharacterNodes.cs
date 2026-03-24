@@ -425,8 +425,9 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
         protected override void Exit()
         {
-            AnimatorController animator = Blackboard.Get<AnimatorController>(BrainKeys.AnimatorController);
-            animator.PlayIdle();
+            NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
+            agent.isStopped = true;
+            agent.isStopped = false;
         }
     }
 
@@ -581,6 +582,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         {
             MeleeAnimationType.TwoHanded => a => a.PlayTwoHanded(),
             MeleeAnimationType.Dual => a => a.PlayDual(),
+            MeleeAnimationType.Spear => a => a.PlaySpear(),
             _ => a => a.PlayOneHanded()
         };
 

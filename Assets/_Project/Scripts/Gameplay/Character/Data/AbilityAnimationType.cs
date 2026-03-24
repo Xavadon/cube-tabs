@@ -12,5 +12,6 @@ namespace _Project.Scripts.Gameplay.Character.Data
         OneHanded,
         TwoHanded,
         Dual,
+        Spear,
     }
 }

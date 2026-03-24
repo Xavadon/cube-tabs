@@ -32,7 +32,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
                     (
                         new Sequence
                         (
-                            new IsInRange(BlinkRange), //TODO: не проигрывается анимация абилити из-за ChaseTarget.Enter();
+                            new IsInRange(BlinkRange),
                             new Cooldown(BlinkCooldown,
                                 new Parallel(CreateAbilityNode(tier), new RotateTowardsTarget()))
                         ),

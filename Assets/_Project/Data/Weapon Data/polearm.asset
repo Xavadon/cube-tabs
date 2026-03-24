@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: polearm
   m_EditorClassIdentifier: 
   <Prefab>k__BackingField: {fileID: 919132149155446097, guid: ccfa2025ad4ec3549a4ae8a952edc05e, type: 3}
-  <LocalPosition>k__BackingField: {x: 0, y: 0.064, z: -2.093}
+  <LocalPosition>k__BackingField: {x: 0, y: 0.064, z: -1.25}
   <LocalRotation>k__BackingField: {x: -180, y: 0, z: 0}
   <LocalScale>k__BackingField: {x: 80, y: 80, z: 80}

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace _Project.Scripts.Architecture.BehaviorTree.Composites
 {
@@ -31,8 +30,6 @@ namespace _Project.Scripts.Architecture.BehaviorTree.Composites
             {
                 NodeStatus childStatus = _children[i].Evaluate();
 
-                Debug.Log($"[ReactiveSelector] {_children[i].GetType()}");
-                
                 if (childStatus == NodeStatus.Locked)
                 {
                     _lockedIndex = i;
