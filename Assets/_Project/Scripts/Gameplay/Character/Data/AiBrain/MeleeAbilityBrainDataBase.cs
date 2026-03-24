@@ -3,23 +3,24 @@ using _Project.Scripts.Architecture.BehaviorTree.Composites;
 using _Project.Scripts.Architecture.BehaviorTree.Decorators;
 using _Project.Scripts.Architecture.BehaviorTree.Leaves;
 using _Project.Scripts.Gameplay.Character.Components.AiBrain;
+using _Project.Scripts.Gameplay.Character.Data;
 using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
 {
-    [CreateAssetMenu(menuName = "Config/Ai/RogueBrain")]
-    public class RogueBrainDataBase : MeleeBrainDataBase
+    [CreateAssetMenu(menuName = "Config/Ai/MeleeAbilityBrain")]
+    public class MeleeAbilityBrainDataBase : MeleeBrainDataBase
     {
-        [field: SerializeField] public float BlinkRange { get; private set; } = 15f;
+        [field: SerializeField] public float AbilityRange { get; private set; } = 15f;
 
-        [field: SerializeField] public float BlinkCooldown { get; private set; } = 5f;
+        [field: SerializeField] public float AbilityCooldown { get; private set; } = 5f;
 
-        [field: SerializeField] public float BlinkWindUpDuration { get; private set; } = 0.2f;
+        [field: SerializeField] public float AbilityWindUpDuration { get; private set; } = 0.2f;
 
-        [field: SerializeField] public float BlinkDuration { get; private set; } = 0.5f;
+        [field: SerializeField] public float AbilityDuration { get; private set; } = 0.5f;
 
         [field: SerializeField]
-        public AbilityAnimationType BlinkAnimation { get; private set; } = AbilityAnimationType.AbilityAttack;
+        public AbilityAnimationType AbilityAnimation { get; private set; } = AbilityAnimationType.AbilityAttack;
 
         public override BTNode BuildTree(LayerMask targetLayer, TierData tier)
         {
@@ -27,13 +28,13 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
             (
                 new Parallel
                 (
-                    new FindPriorityTarget(DetectionRadius, targetLayer),
+                    CreateFindTargetNode(targetLayer),
                     new ReactiveSelector
                     (
                         new Sequence
                         (
-                            new IsInRange(BlinkRange),
-                            new Cooldown(BlinkCooldown,
+                            new IsInRange(AbilityRange),
+                            new Cooldown(AbilityCooldown,
                                 new Parallel(CreateAbilityNode(tier), new RotateTowardsTarget()))
                         ),
                         new Sequence
@@ -53,10 +54,19 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
             );
         }
 
-        public AbilityAttack CreateAbilityNode(TierData tier)
+        protected virtual BTNode CreateFindTargetNode(LayerMask targetLayer)
         {
-            return new AbilityAttack(tier.Ability, BlinkWindUpDuration, BlinkDuration, BlinkRange,
-                AbilityBrainDataBase.ResolveAnimation(BlinkAnimation));
+            return FindTargetType switch
+            {
+                FindTargetType.Priority => new FindPriorityTarget(DetectionRadius, targetLayer),
+                _ => new FindTarget(DetectionRadius, targetLayer)
+            };
+        }
+
+        protected virtual AbilityAttack CreateAbilityNode(TierData tier)
+        {
+            return new AbilityAttack(tier.Ability, AbilityWindUpDuration, AbilityDuration, AbilityRange,
+                AbilityBrainDataBase.ResolveAnimation(AbilityAnimation));
         }
     }
 }

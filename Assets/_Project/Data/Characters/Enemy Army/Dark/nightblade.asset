@@ -27,7 +27,7 @@ MonoBehaviour:
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: c5747195004112f41858e8aa87a70b64, type: 2}
     - {fileID: 11400000, guid: c5747195004112f41858e8aa87a70b64, type: 2}
-    <BrainData>k__BackingField: {fileID: 11400000, guid: c1e9848ceb6befa4085e9c2d1ec01053, type: 2}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: 4b05c72a41f4c2e47929b96e61fa7f6a, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 0dcb60064d0bee74989ebd326e25cfb8, type: 2}
     <DeathAbility>k__BackingField: {fileID: 11400000, guid: 9629337c01a4aed44b7d75ec8bd724ef, type: 2}
     <KillReward>k__BackingField: 7
@@ -37,4 +37,4 @@ MonoBehaviour:
   BaseMaterial: {fileID: 2100000, guid: 891149213fc7924499692cab4a2f558e, type: 2}
   BaseWeapon: {fileID: 11400000, guid: 2609461451f571f488176b574bb3b33e, type: 2}
   BaseAbility: {fileID: 0}
-  BaseBrain: {fileID: 0}
+  BaseBrain: {fileID: 11400000, guid: 58101b0c1a11d664c9548f6d8d76e603, type: 2}

@@ -37,7 +37,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
             (
                 new Parallel
                 (
-                    new FindTarget(DetectionRadius, targetLayer),
+                    CreateFindTargetNode(targetLayer),
                     new Selector
                     (
                         new Sequence
@@ -59,6 +59,11 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
         protected virtual BTNode CreateAttackNode()
         {
             return new MeleeAttack(WindUpDuration, AttackDuration, AttackRange, AnimationType);
+        }
+
+        protected virtual BTNode CreateFindTargetNode(LayerMask targetLayer)
+        {
+            return new FindTarget(DetectionRadius, targetLayer);
         }
     }
 }

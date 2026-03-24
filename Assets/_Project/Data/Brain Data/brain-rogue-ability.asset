@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e8a479fc361c7a40bba745e11602211, type: 3}
-  m_Name: brain-rogue
+  m_Script: {fileID: 11500000, guid: 09d1a0c92fd76944293a5abc39455227, type: 3}
+  m_Name: brain-rogue-ability
   m_EditorClassIdentifier: 
+  <FindTargetType>k__BackingField: 1
   <DetectionRadius>k__BackingField: 200
   <WindUpDuration>k__BackingField: 0.3
   <AttackDuration>k__BackingField: 1
@@ -19,8 +20,8 @@ MonoBehaviour:
   <AttackStopRange>k__BackingField: 3
   <AttackCooldown>k__BackingField: 0.5
   <AnimationType>k__BackingField: 2
-  <BlinkRange>k__BackingField: 15
-  <BlinkCooldown>k__BackingField: 5
-  <BlinkWindUpDuration>k__BackingField: 0.5
-  <BlinkDuration>k__BackingField: 0.55
-  <BlinkAnimation>k__BackingField: 2
+  <AbilityRange>k__BackingField: 15
+  <AbilityCooldown>k__BackingField: 5
+  <AbilityWindUpDuration>k__BackingField: 0.2
+  <AbilityDuration>k__BackingField: 0.5
+  <AbilityAnimation>k__BackingField: 2
