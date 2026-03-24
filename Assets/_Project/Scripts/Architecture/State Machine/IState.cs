@@ -1,6 +1,4 @@
-﻿using UnityEditor.Experimental.GraphView;
-
-namespace _Project.Scripts.Architecture.State_Machine
+﻿namespace _Project.Scripts.Architecture.State_Machine
 {
     public interface IState : IExitableState
     {

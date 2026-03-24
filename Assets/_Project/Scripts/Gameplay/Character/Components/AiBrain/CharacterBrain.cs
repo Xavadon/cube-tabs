@@ -24,6 +24,8 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
     {
         private readonly BehaviourTree _tree;
 
+        public Blackboard Blackboard => _tree?.Blackboard;
+
         public CharacterBrain(LayerMask layerMask, BrainDataBase dataBase, TierData tier, NavMeshAgent agent,
             AnimatorConroller animatorController, Transform transform, WeaponData weaponData,
             IInputService inputService = null)

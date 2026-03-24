@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d7402c2c9edf404e86fd6b69c52d8e7, type: 3}
+  m_Name: ability-fire-kreeper-explosion
+  m_EditorClassIdentifier: 
+  <DamageMultiplier>k__BackingField: 2
+  <Radius>k__BackingField: 4
+  <Duration>k__BackingField: 0.75
+  <SpawnOffset>k__BackingField: {x: 0, y: 1, z: 0}
+  <Prefab>k__BackingField: {fileID: -6825192595806764821, guid: 004071c7bf6fa49489bc1b21ff61509d, type: 3}

@@ -1,4 +1,5 @@
 using _Project.Scripts.Gameplay.Character.Data;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Character
@@ -27,5 +28,20 @@ namespace _Project.Scripts.Gameplay.Character
             weapon.transform.localScale = weaponData.LocalScale;
             _currentWeapons[slotIndex] = weapon;
         }
+        
+#if UNITY_EDITOR
+
+        [SerializeField]
+        private WeaponData[] _editorWeapons;
+
+        [Button]
+        public void SpawnEditorWeapons()
+        {
+            for (int i = 0; i < _editorWeapons.Length; i++)
+            {
+                SetWeapon(_editorWeapons[i], i);
+            }
+        }
+#endif
     }
 }

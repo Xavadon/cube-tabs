@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using _Project.Scripts.Architecture.Services;
 using _Project.Scripts.Gameplay.Character.Services;
 using _Project.Scripts.Gameplay.Services.Scene;
@@ -13,13 +14,19 @@ namespace _Project.Scripts.Gameplay.Services
         Defeat
     }
 
+    public struct ClaimedMilestoneData
+    {
+        public int KillsRequired;
+        public RewardEntry[] Rewards;
+        public int BonusArmySlots;
+    }
+
     public struct GameResultData
     {
         public GameResult Result;
         public int EnemiesKilled;
         public int GoldEarned;
-        public RewardEntry[] RewardedUnits;
-        public int BonusArmySlots;
+        public ClaimedMilestoneData[] ClaimedMilestones;
     }
 
     public interface IGameResultService : IService
@@ -117,26 +124,17 @@ namespace _Project.Scripts.Gameplay.Services
             _battleActive = false;
 
             int goldEarned = _playerProgressService.Gold - _goldBefore;
-            RewardEntry[] rewardedUnits = null;
-            int bonusSlots = 0;
+            ClaimedMilestoneData[] claimedMilestones = null;
 
             if (_levelConfig != null)
             {
-                _playerProgressService.AddLevelKills(_levelConfig.LevelIndex, _enemiesKilled);
+                int levelIndex = _levelConfig.LevelIndex;
+                _playerProgressService.AddLevelKills(levelIndex, _enemiesKilled);
 
-                if (result == GameResult.Victory && !_playerProgressService.IsLevelRewarded(_levelConfig.LevelIndex))
-                {
-                    rewardedUnits = GrantFirstCompletionRewards();
-                    bonusSlots = _levelConfig.BonusArmySlots;
-                    if (bonusSlots > 0)
-                        _playerProgressService.GrantArmySlots(bonusSlots);
+                claimedMilestones = ClaimReachedMilestones(levelIndex);
 
-                    _playerProgressService.MarkLevelRewarded(_levelConfig.LevelIndex);
-                }
-
-                int totalKills = _playerProgressService.GetLevelKills(_levelConfig.LevelIndex);
-                if (totalKills >= _levelConfig.KillsToComplete)
-                    _playerProgressService.MarkLevelCompleted(_levelConfig.LevelIndex);
+                if (AreAllMilestonesClaimed(levelIndex))
+                    _playerProgressService.MarkLevelCompleted(levelIndex);
             }
 
             var data = new GameResultData
@@ -144,28 +142,75 @@ namespace _Project.Scripts.Gameplay.Services
                 Result = result,
                 EnemiesKilled = _enemiesKilled,
                 GoldEarned = goldEarned,
-                RewardedUnits = rewardedUnits,
-                BonusArmySlots = bonusSlots
+                ClaimedMilestones = claimedMilestones
             };
 
             Debug.Log($"[GameResultService] Battle finished: {result}, Kills: {_enemiesKilled}, Gold: {goldEarned}");
             OnGameFinished?.Invoke(data);
         }
 
-        private RewardEntry[] GrantFirstCompletionRewards()
+        private ClaimedMilestoneData[] ClaimReachedMilestones(int levelIndex)
         {
-            var rewards = _levelConfig.FirstCompletionRewards;
-            if (rewards == null || rewards.Length == 0)
+            var milestones = _levelConfig.Milestones;
+            if (milestones == null || milestones.Length == 0)
                 return null;
 
-            foreach (var entry in rewards)
+            int totalKills = _playerProgressService.GetLevelKills(levelIndex);
+            List<ClaimedMilestoneData> claimed = null;
+
+            for (int i = 0; i < milestones.Length; i++)
             {
-                for (int i = 0; i < entry.Count; i++)
-                    _playerProgressService.GrantUnit(entry.CharacterData);
+                if (totalKills < milestones[i].KillsRequired)
+                    continue;
+
+                if (_playerProgressService.IsMilestoneClaimed(levelIndex, i))
+                    continue;
+
+                _playerProgressService.ClaimMilestone(levelIndex, i);
+                GrantMilestoneRewards(milestones[i]);
+
+                claimed ??= new List<ClaimedMilestoneData>();
+                claimed.Add(new ClaimedMilestoneData
+                {
+                    KillsRequired = milestones[i].KillsRequired,
+                    Rewards = milestones[i].Rewards,
+                    BonusArmySlots = milestones[i].BonusArmySlots
+                });
+
+                Debug.Log($"[GameResultService] Milestone claimed: {milestones[i].KillsRequired} kills");
             }
 
-            Debug.Log($"[GameResultService] Granted first-completion reward unit(s)");
-            return rewards;
+            return claimed?.ToArray();
+        }
+
+        private void GrantMilestoneRewards(KillMilestone milestone)
+        {
+            if (milestone.Rewards != null)
+            {
+                foreach (var entry in milestone.Rewards)
+                {
+                    for (int i = 0; i < entry.Count; i++)
+                        _playerProgressService.GrantUnit(entry.CharacterData);
+                }
+            }
+
+            if (milestone.BonusArmySlots > 0)
+                _playerProgressService.GrantArmySlots(milestone.BonusArmySlots);
+        }
+
+        private bool AreAllMilestonesClaimed(int levelIndex)
+        {
+            var milestones = _levelConfig.Milestones;
+            if (milestones == null || milestones.Length == 0)
+                return true;
+
+            for (int i = 0; i < milestones.Length; i++)
+            {
+                if (!_playerProgressService.IsMilestoneClaimed(levelIndex, i))
+                    return false;
+            }
+
+            return true;
         }
     }
 }

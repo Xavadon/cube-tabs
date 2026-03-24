@@ -72,11 +72,23 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
         {
             int levelIndex = _selectedLevel.LevelIndex;
             int currentKills = _progress.GetLevelKills(levelIndex);
-            int requiredKills = _selectedLevel.KillsToComplete;
             bool completed = _progress.IsLevelCompleted(levelIndex);
 
             _statsBuilder.Clear();
-            _statsBuilder.Append("Kills: ").Append(currentKills).Append("/").AppendLine(requiredKills.ToString());
+
+            var milestones = _selectedLevel.Milestones;
+            if (milestones is { Length: > 0 })
+            {
+                _statsBuilder.Append("Kills: ").AppendLine(currentKills.ToString());
+
+                for (int i = 0; i < milestones.Length; i++)
+                {
+                    bool claimed = _progress.IsMilestoneClaimed(levelIndex, i);
+                    string status = claimed ? "✓" : currentKills >= milestones[i].KillsRequired ? "!" : " ";
+                    _statsBuilder.Append("[").Append(status).Append("] ")
+                        .Append(milestones[i].KillsRequired).AppendLine(" kills");
+                }
+            }
 
             if (_selectedLevel.Waves is { Length: > 0 })
             {

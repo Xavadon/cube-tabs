@@ -40,7 +40,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
 
             // TODO: Заменить Instantiate на пулинг
             BouncingProjectile projectile = Instantiate(Prefab, spawnPosition, Quaternion.identity);
-            projectile.Init(target, Speed, damage, damageType, BounceCount, BounceSearchRadius, targetLayer);
+            projectile.Init(target, Speed, ApplyMultiplier(damage), damageType, BounceCount, BounceSearchRadius, targetLayer);
         }
     }
 }

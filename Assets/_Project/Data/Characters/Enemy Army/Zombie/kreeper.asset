@@ -28,6 +28,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 2609461451f571f488176b574bb3b33e, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 9b4258595442995419e87b9cd45b7363, type: 2}
     <Ability>k__BackingField: {fileID: 0}
+    <DeathAbility>k__BackingField: {fileID: 11400000, guid: 4198240116337a240a76e758631d5e4a, type: 2}
     <KillReward>k__BackingField: 3
     <EvolutionCost>k__BackingField: 0
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 5920307858b862f4cb688392aa6ce7a4, type: 2}

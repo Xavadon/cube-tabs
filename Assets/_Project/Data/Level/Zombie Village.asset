@@ -14,15 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <LevelName>k__BackingField: Zombie Village
   <LevelIndex>k__BackingField: 1
-  <KillsToComplete>k__BackingField: 12000
-  <BonusArmySlots>k__BackingField: 10
-  <FirstCompletionRewards>k__BackingField:
-  - CharacterData: {fileID: 11400000, guid: 1cbb885b7a2bcd54f81d3350cec92604, type: 2}
-    Count: 5
-  - CharacterData: {fileID: 11400000, guid: 7bbdeab44b5b4394dbf4269e4ad43977, type: 2}
-    Count: 5
-  - CharacterData: {fileID: 11400000, guid: 57e229345e74138499770ff3edbde6d4, type: 2}
-    Count: 5
+  <Milestones>k__BackingField:
+  - <KillsRequired>k__BackingField: 500
+    <Rewards>k__BackingField:
+    - CharacterData: {fileID: 11400000, guid: 23bd883c6cb45e24c9088c3fe88df052, type: 2}
+      Count: 5
+    - CharacterData: {fileID: 11400000, guid: 2c1cc6a738eb41d4484a4a981bf61391, type: 2}
+      Count: 5
+    <BonusArmySlots>k__BackingField: 5
+  - <KillsRequired>k__BackingField: 1000
+    <Rewards>k__BackingField:
+    - CharacterData: {fileID: 11400000, guid: 57e229345e74138499770ff3edbde6d4, type: 2}
+      Count: 5
+    - CharacterData: {fileID: 11400000, guid: 7bbdeab44b5b4394dbf4269e4ad43977, type: 2}
+      Count: 5
+    <BonusArmySlots>k__BackingField: 5
+  - <KillsRequired>k__BackingField: 1500
+    <Rewards>k__BackingField:
+    - CharacterData: {fileID: 11400000, guid: 1cbb885b7a2bcd54f81d3350cec92604, type: 2}
+      Count: 5
+    - CharacterData: {fileID: 11400000, guid: 7bbdeab44b5b4394dbf4269e4ad43977, type: 2}
+      Count: 5
+    <BonusArmySlots>k__BackingField: 5
   Waves:
   - Entries:
     - CharacterData: {fileID: 11400000, guid: 2c1cc6a738eb41d4484a4a981bf61391, type: 2}
@@ -37,13 +50,16 @@ MonoBehaviour:
   - Entries:
     - CharacterData: {fileID: 11400000, guid: 2c1cc6a738eb41d4484a4a981bf61391, type: 2}
       TierIndex: 0
-      Count: 15
+      Count: 13
     - CharacterData: {fileID: 11400000, guid: 7bbdeab44b5b4394dbf4269e4ad43977, type: 2}
       TierIndex: 0
       Count: 6
     - CharacterData: {fileID: 11400000, guid: 23bd883c6cb45e24c9088c3fe88df052, type: 2}
       TierIndex: 0
-      Count: 12
+      Count: 10
+    - CharacterData: {fileID: 11400000, guid: 57e229345e74138499770ff3edbde6d4, type: 2}
+      TierIndex: 0
+      Count: 5
   - Entries:
     - CharacterData: {fileID: 11400000, guid: 1cbb885b7a2bcd54f81d3350cec92604, type: 2}
       TierIndex: 0

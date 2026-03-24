@@ -33,7 +33,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
 
             // TODO: Заменить Instantiate на пулинг (массовые касты — GC-спайки)
             HealWave wave = Instantiate(Prefab, caster.position + SpawnOffset, Quaternion.identity);
-            wave.Init(Radius, Duration, damage, allyLayer);
+            wave.Init(Radius, Duration, ApplyMultiplier(damage), allyLayer);
         }
     }
 }

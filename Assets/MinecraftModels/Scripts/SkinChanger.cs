@@ -19,10 +19,15 @@ namespace MinecraftModels.Scripts
             }
         }
         
+#if UNITY_EDITOR
+
         [Button]
         private void ChangeSkin()
         {
             ChangeSkin(_material);
         }
+#endif
+
+        
     }
 }

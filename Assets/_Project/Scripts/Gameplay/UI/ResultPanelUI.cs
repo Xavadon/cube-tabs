@@ -39,52 +39,42 @@ namespace _Project.Scripts.Gameplay.UI
             _sceneService = sceneService;
         }
 
-        public void Show(GameResultData data, int currentLevelKills, int killsToComplete)
+        public void Show(GameResultData data, int currentLevelKills, int nextMilestoneKills)
         {
-            if (data.Result == GameResult.Victory)
-            {
-                _titleText.text = "Победа";
-            }
-            else
-            {
-                _titleText.text = "Поражение";
-            }
+            _titleText.text = data.Result == GameResult.Victory ? "Победа" : "Поражение";
 
-            string progress;
-            if (killsToComplete > 0)
-            {
-                progress = $"\n\n{currentLevelKills}/{killsToComplete} убийств до завершения";
-            }
-            else
-            {
-                progress = string.Empty;
-            }
+            string progress = nextMilestoneKills > 0
+                ? $"\n\n{currentLevelKills}/{nextMilestoneKills} убийств до награды"
+                : "\n\nВсе награды получены";
 
             _statsText.text = $"+{data.GoldEarned} золота\n\n{data.EnemiesKilled} врагов убито{progress}";
 
             if (_rewardText != null)
             {
-                bool hasUnits = data.RewardedUnits is { Length: > 0 };
-                bool hasSlots = data.BonusArmySlots > 0;
+                bool hasMilestones = data.ClaimedMilestones is { Length: > 0 };
 
-                if (hasUnits || hasSlots)
+                if (hasMilestones)
                 {
                     var sb = new StringBuilder();
 
-                    if (hasUnits)
+                    foreach (var milestone in data.ClaimedMilestones)
                     {
-                        sb.AppendLine("Новые юниты:");
-                        foreach (var entry in data.RewardedUnits)
-                        {
-                            sb.Append("• ").Append(entry.CharacterData.Name);
-                            if (entry.Count > 1)
-                                sb.Append(" x").Append(entry.Count);
-                            sb.AppendLine();
-                        }
-                    }
+                        sb.Append("Награда за ").Append(milestone.KillsRequired).AppendLine(" убийств:");
 
-                    if (hasSlots)
-                        sb.Append("+").Append(data.BonusArmySlots).Append(" слотов армии");
+                        if (milestone.Rewards != null)
+                        {
+                            foreach (var entry in milestone.Rewards)
+                            {
+                                sb.Append("• ").Append(entry.CharacterData.Name);
+                                if (entry.Count > 1)
+                                    sb.Append(" x").Append(entry.Count);
+                                sb.AppendLine();
+                            }
+                        }
+
+                        if (milestone.BonusArmySlots > 0)
+                            sb.Append("+").Append(milestone.BonusArmySlots).AppendLine(" слотов армии");
+                    }
 
                     _rewardText.text = sb.ToString();
                     _rewardText.gameObject.SetActive(true);

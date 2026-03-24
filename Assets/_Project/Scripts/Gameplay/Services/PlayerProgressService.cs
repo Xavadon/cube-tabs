@@ -45,8 +45,8 @@ namespace _Project.Scripts.Gameplay.Services
         int GetLevelKills(int levelIndex);
         bool IsLevelCompleted(int levelIndex);
         void MarkLevelCompleted(int levelIndex);
-        bool IsLevelRewarded(int levelIndex);
-        void MarkLevelRewarded(int levelIndex);
+        bool IsMilestoneClaimed(int levelIndex, int milestoneIndex);
+        void ClaimMilestone(int levelIndex, int milestoneIndex);
         void Save();
 
         event Action OnGoldChanged;
@@ -399,18 +399,28 @@ namespace _Project.Scripts.Gameplay.Services
             }
         }
 
-        public bool IsLevelRewarded(int levelIndex)
+        public bool IsMilestoneClaimed(int levelIndex, int milestoneIndex)
         {
-            return _saveData.RewardedLevelIndices.Contains(levelIndex);
+            foreach (var entry in _saveData.ClaimedMilestones)
+            {
+                if (entry.LevelIndex == levelIndex && entry.MilestoneIndex == milestoneIndex)
+                    return true;
+            }
+
+            return false;
         }
 
-        public void MarkLevelRewarded(int levelIndex)
+        public void ClaimMilestone(int levelIndex, int milestoneIndex)
         {
-            if (!_saveData.RewardedLevelIndices.Contains(levelIndex))
+            if (IsMilestoneClaimed(levelIndex, milestoneIndex))
+                return;
+
+            _saveData.ClaimedMilestones.Add(new ClaimedMilestoneEntry
             {
-                _saveData.RewardedLevelIndices.Add(levelIndex);
-                Save();
-            }
+                LevelIndex = levelIndex,
+                MilestoneIndex = milestoneIndex
+            });
+            Save();
         }
 
         public void Save()

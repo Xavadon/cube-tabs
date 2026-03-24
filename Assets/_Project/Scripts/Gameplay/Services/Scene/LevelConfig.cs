@@ -14,15 +14,22 @@ namespace _Project.Scripts.Gameplay.Services.Scene
         public int LevelIndex { get; private set; }
 
         [field: SerializeField]
-        public int KillsToComplete { get; private set; } = 100;
+        public KillMilestone[] Milestones { get; private set; }
+
+        public WaveData[] Waves;
+    }
+
+    [Serializable]
+    public class KillMilestone
+    {
+        [field: SerializeField]
+        public int KillsRequired { get; private set; }
+
+        [field: SerializeField]
+        public RewardEntry[] Rewards { get; private set; }
 
         [field: SerializeField]
         public int BonusArmySlots { get; private set; }
-
-        [field: SerializeField]
-        public RewardEntry[] FirstCompletionRewards { get; private set; }
-
-        public WaveData[] Waves;
     }
 
     [Serializable]

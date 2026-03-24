@@ -6,6 +6,7 @@ using _Project.Scripts.Gameplay.Character.Components.AiBrain;
 using _Project.Scripts.Gameplay.Character.Components.Health;
 using _Project.Scripts.Gameplay.Character.Components.UI;
 using _Project.Scripts.Gameplay.Character.Data;
+using _Project.Scripts.Gameplay.Character.Data.Abilities;
 using _Project.Scripts.Gameplay.Character.Data.AiBrain;
 using _Project.Scripts.Gameplay.Character.Services;
 using _Project.Scripts.Gameplay.Services;
@@ -129,6 +130,9 @@ namespace _Project.Scripts.Gameplay.Character
             if (CharacterType == CharacterType.Enemy && tier.KillReward > 0)
                 Project.Get<IPlayerProgressService>().AddGold(tier.KillReward);
 
+            if (tier.DeathAbility != null)
+                ExecuteDeathAbility(tier);
+
             _healthBar?.Release();
             _registry?.Unregister(this);
             _movement.Stop();
@@ -136,6 +140,15 @@ namespace _Project.Scripts.Gameplay.Character
             // TODO: Анимация смерти
 
             Destroy(gameObject);
+        }
+
+        private void ExecuteDeathAbility(TierData tier)
+        {
+            var blackboard = _brain?.Blackboard;
+            if (blackboard == null)
+                return;
+
+            tier.DeathAbility.Execute(blackboard, tier.Stats.Damage, tier.Stats.DamageType);
         }
     }
 }

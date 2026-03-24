@@ -34,13 +34,14 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
 
             Projectile projectile = SpawnProjectile(caster);
 
-            float projectileDamage = DealDirectDamage ? damage : 0f;
+            float scaledDamage = ApplyMultiplier(damage);
+            float projectileDamage = DealDirectDamage ? scaledDamage : 0f;
 
             projectile.Init(target, Speed, projectileDamage, affectedLayers, onHit: OnHitAbility == null ? null : _ =>
             {
                 Transform originalTransform = blackboard.Get<Transform>(BrainKeys.Transform);
                 blackboard.Set(BrainKeys.Transform, target);
-                OnHitAbility.Execute(blackboard, damage, affectedLayers);
+                OnHitAbility.Execute(blackboard, scaledDamage, affectedLayers);
                 blackboard.Set(BrainKeys.Transform, originalTransform);
             });
         }

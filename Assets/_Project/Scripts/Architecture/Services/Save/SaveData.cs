@@ -19,6 +19,13 @@ namespace _Project.Scripts.Architecture.Services.Save
     }
 
     [Serializable]
+    public class ClaimedMilestoneEntry
+    {
+        public int LevelIndex;
+        public int MilestoneIndex;
+    }
+
+    [Serializable]
     public class SaveData
     {
         public int Gold;
@@ -28,7 +35,7 @@ namespace _Project.Scripts.Architecture.Services.Save
         public List<int> ArmyInstanceIds = new();
         public List<LevelKillEntry> LevelKillProgress = new();
         public List<int> CompletedLevelIndices = new();
-        public List<int> RewardedLevelIndices = new();
+        public List<ClaimedMilestoneEntry> ClaimedMilestones = new();
         public int BonusMaxArmySlots;
     }
 }

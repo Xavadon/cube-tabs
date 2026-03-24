@@ -31,7 +31,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
 
             // TODO: Заменить Instantiate на пулинг (массовые касты — GC-спайки)
             AreaWave wave = Instantiate(Prefab, caster.position + SpawnOffset, Quaternion.identity);
-            wave.Init(Radius, Duration, damage, affectedLayers, targetLayer);
+            wave.Init(Radius, Duration, ApplyMultiplier(damage), affectedLayers, targetLayer);
         }
     }
 }

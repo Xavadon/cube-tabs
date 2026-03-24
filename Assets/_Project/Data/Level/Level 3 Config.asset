@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <LevelName>k__BackingField: Level 3
   <LevelIndex>k__BackingField: 2
-  <KillsToComplete>k__BackingField: 100
+  <Milestones>k__BackingField: []
   Waves:
   - Entries:
-    - CharacterData: {fileID: 11400000, guid: 98980eef4b253e34ba01c746e502f781, type: 2}
+    - CharacterData: {fileID: 11400000, guid: 81557cc91482cfd4d953153090f338ad, type: 2}
       TierIndex: 0
       Count: 2

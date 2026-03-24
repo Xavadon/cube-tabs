@@ -34,9 +34,26 @@ namespace _Project.Scripts.Gameplay.UI
         public void ShowResult(GameResultData data)
         {
             int currentKills = _playerProgressService.GetLevelKills(_levelConfig.LevelIndex);
-            int killsToComplete = _levelConfig.KillsToComplete;
+            int nextMilestoneKills = GetNextMilestoneKills();
 
-            _resultPanel.Show(data, currentKills, killsToComplete);
+            _resultPanel.Show(data, currentKills, nextMilestoneKills);
+        }
+
+        private int GetNextMilestoneKills()
+        {
+            var milestones = _levelConfig.Milestones;
+            if (milestones == null || milestones.Length == 0)
+                return 0;
+
+            int levelIndex = _levelConfig.LevelIndex;
+
+            for (int i = 0; i < milestones.Length; i++)
+            {
+                if (!_playerProgressService.IsMilestoneClaimed(levelIndex, i))
+                    return milestones[i].KillsRequired;
+            }
+
+            return 0;
         }
     }
 }

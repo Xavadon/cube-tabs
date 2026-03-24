@@ -24,6 +24,9 @@ namespace _Project.Scripts.Gameplay.Character.Data
         public AbilityDataBase Ability { get; private set; }
 
         [field: SerializeField]
+        public AbilityDataBase DeathAbility { get; private set; }
+
+        [field: SerializeField]
         public int KillReward { get; private set; } = 10;
 
         [field: SerializeField]
