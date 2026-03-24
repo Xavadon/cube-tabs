@@ -22,7 +22,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
             agent.isStopped = true;
 
-            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
+            AnimatorController animator = Blackboard.Get<AnimatorController>(BrainKeys.AnimatorController);
             animator.PlayIdle();
         }
 
@@ -397,7 +397,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
         protected override void Enter()
         {
-            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
+            AnimatorController animator = Blackboard.Get<AnimatorController>(BrainKeys.AnimatorController);
             animator.PlayMove();
         }
 
@@ -425,7 +425,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
         protected override void Exit()
         {
-            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
+            AnimatorController animator = Blackboard.Get<AnimatorController>(BrainKeys.AnimatorController);
             animator.PlayIdle();
         }
     }
@@ -442,7 +442,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         protected override void Enter()
         {
             base.Enter();
-            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
+            AnimatorController animator = Blackboard.Get<AnimatorController>(BrainKeys.AnimatorController);
             animator.PlayMove();
         }
 
@@ -510,6 +510,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         private readonly float _stoppingDistance;
 
         private float _elapsedTime;
+        private bool _isWindingUp;
         private bool _isAttacking;
 
         public AttackBase(float windUpDuration, float attackDuration, float stoppingDistance)
@@ -527,6 +528,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             agent.stoppingDistance = _stoppingDistance;
             
             _elapsedTime = 0f;
+            _isWindingUp = true;
         }
 
         protected override void Exit()
@@ -558,7 +560,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
     public class MeleeAttack : AttackBase
     {
-        private readonly Action<AnimatorConroller> _playAnimation;
+        private readonly Action<AnimatorController> _playAnimation;
 
         public MeleeAttack(float windUpDuration, float attackDuration, float stoppingDistance,
             MeleeAnimationType animationType = MeleeAnimationType.OneHanded)
@@ -571,11 +573,11 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         {
             base.Enter();
 
-            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
+            AnimatorController animator = Blackboard.Get<AnimatorController>(BrainKeys.AnimatorController);
             _playAnimation(animator);
         }
 
-        public static Action<AnimatorConroller> ResolveAnimation(MeleeAnimationType type) => type switch
+        public static Action<AnimatorController> ResolveAnimation(MeleeAnimationType type) => type switch
         {
             MeleeAnimationType.TwoHanded => a => a.PlayTwoHanded(),
             MeleeAnimationType.Dual => a => a.PlayDual(),
@@ -611,7 +613,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         {
             base.Enter();
 
-            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
+            AnimatorController animator = Blackboard.Get<AnimatorController>(BrainKeys.AnimatorController);
             animator.PlayRangeAttack();
         }
 
@@ -637,10 +639,10 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
     public class AbilityAttack : AttackBase
     {
         private readonly AbilityDataBase _abilityDataBase;
-        private readonly Action<AnimatorConroller> _playAnimation;
+        private readonly Action<AnimatorController> _playAnimation;
 
         public AbilityAttack(AbilityDataBase abilityDataBase, float windUpDuration, float attackDuration,
-            float stoppingDistance, Action<AnimatorConroller> playAnimation)
+            float stoppingDistance, Action<AnimatorController> playAnimation)
             : base(windUpDuration, attackDuration, stoppingDistance)
         {
             _abilityDataBase = abilityDataBase;
@@ -651,7 +653,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         {
             base.Enter();
 
-            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
+            AnimatorController animator = Blackboard.Get<AnimatorController>(BrainKeys.AnimatorController);
             _playAnimation(animator);
         }
 
@@ -699,7 +701,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             agent.speed = _moveSpeed;
             agent.stoppingDistance = 0.1f;
 
-            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
+            AnimatorController animator = Blackboard.Get<AnimatorController>(BrainKeys.AnimatorController);
             animator.PlayMove();
         }
 
@@ -731,8 +733,73 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             agent.isStopped = true;
             agent.isStopped = false;
 
-            AnimatorConroller animator = Blackboard.Get<AnimatorConroller>(BrainKeys.AnimatorController);
+            AnimatorController animator = Blackboard.Get<AnimatorController>(BrainKeys.AnimatorController);
             animator.PlayIdle();
+        }
+    }
+    
+    public class LockWhileRunning : BTNode
+    {
+        private readonly BTNode _child;
+        private bool _isLocked;
+
+        public LockWhileRunning(BTNode child)
+        {
+            _child = child;
+        }
+
+        protected override NodeStatus Process()
+        {
+            NodeStatus status = _child.Evaluate();
+
+            if (status == NodeStatus.Running)
+            {
+                _isLocked = true;
+                return Status = NodeStatus.Locked;
+            }
+
+            if (_isLocked)
+            {
+                _isLocked = false;
+                return Status = status;
+            }
+
+            return Status = status;
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            _isLocked = false;
+            _child.Reset();
+        }
+
+        protected override void OnBlackboardSet()
+        {
+            _child.SetBlackboard(Blackboard);
+        }
+    }
+    
+    public class LockTarget : BTNode
+    {
+        private readonly string _sourceKey;
+        private readonly string _targetKey;
+
+        public LockTarget(string sourceKey, string targetKey)
+        {
+            _sourceKey = sourceKey;
+            _targetKey = targetKey;
+        }
+
+        protected override NodeStatus Process()
+        {
+            Transform target = Blackboard.Get<Transform>(_sourceKey);
+
+            if (target == null)
+                return Status = NodeStatus.Failure;
+
+            Blackboard.Set(_targetKey, target);
+            return Status = NodeStatus.Success;
         }
     }
 }

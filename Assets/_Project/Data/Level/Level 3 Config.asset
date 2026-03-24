@@ -14,9 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <LevelName>k__BackingField: Level 3
   <LevelIndex>k__BackingField: 2
-  <Milestones>k__BackingField: []
+  <Milestones>k__BackingField:
+  - <KillsRequired>k__BackingField: 1000
+    <Rewards>k__BackingField: []
+    <BonusArmySlots>k__BackingField: 0
   Waves:
   - Entries:
     - CharacterData: {fileID: 11400000, guid: 81557cc91482cfd4d953153090f338ad, type: 2}
       TierIndex: 0
       Count: 2
+    - CharacterData: {fileID: 11400000, guid: 2dc08a0193120134dad9042ae1e1fb65, type: 2}
+      TierIndex: 0
+      Count: 1

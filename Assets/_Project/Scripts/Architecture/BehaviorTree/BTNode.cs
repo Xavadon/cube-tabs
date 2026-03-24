@@ -4,7 +4,8 @@ namespace _Project.Scripts.Architecture.BehaviorTree
     {
         Running,
         Success,
-        Failure
+        Failure,
+        Locked
     }
 
     public abstract class BTNode

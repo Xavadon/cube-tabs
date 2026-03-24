@@ -18,6 +18,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         public const string DamageType = "DamageType";
         public const string TargetLayer = "TargetLayer";
         public const string InputService = "InputService";
+        public const string LockedTarget = "LockedTarget";
     }
     
     public class CharacterBrain
@@ -27,7 +28,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         public Blackboard Blackboard => _tree?.Blackboard;
 
         public CharacterBrain(LayerMask layerMask, BrainDataBase dataBase, TierData tier, NavMeshAgent agent,
-            AnimatorConroller animatorController, Transform transform, WeaponData weaponData,
+            AnimatorController animatorController, Transform transform, WeaponData weaponData,
             IInputService inputService = null)
         {
             _tree = new BehaviourTree(dataBase.BuildTree(layerMask, tier));

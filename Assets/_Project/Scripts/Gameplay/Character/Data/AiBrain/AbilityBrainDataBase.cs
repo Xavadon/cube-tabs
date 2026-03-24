@@ -18,7 +18,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
                 ResolveAnimation(AbilityAnimation));
         }
 
-        public static Action<AnimatorConroller> ResolveAnimation(AbilityAnimationType type) => type switch
+        public static Action<AnimatorController> ResolveAnimation(AbilityAnimationType type) => type switch
         {
             AbilityAnimationType.RangeAttack => a => a.PlayRangeAttack(),
             AbilityAnimationType.AbilityAttack => a => a.PlayAbilityAttack(),

@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b574c7249b5861d43abc286ee8fcc848, type: 3}
+  m_Name: nightblade
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Illusion Knight
+  <PriceAsHero>k__BackingField: 100
+  <Tiers>k__BackingField:
+  - <MoveSpeed>k__BackingField: 3.2
+    <Stats>k__BackingField:
+      <Health>k__BackingField: 1500
+      <PhysicalResist>k__BackingField: 0
+      <MagicResist>k__BackingField: 0
+      <FireResist>k__BackingField: 0
+      <FaithResist>k__BackingField: 0
+      <Damage>k__BackingField: 21
+      <DamageType>k__BackingField: 0
+    <WeaponData>k__BackingField:
+    - {fileID: 11400000, guid: c5747195004112f41858e8aa87a70b64, type: 2}
+    - {fileID: 11400000, guid: c5747195004112f41858e8aa87a70b64, type: 2}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: c1e9848ceb6befa4085e9c2d1ec01053, type: 2}
+    <Ability>k__BackingField: {fileID: 11400000, guid: 0dcb60064d0bee74989ebd326e25cfb8, type: 2}
+    <DeathAbility>k__BackingField: {fileID: 11400000, guid: 9629337c01a4aed44b7d75ec8bd724ef, type: 2}
+    <KillReward>k__BackingField: 7
+    <EvolutionCost>k__BackingField: 0
+    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 891149213fc7924499692cab4a2f558e, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 891149213fc7924499692cab4a2f558e, type: 2}
+  BaseMaterial: {fileID: 2100000, guid: 891149213fc7924499692cab4a2f558e, type: 2}
+  BaseWeapon: {fileID: 11400000, guid: 2609461451f571f488176b574bb3b33e, type: 2}
+  BaseAbility: {fileID: 0}
+  BaseBrain: {fileID: 0}

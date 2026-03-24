@@ -41,7 +41,7 @@ namespace _Project.Scripts.Gameplay.Character
         private WeaponChanger _weaponChanger;
 
         private CharacterBrain _brain;
-        private AnimatorConroller _animatorController;
+        private AnimatorController _animatorController;
         private NavMeshMovementComponent _movement;
         private HealthComponent _health;
         private ResistanceComponent _resistance;

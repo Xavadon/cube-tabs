@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Character.Components
 {
-    public class AnimatorConroller
+    public class AnimatorController
     {
         private int _idleHash = Animator.StringToHash("Idle");
         private int _moveHash = Animator.StringToHash("Move");
@@ -19,7 +19,7 @@ namespace _Project.Scripts.Gameplay.Character.Components
         
         private readonly Animator _animator;
 
-        public AnimatorConroller(Animator animator)
+        public AnimatorController(Animator animator)
         {
             _animator = animator;
             _baseLayerIndex = _animator.GetLayerIndex("Base Layer");
