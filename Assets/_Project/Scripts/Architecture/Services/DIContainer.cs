@@ -203,15 +203,16 @@ namespace _Project.Scripts.Architecture.Services
         {
             Debug.Log("[DIContainer] Очистка контейнера...");
 
-            foreach (var instance in _singletons.Values.OfType<IDisposable>())
+            foreach (var service in _singletons.Values.OfType<IService>())
             {
                 try
                 {
-                    instance.Dispose();
+                    service.Dispose();
+                    Debug.Log($"[DIContainer] Disposed: {service.GetType().Name}");
                 }
                 catch (Exception ex)
                 {
-                    Debug.LogError($"[DIContainer] Ошибка при Dispose сервиса {instance.GetType().Name}: {ex.Message}");
+                    Debug.LogError($"[DIContainer] Ошибка при Dispose сервиса {service.GetType().Name}: {ex.Message}");
                 }
             }
 

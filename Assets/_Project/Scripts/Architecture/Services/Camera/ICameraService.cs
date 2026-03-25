@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Architecture.Services.Camera
 {
-    public enum CameraMode { TopDown, ThirdPerson, FirstPerson }
+    public enum CameraMode { TopDown, Free, ThirdPerson, FirstPerson }
 
     public interface ICameraService : IService, ITickable
     {
@@ -11,5 +11,6 @@ namespace _Project.Scripts.Architecture.Services.Camera
         CameraMode CurrentMode { get; }
         void SetTarget(Transform target);
         void CycleMode();
+        void ResetToDefault();
     }
 }

@@ -8,14 +8,23 @@ namespace _Project.Scripts.Architecture.Services.Tick
     {
         private readonly List<ITickable> _tickables = new();
         private TickBehaviour _tickBehaviour;
-        
+
         public UniTask Initialize()
         {
             _tickBehaviour = Project.CreateTickBehaviour();
             _tickBehaviour.Initialize(Project.GetAll<ITickable>());
             return UniTask.CompletedTask;
         }
-        
+
+        public void Dispose()
+        {
+            if (_tickBehaviour != null)
+            {
+                Object.Destroy(_tickBehaviour.gameObject);
+                _tickBehaviour = null;
+            }
+        }
+
         public void Register(ITickable tickable)
         {
             _tickBehaviour.Register(tickable);
