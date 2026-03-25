@@ -15,21 +15,21 @@ MonoBehaviour:
   <Name>k__BackingField: Abyss Prince
   <PriceAsHero>k__BackingField: 100
   <Tiers>k__BackingField:
-  - <MoveSpeed>k__BackingField: 3.2
+  - <MoveSpeed>k__BackingField: 4.25
     <Stats>k__BackingField:
-      <Health>k__BackingField: 2000
-      <PhysicalResist>k__BackingField: 0
+      <Health>k__BackingField: 2250
+      <PhysicalResist>k__BackingField: 0.55
       <MagicResist>k__BackingField: 0
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-      <Damage>k__BackingField: 21
+      <Damage>k__BackingField: 80
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 7984b5a34478b3b4fbaf92d78807396a, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 854b1cb2cbf7422449a1a273224b28e5, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 6d73a1c95d7f62441b3b933e17dcd402, type: 2}
     <DeathAbility>k__BackingField: {fileID: 0}
-    <KillReward>k__BackingField: 7
+    <KillReward>k__BackingField: 70
     <EvolutionCost>k__BackingField: 0
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 64b7b9d9ca4f214488486438c12d3c86, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 64b7b9d9ca4f214488486438c12d3c86, type: 2}

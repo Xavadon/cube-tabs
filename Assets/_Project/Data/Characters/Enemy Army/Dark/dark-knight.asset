@@ -15,14 +15,14 @@ MonoBehaviour:
   <Name>k__BackingField: Dark Knight
   <PriceAsHero>k__BackingField: 100
   <Tiers>k__BackingField:
-  - <MoveSpeed>k__BackingField: 3.2
+  - <MoveSpeed>k__BackingField: 3.5
     <Stats>k__BackingField:
-      <Health>k__BackingField: 700
-      <PhysicalResist>k__BackingField: 0.4
+      <Health>k__BackingField: 765
+      <PhysicalResist>k__BackingField: 0.45
       <MagicResist>k__BackingField: 0.1
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-      <Damage>k__BackingField: 55
+      <Damage>k__BackingField: 70
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 971fd5b473054e84984c37d963da76ff, type: 2}
@@ -30,7 +30,7 @@ MonoBehaviour:
     <BrainData>k__BackingField: {fileID: 11400000, guid: 9b4258595442995419e87b9cd45b7363, type: 2}
     <Ability>k__BackingField: {fileID: 0}
     <DeathAbility>k__BackingField: {fileID: 0}
-    <KillReward>k__BackingField: 6
+    <KillReward>k__BackingField: 9
     <EvolutionCost>k__BackingField: 0
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: e2feef3a349c9eb4eb0c3ab9e6c01686, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: e2feef3a349c9eb4eb0c3ab9e6c01686, type: 2}

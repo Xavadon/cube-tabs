@@ -12,6 +12,7 @@ namespace _Project.Scripts.Editor
     {
         private enum SortColumn
         {
+            Folder,
             Name,
             Tier,
             HP,
@@ -32,6 +33,8 @@ namespace _Project.Scripts.Editor
         {
             public CharacterData Data;
             public int TierIndex;
+            public string ParentFolder;  // "Enemy Army", "Player Army"
+            public string ChildFolder;   // "Dark", "Archer"
             public string Id;
             public float HP;
             public float Damage;
@@ -70,7 +73,7 @@ namespace _Project.Scripts.Editor
 
         private readonly List<Row> _rows = new();
         private Vector2 _scroll;
-        private SortColumn _sortColumn = SortColumn.Name;
+        private SortColumn _sortColumn = SortColumn.Folder;
         private bool _sortAscending = true;
         private string _searchFilter = "";
 
@@ -97,6 +100,8 @@ namespace _Project.Scripts.Editor
                 if (data == null || data.Tiers == null)
                     continue;
 
+                var (parentFolder, childFolder) = ExtractFolderHierarchy(path);
+
                 for (int t = 0; t < data.Tiers.Length; t++)
                 {
                     var tier = data.Tiers[t];
@@ -110,6 +115,8 @@ namespace _Project.Scripts.Editor
                     {
                         Data = data,
                         TierIndex = t,
+                        ParentFolder = parentFolder,
+                        ChildFolder = childFolder,
                         Id = data.Id,
                         HP = tier.Stats.Health,
                         Damage = tier.Stats.Damage,
@@ -143,6 +150,25 @@ namespace _Project.Scripts.Editor
                 return (float)prop.GetValue(brain);
 
             return 0f;
+        }
+
+        private static (string parent, string child) ExtractFolderHierarchy(string assetPath)
+        {
+            // Expected: .../Characters/ParentFolder/ChildFolder/asset.asset
+            // or: .../Characters/ParentFolder/asset.asset
+            const string marker = "/Characters/";
+            int markerIdx = assetPath.IndexOf(marker, StringComparison.Ordinal);
+            if (markerIdx < 0)
+                return ("", "");
+
+            string relativePath = assetPath.Substring(markerIdx + marker.Length);
+            string[] parts = relativePath.Split('/');
+
+            // parts[0] = ParentFolder, parts[1] = ChildFolder or asset.asset
+            string parent = parts.Length > 0 ? parts[0] : "";
+            string child = parts.Length > 2 ? parts[1] : ""; // only if there's a subfolder
+
+            return (parent, child);
         }
 
         private void OnGUI()
@@ -204,11 +230,24 @@ namespace _Project.Scripts.Editor
         {
             bool hasFilter = !string.IsNullOrEmpty(_searchFilter);
             int visibleCount = 0;
+            string prevParent = null;
+            string prevChild = null;
 
+            // Count visible rows + headers
             for (int i = 0; i < _rows.Count; i++)
             {
-                if (!hasFilter || _rows[i].Id.IndexOf(_searchFilter, StringComparison.OrdinalIgnoreCase) >= 0)
-                    visibleCount++;
+                if (hasFilter && _rows[i].Id.IndexOf(_searchFilter, StringComparison.OrdinalIgnoreCase) < 0)
+                    continue;
+
+                if (_rows[i].ParentFolder != prevParent)
+                    visibleCount++; // parent header
+
+                if (_rows[i].ChildFolder != prevChild && !string.IsNullOrEmpty(_rows[i].ChildFolder))
+                    visibleCount++; // child header
+
+                visibleCount++;
+                prevParent = _rows[i].ParentFolder;
+                prevChild = _rows[i].ChildFolder;
             }
 
             float totalHeight = visibleCount * RowHeight;
@@ -217,6 +256,8 @@ namespace _Project.Scripts.Editor
             Rect viewRect = GUILayoutUtility.GetRect(position.width - 20, totalHeight);
             bool needsRebuild = false;
             int drawIndex = 0;
+            prevParent = null;
+            prevChild = null;
 
             for (int i = 0; i < _rows.Count; i++)
             {
@@ -224,6 +265,26 @@ namespace _Project.Scripts.Editor
 
                 if (hasFilter && row.Id.IndexOf(_searchFilter, StringComparison.OrdinalIgnoreCase) < 0)
                     continue;
+
+                // Draw parent folder header
+                if (row.ParentFolder != prevParent)
+                {
+                    var headerRect = new Rect(viewRect.x, viewRect.y + drawIndex * RowHeight, viewRect.width, RowHeight);
+                    EditorGUI.LabelField(headerRect, row.ParentFolder, Styles.ParentHeader);
+                    drawIndex++;
+                    prevChild = null; // reset child when parent changes
+                }
+
+                // Draw child folder header
+                if (row.ChildFolder != prevChild && !string.IsNullOrEmpty(row.ChildFolder))
+                {
+                    var headerRect = new Rect(viewRect.x + 20, viewRect.y + drawIndex * RowHeight, viewRect.width - 20, RowHeight);
+                    EditorGUI.LabelField(headerRect, row.ChildFolder, Styles.ChildHeader);
+                    drawIndex++;
+                }
+
+                prevParent = row.ParentFolder;
+                prevChild = row.ChildFolder;
 
                 var rowRect = new Rect(viewRect.x, viewRect.y + drawIndex * RowHeight, viewRect.width, RowHeight);
 
@@ -331,26 +392,20 @@ namespace _Project.Scripts.Editor
         {
             _rows.Sort((a, b) =>
             {
-                int cmp = _sortColumn switch
-                {
-                    SortColumn.Name => string.Compare(a.Id, b.Id, StringComparison.Ordinal),
-                    SortColumn.Tier => a.TierIndex.CompareTo(b.TierIndex),
-                    SortColumn.HP => a.HP.CompareTo(b.HP),
-                    SortColumn.Damage => a.Damage.CompareTo(b.Damage),
-                    SortColumn.DamageType => string.Compare(a.DamageType, b.DamageType, StringComparison.Ordinal),
-                    SortColumn.PhysRes => a.PhysRes.CompareTo(b.PhysRes),
-                    SortColumn.MagRes => a.MagRes.CompareTo(b.MagRes),
-                    SortColumn.FireRes => a.FireRes.CompareTo(b.FireRes),
-                    SortColumn.FaithRes => a.FaithRes.CompareTo(b.FaithRes),
-                    SortColumn.Speed => a.Speed.CompareTo(b.Speed),
-                    SortColumn.Cooldown => a.Cooldown.CompareTo(b.Cooldown),
-                    SortColumn.DPS => a.DPS.CompareTo(b.DPS),
-                    SortColumn.EvolCost => a.EvolCost.CompareTo(b.EvolCost),
-                    SortColumn.KillReward => a.KillReward.CompareTo(b.KillReward),
-                    _ => 0
-                };
+                // 1. Parent folder (Enemy Army, Player Army, etc.)
+                int cmp = string.Compare(a.ParentFolder, b.ParentFolder, StringComparison.Ordinal);
+                if (cmp != 0) return cmp;
 
-                return _sortAscending ? cmp : -cmp;
+                // 2. Child folder (Dark, Archer, etc.)
+                cmp = string.Compare(a.ChildFolder, b.ChildFolder, StringComparison.Ordinal);
+                if (cmp != 0) return cmp;
+
+                // 3. Unit name
+                cmp = string.Compare(a.Id, b.Id, StringComparison.Ordinal);
+                if (cmp != 0) return cmp;
+
+                // 4. Tier 1→2→3
+                return a.TierIndex.CompareTo(b.TierIndex);
             });
         }
 
@@ -377,6 +432,8 @@ namespace _Project.Scripts.Editor
             private static GUIStyle _link;
             private static GUIStyle _centerLabel;
             private static GUIStyle _boldCenter;
+            private static GUIStyle _parentHeader;
+            private static GUIStyle _childHeader;
 
             public static GUIStyle EvenRow =>
                 _evenRow ??= new GUIStyle("CN EntryBackEven");
@@ -392,8 +449,8 @@ namespace _Project.Scripts.Editor
                     {
                         _link = new GUIStyle(EditorStyles.label)
                         {
-                            normal = { textColor = new Color(0.3f, 0.5f, 1f) },
-                            hover = { textColor = new Color(0.5f, 0.7f, 1f) },
+                            normal = { textColor = new Color(0.4f, 0.8f, 1f) },
+                            hover = { textColor = new Color(0.6f, 0.9f, 1f) },
                             alignment = TextAnchor.MiddleLeft
                         };
                     }
@@ -431,6 +488,42 @@ namespace _Project.Scripts.Editor
                     }
 
                     return _boldCenter;
+                }
+            }
+
+            public static GUIStyle ParentHeader
+            {
+                get
+                {
+                    if (_parentHeader == null)
+                    {
+                        _parentHeader = new GUIStyle(EditorStyles.boldLabel)
+                        {
+                            fontSize = 14,
+                            alignment = TextAnchor.MiddleLeft,
+                            normal = { textColor = new Color(1f, 0.8f, 0.2f) }
+                        };
+                    }
+
+                    return _parentHeader;
+                }
+            }
+
+            public static GUIStyle ChildHeader
+            {
+                get
+                {
+                    if (_childHeader == null)
+                    {
+                        _childHeader = new GUIStyle(EditorStyles.boldLabel)
+                        {
+                            fontSize = 12,
+                            alignment = TextAnchor.MiddleLeft,
+                            normal = { textColor = new Color(0.7f, 0.9f, 1f) }
+                        };
+                    }
+
+                    return _childHeader;
                 }
             }
         }

@@ -20,4 +20,4 @@ MonoBehaviour:
   <SpawnHeight>k__BackingField: 1.5
   <ProjectileAbility>k__BackingField: {fileID: 11400000, guid: 0dd51e9a35c2cb344b27db11a4173f6a, type: 2}
   <DetectionRadius>k__BackingField: 15
-  <AttackCooldown>k__BackingField: 0.25
+  <AttackCooldown>k__BackingField: 0.35

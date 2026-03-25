@@ -21,7 +21,7 @@ namespace _Project.Scripts.Architecture.Services
             if (UnityEngine.Input.GetKey(KeyCode.Equals) || UnityEngine.Input.GetKey(KeyCode.Mouse4))
             {
                 IsTimeSpeedUp = true;
-                Time.timeScale = 10;
+                Time.timeScale = 4;
             }
             else if (UnityEngine.Input.GetKey(KeyCode.Minus))
             {

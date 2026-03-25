@@ -17,59 +17,59 @@ MonoBehaviour:
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 4
     <Stats>k__BackingField:
-      <Health>k__BackingField: 255
+      <Health>k__BackingField: 295
       <PhysicalResist>k__BackingField: 0
-      <MagicResist>k__BackingField: 0
+      <MagicResist>k__BackingField: 0.25
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-      <Damage>k__BackingField: 30
+      <Damage>k__BackingField: 15
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 36afeb25725da67449dafdd35ee1c792, type: 2}
-    <BrainData>k__BackingField: {fileID: 11400000, guid: c54867ea57e6233499caeb1c4793ac01, type: 2}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: 404a3b9a3ec0b6f4d9758e34d757cbd6, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 8c306f1a538ac3745bdefac58d738eea, type: 2}
     <DeathAbility>k__BackingField: {fileID: 0}
-    <KillReward>k__BackingField: 0
+    <KillReward>k__BackingField: 12
     <EvolutionCost>k__BackingField: 70
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: eec38d2399c85ab4bab82fa5e91d1843, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: eec38d2399c85ab4bab82fa5e91d1843, type: 2}
   - <MoveSpeed>k__BackingField: 4
     <Stats>k__BackingField:
-      <Health>k__BackingField: 265
+      <Health>k__BackingField: 325
       <PhysicalResist>k__BackingField: 0
-      <MagicResist>k__BackingField: 0
+      <MagicResist>k__BackingField: 0.25
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-      <Damage>k__BackingField: 35
+      <Damage>k__BackingField: 18
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 36afeb25725da67449dafdd35ee1c792, type: 2}
-    <BrainData>k__BackingField: {fileID: 11400000, guid: c54867ea57e6233499caeb1c4793ac01, type: 2}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: 404a3b9a3ec0b6f4d9758e34d757cbd6, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 8c306f1a538ac3745bdefac58d738eea, type: 2}
     <DeathAbility>k__BackingField: {fileID: 0}
-    <KillReward>k__BackingField: 0
+    <KillReward>k__BackingField: 12
     <EvolutionCost>k__BackingField: 80
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: eec38d2399c85ab4bab82fa5e91d1843, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: eec38d2399c85ab4bab82fa5e91d1843, type: 2}
   - <MoveSpeed>k__BackingField: 4
     <Stats>k__BackingField:
-      <Health>k__BackingField: 280
+      <Health>k__BackingField: 355
       <PhysicalResist>k__BackingField: 0
-      <MagicResist>k__BackingField: 0
+      <MagicResist>k__BackingField: 0.25
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-      <Damage>k__BackingField: 40
+      <Damage>k__BackingField: 21
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 36afeb25725da67449dafdd35ee1c792, type: 2}
-    <BrainData>k__BackingField: {fileID: 11400000, guid: c54867ea57e6233499caeb1c4793ac01, type: 2}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: 404a3b9a3ec0b6f4d9758e34d757cbd6, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 8c306f1a538ac3745bdefac58d738eea, type: 2}
     <DeathAbility>k__BackingField: {fileID: 0}
-    <KillReward>k__BackingField: 0
+    <KillReward>k__BackingField: 12
     <EvolutionCost>k__BackingField: 90
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: eec38d2399c85ab4bab82fa5e91d1843, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: eec38d2399c85ab4bab82fa5e91d1843, type: 2}
   BaseMaterial: {fileID: 2100000, guid: eec38d2399c85ab4bab82fa5e91d1843, type: 2}
   BaseWeapon: {fileID: 11400000, guid: 36afeb25725da67449dafdd35ee1c792, type: 2}
   BaseAbility: {fileID: 11400000, guid: 8c306f1a538ac3745bdefac58d738eea, type: 2}
-  BaseBrain: {fileID: 11400000, guid: c54867ea57e6233499caeb1c4793ac01, type: 2}
+  BaseBrain: {fileID: 11400000, guid: 404a3b9a3ec0b6f4d9758e34d757cbd6, type: 2}

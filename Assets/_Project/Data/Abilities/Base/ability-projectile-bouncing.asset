@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a77072d69cee7c4da368affb63103b1, type: 3}
   m_Name: ability-projectile-bouncing
   m_EditorClassIdentifier: 
+  <DamageMultiplier>k__BackingField: 1
   <Prefab>k__BackingField: {fileID: 986874219701675867, guid: 81ad23c32e0a79e488a5b881e7004ab2, type: 3}
   <Speed>k__BackingField: 20
   <SpawnOffset>k__BackingField: {x: 0, y: 1, z: 0.5}
-  <BounceCount>k__BackingField: 5
+  <BounceCount>k__BackingField: 15
   <BounceSearchRadius>k__BackingField: 10

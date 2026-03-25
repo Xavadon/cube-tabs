@@ -15,21 +15,21 @@ MonoBehaviour:
   <Name>k__BackingField: Spearman
   <PriceAsHero>k__BackingField: 100
   <Tiers>k__BackingField:
-  - <MoveSpeed>k__BackingField: 3.2
+  - <MoveSpeed>k__BackingField: 3.3
     <Stats>k__BackingField:
-      <Health>k__BackingField: 1500
-      <PhysicalResist>k__BackingField: 0
+      <Health>k__BackingField: 665
+      <PhysicalResist>k__BackingField: 0.15
       <MagicResist>k__BackingField: 0
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-      <Damage>k__BackingField: 21
+      <Damage>k__BackingField: 80
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 3ea887067ddcfb542814e2eeacedc6ef, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 66aa58a4a81d76a418d496c0e318251d, type: 2}
     <Ability>k__BackingField: {fileID: 0}
     <DeathAbility>k__BackingField: {fileID: 0}
-    <KillReward>k__BackingField: 4
+    <KillReward>k__BackingField: 6
     <EvolutionCost>k__BackingField: 0
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: ce9c845aaa902ee41a295e22092d03db, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: ce9c845aaa902ee41a295e22092d03db, type: 2}

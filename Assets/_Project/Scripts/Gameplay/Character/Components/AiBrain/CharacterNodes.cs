@@ -663,7 +663,11 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         {
             float damage = Blackboard.Get<float>(BrainKeys.Damage);
             DamageType type = Blackboard.Get<DamageType>(BrainKeys.DamageType);
-            _abilityDataBase.Execute(Blackboard, damage, type);
+
+            if (_abilityDataBase != null)
+            {
+                _abilityDataBase.Execute(Blackboard, damage, type);
+            }
         }
     }
 

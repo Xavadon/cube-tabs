@@ -15,14 +15,14 @@ MonoBehaviour:
   <Name>k__BackingField: Illusion Knight
   <PriceAsHero>k__BackingField: 100
   <Tiers>k__BackingField:
-  - <MoveSpeed>k__BackingField: 3.2
+  - <MoveSpeed>k__BackingField: 3.7
     <Stats>k__BackingField:
-      <Health>k__BackingField: 150
-      <PhysicalResist>k__BackingField: 0
+      <Health>k__BackingField: 615
+      <PhysicalResist>k__BackingField: 0.25
       <MagicResist>k__BackingField: 0
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-      <Damage>k__BackingField: 21
+      <Damage>k__BackingField: 60
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 983d4dc7d385f5f48a3e566aae04a92a, type: 2}
