@@ -168,6 +168,7 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
             characterGO.name  = data.Name;
             characterGO.layer = layer;
+            characterGO.transform.localScale = Vector3.one * data.Scale;
 
             bool isPlayerControlled = data.GetTier(tierIndex).BrainData is PlayerBrainDataBase;
             IInputService input = isPlayerControlled ? _inputService : null;

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Goblin Cave
   m_EditorClassIdentifier: 
   <LevelName>k__BackingField: Goblin Cave
-  <LevelIndex>k__BackingField: 0
+  <LevelIndex>k__BackingField: 1
   <Milestones>k__BackingField:
   - <KillsRequired>k__BackingField: 500
     <Rewards>k__BackingField:

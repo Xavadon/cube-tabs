@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Dark Territory
   m_EditorClassIdentifier: 
   <LevelName>k__BackingField: Dark Territory
-  <LevelIndex>k__BackingField: 2
+  <LevelIndex>k__BackingField: 3
   <Milestones>k__BackingField:
   - <KillsRequired>k__BackingField: 500
     <Rewards>k__BackingField:

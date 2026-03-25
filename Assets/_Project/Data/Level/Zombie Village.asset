@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Zombie Village
   m_EditorClassIdentifier: 
   <LevelName>k__BackingField: Zombie Village
-  <LevelIndex>k__BackingField: 1
+  <LevelIndex>k__BackingField: 2
   <Milestones>k__BackingField:
   - <KillsRequired>k__BackingField: 500
     <Rewards>k__BackingField:

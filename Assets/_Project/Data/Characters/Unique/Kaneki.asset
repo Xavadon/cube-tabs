@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Kaneki
   <PriceAsHero>k__BackingField: 100
+  <Scale>k__BackingField: 1.1
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 5
     <Stats>k__BackingField:
@@ -26,13 +27,13 @@ MonoBehaviour:
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 7984b5a34478b3b4fbaf92d78807396a, type: 2}
-    <BrainData>k__BackingField: {fileID: 11400000, guid: ba624ccb0781e5044bb1d57fdcab11c3, type: 2}
-    <Ability>k__BackingField: {fileID: 0}
-    <AnimationType>k__BackingField: 0
+    <BrainData>k__BackingField: {fileID: 11400000, guid: ecf32d52fcb671547bd4fa5d4d77bb76, type: 2}
+    <Ability>k__BackingField: {fileID: 11400000, guid: 7f232cc57be4bac4697fcad26789d5e5, type: 2}
+    <DeathAbility>k__BackingField: {fileID: 0}
     <KillReward>k__BackingField: 200
     <EvolutionCost>k__BackingField: 0
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 2ad55463a2a1c5343b8b4afe96c6e5f5, type: 2}
-    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 2ad55463a2a1c5343b8b4afe96c6e5f5, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 891149213fc7924499692cab4a2f558e, type: 2}
   - <MoveSpeed>k__BackingField: 6
     <Stats>k__BackingField:
       <Health>k__BackingField: 700
@@ -44,13 +45,13 @@ MonoBehaviour:
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 7984b5a34478b3b4fbaf92d78807396a, type: 2}
-    <BrainData>k__BackingField: {fileID: 11400000, guid: ba624ccb0781e5044bb1d57fdcab11c3, type: 2}
-    <Ability>k__BackingField: {fileID: 0}
-    <AnimationType>k__BackingField: 0
+    <BrainData>k__BackingField: {fileID: 11400000, guid: ecf32d52fcb671547bd4fa5d4d77bb76, type: 2}
+    <Ability>k__BackingField: {fileID: 11400000, guid: 7f232cc57be4bac4697fcad26789d5e5, type: 2}
+    <DeathAbility>k__BackingField: {fileID: 0}
     <KillReward>k__BackingField: 200
     <EvolutionCost>k__BackingField: 300
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 2ad55463a2a1c5343b8b4afe96c6e5f5, type: 2}
-    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 2ad55463a2a1c5343b8b4afe96c6e5f5, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 891149213fc7924499692cab4a2f558e, type: 2}
   - <MoveSpeed>k__BackingField: 7
     <Stats>k__BackingField:
       <Health>k__BackingField: 900
@@ -62,14 +63,14 @@ MonoBehaviour:
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 7984b5a34478b3b4fbaf92d78807396a, type: 2}
-    <BrainData>k__BackingField: {fileID: 11400000, guid: ba624ccb0781e5044bb1d57fdcab11c3, type: 2}
-    <Ability>k__BackingField: {fileID: 0}
-    <AnimationType>k__BackingField: 0
+    <BrainData>k__BackingField: {fileID: 11400000, guid: ecf32d52fcb671547bd4fa5d4d77bb76, type: 2}
+    <Ability>k__BackingField: {fileID: 11400000, guid: 7f232cc57be4bac4697fcad26789d5e5, type: 2}
+    <DeathAbility>k__BackingField: {fileID: 0}
     <KillReward>k__BackingField: 200
     <EvolutionCost>k__BackingField: 600
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 2ad55463a2a1c5343b8b4afe96c6e5f5, type: 2}
-    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 2ad55463a2a1c5343b8b4afe96c6e5f5, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 891149213fc7924499692cab4a2f558e, type: 2}
   BaseMaterial: {fileID: 2100000, guid: 2ad55463a2a1c5343b8b4afe96c6e5f5, type: 2}
   BaseWeapon: {fileID: 11400000, guid: 7984b5a34478b3b4fbaf92d78807396a, type: 2}
-  BaseBrain: {fileID: 11400000, guid: ba624ccb0781e5044bb1d57fdcab11c3, type: 2}
-  BaseAbilityAnimation: 0
+  BaseAbility: {fileID: 11400000, guid: 7f232cc57be4bac4697fcad26789d5e5, type: 2}
+  BaseBrain: {fileID: 11400000, guid: ecf32d52fcb671547bd4fa5d4d77bb76, type: 2}

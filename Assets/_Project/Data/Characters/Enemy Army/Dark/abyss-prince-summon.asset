@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Abyss Prince
   <PriceAsHero>k__BackingField: 100
+  <Scale>k__BackingField: 1.1
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 4.25
     <Stats>k__BackingField:

@@ -10,31 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b574c7249b5861d43abc286ee8fcc848, type: 3}
-  m_Name: noob
+  m_Name: frog-melee
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Noob
-  <PriceAsHero>k__BackingField: 25
+  <Name>k__BackingField: Frog
+  <PriceAsHero>k__BackingField: 100
   <Scale>k__BackingField: 1
   <Tiers>k__BackingField:
-  - <MoveSpeed>k__BackingField: 3.5
+  - <MoveSpeed>k__BackingField: 3.2
     <Stats>k__BackingField:
-      <Health>k__BackingField: 100
+      <Health>k__BackingField: 50
       <PhysicalResist>k__BackingField: 0
       <MagicResist>k__BackingField: 0
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-      <Damage>k__BackingField: 25
+      <Damage>k__BackingField: 10
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 23edcfb0ed13ccd4b93c19975fcf79c7, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 9b4258595442995419e87b9cd45b7363, type: 2}
     <Ability>k__BackingField: {fileID: 0}
     <DeathAbility>k__BackingField: {fileID: 0}
-    <KillReward>k__BackingField: 0
+    <KillReward>k__BackingField: 3
     <EvolutionCost>k__BackingField: 0
-    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 996cb6d326818b345899879d43742d6e, type: 2}
-    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 996cb6d326818b345899879d43742d6e, type: 2}
-  BaseMaterial: {fileID: 2100000, guid: 996cb6d326818b345899879d43742d6e, type: 2}
+    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 6b0c9022e347db2449f4f3138588e0ca, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: b14340d3c0cf8334bbcb62ba36490ce4, type: 2}
+  BaseMaterial: {fileID: 0}
   BaseWeapon: {fileID: 11400000, guid: 23edcfb0ed13ccd4b93c19975fcf79c7, type: 2}
   BaseAbility: {fileID: 0}
-  BaseBrain: {fileID: 11400000, guid: 9b4258595442995419e87b9cd45b7363, type: 2}
+  BaseBrain: {fileID: 0}

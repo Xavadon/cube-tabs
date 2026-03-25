@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a268af6429472dd43a8c35ae75dc2274, type: 3}
+  m_Name: Frog Swamp
+  m_EditorClassIdentifier: 
+  <LevelName>k__BackingField: Frog Swamp
+  <LevelIndex>k__BackingField: 0
+  <Milestones>k__BackingField:
+  - <KillsRequired>k__BackingField: 50
+    <Rewards>k__BackingField:
+    - CharacterData: {fileID: 11400000, guid: ef4e7c734bbb1b04eac7134cbd274688, type: 2}
+      Count: 5
+    - CharacterData: {fileID: 11400000, guid: 1c162d9852028a14cba1ea7eb216b5f3, type: 2}
+      Count: 5
+    <BonusArmySlots>k__BackingField: 5
+  - <KillsRequired>k__BackingField: 100
+    <Rewards>k__BackingField:
+    - CharacterData: {fileID: 11400000, guid: ef4e7c734bbb1b04eac7134cbd274688, type: 2}
+      Count: 5
+    - CharacterData: {fileID: 11400000, guid: 1c162d9852028a14cba1ea7eb216b5f3, type: 2}
+      Count: 5
+    <BonusArmySlots>k__BackingField: 5
+  Waves:
+  - Entries:
+    - CharacterData: {fileID: 11400000, guid: ef4e7c734bbb1b04eac7134cbd274688, type: 2}
+      TierIndex: 0
+      Count: 2
+  - Entries:
+    - CharacterData: {fileID: 11400000, guid: ef4e7c734bbb1b04eac7134cbd274688, type: 2}
+      TierIndex: 0
+      Count: 4
+    - CharacterData: {fileID: 11400000, guid: 1c162d9852028a14cba1ea7eb216b5f3, type: 2}
+      TierIndex: 0
+      Count: 2
+  - Entries:
+    - CharacterData: {fileID: 11400000, guid: ef4e7c734bbb1b04eac7134cbd274688, type: 2}
+      TierIndex: 0
+      Count: 6
+    - CharacterData: {fileID: 11400000, guid: 1c162d9852028a14cba1ea7eb216b5f3, type: 2}
+      TierIndex: 0
+      Count: 4

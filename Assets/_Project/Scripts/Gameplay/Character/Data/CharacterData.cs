@@ -18,6 +18,9 @@ namespace _Project.Scripts.Gameplay.Character.Data
         public int PriceAsHero { get; private set; } = 100;
 
         [field: SerializeField]
+        public float Scale { get; private set; } = 1f;
+
+        [field: SerializeField]
         public TierData[] Tiers { get; private set; }
 
         public int MaxTier => Tiers is { Length: > 0 } ? Tiers.Length - 1 : 0;
