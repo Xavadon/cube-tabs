@@ -11,8 +11,11 @@ public static class EditorSceneSwitcher
     [MenuItem("SceneSwitcher/Menu ^&1", false, 1)]
     private static void SwitchToMenu() => SwitchToScene(1);
 
-    [MenuItem("SceneSwitcher/Game ^&2", false, 2)]
-    private static void SwitchToGame() => SwitchToScene(2);
+    [MenuItem("SceneSwitcher/Goblin Cave ^&2", false, 2)]
+    private static void SwitchToGoblinCave() => SwitchToScene(2);
+
+    [MenuItem("SceneSwitcher/Frog Swamp ^&3", false, 3)]
+    private static void SwitchToFrogSwamp() => SwitchToScene(3);
 
     private static void SwitchToScene(int index)
     {

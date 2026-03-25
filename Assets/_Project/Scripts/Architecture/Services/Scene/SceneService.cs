@@ -20,17 +20,20 @@ namespace _Project.Scripts.Architecture.Services.Scene
         private readonly IMenuInitializer _menuInitializer;
         private readonly IPlayerProgressService _playerProgressService;
         private readonly ICameraService _cameraService;
+        private readonly IGameSessionService _gameSessionService;
 
         public SceneService(
             ILevelInitializer levelInitializer,
             IMenuInitializer menuInitializer,
             IPlayerProgressService playerProgressService,
-            ICameraService cameraService)
+            ICameraService cameraService,
+            IGameSessionService gameSessionService)
         {
             _levelInitializer = levelInitializer;
             _menuInitializer = menuInitializer;
             _playerProgressService = playerProgressService;
             _cameraService = cameraService;
+            _gameSessionService = gameSessionService;
         }
         
         public UniTask Initialize()
@@ -54,10 +57,11 @@ namespace _Project.Scripts.Architecture.Services.Scene
         
         public async UniTask LoadGameScene()
         {
-            await LoadSceneAsync("Game");
+            string sceneName = _gameSessionService.SelectedLevel?.SceneName ?? "Game";
+            await LoadSceneAsync(sceneName);
             _levelInitializer.InitializeLevel(this);
 
-            Debug.Log("[GameSceneManager] Game scene loaded and initialized");
+            Debug.Log($"[SceneService] Game scene '{sceneName}' loaded and initialized");
         }
 
         public async UniTask LoadMenuScene()

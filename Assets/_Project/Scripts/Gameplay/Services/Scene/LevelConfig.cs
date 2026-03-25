@@ -1,4 +1,5 @@
 using System;
+using _Project.Scripts.Core;
 using _Project.Scripts.Gameplay.Character.Data;
 using UnityEngine;
 
@@ -12,6 +13,11 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 
         [field: SerializeField]
         public int LevelIndex { get; private set; }
+
+        [SerializeField]
+        private SceneReference _scene;
+
+        public string SceneName => _scene.SceneName;
 
         [field: SerializeField]
         public KillMilestone[] Milestones { get; private set; }

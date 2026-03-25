@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/_Project/Scenes/Menu.unity
     guid: 637f32b7a0cc9e448932b6f0874a7461
   - enabled: 1
-    path: Assets/_Project/Scenes/Game.unity
+    path: Assets/_Project/Scenes/Goblin Cave.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/_Project/Scenes/Frog Swamp.unity
+    guid: d6a697479cb243b45a850c60b7ae72a5
   m_configObjects: {}
