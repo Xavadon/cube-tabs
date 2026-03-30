@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Apprentice
   <PriceAsHero>k__BackingField: 100
+  <Scale>k__BackingField: 1
+  <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: a35a61907a93498458b4de72ad15f012, type: 2}
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 3.4
     <Stats>k__BackingField:
@@ -28,6 +30,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: f60addf0a6f68d145bdf2c3259035da7, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: c54867ea57e6233499caeb1c4793ac01, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 00001d3d3c98de64e8c48654f8796a4c, type: 2}
+    <DeathAbility>k__BackingField: {fileID: 0}
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 0
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 9b0bafa8fdb41414b9d44167589d4a0e, type: 2}
@@ -45,6 +48,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: f60addf0a6f68d145bdf2c3259035da7, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: c54867ea57e6233499caeb1c4793ac01, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 00001d3d3c98de64e8c48654f8796a4c, type: 2}
+    <DeathAbility>k__BackingField: {fileID: 0}
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 60
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 9b0bafa8fdb41414b9d44167589d4a0e, type: 2}
@@ -62,6 +66,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: f60addf0a6f68d145bdf2c3259035da7, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: c54867ea57e6233499caeb1c4793ac01, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 00001d3d3c98de64e8c48654f8796a4c, type: 2}
+    <DeathAbility>k__BackingField: {fileID: 0}
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 70
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 9b0bafa8fdb41414b9d44167589d4a0e, type: 2}

@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Rogue
   <PriceAsHero>k__BackingField: 100
+  <Scale>k__BackingField: 1
+  <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: 223ced7eee549384e9b847a950ef1335, type: 2}
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 6.5
     <Stats>k__BackingField:

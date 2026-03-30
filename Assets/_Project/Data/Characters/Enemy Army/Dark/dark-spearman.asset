@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Spearman
   <PriceAsHero>k__BackingField: 100
+  <Scale>k__BackingField: 1
+  <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: 7ac5ef97fbc067f448abbba3c4c92718, type: 2}
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 3.3
     <Stats>k__BackingField:

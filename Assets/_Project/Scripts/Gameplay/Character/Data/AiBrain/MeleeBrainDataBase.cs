@@ -28,9 +28,6 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
         [field: SerializeField]
         public float AttackCooldown { get; private set; } = 0.5f;
 
-        [field: SerializeField]
-        public MeleeAnimationType AnimationType { get; private set; } = MeleeAnimationType.OneHanded;
-
         public override BTNode BuildTree(LayerMask targetLayer, TierData tier)
         {
             return new Selector
@@ -58,7 +55,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
         
         protected virtual BTNode CreateAttackNode()
         {
-            return new MeleeAttack(WindUpDuration, AttackDuration, AttackRange, AttackStopRange, AnimationType);
+            return new MeleeAttack(WindUpDuration, AttackDuration, AttackRange, AttackStopRange);
         }
 
         protected virtual BTNode CreateFindTargetNode(LayerMask targetLayer)

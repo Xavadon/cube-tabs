@@ -21,6 +21,9 @@ namespace _Project.Scripts.Gameplay.Character.Data
         public float Scale { get; private set; } = 1f;
 
         [field: SerializeField]
+        public RuntimeAnimatorController AnimatorOverride { get; private set; }
+
+        [field: SerializeField]
         public TierData[] Tiers { get; private set; }
 
         public int MaxTier => Tiers is { Length: > 0 } ? Tiers.Length - 1 : 0;

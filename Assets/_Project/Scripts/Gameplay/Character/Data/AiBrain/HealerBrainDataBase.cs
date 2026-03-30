@@ -26,9 +26,6 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
 
         [field: SerializeField] public LayerMask AllyLayer { get; private set; }
 
-        [field: SerializeField]
-        public AbilityAnimationType AbilityAnimation { get; private set; } = AbilityAnimationType.AbilityAttack;
-
         public override BTNode BuildTree(LayerMask targetLayer, TierData tier)
         {
             return new Selector
@@ -52,8 +49,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
                             (
                                 new Cooldown(HealCooldown,
                                     new Parallel(
-                                        new AbilityAttack(tier.Ability, WindUpDuration, AttackDuration, HealRange,
-                                            AbilityBrainDataBase.ResolveAnimation(AbilityAnimation)),
+                                        new AbilityAttack(tier.Ability, WindUpDuration, AttackDuration, HealRange),
                                         new RotateTowardsTarget()
                                     )
                                 ),

@@ -38,6 +38,8 @@ MonoBehaviour:
       Count: 5
     - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
       Count: 5
+    - CharacterData: {fileID: 11400000, guid: 6e5cc0e151e538b4e8eb1e8ba28fbb9d, type: 2}
+      Count: 1
     <BonusArmySlots>k__BackingField: 5
   - <KillsRequired>k__BackingField: 750
     <Rewards>k__BackingField:
@@ -45,6 +47,8 @@ MonoBehaviour:
       Count: 5
     - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
       Count: 5
+    - CharacterData: {fileID: 11400000, guid: 6e5cc0e151e538b4e8eb1e8ba28fbb9d, type: 2}
+      Count: 2
     <BonusArmySlots>k__BackingField: 5
   Waves:
   - Entries:
@@ -68,3 +72,6 @@ MonoBehaviour:
     - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
       TierIndex: 0
       Count: 6
+    - CharacterData: {fileID: 11400000, guid: 6e5cc0e151e538b4e8eb1e8ba28fbb9d, type: 2}
+      TierIndex: 0
+      Count: 3

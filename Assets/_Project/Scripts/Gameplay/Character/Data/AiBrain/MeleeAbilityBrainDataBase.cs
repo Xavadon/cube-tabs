@@ -19,9 +19,6 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
 
         [field: SerializeField] public float AbilityDuration { get; private set; } = 0.5f;
 
-        [field: SerializeField]
-        public AbilityAnimationType AbilityAnimation { get; private set; } = AbilityAnimationType.AbilityAttack;
-
         public override BTNode BuildTree(LayerMask targetLayer, TierData tier)
         {
             return new Selector
@@ -54,7 +51,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
             );
         }
 
-        protected virtual BTNode CreateFindTargetNode(LayerMask targetLayer)
+        protected override BTNode CreateFindTargetNode(LayerMask targetLayer)
         {
             return FindTargetType switch
             {
@@ -65,8 +62,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
 
         protected virtual AbilityAttack CreateAbilityNode(TierData tier)
         {
-            return new AbilityAttack(tier.Ability, AbilityWindUpDuration, AbilityDuration, AbilityRange,
-                AbilityBrainDataBase.ResolveAnimation(AbilityAnimation));
+            return new AbilityAttack(tier.Ability, AbilityWindUpDuration, AbilityDuration, AbilityRange);
         }
     }
 }

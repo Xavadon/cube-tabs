@@ -83,6 +83,9 @@ namespace _Project.Scripts.Gameplay.Character
             if (tier.WeaponData is { Length: > 0 })
                 weapon = tier.WeaponData[0];
 
+            if (characterData.AnimatorOverride != null)
+                _animator.runtimeAnimatorController = characterData.AnimatorOverride;
+
             _animatorController = new(_animator);
 
             IsRanged = tier.BrainData is RangeBrainDataBase;

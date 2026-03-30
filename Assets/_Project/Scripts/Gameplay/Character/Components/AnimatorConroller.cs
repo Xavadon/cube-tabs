@@ -4,20 +4,15 @@ namespace _Project.Scripts.Gameplay.Character.Components
 {
     public class AnimatorController
     {
-        private int _idleHash = Animator.StringToHash("Idle");
-        private int _moveHash = Animator.StringToHash("Move");
-        private int _oneHandedHash = Animator.StringToHash("Attack");
-        private int _twoHandedHash = Animator.StringToHash("AttackTwoHanded");
-        private int _dualHash = Animator.StringToHash("AttackDual");
-        private int _spearHash = Animator.StringToHash("SpearAttack");
-        private int _rangeAttackHash = Animator.StringToHash("RangeAttack");
-        private int _abilityAttackHash = Animator.StringToHash("AbilityAttack");
-        private int _hitHash = Animator.StringToHash("HitReaction");
-        private int _hitHash1 = Animator.StringToHash("HitReaction1");
+        private readonly int _idleHash = Animator.StringToHash("Idle");
+        private readonly int _moveHash = Animator.StringToHash("Move");
+        private readonly int _attackHash = Animator.StringToHash("Attack");
+        private readonly int _hitHash = Animator.StringToHash("HitReaction");
+        private readonly int _hitHash1 = Animator.StringToHash("HitReaction1");
 
-        private int _baseLayerIndex;
-        private int _hitLayerIndex;
-        
+        private readonly int _baseLayerIndex;
+        private readonly int _hitLayerIndex;
+
         private readonly Animator _animator;
 
         public AnimatorController(Animator animator)
@@ -58,37 +53,12 @@ namespace _Project.Scripts.Gameplay.Character.Components
         {
             CrossFade(_moveHash);
         }
-        
-        public void PlayOneHanded()
+
+        public void PlayAttack()
         {
-            CrossFade(_oneHandedHash);
-        }
-        
-        public void PlayTwoHanded()
-        {
-            CrossFade(_twoHandedHash);
+            CrossFade(_attackHash);
         }
 
-        public void PlayDual()
-        {
-            CrossFade(_dualHash);
-        }
-        
-        public void PlaySpear()
-        {
-            CrossFade(_spearHash);
-        }
-        
-        public void PlayRangeAttack()
-        {
-            CrossFade(_rangeAttackHash);
-        }
-        
-        public void PlayAbilityAttack()
-        {
-            CrossFade(_abilityAttackHash);
-        }
-        
         public void PlayHitReact()
         {
             if (!IsInState(_hitHash, _hitLayerIndex))

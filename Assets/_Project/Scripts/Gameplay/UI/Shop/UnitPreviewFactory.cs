@@ -46,7 +46,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             root.transform.position = roomPos;
 
             var modelGO = Object.Instantiate(_characterPrefab, roomPos, Quaternion.identity, root.transform);
-            ApplyVisualsAndStrip(modelGO, tier);
+            ApplyVisualsAndStrip(modelGO, data, tier);
 
             var rt = new RenderTexture(_config.TextureSize, _config.TextureSize, TextureDepth);
 
@@ -80,8 +80,15 @@ namespace _Project.Scripts.Gameplay.UI.Shop
                 _characterPrefab = Resources.Load<GameObject>(CharacterPrefabPath);
         }
 
-        private static void ApplyVisualsAndStrip(GameObject go, TierData tier)
+        private static void ApplyVisualsAndStrip(GameObject go, CharacterData data, TierData tier)
         {
+            if (data.AnimatorOverride != null)
+            {
+                var animator = go.GetComponentInChildren<Animator>();
+                if (animator != null)
+                    animator.runtimeAnimatorController = data.AnimatorOverride;
+            }
+
             if (go.TryGetComponent(out Character.Character character))
             {
                 character.SkinChanger.ChangeSkin(tier.SkinMaterial);

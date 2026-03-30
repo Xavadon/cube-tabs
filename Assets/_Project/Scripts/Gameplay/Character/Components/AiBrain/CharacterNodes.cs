@@ -1,4 +1,3 @@
-using System;
 using _Project.Scripts.Architecture.BehaviorTree;
 using _Project.Scripts.Architecture.Services.Input;
 using _Project.Scripts.Architecture.State_Machine;
@@ -511,7 +510,6 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         protected readonly float AttackRange;
 
         private float _elapsedTime;
-        private bool _isWindingUp;
         private bool _isAttacking;
 
         public AttackBase(float windUpDuration, float attackDuration, float attackRange)
@@ -529,7 +527,6 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             agent.stoppingDistance = AttackRange;
             
             _elapsedTime = 0f;
-            _isWindingUp = true;
         }
 
         protected override void Exit()
@@ -561,15 +558,12 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
     public class MeleeAttack : AttackBase
     {
-        private readonly Action<AnimatorController> _playAnimation;
         private readonly float _hitRange;
 
-        public MeleeAttack(float windUpDuration, float attackDuration, float attackRange, float hitRange,
-            MeleeAnimationType animationType = MeleeAnimationType.OneHanded)
+        public MeleeAttack(float windUpDuration, float attackDuration, float attackRange, float hitRange)
             : base(windUpDuration, attackDuration, attackRange)
         {
             _hitRange = hitRange;
-            _playAnimation = ResolveAnimation(animationType);
         }
 
         protected override void Enter()
@@ -577,16 +571,8 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             base.Enter();
 
             AnimatorController animator = Blackboard.Get<AnimatorController>(BrainKeys.AnimatorController);
-            _playAnimation(animator);
+            animator.PlayAttack();
         }
-
-        public static Action<AnimatorController> ResolveAnimation(MeleeAnimationType type) => type switch
-        {
-            MeleeAnimationType.TwoHanded => a => a.PlayTwoHanded(),
-            MeleeAnimationType.Dual => a => a.PlayDual(),
-            MeleeAnimationType.Spear => a => a.PlaySpear(),
-            _ => a => a.PlayOneHanded()
-        };
 
         protected override void PerformAttack()
         {
@@ -628,7 +614,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             base.Enter();
 
             AnimatorController animator = Blackboard.Get<AnimatorController>(BrainKeys.AnimatorController);
-            animator.PlayRangeAttack();
+            animator.PlayAttack();
         }
 
         protected override void PerformAttack()
@@ -659,14 +645,12 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
     public class AbilityAttack : AttackBase
     {
         private readonly AbilityDataBase _abilityDataBase;
-        private readonly Action<AnimatorController> _playAnimation;
 
         public AbilityAttack(AbilityDataBase abilityDataBase, float windUpDuration, float attackDuration,
-            float stoppingDistance, Action<AnimatorController> playAnimation)
+            float stoppingDistance)
             : base(windUpDuration, attackDuration, stoppingDistance)
         {
             _abilityDataBase = abilityDataBase;
-            _playAnimation = playAnimation;
         }
 
         protected override void Enter()
@@ -674,7 +658,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             base.Enter();
 
             AnimatorController animator = Blackboard.Get<AnimatorController>(BrainKeys.AnimatorController);
-            _playAnimation(animator);
+            animator.PlayAttack();
         }
 
         protected override void PerformAttack()

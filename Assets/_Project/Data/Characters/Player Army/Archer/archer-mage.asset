@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Archer-mage
   <PriceAsHero>k__BackingField: 100
+  <Scale>k__BackingField: 1
+  <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: 8b69dc56e3d9f994c9a3047770ba4b9d, type: 2}
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 4
     <Stats>k__BackingField:

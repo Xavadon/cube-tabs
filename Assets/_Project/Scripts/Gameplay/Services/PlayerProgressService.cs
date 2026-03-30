@@ -436,7 +436,23 @@ namespace _Project.Scripts.Gameplay.Services
                 ArmySlots = _catalog.BaseArmySlots
             };
 
-            if (_catalog.StartingUnit != null)
+            if (_catalog.GrantAllUnitsOnStart && _catalog.AvailableUnits != null)
+            {
+                foreach (var unit in _catalog.AvailableUnits)
+                {
+                    int instanceId = data.NextInstanceId++;
+                    data.OwnedUnits.Add(new OwnedUnit
+                    {
+                        InstanceId = instanceId,
+                        UnitId = unit.Id,
+                        TierIndex = 0
+                    });
+
+                    if (data.ArmyInstanceIds.Count < data.ArmySlots)
+                        data.ArmyInstanceIds.Add(instanceId);
+                }
+            }
+            else if (_catalog.StartingUnit != null)
             {
                 int instanceId = data.NextInstanceId++;
                 data.OwnedUnits.Add(new OwnedUnit

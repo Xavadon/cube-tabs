@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a268af6429472dd43a8c35ae75dc2274, type: 3}
+  m_Name: TEST
+  m_EditorClassIdentifier: 
+  <LevelName>k__BackingField: TEST
+  <LevelIndex>k__BackingField: 99
+  _scene:
+    _sceneName: Goblin Cave
+    _sceneAsset: {fileID: 102900000, guid: 9fc0d4010bbf28b4594072e72b8655ab, type: 3}
+  <Milestones>k__BackingField:
+  - <KillsRequired>k__BackingField: 500
+    <Rewards>k__BackingField:
+    - CharacterData: {fileID: 11400000, guid: 23bd883c6cb45e24c9088c3fe88df052, type: 2}
+      Count: 5
+    - CharacterData: {fileID: 11400000, guid: 2c1cc6a738eb41d4484a4a981bf61391, type: 2}
+      Count: 5
+    <BonusArmySlots>k__BackingField: 5
+  - <KillsRequired>k__BackingField: 1000
+    <Rewards>k__BackingField:
+    - CharacterData: {fileID: 11400000, guid: 57e229345e74138499770ff3edbde6d4, type: 2}
+      Count: 5
+    - CharacterData: {fileID: 11400000, guid: 7bbdeab44b5b4394dbf4269e4ad43977, type: 2}
+      Count: 5
+    <BonusArmySlots>k__BackingField: 5
+  - <KillsRequired>k__BackingField: 1500
+    <Rewards>k__BackingField:
+    - CharacterData: {fileID: 11400000, guid: 1cbb885b7a2bcd54f81d3350cec92604, type: 2}
+      Count: 5
+    - CharacterData: {fileID: 11400000, guid: 7bbdeab44b5b4394dbf4269e4ad43977, type: 2}
+      Count: 5
+    <BonusArmySlots>k__BackingField: 5
+  Waves:
+  - Entries:
+    - CharacterData: {fileID: 11400000, guid: 98980eef4b253e34ba01c746e502f781, type: 2}
+      TierIndex: 0
+      Count: 5

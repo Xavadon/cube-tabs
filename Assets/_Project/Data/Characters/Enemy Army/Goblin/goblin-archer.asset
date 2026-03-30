@@ -15,6 +15,7 @@ MonoBehaviour:
   <Name>k__BackingField: Goblin Archer
   <PriceAsHero>k__BackingField: 100
   <Scale>k__BackingField: 0.9
+  <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: e06e578d632259249a7f3cdcd53e6ad5, type: 2}
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 3.2
     <Stats>k__BackingField:

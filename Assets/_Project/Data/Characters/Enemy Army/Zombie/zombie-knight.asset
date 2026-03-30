@@ -15,6 +15,7 @@ MonoBehaviour:
   <Name>k__BackingField: Zombie Knight
   <PriceAsHero>k__BackingField: 100
   <Scale>k__BackingField: 1
+  <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: 243e98a345766234f801e0cbc2fcd0d4, type: 2}
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 3.2
     <Stats>k__BackingField:

@@ -29,6 +29,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4e5b13890b17a4d4f96030744cc2d9ac, type: 2}
   - {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
   - {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
+  - {fileID: 11400000, guid: 6e5cc0e151e538b4e8eb1e8ba28fbb9d, type: 2}
   - {fileID: 11400000, guid: 1cbb885b7a2bcd54f81d3350cec92604, type: 2}
   - {fileID: 11400000, guid: 7bbdeab44b5b4394dbf4269e4ad43977, type: 2}
   - {fileID: 11400000, guid: 57e229345e74138499770ff3edbde6d4, type: 2}
@@ -49,6 +50,7 @@ MonoBehaviour:
   <SlotUpgradeCost>k__BackingField: 55
   <MaxArmySlots>k__BackingField: 30
   <StartingGold>k__BackingField: 25
+  <GrantAllUnitsOnStart>k__BackingField: 0
   <UniqueHeroes>k__BackingField:
   - {fileID: 11400000, guid: 4e5b13890b17a4d4f96030744cc2d9ac, type: 2}
   - {fileID: 11400000, guid: 068a559471b72364f92cdf57fad8d773, type: 2}

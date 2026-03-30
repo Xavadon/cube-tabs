@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Dark Mage
   <PriceAsHero>k__BackingField: 100
+  <Scale>k__BackingField: 1
+  <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: a35a61907a93498458b4de72ad15f012, type: 2}
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 3.2
     <Stats>k__BackingField:
@@ -28,6 +30,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 3b1d4cc20147e0e44a999bcad8914a65, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: a3f8491d60957874c9aea143bc4330ec, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 4e0d0d3f09bfe3e428b17dfb29490351, type: 2}
+    <DeathAbility>k__BackingField: {fileID: 0}
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 80
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 6f9325a891c83a341865b7c536601a91, type: 2}
@@ -45,6 +48,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 3b1d4cc20147e0e44a999bcad8914a65, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: a3f8491d60957874c9aea143bc4330ec, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 4e0d0d3f09bfe3e428b17dfb29490351, type: 2}
+    <DeathAbility>k__BackingField: {fileID: 0}
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 90
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 6f9325a891c83a341865b7c536601a91, type: 2}
@@ -62,6 +66,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 3b1d4cc20147e0e44a999bcad8914a65, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: a3f8491d60957874c9aea143bc4330ec, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 4e0d0d3f09bfe3e428b17dfb29490351, type: 2}
+    <DeathAbility>k__BackingField: {fileID: 0}
     <KillReward>k__BackingField: 0
     <EvolutionCost>k__BackingField: 100
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 6f9325a891c83a341865b7c536601a91, type: 2}

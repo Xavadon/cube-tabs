@@ -30,6 +30,9 @@ namespace _Project.Scripts.Gameplay.Character.Data
         public int StartingGold { get; private set; } = 300;
 
         [field: SerializeField]
+        public bool GrantAllUnitsOnStart { get; private set; }
+
+        [field: SerializeField]
         public CharacterData[] UniqueHeroes { get; private set; }
 
         [field: SerializeField]
