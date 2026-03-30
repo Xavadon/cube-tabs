@@ -14,15 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Kreeper
   <PriceAsHero>k__BackingField: 100
+  <Scale>k__BackingField: 1
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 3.2
     <Stats>k__BackingField:
-      <Health>k__BackingField: 400
+      <Health>k__BackingField: 325
       <PhysicalResist>k__BackingField: 0
       <MagicResist>k__BackingField: 0
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-      <Damage>k__BackingField: 35
+      <Damage>k__BackingField: 25
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 2609461451f571f488176b574bb3b33e, type: 2}

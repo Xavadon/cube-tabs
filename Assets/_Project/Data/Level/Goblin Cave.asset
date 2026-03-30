@@ -18,6 +18,20 @@ MonoBehaviour:
     _sceneName: Goblin Cave
     _sceneAsset: {fileID: 102900000, guid: 9fc0d4010bbf28b4594072e72b8655ab, type: 3}
   <Milestones>k__BackingField:
+  - <KillsRequired>k__BackingField: 100
+    <Rewards>k__BackingField:
+    - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
+      Count: 4
+    - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
+      Count: 2
+    <BonusArmySlots>k__BackingField: 2
+  - <KillsRequired>k__BackingField: 250
+    <Rewards>k__BackingField:
+    - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
+      Count: 5
+    - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
+      Count: 3
+    <BonusArmySlots>k__BackingField: 4
   - <KillsRequired>k__BackingField: 500
     <Rewards>k__BackingField:
     - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
@@ -25,14 +39,7 @@ MonoBehaviour:
     - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
       Count: 5
     <BonusArmySlots>k__BackingField: 5
-  - <KillsRequired>k__BackingField: 1000
-    <Rewards>k__BackingField:
-    - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
-      Count: 5
-    - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
-      Count: 5
-    <BonusArmySlots>k__BackingField: 5
-  - <KillsRequired>k__BackingField: 1500
+  - <KillsRequired>k__BackingField: 750
     <Rewards>k__BackingField:
     - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
       Count: 5
@@ -43,21 +50,21 @@ MonoBehaviour:
   - Entries:
     - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
       TierIndex: 0
-      Count: 7
+      Count: 5
     - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
       TierIndex: 0
       Count: 2
   - Entries:
     - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
       TierIndex: 0
-      Count: 12
+      Count: 6
     - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
       TierIndex: 0
-      Count: 6
+      Count: 4
   - Entries:
     - CharacterData: {fileID: 11400000, guid: 620c0b96358e4fe4196dfc49b9950f94, type: 2}
       TierIndex: 0
-      Count: 17
+      Count: 8
     - CharacterData: {fileID: 11400000, guid: 76d25d150d947d24299e2b247484414d, type: 2}
       TierIndex: 0
-      Count: 10
+      Count: 6

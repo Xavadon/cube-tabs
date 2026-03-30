@@ -18,18 +18,32 @@ MonoBehaviour:
     _sceneName: Frog Swamp
     _sceneAsset: {fileID: 102900000, guid: d6a697479cb243b45a850c60b7ae72a5, type: 3}
   <Milestones>k__BackingField:
+  - <KillsRequired>k__BackingField: 15
+    <Rewards>k__BackingField:
+    - CharacterData: {fileID: 11400000, guid: 3ab3625fed4cddf459d83819429d18a3, type: 2}
+      Count: 1
+    - CharacterData: {fileID: 11400000, guid: 33554e75e1fe2594ea97961b77d43e67, type: 2}
+      Count: 2
+    <BonusArmySlots>k__BackingField: 1
   - <KillsRequired>k__BackingField: 50
     <Rewards>k__BackingField:
-    - CharacterData: {fileID: 11400000, guid: ef4e7c734bbb1b04eac7134cbd274688, type: 2}
-      Count: 5
-    - CharacterData: {fileID: 11400000, guid: 1c162d9852028a14cba1ea7eb216b5f3, type: 2}
-      Count: 5
-    <BonusArmySlots>k__BackingField: 5
-  - <KillsRequired>k__BackingField: 100
+    - CharacterData: {fileID: 11400000, guid: 33554e75e1fe2594ea97961b77d43e67, type: 2}
+      Count: 4
+    - CharacterData: {fileID: 11400000, guid: 3ab3625fed4cddf459d83819429d18a3, type: 2}
+      Count: 2
+    <BonusArmySlots>k__BackingField: 2
+  - <KillsRequired>k__BackingField: 75
     <Rewards>k__BackingField:
-    - CharacterData: {fileID: 11400000, guid: ef4e7c734bbb1b04eac7134cbd274688, type: 2}
+    - CharacterData: {fileID: 11400000, guid: 33554e75e1fe2594ea97961b77d43e67, type: 2}
+      Count: 6
+    - CharacterData: {fileID: 11400000, guid: 3ab3625fed4cddf459d83819429d18a3, type: 2}
+      Count: 3
+    <BonusArmySlots>k__BackingField: 3
+  - <KillsRequired>k__BackingField: 200
+    <Rewards>k__BackingField:
+    - CharacterData: {fileID: 11400000, guid: 33554e75e1fe2594ea97961b77d43e67, type: 2}
       Count: 5
-    - CharacterData: {fileID: 11400000, guid: 1c162d9852028a14cba1ea7eb216b5f3, type: 2}
+    - CharacterData: {fileID: 11400000, guid: 3ab3625fed4cddf459d83819429d18a3, type: 2}
       Count: 5
     <BonusArmySlots>k__BackingField: 5
   Waves:

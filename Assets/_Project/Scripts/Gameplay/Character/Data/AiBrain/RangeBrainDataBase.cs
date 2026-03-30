@@ -54,7 +54,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
 
         protected virtual BTNode CreateAttackNode(TierData tier)
         {
-            return new RangedAttack(WindUpDuration, AttackDuration, AttackRange);
+            return new RangedAttack(WindUpDuration, AttackDuration, AttackRange, DetectionRadius);
         }
     }
 }

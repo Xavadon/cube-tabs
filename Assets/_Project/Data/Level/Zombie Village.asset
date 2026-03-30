@@ -43,30 +43,30 @@ MonoBehaviour:
   - Entries:
     - CharacterData: {fileID: 11400000, guid: 2c1cc6a738eb41d4484a4a981bf61391, type: 2}
       TierIndex: 0
-      Count: 12
+      Count: 8
     - CharacterData: {fileID: 11400000, guid: 23bd883c6cb45e24c9088c3fe88df052, type: 2}
       TierIndex: 0
-      Count: 10
+      Count: 6
     - CharacterData: {fileID: 11400000, guid: 57e229345e74138499770ff3edbde6d4, type: 2}
       TierIndex: 0
-      Count: 10
+      Count: 4
   - Entries:
     - CharacterData: {fileID: 11400000, guid: 2c1cc6a738eb41d4484a4a981bf61391, type: 2}
       TierIndex: 0
-      Count: 13
+      Count: 10
     - CharacterData: {fileID: 11400000, guid: 7bbdeab44b5b4394dbf4269e4ad43977, type: 2}
       TierIndex: 0
-      Count: 6
+      Count: 4
     - CharacterData: {fileID: 11400000, guid: 23bd883c6cb45e24c9088c3fe88df052, type: 2}
       TierIndex: 0
-      Count: 10
+      Count: 8
     - CharacterData: {fileID: 11400000, guid: 57e229345e74138499770ff3edbde6d4, type: 2}
       TierIndex: 0
-      Count: 5
+      Count: 6
   - Entries:
     - CharacterData: {fileID: 11400000, guid: 1cbb885b7a2bcd54f81d3350cec92604, type: 2}
       TierIndex: 0
-      Count: 20
+      Count: 12
     - CharacterData: {fileID: 11400000, guid: 7bbdeab44b5b4394dbf4269e4ad43977, type: 2}
       TierIndex: 0
-      Count: 20
+      Count: 12

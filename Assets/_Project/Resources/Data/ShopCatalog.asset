@@ -40,12 +40,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e7c9b05c2a65ccb428eeb13c692e20ca, type: 2}
   - {fileID: 11400000, guid: 2c1cc6a738eb41d4484a4a981bf61391, type: 2}
   - {fileID: 11400000, guid: 23bd883c6cb45e24c9088c3fe88df052, type: 2}
-  - {fileID: 11400000, guid: ef4e7c734bbb1b04eac7134cbd274688, type: 2}
-  - {fileID: 11400000, guid: 1c162d9852028a14cba1ea7eb216b5f3, type: 2}
+  - {fileID: 11400000, guid: 33554e75e1fe2594ea97961b77d43e67, type: 2}
+  - {fileID: 11400000, guid: 3ab3625fed4cddf459d83819429d18a3, type: 2}
   <BaseUnit>k__BackingField: {fileID: 11400000, guid: bdf6d4b84d650514488104946a498409, type: 2}
   <StartingUnit>k__BackingField: {fileID: 11400000, guid: 4e5b13890b17a4d4f96030744cc2d9ac, type: 2}
   <EvolutionCatalog>k__BackingField: {fileID: 11400000, guid: 8bf77b34c2191ba4c8b6f7ec6adfaa8d, type: 2}
-  <BaseArmySlots>k__BackingField: 10
+  <BaseArmySlots>k__BackingField: 5
   <SlotUpgradeCost>k__BackingField: 55
   <MaxArmySlots>k__BackingField: 30
   <StartingGold>k__BackingField: 25

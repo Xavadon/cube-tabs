@@ -508,25 +508,25 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
     {
         private readonly float _windUpDuration;
         private readonly float _attackDuration;
-        private readonly float _stoppingDistance;
+        protected readonly float AttackRange;
 
         private float _elapsedTime;
         private bool _isWindingUp;
         private bool _isAttacking;
 
-        public AttackBase(float windUpDuration, float attackDuration, float stoppingDistance)
+        public AttackBase(float windUpDuration, float attackDuration, float attackRange)
         {
             _windUpDuration = windUpDuration;
             _attackDuration = attackDuration;
-            _stoppingDistance = stoppingDistance;
+            AttackRange = attackRange;
         }
 
         protected override void Enter()
         {
             base.Enter();
-            
+
             NavMeshAgent agent = Blackboard.Get<NavMeshAgent>(BrainKeys.Agent);
-            agent.stoppingDistance = _stoppingDistance;
+            agent.stoppingDistance = AttackRange;
             
             _elapsedTime = 0f;
             _isWindingUp = true;
@@ -562,11 +562,13 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
     public class MeleeAttack : AttackBase
     {
         private readonly Action<AnimatorController> _playAnimation;
+        private readonly float _hitRange;
 
-        public MeleeAttack(float windUpDuration, float attackDuration, float stoppingDistance,
+        public MeleeAttack(float windUpDuration, float attackDuration, float attackRange, float hitRange,
             MeleeAnimationType animationType = MeleeAnimationType.OneHanded)
-            : base(windUpDuration, attackDuration, stoppingDistance)
+            : base(windUpDuration, attackDuration, attackRange)
         {
+            _hitRange = hitRange;
             _playAnimation = ResolveAnimation(animationType);
         }
 
@@ -593,6 +595,12 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             if (target == null)
                 return;
 
+            Transform self = Blackboard.Get<Transform>(BrainKeys.Transform);
+            float distance = Vector3.Distance(self.position, target.position);
+
+            if (distance > _hitRange)
+                return;
+
             IDamageAble damageable = target.GetComponent<IDamageAble>();
 
             if (damageable == null)
@@ -607,8 +615,12 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
     public class RangedAttack : AttackBase
     {
-        public RangedAttack(float windUpDuration, float attackDuration, float stoppingDistance) : base(windUpDuration, attackDuration, stoppingDistance)
+        private readonly float _hitRange;
+
+        public RangedAttack(float windUpDuration, float attackDuration, float attackRange, float hitRange)
+            : base(windUpDuration, attackDuration, attackRange)
         {
+            _hitRange = hitRange;
         }
 
         protected override void Enter()
@@ -624,6 +636,12 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             Transform target = Blackboard.Get<Transform>(BrainKeys.Target);
 
             if (target == null)
+                return;
+
+            Transform self = Blackboard.Get<Transform>(BrainKeys.Transform);
+            float distance = Vector3.Distance(self.position, target.position);
+
+            if (distance > _hitRange)
                 return;
 
             IDamageAble damageable = target.GetComponent<IDamageAble>();

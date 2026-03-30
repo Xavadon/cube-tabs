@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Goblin Archer
   <PriceAsHero>k__BackingField: 100
+  <Scale>k__BackingField: 0.9
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 3.2
     <Stats>k__BackingField:
@@ -28,7 +29,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: f6a63d9a1972f7c46ad1fcd4dea520fe, type: 2}
     <Ability>k__BackingField: {fileID: 11400000, guid: 985f8e9e5699ab842ab5909bbfa14c47, type: 2}
-    <KillReward>k__BackingField: 7
+    <DeathAbility>k__BackingField: {fileID: 0}
+    <KillReward>k__BackingField: 9
     <EvolutionCost>k__BackingField: 0
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: b5eb0a9ecbd2a4f42ac4d356ca078d45, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: b5eb0a9ecbd2a4f42ac4d356ca078d45, type: 2}

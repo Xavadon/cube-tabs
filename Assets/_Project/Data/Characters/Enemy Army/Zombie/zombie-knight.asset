@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Zombie Knight
   <PriceAsHero>k__BackingField: 100
+  <Scale>k__BackingField: 1
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 3.2
     <Stats>k__BackingField:
@@ -22,12 +23,13 @@ MonoBehaviour:
       <MagicResist>k__BackingField: 0.1
       <FireResist>k__BackingField: 0
       <FaithResist>k__BackingField: 0
-      <Damage>k__BackingField: 65
+      <Damage>k__BackingField: 60
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 1310a2260b5a2fd48b228d554fa7f9f9, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: 1609cd84ad451d84fb1549d943b9411c, type: 2}
     <Ability>k__BackingField: {fileID: 0}
+    <DeathAbility>k__BackingField: {fileID: 0}
     <KillReward>k__BackingField: 6
     <EvolutionCost>k__BackingField: 0
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 123cf34ff3f06a842b61811124ae1d1f, type: 2}

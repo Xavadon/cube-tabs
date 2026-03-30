@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using _Project.Scripts.Gameplay.Character.Data;
+using _Project.Scripts.Gameplay.Character.Data.AiBrain;
 using _Project.Scripts.Gameplay.Services;
 using UnityEngine;
 
@@ -257,6 +258,16 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
             foreach (var kvp in _groupFirst)
                 _groupBuffer.Add((kvp.Value, _groupCounts[kvp.Key]));
+
+            _groupBuffer.Sort(CompareByUnitType);
+        }
+
+        private static int CompareByUnitType((ResolvedUnit unit, int count) a, (ResolvedUnit unit, int count) b)
+        {
+            bool aIsRanged = a.unit.Data.GetTier(a.unit.TierIndex).BrainData is RangeBrainDataBase;
+            bool bIsRanged = b.unit.Data.GetTier(b.unit.TierIndex).BrainData is RangeBrainDataBase;
+
+            return aIsRanged.CompareTo(bIsRanged);
         }
 
         private struct CardSelection

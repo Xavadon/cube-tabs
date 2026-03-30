@@ -58,7 +58,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
         
         protected virtual BTNode CreateAttackNode()
         {
-            return new MeleeAttack(WindUpDuration, AttackDuration, AttackRange, AnimationType);
+            return new MeleeAttack(WindUpDuration, AttackDuration, AttackRange, AttackStopRange, AnimationType);
         }
 
         protected virtual BTNode CreateFindTargetNode(LayerMask targetLayer)
