@@ -17,7 +17,6 @@ namespace _Project.Scripts.Architecture.Services
 
         public void Tick(float deltaTime)
         {
-#if UNITY_EDITOR
             if (UnityEngine.Input.GetKey(KeyCode.Equals) || UnityEngine.Input.GetKey(KeyCode.Mouse4))
             {
                 IsTimeSpeedUp = true;
@@ -33,6 +32,8 @@ namespace _Project.Scripts.Architecture.Services
                 IsTimeSpeedUp = false;
                 Time.timeScale = 1;
             }
+#if UNITY_EDITOR
+            
 #endif
         }
 
