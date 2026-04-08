@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 357730a47c70feb45b47f90b9494ea6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _heroCardPrefab: {fileID: 4017978865104152696, guid: 42c60b1764ceee749878691cf336ea8f, type: 3}
+  _heroCardPrefab: {fileID: 7868488420898831564, guid: 38964d3507c13ac45ac957b00bd77866, type: 3}
   _itemCardPrefab: {fileID: 2367230554020106330, guid: 3cee7cd547039bd459627503069c1567, type: 3}
   _cardsContainer: {fileID: 5727052211590395648}
   _goldLabel: {fileID: 41730663952896459}
@@ -61,7 +61,7 @@ MonoBehaviour:
   _itemPreviewImage: {fileID: 5416862633953081304}
   _dragRotationSpeed: 0.5
   _buyButton: {fileID: 5970472035827546195}
-  _buyButtonLabel: {fileID: 0}
+  _buyButtonLabel: {fileID: 8014370654253295875}
 --- !u!1 &643603293147949687
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,6 +477,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 257089509775985799, guid: eef94c31131a16f42bd8225423929ddf, type: 3}
   m_PrefabInstance: {fileID: 7886421912267953686}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8014370654253295875 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 165209679910387477, guid: eef94c31131a16f42bd8225423929ddf, type: 3}
+  m_PrefabInstance: {fileID: 7886421912267953686}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8590644529152584103
 PrefabInstance:
   m_ObjectHideFlags: 0
