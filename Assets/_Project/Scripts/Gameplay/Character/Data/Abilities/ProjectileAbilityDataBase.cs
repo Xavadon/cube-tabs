@@ -37,10 +37,11 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
             float scaledDamage = ApplyMultiplier(damage);
             float projectileDamage = DealDirectDamage ? scaledDamage : 0f;
 
-            projectile.Init(target, Speed, projectileDamage, affectedLayers, onHit: OnHitAbility == null ? null : _ =>
+            projectile.Init(target, Speed, projectileDamage, affectedLayers, onHit: OnHitAbility == null ? null : hitPoint =>
             {
                 Transform originalTransform = blackboard.Get<Transform>(BrainKeys.Transform);
                 blackboard.Set(BrainKeys.Transform, target);
+                blackboard.Set(BrainKeys.HitPoint, hitPoint);
                 OnHitAbility.Execute(blackboard, scaledDamage, affectedLayers);
                 blackboard.Set(BrainKeys.Transform, originalTransform);
             });

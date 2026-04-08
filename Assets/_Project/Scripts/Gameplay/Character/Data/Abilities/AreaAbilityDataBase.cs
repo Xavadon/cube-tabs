@@ -26,11 +26,23 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
             Transform caster = blackboard.Get<Transform>(BrainKeys.Transform);
             LayerMask targetLayer = blackboard.Get<LayerMask>(BrainKeys.TargetLayer);
 
-            if (caster == null)
+            Vector3 spawnPosition;
+
+            if (caster != null)
+            {
+                spawnPosition = caster.position + SpawnOffset;
+            }
+            else if (blackboard.TryGet(BrainKeys.HitPoint, out Vector3 hitPoint))
+            {
+                spawnPosition = hitPoint + SpawnOffset;
+            }
+            else
+            {
                 return;
+            }
 
             // TODO: Заменить Instantiate на пулинг (массовые касты — GC-спайки)
-            AreaWave wave = Instantiate(Prefab, caster.position + SpawnOffset, Quaternion.identity);
+            AreaWave wave = Instantiate(Prefab, spawnPosition, Quaternion.identity);
             wave.Init(Radius, Duration, ApplyMultiplier(damage), affectedLayers, targetLayer);
         }
     }

@@ -19,6 +19,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         public const string TargetLayer = "TargetLayer";
         public const string InputService = "InputService";
         public const string LockedTarget = "LockedTarget";
+        public const string HitPoint = "HitPoint";
     }
     
     public class CharacterBrain
