@@ -56,7 +56,7 @@ namespace Game.Scripts.Core.Gameplay.Enemies.Components
             {
                 _agent.isStopped = true;
                 _agent.ResetPath();
-                Debug.Log($"[MovementComponent] {_transform.name} остановился");
+                _agent.velocity = Vector3.zero;
             }
         }
 

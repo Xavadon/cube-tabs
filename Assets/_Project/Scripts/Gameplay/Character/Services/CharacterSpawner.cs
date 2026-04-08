@@ -30,7 +30,7 @@ namespace _Project.Scripts.Gameplay.Character.Services
     public class CharacterSpawner : ICharacterSpawner
     {
         private const float InitialDelay = 0.5f;
-        private const float SpawnInterval = 0.2f;
+        private const float SpawnInterval = 0.05f;
         private const float SpawnOffsetRange = 1.5f;
 
         private readonly ISpawnPointProvider _spawnPointProvider;

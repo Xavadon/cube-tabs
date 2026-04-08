@@ -10,10 +10,12 @@ namespace _Project.Scripts.Gameplay.Character.Services
         void Register(Character character);
         void Unregister(Character character);
         void StartBattle();
+        void StopBattle();
         IReadOnlyList<Character> GetAllies();
         IReadOnlyList<Character> GetEnemies();
         IReadOnlyList<Character> GetAll();
         event Action<Character> OnCharacterDied;
+        event Action OnBattleStopped;
     }
 
     public class CharacterRegistry : ICharacterRegistry
@@ -24,6 +26,7 @@ namespace _Project.Scripts.Gameplay.Character.Services
         private bool _battleStarted;
 
         public event Action<Character> OnCharacterDied;
+        public event Action OnBattleStopped;
 
         public UniTask Initialize()
         {
@@ -66,6 +69,16 @@ namespace _Project.Scripts.Gameplay.Character.Services
         public void StartBattle()
         {
             _battleStarted = true;
+        }
+
+        public void StopBattle()
+        {
+            _battleStarted = false;
+
+            foreach (var character in _all)
+                character.Stop();
+
+            OnBattleStopped?.Invoke();
         }
 
         public IReadOnlyList<Character> GetAllies() => _allies;

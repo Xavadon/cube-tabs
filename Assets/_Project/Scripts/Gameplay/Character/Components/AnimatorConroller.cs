@@ -45,8 +45,13 @@ namespace _Project.Scripts.Gameplay.Character.Components
             {
                 return;
             }
-            
+
             CrossFade(_idleHash);
+        }
+
+        public void ForceIdle()
+        {
+            CrossFade(_idleHash, 0.05f);
         }
         
         public void PlayMove()

@@ -32,6 +32,7 @@ namespace _Project.Scripts.Gameplay.Services
     public interface IGameResultService : IService
     {
         void StartBattle(LevelConfig levelConfig);
+        void Surrender();
         event Action<GameResultData> OnGameFinished;
         event Action<int, int> OnWaveStarted;
     }
@@ -86,6 +87,15 @@ namespace _Project.Scripts.Gameplay.Services
             Debug.Log("[GameResultService] Battle started");
         }
 
+        public void Surrender()
+        {
+            if (!_battleActive)
+                return;
+
+            Debug.Log("[GameResultService] Player surrendered");
+            FinishBattle(GameResult.Defeat);
+        }
+
         private void SpawnCurrentWave()
         {
             _characterSpawner.SpawnEnemyWave(_waves[_currentWaveIndex].Entries);
@@ -122,6 +132,7 @@ namespace _Project.Scripts.Gameplay.Services
         private void FinishBattle(GameResult result)
         {
             _battleActive = false;
+            _characterRegistry.StopBattle();
 
             int goldEarned = _playerProgressService.Gold - _goldBefore;
             ClaimedMilestoneData[] claimedMilestones = null;

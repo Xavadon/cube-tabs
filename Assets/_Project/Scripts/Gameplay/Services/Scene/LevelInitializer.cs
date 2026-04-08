@@ -90,7 +90,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
                 return;
             }
 
-            _gameCanvasUI.Initialize(sceneService, _playerProgressService, levelConfig, _cameraService);
+            _gameCanvasUI.Initialize(sceneService, _playerProgressService, levelConfig, _cameraService, _gameResultService);
             _gameResultService.OnGameFinished += _gameCanvasUI.ShowResult;
         }
     }

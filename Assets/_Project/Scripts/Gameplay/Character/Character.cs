@@ -49,6 +49,7 @@ namespace _Project.Scripts.Gameplay.Character
         private HealthBarElement _healthBar;
         private CharacterData _characterData;
         private int _tierIndex;
+        private bool _stopped;
 
         public void ApplyDamage(float amount, Vector3 hitPoint, DamageType type = DamageType.Physical)
         {
@@ -112,12 +113,23 @@ namespace _Project.Scripts.Gameplay.Character
 
         private void Update()
         {
+            if (_stopped)
+                return;
+
             _brain?.Tick();
+        }
+
+        public void Stop()
+        {
+            _stopped = true;
+            _movement.Stop();
+            _animatorController.ForceIdle();
         }
 
         public void SetRegistry(ICharacterRegistry registry)
         {
             _registry = registry;
+            _registry.OnBattleStopped += Stop;
         }
 
         public void SetHealthBarPool(HealthBarPool pool)
@@ -137,7 +149,13 @@ namespace _Project.Scripts.Gameplay.Character
                 ExecuteDeathAbility(tier);
 
             _healthBar?.Release();
-            _registry?.Unregister(this);
+
+            if (_registry != null)
+            {
+                _registry.OnBattleStopped -= Stop;
+                _registry.Unregister(this);
+            }
+
             _movement.Stop();
 
             // TODO: Анимация смерти
