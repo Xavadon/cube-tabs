@@ -23,20 +23,25 @@ namespace _Project.Scripts.Gameplay.UI
         private IGameResultService _gameResultService;
 
         public void Initialize(ISceneService sceneService, IPlayerProgressService playerProgressService,
-            LevelConfig levelConfig, ICameraService cameraService, IGameResultService gameResultService)
+            LevelConfig levelConfig, ICameraService cameraService, IGameResultService gameResultService,
+            IUnitPreviewService unitPreviewService)
         {
             _playerProgressService = playerProgressService;
             _levelConfig = levelConfig;
             _gameResultService = gameResultService;
 
-            _resultPanel.Initialize(sceneService);
+            _resultPanel.Initialize(sceneService, unitPreviewService);
             _resultPanel.gameObject.SetActive(false);
 
             if (_cameraModeButton != null)
+            {
                 _cameraModeButton.onClick.AddListener(cameraService.CycleMode);
+            }
 
             if (_surrenderButton != null)
+            {
                 _surrenderButton.onClick.AddListener(OnSurrenderClicked);
+            }
         }
 
         private void OnSurrenderClicked()
@@ -47,13 +52,22 @@ namespace _Project.Scripts.Gameplay.UI
         private void OnDisable()
         {
             if (_surrenderButton != null)
+            {
                 _surrenderButton.onClick.RemoveListener(OnSurrenderClicked);
+            }
         }
 
         public void ShowResult(GameResultData data)
         {
             if (_surrenderButton != null)
+            {
                 _surrenderButton.gameObject.SetActive(false);
+            }
+
+            if (_cameraModeButton != null)
+            {
+                _cameraModeButton.gameObject.SetActive(false);
+            }
 
             int currentKills = _playerProgressService.GetLevelKills(_levelConfig.LevelIndex);
             int nextMilestoneKills = GetNextMilestoneKills();
@@ -65,7 +79,9 @@ namespace _Project.Scripts.Gameplay.UI
         {
             var milestones = _levelConfig.Milestones;
             if (milestones == null || milestones.Length == 0)
+            {
                 return 0;
+            }
 
             int levelIndex = _levelConfig.LevelIndex;
 

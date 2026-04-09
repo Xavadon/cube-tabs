@@ -12,6 +12,7 @@ namespace _Project.Scripts.Gameplay.Services
         Quaternion DefaultFullBodyRotation { get; }
         RenderTexture GetPortrait(CharacterData data, int tierIndex);
         PreviewHandle GetFullBody(CharacterData data, int tierIndex);
+        void ClearCache();
     }
 
     public class UnitPreviewService : IUnitPreviewService
@@ -60,6 +61,19 @@ namespace _Project.Scripts.Gameplay.Services
             var handle = _fullBodyFactory.CreatePreview(data, tierIndex, _fullBodyCache.Count);
             _fullBodyCache[key] = handle;
             return handle;
+        }
+
+        public void ClearCache()
+        {
+            _portraitFactory?.Dispose();
+            _fullBodyFactory?.Dispose();
+            _portraitCache.Clear();
+            _fullBodyCache.Clear();
+
+            var portraitConfig = Resources.Load<UnitPreviewConfig>(PortraitConfigPath);
+            var fullBodyConfig = Resources.Load<UnitPreviewConfig>(FullBodyConfigPath);
+            _portraitFactory = new UnitPreviewFactory(portraitConfig);
+            _fullBodyFactory = new UnitPreviewFactory(fullBodyConfig);
         }
 
         public void Dispose()

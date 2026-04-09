@@ -17,6 +17,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
         private readonly IPlayerProgressService _playerProgressService;
         private readonly IGameResultService _gameResultService;
         private readonly ICameraService _cameraService;
+        private readonly IUnitPreviewService _unitPreviewService;
 
         private GameCanvasUI _gameCanvasUI;
 
@@ -25,13 +26,15 @@ namespace _Project.Scripts.Gameplay.Services.Scene
             IGameSessionService gameSessionService,
             IPlayerProgressService playerProgressService,
             IGameResultService gameResultService,
-            ICameraService cameraService)
+            ICameraService cameraService,
+            IUnitPreviewService unitPreviewService)
         {
             _characterSpawner = characterSpawner;
             _gameSessionService = gameSessionService;
             _playerProgressService = playerProgressService;
             _gameResultService = gameResultService;
             _cameraService = cameraService;
+            _unitPreviewService = unitPreviewService;
         }
 
         public UniTask Initialize()
@@ -43,6 +46,8 @@ namespace _Project.Scripts.Gameplay.Services.Scene
         public void InitializeLevel(ISceneService sceneService)
         {
             Debug.Log("[LevelInitializer] Starting level initialization...");
+
+            _unitPreviewService.ClearCache();
 
             LevelConfig levelConfig = _gameSessionService.SelectedLevel;
 
@@ -90,7 +95,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
                 return;
             }
 
-            _gameCanvasUI.Initialize(sceneService, _playerProgressService, levelConfig, _cameraService, _gameResultService);
+            _gameCanvasUI.Initialize(sceneService, _playerProgressService, levelConfig, _cameraService, _gameResultService, _unitPreviewService);
             _gameResultService.OnGameFinished += _gameCanvasUI.ShowResult;
         }
     }
