@@ -173,15 +173,22 @@ namespace _Project.Scripts.Gameplay.UI.Shop
 
             if (_selection.IsHero)
             {
-                var handle = _previewService.GetFullBody(_selection.HeroData, 0);
-                _view.ShowUnitPreview(handle);
+                var data = _selection.HeroData;
+                var tier = data.GetTier(0);
+                var handle = _previewService.GetFullBody(data, 0);
+
+                _view.ShowUnitPreview(
+                    handle,
+                    data.Name,
+                    data.Description,
+                    tier.Stats.Health,
+                    tier.Stats.Damage,
+                    tier.MoveSpeed);
             }
             else
             {
-                if (_selection.ItemData.Icon != null)
-                    _view.ShowItemPreview(_selection.ItemData.Icon);
-                else
-                    _view.HidePreview();
+                var item = _selection.ItemData;
+                _view.ShowItemPreview(item.Icon, item.Name, item.Description);
             }
         }
 
@@ -190,6 +197,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             if (!_selection.HasValue)
             {
                 _view.SetBuyVisible(false);
+                _view.SetPriceLabel(null);
                 return;
             }
 
@@ -203,17 +211,21 @@ namespace _Project.Scripts.Gameplay.UI.Shop
                 {
                     _view.SetBuyLabel("Куплено");
                     _view.SetBuyInteractable(false);
+                    _view.SetPriceLabel(null);
                 }
                 else
                 {
-                    _view.SetBuyLabel($"Купить ({_selection.HeroData.PriceAsHero})");
-                    _view.SetBuyInteractable(_progress.CanAfford(_selection.HeroData.PriceAsHero));
+                    int price = _selection.HeroData.PriceAsHero;
+                    _view.SetBuyLabel("Купить");
+                    _view.SetBuyInteractable(_progress.CanAfford(price));
+                    _view.SetPriceLabel(price.ToString());
                 }
             }
             else
             {
-                _view.SetBuyLabel($"Купить ({_selection.ItemData.PriceLabel})");
+                _view.SetBuyLabel("Купить");
                 _view.SetBuyInteractable(true);
+                _view.SetPriceLabel(_selection.ItemData.PriceLabel);
             }
         }
 

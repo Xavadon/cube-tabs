@@ -20,6 +20,9 @@ namespace _Project.Scripts.Gameplay.Character.Data
         [field: SerializeField]
         public Sprite Icon { get; private set; }
 
+        [field: SerializeField, TextArea(2, 4)]
+        public string Description { get; private set; }
+
         [field: SerializeField]
         public string PriceLabel { get; private set; }
 

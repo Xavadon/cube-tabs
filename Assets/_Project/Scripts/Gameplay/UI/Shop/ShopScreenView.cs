@@ -33,12 +33,40 @@ namespace _Project.Scripts.Gameplay.UI.Shop
 
         [SerializeField]
         private RawImage _unitPreviewImage;
-        
+
         [SerializeField]
         private Image _itemPreviewImage;
 
         [SerializeField]
         private float _dragRotationSpeed = 0.5f;
+
+        [Header("Description Panel")]
+        [SerializeField]
+        private GameObject _descriptionPanel;
+
+        [SerializeField]
+        private TextMeshProUGUI _nameLabel;
+
+        [SerializeField]
+        private TextMeshProUGUI _descriptionLabel;
+
+        [SerializeField]
+        private GameObject _statsPanel;
+
+        [SerializeField]
+        private TextMeshProUGUI _hpLabel;
+
+        [SerializeField]
+        private TextMeshProUGUI _damageLabel;
+
+        [SerializeField]
+        private TextMeshProUGUI _speedLabel;
+
+        [SerializeField]
+        private GameObject _pricePanel;
+
+        [SerializeField]
+        private TextMeshProUGUI _priceLabel;
 
         [Header("Buy")]
         [SerializeField]
@@ -173,7 +201,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             }
         }
 
-        public void ShowUnitPreview(PreviewHandle handle)
+        public void ShowUnitPreview(PreviewHandle handle, string name, string description, float hp, float damage, float speed)
         {
             _cardPreviewParent.SetActive(true);
 
@@ -184,36 +212,90 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             }
 
             if (_itemPreviewImage != null)
-            {
                 _itemPreviewImage.gameObject.SetActive(false);
-            }
 
             _currentPreviewModel = handle.Model;
             _currentPreviewModel.rotation = _defaultFullBodyRotation;
+
+            ShowUnitDescription(name, description, hp, damage, speed);
         }
 
-        public void ShowItemPreview(Sprite icon)
+        public void ShowItemPreview(Sprite icon, string name, string description)
         {
             _cardPreviewParent.SetActive(true);
 
             if (_itemPreviewImage != null)
             {
+                bool hasIcon = icon != null;
                 _itemPreviewImage.sprite = icon;
-                _itemPreviewImage.gameObject.SetActive(true);
+                _itemPreviewImage.gameObject.SetActive(hasIcon);
             }
 
             if (_unitPreviewImage != null)
-            {
                 _unitPreviewImage.gameObject.SetActive(false);
-            }
 
             _currentPreviewModel = null;
+
+            ShowItemDescription(name, description);
         }
 
         public void HidePreview()
         {
             _cardPreviewParent.SetActive(false);
             _currentPreviewModel = null;
+            HideDescription();
+        }
+
+        private void ShowUnitDescription(string name, string description, float hp, float damage, float speed)
+        {
+            if (_descriptionPanel != null)
+                _descriptionPanel.SetActive(true);
+
+            if (_nameLabel != null)
+                _nameLabel.text = name;
+
+            if (_statsPanel != null)
+                _statsPanel.SetActive(true);
+
+            if (_hpLabel != null)
+                _hpLabel.text = hp.ToString("0");
+
+            if (_damageLabel != null)
+                _damageLabel.text = damage.ToString("0");
+
+            if (_speedLabel != null)
+                _speedLabel.text = speed.ToString("0.#");
+
+            if (_descriptionLabel != null)
+            {
+                bool hasDescription = !string.IsNullOrEmpty(description);
+                _descriptionLabel.text = description;
+                _descriptionLabel.gameObject.SetActive(hasDescription);
+            }
+        }
+
+        private void ShowItemDescription(string name, string description)
+        {
+            if (_descriptionPanel != null)
+                _descriptionPanel.SetActive(true);
+
+            if (_nameLabel != null)
+                _nameLabel.text = name;
+
+            if (_statsPanel != null)
+                _statsPanel.SetActive(false);
+
+            if (_descriptionLabel != null)
+            {
+                _descriptionLabel.text = description;
+                _descriptionLabel.gameObject.SetActive(true);
+            }
+        }
+
+        private void HideDescription()
+        {
+            if (_descriptionPanel != null)
+                _descriptionPanel.SetActive(false);
         }
 
         public void SetBuyVisible(bool visible)
@@ -231,6 +313,20 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             if (_buyButtonLabel != null)
             {
                 _buyButtonLabel.text = text;
+            }
+        }
+
+        public void SetPriceLabel(string text)
+        {
+            bool hasPrice = !string.IsNullOrEmpty(text);
+
+            if (_pricePanel != null)
+                _pricePanel.SetActive(hasPrice);
+
+            if (_priceLabel != null)
+            {
+                _priceLabel.text = text;
+                _priceLabel.gameObject.SetActive(hasPrice);
             }
         }
     }

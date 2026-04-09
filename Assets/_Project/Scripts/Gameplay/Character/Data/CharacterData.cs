@@ -14,6 +14,9 @@ namespace _Project.Scripts.Gameplay.Character.Data
         [field: SerializeField]
         public string Name { get; private set; } = "Unit";
 
+        [field: SerializeField, TextArea(2, 4)]
+        public string Description { get; private set; }
+
         [field: SerializeField]
         public int PriceAsHero { get; private set; } = 100;
 
