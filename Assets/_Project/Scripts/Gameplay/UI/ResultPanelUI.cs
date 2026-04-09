@@ -2,6 +2,7 @@ using System.Text;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Services;
 using _Project.Scripts.Gameplay.Services.Scene;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,8 +22,13 @@ namespace _Project.Scripts.Gameplay.UI
 
         [SerializeField]
         private Button _menuButton;
-
+        
+        [SerializeField]
+        private Image _rewardSun;
+        
+        private float _sunRotationDuration = 10f;
         private ISceneService _sceneService;
+        private Tween _sunRotationTween;
 
         private void OnEnable()
         {
@@ -32,6 +38,8 @@ namespace _Project.Scripts.Gameplay.UI
         private void OnDisable()
         {
             _menuButton.onClick.RemoveListener(OnMenuClicked);
+            _sunRotationTween?.Kill();
+            _sunRotationTween = null;
         }
 
         public void Initialize(ISceneService sceneService)
@@ -41,11 +49,31 @@ namespace _Project.Scripts.Gameplay.UI
 
         public void Show(GameResultData data, int currentLevelKills, int nextMilestoneKills)
         {
-            _titleText.text = data.Result == GameResult.Victory ? "Победа" : "Поражение";
+            _sunRotationTween?.Kill();
+            _rewardSun.transform.rotation = Quaternion.identity;
+            _sunRotationTween = _rewardSun.transform
+                .DORotate(new Vector3(0, 0, -360), _sunRotationDuration, RotateMode.FastBeyond360)
+                .SetLoops(-1, LoopType.Restart)
+                .SetEase(Ease.Linear);
+            
+            if (data.Result == GameResult.Victory)
+            {
+                _titleText.text = "Победа";
+            }
+            else
+            {
+                _titleText.text = "Поражение";
+            }
 
-            string progress = nextMilestoneKills > 0
-                ? $"\n\n{currentLevelKills}/{nextMilestoneKills} убийств до награды"
-                : "\n\nВсе награды получены";
+            string progress;
+            if (nextMilestoneKills > 0)
+            {
+                progress = $"\n\n{currentLevelKills}/{nextMilestoneKills} убийств до награды";
+            }
+            else
+            {
+                progress = "\n\nВсе награды получены";
+            }
 
             _statsText.text = $"+{data.GoldEarned} золота\n\n{data.EnemiesKilled} врагов убито{progress}";
 
