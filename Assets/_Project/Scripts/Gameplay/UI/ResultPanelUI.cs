@@ -3,7 +3,6 @@ using System.Threading;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Services;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
@@ -13,10 +12,6 @@ namespace _Project.Scripts.Gameplay.UI
 {
     public class ResultPanelUI : MonoBehaviour
     {
-        [Header("Background")]
-        [SerializeField]
-        private Image _sun;
-
         [Header("Title")]
         [SerializeField]
         private GameObject _titlePanel;
@@ -56,12 +51,9 @@ namespace _Project.Scripts.Gameplay.UI
 
         [SerializeField]
         private float _noThanksDelay = 2f;
-        
-        private float _sunRotationDuration = 10f;
 
         private ISceneService _sceneService;
         private IUnitPreviewService _unitPreviewService;
-        private Tween _sunRotationTween;
         private CancellationTokenSource _showCts;
         private readonly List<RewardUnitIconUI> _spawnedIcons = new();
 
@@ -75,8 +67,6 @@ namespace _Project.Scripts.Gameplay.UI
         {
             _doubleRewardButton.onClick.RemoveListener(OnButtonClicked);
             _noThanksButton.onClick.RemoveListener(OnButtonClicked);
-            _sunRotationTween?.Kill();
-            _sunRotationTween = null;
             _showCts?.Cancel();
             _showCts?.Dispose();
             _showCts = null;
@@ -99,7 +89,6 @@ namespace _Project.Scripts.Gameplay.UI
             PrepareData(data, currentLevelKills, nextMilestoneKills);
 
             gameObject.SetActive(true);
-            StartSunRotation();
 
             ShowSequenceAsync(_showCts.Token).Forget();
         }
@@ -153,7 +142,6 @@ namespace _Project.Scripts.Gameplay.UI
         {
             int delayMs = (int)(_elementDelay * 1000);
 
-            _sun.gameObject.SetActive(true);
             _titlePanel.SetActive(true);
             await UniTask.Delay(delayMs, cancellationToken: ct);
 
@@ -172,7 +160,6 @@ namespace _Project.Scripts.Gameplay.UI
 
         private void HideAllElements()
         {
-            _sun.gameObject.SetActive(false);
             _titlePanel.SetActive(false);
             _goldRewardPanel.SetActive(false);
             _unitRewardPanel.SetActive(false);
@@ -207,21 +194,6 @@ namespace _Project.Scripts.Gameplay.UI
             _spawnedIcons.Clear();
         }
 
-        private void StartSunRotation()
-        {
-            if (_sun == null)
-            {
-                return;
-            }
-
-            _sunRotationTween?.Kill();
-            _sun.transform.rotation = Quaternion.identity;
-            _sunRotationTween = _sun.transform
-                .DORotate(new Vector3(0, 0, -360), _sunRotationDuration, RotateMode.FastBeyond360)
-                .SetLoops(-1, LoopType.Restart)
-                .SetEase(Ease.Linear);
-        }
-
         private void OnButtonClicked()
         {
             // TODO: Implement ad reward doubling for _doubleRewardButton
@@ -233,7 +205,6 @@ namespace _Project.Scripts.Gameplay.UI
         private void PreviewVictoryWithRewards()
         {
             HideAllElements();
-            _sun.gameObject.SetActive(true);
             _titlePanel.SetActive(true);
             _titleText.text = "Победа";
             _goldRewardPanel.SetActive(true);
@@ -248,7 +219,6 @@ namespace _Project.Scripts.Gameplay.UI
         private void PreviewVictoryProgress()
         {
             HideAllElements();
-            _sun.gameObject.SetActive(true);
             _titlePanel.SetActive(true);
             _titleText.text = "Победа";
             _goldRewardPanel.SetActive(true);
@@ -263,7 +233,6 @@ namespace _Project.Scripts.Gameplay.UI
         private void PreviewDefeat()
         {
             HideAllElements();
-            _sun.gameObject.SetActive(true);
             _titlePanel.SetActive(true);
             _titleText.text = "Поражение";
             _goldRewardPanel.SetActive(true);
