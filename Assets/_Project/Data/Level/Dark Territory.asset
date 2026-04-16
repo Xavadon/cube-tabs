@@ -15,8 +15,8 @@ MonoBehaviour:
   <LevelName>k__BackingField: Dark Territory
   <LevelIndex>k__BackingField: 3
   _scene:
-    _sceneName: Goblin Cave
-    _sceneAsset: {fileID: 102900000, guid: 9fc0d4010bbf28b4594072e72b8655ab, type: 3}
+    _sceneName: Dark Territory
+    _sceneAsset: {fileID: 102900000, guid: 80c5def71a1b75f48bf45210126303ba, type: 3}
   <Milestones>k__BackingField:
   - <KillsRequired>k__BackingField: 500
     <Rewards>k__BackingField:

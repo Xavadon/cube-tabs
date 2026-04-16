@@ -50,7 +50,7 @@ MonoBehaviour:
   <SlotUpgradeCost>k__BackingField: 55
   <MaxArmySlots>k__BackingField: 30
   <StartingGold>k__BackingField: 25
-  <GrantAllUnitsOnStart>k__BackingField: 1
+  <GrantAllUnitsOnStart>k__BackingField: 0
   <UniqueHeroes>k__BackingField:
   - {fileID: 11400000, guid: 4e5b13890b17a4d4f96030744cc2d9ac, type: 2}
   - {fileID: 11400000, guid: 068a559471b72364f92cdf57fad8d773, type: 2}

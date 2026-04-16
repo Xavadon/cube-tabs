@@ -90,28 +90,6 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
                 }
             }
 
-            if (_selectedLevel.Waves is { Length: > 0 })
-            {
-                for (int w = 0; w < _selectedLevel.Waves.Length; w++)
-                {
-                    var wave = _selectedLevel.Waves[w];
-
-                    if (wave.Entries == null || wave.Entries.Length == 0)
-                        continue;
-
-                    _statsBuilder.Append("Wave ").Append(w + 1).AppendLine(":");
-
-                    foreach (var entry in wave.Entries)
-                    {
-                        string name = entry.CharacterData.MaxTier > 0
-                            ? $"{entry.CharacterData.Name} T{entry.TierIndex + 1}"
-                            : entry.CharacterData.Name;
-
-                        _statsBuilder.Append("  ").Append(name).Append(" x").AppendLine(entry.Count.ToString());
-                    }
-                }
-            }
-
             _levelStats.text = _statsBuilder.ToString();
             _playButton.interactable = !completed;
         }

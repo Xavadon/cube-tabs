@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: goblin
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Goblin Warrior
+  <Description>k__BackingField: 
   <PriceAsHero>k__BackingField: 100
   <Scale>k__BackingField: 0.9
+  <AnimatorOverride>k__BackingField: {fileID: 0}
   <Tiers>k__BackingField:
-  - <MoveSpeed>k__BackingField: 3.2
+  - <MoveSpeed>k__BackingField: 3
     <Stats>k__BackingField:
       <Health>k__BackingField: 150
       <PhysicalResist>k__BackingField: 0

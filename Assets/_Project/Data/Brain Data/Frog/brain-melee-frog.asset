@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: brain-melee-frog
   m_EditorClassIdentifier: 
   <FindTargetType>k__BackingField: 0
-  <DetectionRadius>k__BackingField: 15
+  <DetectionRadius>k__BackingField: 200
   <WindUpDuration>k__BackingField: 0.3
   <AttackDuration>k__BackingField: 0.8
   <AttackRange>k__BackingField: 1.75
   <AttackStopRange>k__BackingField: 3
   <AttackCooldown>k__BackingField: 0.35
-  <AnimationType>k__BackingField: 0

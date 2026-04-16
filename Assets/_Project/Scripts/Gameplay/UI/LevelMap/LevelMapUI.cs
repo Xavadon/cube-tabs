@@ -1,8 +1,6 @@
-using System;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Services;
 using _Project.Scripts.Gameplay.Services.Scene;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.UI.LevelMap
@@ -10,25 +8,32 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
     public class LevelMapUI : MonoBehaviour
     {
         [SerializeField]
-        private LevelPointUI _levelPointPrefab;
+        private LevelPointUI[] _levelPoints;
 
         [SerializeField]
         private LevelInfoUI _levelInfo;
 
-        [SerializeField]
-        private Transform _pointsContainer;
-        
         public void Initalize(LevelCatalog catalog, IGameSessionService sessionService, ISceneService sceneService,
             IPlayerProgressService progress)
         {
-            foreach (var level in catalog.Levels)
+            var levels = catalog.Levels;
+
+            for (int i = 0; i < _levelPoints.Length; i++)
             {
-                LevelPointUI point = Instantiate(_levelPointPrefab, _pointsContainer);
-                point.Initialize(level.LevelName, () => OnLevelSelected(level));
+                if (i < levels.Length)
+                {
+                    var level = levels[i];
+                    _levelPoints[i].Initialize(() => OnLevelSelected(level));
+                    _levelPoints[i].gameObject.SetActive(true);
+                }
+                else
+                {
+                    _levelPoints[i].gameObject.SetActive(false);
+                }
             }
 
             _levelInfo.Initalize(sessionService, sceneService, progress);
-            
+
             gameObject.SetActive(false);
         }
 

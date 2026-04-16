@@ -15,8 +15,8 @@ MonoBehaviour:
   <LevelName>k__BackingField: Zombie Village
   <LevelIndex>k__BackingField: 2
   _scene:
-    _sceneName: Goblin Cave
-    _sceneAsset: {fileID: 102900000, guid: 9fc0d4010bbf28b4594072e72b8655ab, type: 3}
+    _sceneName: Zombie Village
+    _sceneAsset: {fileID: 102900000, guid: d9ab5cf8fdf73fa4faed2c9fe7ae78f5, type: 3}
   <Milestones>k__BackingField:
   - <KillsRequired>k__BackingField: 500
     <Rewards>k__BackingField:

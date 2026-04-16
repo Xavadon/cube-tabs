@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Frog Swamp.unity
     guid: d6a697479cb243b45a850c60b7ae72a5
+  - enabled: 1
+    path: Assets/_Project/Scenes/Zombie Village.unity
+    guid: d9ab5cf8fdf73fa4faed2c9fe7ae78f5
+  - enabled: 1
+    path: Assets/_Project/Scenes/Dark Territory.unity
+    guid: 80c5def71a1b75f48bf45210126303ba
   m_configObjects: {}

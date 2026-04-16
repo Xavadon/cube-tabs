@@ -1,5 +1,4 @@
 using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,9 +8,6 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
     {
         [SerializeField]
         private Button _button;
-
-        [SerializeField]
-        private TextMeshProUGUI _label;
 
         private Action _onClick;
 
@@ -25,9 +21,8 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
             _button.onClick.RemoveListener(HandleClick);
         }
 
-        public void Initialize(string levelName, Action onClick)
+        public void Initialize(Action onClick)
         {
-            _label.text = levelName;
             _onClick = onClick;
         }
 

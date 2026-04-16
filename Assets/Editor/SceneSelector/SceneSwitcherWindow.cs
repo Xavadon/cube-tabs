@@ -17,6 +17,12 @@ public static class EditorSceneSwitcher
     [MenuItem("SceneSwitcher/Frog Swamp ^&3", false, 3)]
     private static void SwitchToFrogSwamp() => SwitchToScene(3);
 
+    [MenuItem("SceneSwitcher/Zombie Village ^&4", false, 4)]
+    private static void SwitchToZombieVillage() => SwitchToScene(4);
+
+    [MenuItem("SceneSwitcher/Dark Territory ^&5", false, 5)]
+    private static void SwitchToDarkTerritory() => SwitchToScene(5);
+
     private static void SwitchToScene(int index)
     {
         if (index >= 0 && index < EditorBuildSettings.scenes.Length)

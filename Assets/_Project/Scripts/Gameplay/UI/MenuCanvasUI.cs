@@ -26,11 +26,15 @@ namespace _Project.Scripts.Gameplay.UI
         [SerializeField]
         private Button _levelMapButton;
         
+        [SerializeField]
+        private Button _clearButton;
+        
         private void OnEnable()
         {
             _shopButton.onClick.AddListener(ShowShop);
             _armyButton.onClick.AddListener(ShowArmy);
             _levelMapButton.onClick.AddListener(ShowLevelMap);
+            _clearButton.onClick.AddListener(ClrearPrefs);
         }
 
         private void OnDisable()
@@ -38,6 +42,7 @@ namespace _Project.Scripts.Gameplay.UI
             _shopButton.onClick.RemoveListener(ShowShop);
             _armyButton.onClick.RemoveListener(ShowArmy);
             _levelMapButton.onClick.RemoveListener(ShowLevelMap);
+            _clearButton.onClick.RemoveListener(ClrearPrefs);
         }
 
         private void ShowShop()
@@ -60,6 +65,13 @@ namespace _Project.Scripts.Gameplay.UI
             _shopScreen.SetActive(_shopScreen == active);
             _armyScreen.SetActive(_armyScreen == active);
             _levelMapScreen.SetActive(_levelMapScreen == active);
+        }
+        
+        //TODO: test to delete
+        private void ClrearPrefs()
+        {
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
         }
     }
 }
