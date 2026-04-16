@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace _Project.Scripts.Core
+namespace _Project.Scripts.Architecture.Utils
 {
     [Serializable]
     public class SceneReference
@@ -19,7 +19,14 @@ namespace _Project.Scripts.Core
 #if UNITY_EDITOR
         public void OnValidate()
         {
-            _sceneName = _sceneAsset != null ? _sceneAsset.name : string.Empty;
+            if (_sceneAsset != null)
+            {
+                _sceneName = _sceneAsset.name;
+            }
+            else
+            {
+                _sceneName = string.Empty;
+            }
         }
 #endif
     }

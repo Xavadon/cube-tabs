@@ -1,5 +1,5 @@
 using System;
-using _Project.Scripts.Core;
+using _Project.Scripts.Architecture.Utils;
 using _Project.Scripts.Gameplay.Character.Data;
 using UnityEngine;
 

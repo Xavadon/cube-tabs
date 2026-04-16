@@ -1,4 +1,4 @@
-using _Project.Scripts.Core;
+using _Project.Scripts.Architecture.Utils;
 using UnityEditor;
 using UnityEngine;
 

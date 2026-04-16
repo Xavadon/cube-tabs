@@ -5,23 +5,26 @@ using UnityEngine;
 
 public static class EditorSceneSwitcher
 {
-    [MenuItem("SceneSwitcher/Boot ^&0", false, 0)]
-    private static void SwitchToBoot() => SwitchToScene(0);
+    [MenuItem("SceneSwitcher/AwaitInit ^&0", false, 0)]
+    private static void SwitchToAwaitInit() => SwitchToScene(0);
 
-    [MenuItem("SceneSwitcher/Menu ^&1", false, 1)]
-    private static void SwitchToMenu() => SwitchToScene(1);
+    [MenuItem("SceneSwitcher/Boot ^&1", false, 1)]
+    private static void SwitchToBoot() => SwitchToScene(1);
 
-    [MenuItem("SceneSwitcher/Goblin Cave ^&2", false, 2)]
-    private static void SwitchToGoblinCave() => SwitchToScene(2);
+    [MenuItem("SceneSwitcher/Menu ^&2", false, 2)]
+    private static void SwitchToMenu() => SwitchToScene(2);
 
-    [MenuItem("SceneSwitcher/Frog Swamp ^&3", false, 3)]
-    private static void SwitchToFrogSwamp() => SwitchToScene(3);
+    [MenuItem("SceneSwitcher/Goblin Cave ^&3", false, 3)]
+    private static void SwitchToGoblinCave() => SwitchToScene(3);
 
-    [MenuItem("SceneSwitcher/Zombie Village ^&4", false, 4)]
-    private static void SwitchToZombieVillage() => SwitchToScene(4);
+    [MenuItem("SceneSwitcher/Frog Swamp ^&4", false, 4)]
+    private static void SwitchToFrogSwamp() => SwitchToScene(4);
 
-    [MenuItem("SceneSwitcher/Dark Territory ^&5", false, 5)]
-    private static void SwitchToDarkTerritory() => SwitchToScene(5);
+    [MenuItem("SceneSwitcher/Zombie Village ^&5", false, 5)]
+    private static void SwitchToZombieVillage() => SwitchToScene(5);
+
+    [MenuItem("SceneSwitcher/Dark Territory ^&6", false, 6)]
+    private static void SwitchToDarkTerritory() => SwitchToScene(6);
 
     private static void SwitchToScene(int index)
     {
