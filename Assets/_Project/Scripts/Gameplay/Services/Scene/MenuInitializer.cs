@@ -19,17 +19,20 @@ namespace _Project.Scripts.Gameplay.Services.Scene
         private readonly IPlayerProgressService _playerProgressService;
         private readonly IPurchaseService _purchaseService;
         private readonly IUnitPreviewService _unitPreviewService;
+        private readonly IAdService _adService;
 
         public MenuInitializer(
             IGameSessionService gameSessionService,
             IPlayerProgressService playerProgressService,
             IPurchaseService purchaseService,
-            IUnitPreviewService unitPreviewService)
+            IUnitPreviewService unitPreviewService,
+            IAdService adService)
         {
             _gameSessionService = gameSessionService;
             _playerProgressService = playerProgressService;
             _purchaseService = purchaseService;
             _unitPreviewService = unitPreviewService;
+            _adService = adService;
         }
 
         public UniTask Initialize()
@@ -77,7 +80,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 
             if (army != null)
             {
-                army.Initialize(_playerProgressService, shopCatalog, _unitPreviewService);
+                army.Initialize(_playerProgressService, shopCatalog, _unitPreviewService, _adService);
             }
             else
             {

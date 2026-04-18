@@ -1,5 +1,6 @@
 using _Project.Scripts.Architecture.Services.Camera;
 using _Project.Scripts.Gameplay.Services;
+using _Project.Scripts.Gameplay.UI.Army;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -52,6 +53,7 @@ namespace _Project.Scripts.Architecture.Services.Scene
         public async UniTask LoadBootScene()
         {
             _playerProgressService.Save();
+            ArmyScreenController.ResetGoldRewardCooldown();
             await LoadSceneAsync("Boot");
         }
         

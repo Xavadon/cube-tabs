@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _Project.Scripts.Architecture.Services;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Character.Data.AiBrain;
 using _Project.Scripts.Gameplay.Services;
@@ -9,10 +10,19 @@ namespace _Project.Scripts.Gameplay.UI.Army
 {
     public class ArmyScreenController : IDisposable
     {
+        private const int GoldRewardAmount = 25;
+        private const string RewardedTag = "GOLD_REWARD";
+        private const float GoldRewardCooldown = 30f;
+
+        private static float _goldRewardCooldownEnd;
+
+        public static void ResetGoldRewardCooldown() => _goldRewardCooldownEnd = 0f;
+
         private readonly IArmyScreenView _view;
         private readonly IPlayerProgressService _progress;
         private readonly IUnitPreviewService _previewService;
         private readonly ShopCatalog _catalog;
+        private readonly IAdService _adService;
         private readonly List<CardEntry> _cardEntries = new();
         private readonly List<(ResolvedUnit unit, int count)> _groupBuffer = new();
         private readonly Dictionary<string, int> _groupCounts = new();
@@ -25,12 +35,14 @@ namespace _Project.Scripts.Gameplay.UI.Army
             IArmyScreenView view,
             IPlayerProgressService progress,
             IUnitPreviewService previewService,
-            ShopCatalog catalog)
+            ShopCatalog catalog,
+            IAdService adService)
         {
             _view = view;
             _progress = progress;
             _previewService = previewService;
             _catalog = catalog;
+            _adService = adService;
 
             _view.CardClicked += OnCardClicked;
             _view.BuyClicked += OnBuyClicked;
@@ -38,6 +50,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
             _view.ToArmyClicked += OnToArmyClicked;
             _view.ToReserveClicked += OnToReserveClicked;
             _view.ViewEnabled += OnViewEnabled;
+            _view.GoldRewardClicked += OnGoldRewardClicked;
 
             _progress.OnArmyChanged += ScheduleRebuild;
             _progress.OnOwnedChanged += ScheduleRebuild;
@@ -63,6 +76,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
             _view.ToReserveClicked -= OnToReserveClicked;
             _view.CardClicked -= OnCardClicked;
             _view.ViewEnabled -= OnViewEnabled;
+            _view.GoldRewardClicked -= OnGoldRewardClicked;
 
             _progress.OnArmyChanged -= ScheduleRebuild;
             _progress.OnOwnedChanged -= ScheduleRebuild;
@@ -74,7 +88,33 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
         private void OnBuyClicked()
         {
-            _progress.BuyBaseUnit();
+            if (_progress.BuyBaseUnit())
+            {
+                _view.SetGoldRewardButtonVisible(false);
+                return;
+            }
+
+            bool cooldownActive = Time.realtimeSinceStartup < _goldRewardCooldownEnd;
+            if (!cooldownActive)
+                _view.SetGoldRewardButtonVisible(true);
+        }
+
+        private void OnGoldRewardClicked()
+        {
+            _goldRewardCooldownEnd = Time.realtimeSinceStartup + GoldRewardCooldown;
+            _view.SetGoldRewardButtonVisible(false);
+
+            if (!_adService.IsRewardedAvailable)
+                return;
+
+            _adService.ShowRewarded(RewardedTag, success =>
+            {
+                if (success)
+                {
+                    _progress.AddGold(GoldRewardAmount);
+                    _progress.Save();
+                }
+            });
         }
 
         private void OnSlotUpgradeClicked()

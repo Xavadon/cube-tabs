@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading;
+using _Project.Scripts.Architecture.Services;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Services;
 using Cysharp.Threading.Tasks;
@@ -12,6 +13,8 @@ namespace _Project.Scripts.Gameplay.UI
 {
     public class ResultPanelUI : MonoBehaviour
     {
+        private const string RewardedTag = "DOUBLE_REWARD";
+
         [Header("Title")]
         [SerializeField]
         private GameObject _titlePanel;
@@ -54,28 +57,37 @@ namespace _Project.Scripts.Gameplay.UI
 
         private ISceneService _sceneService;
         private IUnitPreviewService _unitPreviewService;
+        private IAdService _adService;
+        private IPlayerProgressService _playerProgressService;
         private CancellationTokenSource _showCts;
         private readonly List<RewardUnitIconUI> _spawnedIcons = new();
+        private int _goldEarned;
 
         private void OnEnable()
         {
-            _doubleRewardButton.onClick.AddListener(OnButtonClicked);
-            _noThanksButton.onClick.AddListener(OnButtonClicked);
+            _doubleRewardButton.onClick.AddListener(OnDoubleRewardClicked);
+            _noThanksButton.onClick.AddListener(OnNoThanksClicked);
         }
 
         private void OnDisable()
         {
-            _doubleRewardButton.onClick.RemoveListener(OnButtonClicked);
-            _noThanksButton.onClick.RemoveListener(OnButtonClicked);
+            _doubleRewardButton.onClick.RemoveListener(OnDoubleRewardClicked);
+            _noThanksButton.onClick.RemoveListener(OnNoThanksClicked);
             _showCts?.Cancel();
             _showCts?.Dispose();
             _showCts = null;
         }
 
-        public void Initialize(ISceneService sceneService, IUnitPreviewService unitPreviewService)
+        public void Initialize(
+            ISceneService sceneService,
+            IUnitPreviewService unitPreviewService,
+            IAdService adService,
+            IPlayerProgressService playerProgressService)
         {
             _sceneService = sceneService;
             _unitPreviewService = unitPreviewService;
+            _adService = adService;
+            _playerProgressService = playerProgressService;
         }
 
         public void Show(GameResultData data, int currentLevelKills, int nextMilestoneKills)
@@ -84,6 +96,10 @@ namespace _Project.Scripts.Gameplay.UI
             _showCts?.Dispose();
             _showCts = new CancellationTokenSource();
 
+            _goldEarned = data.GoldEarned;
+            _playerProgressService.AddGold(_goldEarned);
+            _playerProgressService.Save();
+            
             ClearSpawnedIcons();
             HideAllElements();
             PrepareData(data, currentLevelKills, nextMilestoneKills);
@@ -95,7 +111,15 @@ namespace _Project.Scripts.Gameplay.UI
 
         private void PrepareData(GameResultData data, int currentLevelKills, int nextMilestoneKills)
         {
-            _titleText.text = data.Result == GameResult.Victory ? "Победа" : "Поражение";
+            if (data.Result == GameResult.Victory)
+            {
+                _titleText.text = "Победа";
+            }
+            else
+            {
+                _titleText.text = "Поражение";
+            }
+            
             _goldRewardText.text = $"+{data.GoldEarned}";
 
             bool hasRewards = data.ClaimedMilestones is { Length: > 0 };
@@ -117,7 +141,9 @@ namespace _Project.Scripts.Gameplay.UI
             foreach (var milestone in milestones)
             {
                 if (milestone.Rewards == null)
+                {
                     continue;
+                }
 
                 foreach (var entry in milestone.Rewards)
                 {
@@ -194,10 +220,32 @@ namespace _Project.Scripts.Gameplay.UI
             _spawnedIcons.Clear();
         }
 
-        private void OnButtonClicked()
+        private void OnDoubleRewardClicked()
         {
-            // TODO: Implement ad reward doubling for _doubleRewardButton
-            _sceneService.LoadBootScene();
+            SetButtonsInteractable(false);
+
+            _adService.ShowRewarded(RewardedTag, success =>
+            {
+                if (success)
+                {
+                    _playerProgressService.AddGold(_goldEarned);
+                    _playerProgressService.Save();
+                }
+
+                _sceneService.LoadBootScene();
+            });
+        }
+
+        private void OnNoThanksClicked()
+        {
+            SetButtonsInteractable(false);
+            _adService.ShowInterstitial(() => _sceneService.LoadBootScene());
+        }
+
+        private void SetButtonsInteractable(bool interactable)
+        {
+            _doubleRewardButton.interactable = interactable;
+            _noThanksButton.interactable = interactable;
         }
 
 #if UNITY_EDITOR

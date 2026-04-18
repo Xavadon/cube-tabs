@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _Project.Scripts.Architecture.Services;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Services;
 using _Project.Scripts.Gameplay.UI.Shop;
@@ -37,6 +38,9 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
         [SerializeField]
         private TextMeshProUGUI _goldLabel;
+
+        [SerializeField]
+        private Button _goldRewardButton;
 
         [Header("Slot Upgrade")]
         [SerializeField]
@@ -96,9 +100,10 @@ namespace _Project.Scripts.Gameplay.UI.Army
         public event Action ToReserveClicked;
         public event Action<int> CardClicked;
         public event Action ViewEnabled;
+        public event Action GoldRewardClicked;
 
         public void Initialize(IPlayerProgressService progress, ShopCatalog catalog,
-            IUnitPreviewService previewService)
+            IUnitPreviewService previewService, IAdService adService)
         {
             _progress = progress;
             _catalog = catalog;
@@ -111,23 +116,33 @@ namespace _Project.Scripts.Gameplay.UI.Army
             _progress.OnArmyChanged += RefreshSlotUpgrade;
 
             if (_evolutionPanel != null)
+            {
                 _evolutionPanel.Initialize(progress, catalog.EvolutionCatalog, previewService);
+            }
 
             RefreshGold();
             RefreshSlotCount();
             RefreshSlotUpgrade();
 
             if (_catalog.BaseUnit != null)
+            {
                 _buyButtonCostLabel.text = _catalog.BaseUnit.PriceAsHero.ToString();
+            }
 
             SetupPreviewDrag();
 
-            _controller = new ArmyScreenController(this, progress, previewService, catalog);
+            _controller = new ArmyScreenController(this, progress, previewService, catalog, adService);
 
             _buyButton.onClick.AddListener(OnBuyButtonClicked);
             _slotUpgradeButton.onClick.AddListener(OnSlotUpgradeButtonClicked);
             _toArmyButton.onClick.AddListener(OnToArmyButtonClicked);
             _toReserveButton.onClick.AddListener(OnToReserveButtonClicked);
+
+            if (_goldRewardButton != null)
+            {
+                _goldRewardButton.onClick.AddListener(OnGoldRewardButtonClicked);
+                _goldRewardButton.gameObject.SetActive(false);
+            }
         }
 
         // --- Simple data binding (View → Model) ---
@@ -136,9 +151,6 @@ namespace _Project.Scripts.Gameplay.UI.Army
         {
             if (_goldLabel != null)
                 _goldLabel.text = _progress.Gold.ToString();
-
-            _buyButton.interactable = _catalog.BaseUnit != null
-                                      && _progress.CanAfford(_catalog.BaseUnit.PriceAsHero);
         }
 
         private void RefreshSlotCount()
@@ -196,6 +208,9 @@ namespace _Project.Scripts.Gameplay.UI.Army
             _toArmyButton.onClick.RemoveListener(OnToArmyButtonClicked);
             _toReserveButton.onClick.RemoveListener(OnToReserveButtonClicked);
 
+            if (_goldRewardButton != null)
+                _goldRewardButton.onClick.RemoveListener(OnGoldRewardButtonClicked);
+
             if (_progress != null)
             {
                 _progress.OnGoldChanged -= RefreshGold;
@@ -211,6 +226,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
         private void OnSlotUpgradeButtonClicked() => SlotUpgradeClicked?.Invoke();
         private void OnToArmyButtonClicked() => ToArmyClicked?.Invoke();
         private void OnToReserveButtonClicked() => ToReserveClicked?.Invoke();
+        private void OnGoldRewardButtonClicked() => GoldRewardClicked?.Invoke();
 
         // --- IArmyScreenView (commanded by Controller) ---
 
@@ -312,6 +328,12 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
         public void SetSlotUpgradeCost(string text) =>
             _slotUpgradeCostLabel.text = text;
+
+        public void SetGoldRewardButtonVisible(bool visible)
+        {
+            if (_goldRewardButton != null)
+                _goldRewardButton.gameObject.SetActive(visible);
+        }
 
         private static void ClearContainer(Transform container)
         {

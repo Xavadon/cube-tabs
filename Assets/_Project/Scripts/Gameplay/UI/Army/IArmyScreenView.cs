@@ -13,6 +13,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
         event Action ToReserveClicked;
         event Action<int> CardClicked;
         event Action ViewEnabled;
+        event Action GoldRewardClicked;
 
         void SetActive(bool active);
         void ClearCards();
@@ -28,5 +29,6 @@ namespace _Project.Scripts.Gameplay.UI.Army
         void HideEvolution();
         void SetSlotUpgradeInteractable(bool interactable);
         void SetSlotUpgradeCost(string text);
+        void SetGoldRewardButtonVisible(bool visible);
     }
 }
