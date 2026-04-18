@@ -107,10 +107,13 @@ namespace _Project.Scripts.Gameplay.UI.Army
             if (!_adService.IsRewardedAvailable)
                 return;
 
+            Debug.Log("[ArmyScreenController] Showing rewarded ad for gold");
             _adService.ShowRewarded(RewardedTag, success =>
             {
+                Debug.Log($"[ArmyScreenController] Rewarded callback: success={success}");
                 if (success)
                 {
+                    Debug.Log($"[ArmyScreenController] Adding {GoldRewardAmount} gold");
                     _progress.AddGold(GoldRewardAmount);
                     _progress.Save();
                 }

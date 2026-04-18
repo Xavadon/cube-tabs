@@ -1,6 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 using GamePush;
+using UnityEngine;
 
 namespace _Project.Scripts.Architecture.Services
 {
@@ -36,13 +37,17 @@ namespace _Project.Scripts.Architecture.Services
 #if UNITY_EDITOR
             onComplete?.Invoke(true);
 #else
-            var rewarded = false;
+            Debug.Log($"[AdService] ShowRewarded: tag={tag}");
 
             GP_Ads.ShowRewarded(
                 idOrTag: tag,
-                onRewardedReward: _ => rewarded = true,
+                onRewardedReward: null,
                 onRewardedStart: null,
-                onRewardedClose: _ => onComplete?.Invoke(rewarded)
+                onRewardedClose: success =>
+                {
+                    Debug.Log($"[AdService] onRewardedClose: success={success}");
+                    onComplete?.Invoke(success);
+                }
             );
 #endif
         }

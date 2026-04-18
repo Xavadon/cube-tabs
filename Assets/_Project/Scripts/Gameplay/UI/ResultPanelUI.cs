@@ -97,8 +97,6 @@ namespace _Project.Scripts.Gameplay.UI
             _showCts = new CancellationTokenSource();
 
             _goldEarned = data.GoldEarned;
-            _playerProgressService.AddGold(_goldEarned);
-            _playerProgressService.Save();
             
             ClearSpawnedIcons();
             HideAllElements();

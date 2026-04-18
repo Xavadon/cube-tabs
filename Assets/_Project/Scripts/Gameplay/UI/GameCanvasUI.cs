@@ -88,10 +88,13 @@ namespace _Project.Scripts.Gameplay.UI
             if (!_adService.IsRewardedAvailable)
                 return;
 
+            Debug.Log("[GameCanvasUI] Showing rewarded ad for speed boost");
             _adService.ShowRewarded("SPEED_BOOST", success =>
             {
+                Debug.Log($"[GameCanvasUI] Rewarded callback: success={success}");
                 if (success)
                 {
+                    Debug.Log("[GameCanvasUI] Activating speed boost");
                     _speedBoostEndRealtime = Time.realtimeSinceStartup + SpeedBoostDuration;
                     RefreshSpeedBoostUI();
                 }
