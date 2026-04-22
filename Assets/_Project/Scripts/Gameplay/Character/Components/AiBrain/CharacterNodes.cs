@@ -1,3 +1,4 @@
+using System;
 using _Project.Scripts.Architecture.BehaviorTree;
 using _Project.Scripts.Architecture.Services.Input;
 using _Project.Scripts.Architecture.State_Machine;
@@ -542,6 +543,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             if (_elapsedTime >= _windUpDuration && !_isAttacking)
             {
                 _isAttacking = true;
+                InvokeAttackCallback();
                 PerformAttack();
             }
 
@@ -552,7 +554,13 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
             return Status = NodeStatus.Running;
         }
-        
+
+        private void InvokeAttackCallback()
+        {
+            var callback = Blackboard.Get<Action>(BrainKeys.OnAttackCallback);
+            callback?.Invoke();
+        }
+
         protected abstract void PerformAttack();
     }
 

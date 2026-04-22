@@ -42,6 +42,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.Health
 
         public event Action OnDeath;
         public event Action<float, float> OnHealthChanged;
+        public event Action<Vector3> OnDamaged;
 
         public HealthComponent(TierData tier)
         {
@@ -69,6 +70,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.Health
             float calculatedDamage = damageStrategy.CalculateDamage(amount, _resistances);
 
             _currentHealth -= calculatedDamage;
+            OnDamaged?.Invoke(hitPoint);
 
             Debug.Log($"[CharacterHealth] {_charaName} получил {calculatedDamage:F1} урона ({damageStrategy.GetDamageTypeName()}) " +
                      $"в точке {hitPoint}. HP: {_currentHealth:F1}/{_maxHealth} " +

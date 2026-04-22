@@ -20,12 +20,24 @@ namespace _Project.Scripts.Architecture
             _stack = new Stack<T>(preloadCount > 0 ? preloadCount : 8);
 
             for (int i = 0; i < preloadCount; i++)
+            {
                 _stack.Push(_createFunc());
+            }
         }
 
         public T Get()
         {
-            T item = _stack.Count > 0 ? _stack.Pop() : _createFunc();
+            T item;
+            
+            if (_stack.Count > 0)
+            {
+                item = _stack.Pop();
+            }
+            else
+            {
+                item = _createFunc();
+            }
+            
             _onGet?.Invoke(item);
             return item;
         }

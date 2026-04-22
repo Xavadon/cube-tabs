@@ -22,6 +22,9 @@ namespace _Project.Scripts.Gameplay.Character
         public CharacterType CharacterType { get; private set; }
         public bool IsRanged { get; private set; }
 
+        public event Action<Character, Vector3, AudioClip[]> OnDamaged;
+        public event Action<Character, AudioClip[]> OnAttacked;
+
         [SerializeField]
         private Animator _animator;
 
@@ -48,6 +51,7 @@ namespace _Project.Scripts.Gameplay.Character
         private ICharacterRegistry _registry;
         private HealthBarElement _healthBar;
         private CharacterData _characterData;
+        private TierData _tier;
         private int _tierIndex;
         private bool _stopped;
 
@@ -67,8 +71,7 @@ namespace _Project.Scripts.Gameplay.Character
             CharacterType = characterType;
             _characterData = characterData;
             _tierIndex = tierIndex;
-
-            var tier = characterData.GetTier(tierIndex);
+            _tier = characterData.GetTier(tierIndex);
 
             (int ownLayer, LayerMask targetLayer) = characterType switch
             {
@@ -81,34 +84,43 @@ namespace _Project.Scripts.Gameplay.Character
 
             WeaponData weapon = null;
 
-            if (tier.WeaponData is { Length: > 0 })
-                weapon = tier.WeaponData[0];
+            if (_tier.WeaponData is { Length: > 0 })
+                weapon = _tier.WeaponData[0];
 
             if (characterData.AnimatorOverride != null)
                 _animator.runtimeAnimatorController = characterData.AnimatorOverride;
 
             _animatorController = new(_animator);
 
-            IsRanged = tier.BrainData is RangeBrainDataBase;
-            _brain = new(targetLayer, tier.BrainData, tier, _navMeshAgent, _animatorController, transform, weapon, inputService);
-            _movement = new(_navMeshAgent, transform, tier.MoveSpeed);
-            _health = new(tier);
-            _resistance = new(tier);
+            IsRanged = _tier.BrainData is RangeBrainDataBase;
+            _brain = new(targetLayer, _tier.BrainData, _tier, _navMeshAgent, _animatorController, transform, weapon, inputService, HandleAttack);
+            _movement = new(_navMeshAgent, transform, _tier.MoveSpeed);
+            _health = new(_tier);
+            _resistance = new(_tier);
 
-            _navMeshAgent.speed = tier.MoveSpeed;
+            _navMeshAgent.speed = _tier.MoveSpeed;
             _navMeshAgent.acceleration = 1000f;
             _health.OnDeath += HandleDeath;
+            _health.OnDamaged += HandleDamaged;
 
-            SkinChanger.ChangeSkin(tier.SkinMaterial);
+            SkinChanger.ChangeSkin(_tier.SkinMaterial);
 
-            if (tier.ArmorMaterial != null)
-                ArmorChanger.ChangeSkin(tier.ArmorMaterial);
+            if (_tier.ArmorMaterial != null)
+            {
+                ArmorChanger.ChangeSkin(_tier.ArmorMaterial);
+            }
             else
-                ArmorChanger.ChangeSkin(tier.SkinMaterial);
+            {
+                ArmorChanger.ChangeSkin(_tier.SkinMaterial);
+            }
 
-            if (tier.WeaponData != null)
-                for (int i = 0; i < tier.WeaponData.Length; i++)
-                    _weaponChanger.SetWeapon(tier.WeaponData[i], i);
+            if (_tier.WeaponData != null)
+            {
+                for (int i = 0; i < _tier.WeaponData.Length; i++)
+                {
+                    _weaponChanger.SetWeapon(_tier.WeaponData[i], i);
+                }
+            }
         }
 
         private void Update()
@@ -136,6 +148,16 @@ namespace _Project.Scripts.Gameplay.Character
         {
             _healthBar = pool.Get();
             _healthBar.Bind(transform, _health, pool.GetCamera(), pool);
+        }
+
+        private void HandleDamaged(Vector3 hitPoint)
+        {
+            OnDamaged?.Invoke(this, hitPoint, _tier.HitSounds);
+        }
+
+        private void HandleAttack()
+        {
+            OnAttacked?.Invoke(this, _tier.AttackSounds);
         }
 
         private void HandleDeath()

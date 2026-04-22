@@ -81,7 +81,7 @@ namespace _Project.Scripts.Gameplay.Character.Data
             }
         }
 
-        [SerializeField] 
+        [SerializeField]
         public BrainDataBase BaseBrain;
 
         [Button]
@@ -90,6 +90,30 @@ namespace _Project.Scripts.Gameplay.Character.Data
             foreach (var tier in Tiers)
             {
                 tier.SetBrain(BaseBrain);
+            }
+        }
+
+        [SerializeField]
+        public AudioClip[] BaseHitSounds;
+
+        [Button]
+        private void SetDefaultHitSounds()
+        {
+            foreach (var tier in Tiers)
+            {
+                tier.SetHitSounds(BaseHitSounds);
+            }
+        }
+
+        [SerializeField]
+        public AudioClip[] BaseAttackSounds;
+
+        [Button]
+        private void SetDefaultAttackSounds()
+        {
+            foreach (var tier in Tiers)
+            {
+                tier.SetAttackSounds(BaseAttackSounds);
             }
         }
 

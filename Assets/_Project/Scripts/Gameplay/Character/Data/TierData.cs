@@ -38,7 +38,12 @@ namespace _Project.Scripts.Gameplay.Character.Data
         [field: SerializeField]
         public Material ArmorMaterial { get; private set; }
 
-        //TODO: изучить подходы работы с датой
+        [field: Header("Audio")]
+        [field: SerializeField]
+        public AudioClip[] HitSounds { get; private set; }
+
+        [field: SerializeField]
+        public AudioClip[] AttackSounds { get; private set; }
         
 #if UNITY_EDITOR
 
@@ -62,7 +67,17 @@ namespace _Project.Scripts.Gameplay.Character.Data
         {
             WeaponData = new[] { weaponData };
         }
-        
+
+        public void SetHitSounds(AudioClip[] hitSounds)
+        {
+            HitSounds = hitSounds;
+        }
+
+        public void SetAttackSounds(AudioClip[] attackSounds)
+        {
+            AttackSounds = attackSounds;
+        }
+
 #endif
     }
 }

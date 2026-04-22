@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using _Project.Scripts.Architecture.Services;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Character.Services
 {
@@ -15,6 +16,8 @@ namespace _Project.Scripts.Gameplay.Character.Services
         IReadOnlyList<Character> GetEnemies();
         IReadOnlyList<Character> GetAll();
         event Action<Character> OnCharacterDied;
+        event Action<Character, Vector3, AudioClip[]> OnCharacterDamaged;
+        event Action<Character, AudioClip[]> OnCharacterAttacked;
         event Action OnBattleStopped;
     }
 
@@ -26,6 +29,8 @@ namespace _Project.Scripts.Gameplay.Character.Services
         private bool _battleStarted;
 
         public event Action<Character> OnCharacterDied;
+        public event Action<Character, Vector3, AudioClip[]> OnCharacterDamaged;
+        public event Action<Character, AudioClip[]> OnCharacterAttacked;
         public event Action OnBattleStopped;
 
         public UniTask Initialize()
@@ -36,6 +41,8 @@ namespace _Project.Scripts.Gameplay.Character.Services
         public void Register(Character character)
         {
             _all.Add(character);
+            character.OnDamaged += HandleCharacterDamaged;
+            character.OnAttacked += HandleCharacterAttacked;
 
             switch (character.CharacterType)
             {
@@ -51,6 +58,8 @@ namespace _Project.Scripts.Gameplay.Character.Services
         public void Unregister(Character character)
         {
             _all.Remove(character);
+            character.OnDamaged -= HandleCharacterDamaged;
+            character.OnAttacked -= HandleCharacterAttacked;
 
             switch (character.CharacterType)
             {
@@ -63,7 +72,19 @@ namespace _Project.Scripts.Gameplay.Character.Services
             }
 
             if (_battleStarted)
+            {
                 OnCharacterDied?.Invoke(character);
+            }
+        }
+
+        private void HandleCharacterDamaged(Character character, Vector3 hitPoint, AudioClip[] hitSounds)
+        {
+            OnCharacterDamaged?.Invoke(character, hitPoint, hitSounds);
+        }
+
+        private void HandleCharacterAttacked(Character character, AudioClip[] attackSounds)
+        {
+            OnCharacterAttacked?.Invoke(character, attackSounds);
         }
 
         public void StartBattle()
