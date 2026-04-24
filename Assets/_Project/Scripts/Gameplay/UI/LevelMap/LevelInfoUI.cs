@@ -1,5 +1,5 @@
-using System;
 using System.Text;
+using _Project.Scripts.Architecture.Services.Audio;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Services;
 using _Project.Scripts.Gameplay.Services.Scene;
@@ -26,6 +26,7 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
         private IGameSessionService _sessionService;
         private ISceneService _sceneService;
         private IPlayerProgressService _progress;
+        private IAudioService _audioService;
         private LevelConfig _selectedLevel;
         
         private void OnEnable()
@@ -39,11 +40,12 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
         }
 
         public void Initalize(IGameSessionService sessionService, ISceneService sceneService,
-            IPlayerProgressService progress)
+            IPlayerProgressService progress, IAudioService audioService)
         {
             _sessionService = sessionService;
             _sceneService = sceneService;
             _progress = progress;
+            _audioService = audioService;
 
             gameObject.SetActive(false);
         }
@@ -55,10 +57,12 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
                 Debug.LogError("[LevelInfoUI] Selected level is null");
                 return;
             }
-            
+
+            _audioService?.PlayUIClick();
             _sessionService.SelectLevel(_selectedLevel);
             _sceneService.LoadGameScene().Forget();
         }
+
 
         public void SelectLevel(LevelConfig level)
         {

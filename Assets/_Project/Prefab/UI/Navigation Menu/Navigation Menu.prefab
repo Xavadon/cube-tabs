@@ -57,6 +57,7 @@ MonoBehaviour:
   _shopButton: {fileID: 8683429070281011970}
   _armyButton: {fileID: 1358326678872665142}
   _levelMapButton: {fileID: 1918489743491182572}
+  _clearButton: {fileID: 0}
 --- !u!1001 &1414890648076924675
 PrefabInstance:
   m_ObjectHideFlags: 0

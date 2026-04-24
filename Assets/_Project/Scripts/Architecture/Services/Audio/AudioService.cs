@@ -80,6 +80,16 @@ namespace _Project.Scripts.Architecture.Services.Audio
             PlayAndReturnAsync(source, clip, volume * _config.MasterVolume).Forget();
         }
 
+        public void PlayUIClick()
+        {
+            if (_config == null || _config.ClickSound == null)
+            {
+                return;
+            }
+
+            PlayOneShot(_config.ClickSound, _config.ClickVolume);
+        }
+
         private async UniTaskVoid PlayAndReturnAsync(AudioSource source, AudioClip clip, float volume)
         {
             source.clip = clip;

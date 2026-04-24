@@ -1,3 +1,4 @@
+using _Project.Scripts.Architecture.Services.Audio;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Services;
 using UnityEngine;
@@ -15,13 +16,15 @@ namespace _Project.Scripts.Gameplay.UI.Army
         private IPlayerProgressService _progress;
         private EvolutionCatalog _evolutionCatalog;
         private IUnitPreviewService _previewService;
+        private IAudioService _audioService;
 
         public void Initialize(IPlayerProgressService progress, EvolutionCatalog evolutionCatalog,
-            IUnitPreviewService previewService)
+            IUnitPreviewService previewService, IAudioService audioService)
         {
             _progress = progress;
             _evolutionCatalog = evolutionCatalog;
             _previewService = previewService;
+            _audioService = audioService;
         }
 
         public void Show(int instanceId, CharacterData currentData, int tierIndex)
@@ -71,7 +74,11 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 nextTier.Stats.Health,
                 nextTier.Stats.Damage,
                 nextTier.MoveSpeed,
-                () => _progress.UpgradeTier(capturedId));
+                () =>
+                {
+                    _audioService?.PlayUIClick();
+                    _progress.UpgradeTier(capturedId);
+                });
         }
 
         private void ShowEvolutions(int instanceId, CharacterData currentData)
@@ -104,7 +111,11 @@ namespace _Project.Scripts.Gameplay.UI.Army
                     tier.Stats.Health,
                     tier.Stats.Damage,
                     tier.MoveSpeed,
-                    () => _progress.EvolveUnit(capturedId, capturedTarget, capturedCost));
+                    () =>
+                    {
+                        _audioService?.PlayUIClick();
+                        _progress.EvolveUnit(capturedId, capturedTarget, capturedCost);
+                    });
             }
         }
 

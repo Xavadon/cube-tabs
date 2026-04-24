@@ -72,6 +72,7 @@ MonoBehaviour:
   _priceLabel: {fileID: 1509457816237522980}
   _buyButton: {fileID: 5272914790015201242}
   _buyButtonLabel: {fileID: 8416817699806527114}
+  _closeButton: {fileID: 4278255491219246329}
 --- !u!1 &643603293147949687
 GameObject:
   m_ObjectHideFlags: 0
@@ -1264,6 +1265,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4278255491219246329 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8830235189795644793, guid: 3f2a52cdf544b5d448a3631eec2cf0a0, type: 3}
+  m_PrefabInstance: {fileID: 4743458833719929216}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &8573966615480784707 stripped

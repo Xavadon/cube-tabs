@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using _Project.Scripts.Architecture.Services;
+using _Project.Scripts.Architecture.Services.Audio;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Services;
 using Cysharp.Threading.Tasks;
@@ -59,6 +60,7 @@ namespace _Project.Scripts.Gameplay.UI
         private IUnitPreviewService _unitPreviewService;
         private IAdService _adService;
         private IPlayerProgressService _playerProgressService;
+        private IAudioService _audioService;
         private CancellationTokenSource _showCts;
         private readonly List<RewardUnitIconUI> _spawnedIcons = new();
         private int _goldEarned;
@@ -82,12 +84,14 @@ namespace _Project.Scripts.Gameplay.UI
             ISceneService sceneService,
             IUnitPreviewService unitPreviewService,
             IAdService adService,
-            IPlayerProgressService playerProgressService)
+            IPlayerProgressService playerProgressService,
+            IAudioService audioService)
         {
             _sceneService = sceneService;
             _unitPreviewService = unitPreviewService;
             _adService = adService;
             _playerProgressService = playerProgressService;
+            _audioService = audioService;
         }
 
         public void Show(GameResultData data, int currentLevelKills, int nextMilestoneKills)
@@ -220,6 +224,7 @@ namespace _Project.Scripts.Gameplay.UI
 
         private void OnDoubleRewardClicked()
         {
+            _audioService?.PlayUIClick();
             SetButtonsInteractable(false);
 
             _adService.ShowRewarded(RewardedTag, success =>
@@ -236,6 +241,7 @@ namespace _Project.Scripts.Gameplay.UI
 
         private void OnNoThanksClicked()
         {
+            _audioService?.PlayUIClick();
             SetButtonsInteractable(false);
             _adService.ShowInterstitial(() => _sceneService.LoadBootScene());
         }

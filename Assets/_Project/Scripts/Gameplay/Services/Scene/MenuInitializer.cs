@@ -1,6 +1,8 @@
 using _Project.Scripts.Architecture.Services;
+using _Project.Scripts.Architecture.Services.Audio;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Character.Data;
+using _Project.Scripts.Gameplay.UI;
 using _Project.Scripts.Gameplay.UI.Army;
 using _Project.Scripts.Gameplay.UI.LevelMap;
 using _Project.Scripts.Gameplay.UI.Shop;
@@ -20,19 +22,22 @@ namespace _Project.Scripts.Gameplay.Services.Scene
         private readonly IPurchaseService _purchaseService;
         private readonly IUnitPreviewService _unitPreviewService;
         private readonly IAdService _adService;
+        private readonly IAudioService _audioService;
 
         public MenuInitializer(
             IGameSessionService gameSessionService,
             IPlayerProgressService playerProgressService,
             IPurchaseService purchaseService,
             IUnitPreviewService unitPreviewService,
-            IAdService adService)
+            IAdService adService,
+            IAudioService audioService)
         {
             _gameSessionService = gameSessionService;
             _playerProgressService = playerProgressService;
             _purchaseService = purchaseService;
             _unitPreviewService = unitPreviewService;
             _adService = adService;
+            _audioService = audioService;
         }
 
         public UniTask Initialize()
@@ -53,16 +58,22 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 
             var canvas = Object.Instantiate(canvasPrefab);
 
+            var menuCanvas = canvas.GetComponentInChildren<MenuCanvasUI>();
             var levelMap = canvas.GetComponentInChildren<LevelMapUI>();
             var shop = canvas.GetComponentInChildren<ShopScreenView>();
             var army = canvas.GetComponentInChildren<ArmyScreenView>();
+
+            if (menuCanvas != null)
+            {
+                menuCanvas.Initialize(_audioService);
+            }
 
             var levelCatalog = Resources.Load<LevelCatalog>(LevelCatalogPath);
             var shopCatalog = Resources.Load<ShopCatalog>(ShopCatalogPath);
 
             if (levelMap != null)
             {
-                levelMap.Initalize(levelCatalog, _gameSessionService, sceneService, _playerProgressService);
+                levelMap.Initalize(levelCatalog, _gameSessionService, sceneService, _playerProgressService, _audioService);
             }
             else
             {
@@ -71,7 +82,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 
             if (shop != null)
             {
-                shop.Initialize(_playerProgressService, _purchaseService, _unitPreviewService, shopCatalog);
+                shop.Initialize(_playerProgressService, _purchaseService, _unitPreviewService, shopCatalog, _audioService);
             }
             else
             {
@@ -80,7 +91,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 
             if (army != null)
             {
-                army.Initialize(_playerProgressService, shopCatalog, _unitPreviewService, _adService);
+                army.Initialize(_playerProgressService, shopCatalog, _unitPreviewService, _adService, _audioService);
             }
             else
             {

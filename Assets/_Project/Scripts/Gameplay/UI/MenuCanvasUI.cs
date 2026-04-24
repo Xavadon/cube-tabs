@@ -1,3 +1,4 @@
+using _Project.Scripts.Architecture.Services.Audio;
 using _Project.Scripts.Gameplay.UI.Army;
 using _Project.Scripts.Gameplay.UI.LevelMap;
 using _Project.Scripts.Gameplay.UI.Shop;
@@ -26,9 +27,17 @@ namespace _Project.Scripts.Gameplay.UI
         [SerializeField]
         private Button _levelMapButton;
         
+        [Header("Test To Delete")]
         [SerializeField]
         private Button _clearButton;
-        
+
+        private IAudioService _audioService;
+
+        public void Initialize(IAudioService audioService)
+        {
+            _audioService = audioService;
+        }
+
         private void OnEnable()
         {
             _shopButton.onClick.AddListener(ShowShop);
@@ -47,16 +56,19 @@ namespace _Project.Scripts.Gameplay.UI
 
         private void ShowShop()
         {
+            _audioService?.PlayUIClick();
             SetActiveScreen(_shopScreen);
         }
 
         private void ShowArmy()
         {
+            _audioService?.PlayUIClick();
             SetActiveScreen(_armyScreen);
         }
 
         private void ShowLevelMap()
         {
+            _audioService?.PlayUIClick();
             SetActiveScreen(_levelMapScreen);
         }
 
@@ -70,6 +82,7 @@ namespace _Project.Scripts.Gameplay.UI
         //TODO: test to delete
         private void ClrearPrefs()
         {
+            _audioService?.PlayUIClick();
             PlayerPrefs.DeleteAll();
             PlayerPrefs.Save();
         }

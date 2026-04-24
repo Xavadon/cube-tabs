@@ -1,4 +1,5 @@
 using _Project.Scripts.Architecture.Services;
+using _Project.Scripts.Architecture.Services.Audio;
 using _Project.Scripts.Architecture.Services.Camera;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Services;
@@ -39,23 +40,29 @@ namespace _Project.Scripts.Gameplay.UI
         private LevelConfig _levelConfig;
         private IGameResultService _gameResultService;
         private IAdService _adService;
+        private IAudioService _audioService;
         private bool _battleActive;
 
         public void Initialize(ISceneService sceneService, IPlayerProgressService playerProgressService,
             LevelConfig levelConfig, ICameraService cameraService, IGameResultService gameResultService,
-            IUnitPreviewService unitPreviewService, IAdService adService)
+            IUnitPreviewService unitPreviewService, IAdService adService, IAudioService audioService)
         {
             _playerProgressService = playerProgressService;
             _levelConfig = levelConfig;
             _gameResultService = gameResultService;
             _adService = adService;
+            _audioService = audioService;
 
-            _resultPanel.Initialize(sceneService, unitPreviewService, adService, playerProgressService);
+            _resultPanel.Initialize(sceneService, unitPreviewService, adService, playerProgressService, audioService);
             _resultPanel.gameObject.SetActive(false);
 
             if (_cameraModeButton != null)
             {
-                _cameraModeButton.onClick.AddListener(cameraService.CycleMode);
+                _cameraModeButton.onClick.AddListener(() =>
+                {
+                    _audioService?.PlayUIClick();
+                    cameraService.CycleMode();
+                });
             }
 
             if (_surrenderButton != null)
@@ -77,11 +84,14 @@ namespace _Project.Scripts.Gameplay.UI
 
         private void OnSurrenderClicked()
         {
+            _audioService?.PlayUIClick();
             _gameResultService.Surrender();
         }
 
         private void OnSpeedBoostClicked()
         {
+            _audioService?.PlayUIClick();
+
             if (_speedBoostButton != null)
                 _speedBoostButton.gameObject.SetActive(false);
 

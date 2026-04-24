@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using _Project.Scripts.Architecture.Services;
+using _Project.Scripts.Architecture.Services.Audio;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Services;
 using _Project.Scripts.Gameplay.UI.Shop;
@@ -86,9 +87,14 @@ namespace _Project.Scripts.Gameplay.UI.Army
         [SerializeField]
         private EvolutionPanelUI _evolutionPanel;
 
+        [Header("Close")]
+        [SerializeField]
+        private Button _closeButton;
+
         private ArmyScreenController _controller;
         private IPlayerProgressService _progress;
         private ShopCatalog _catalog;
+        private IAudioService _audioService;
         private readonly List<ArmyUnitCardUI> _cards = new();
 
         private Transform _currentPreviewModel;
@@ -103,10 +109,11 @@ namespace _Project.Scripts.Gameplay.UI.Army
         public event Action GoldRewardClicked;
 
         public void Initialize(IPlayerProgressService progress, ShopCatalog catalog,
-            IUnitPreviewService previewService, IAdService adService)
+            IUnitPreviewService previewService, IAdService adService, IAudioService audioService)
         {
             _progress = progress;
             _catalog = catalog;
+            _audioService = audioService;
             _defaultFullBodyRotation = previewService.DefaultFullBodyRotation;
 
             // View binds to Model directly for simple data display (Supervising Controller)
@@ -117,7 +124,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
             if (_evolutionPanel != null)
             {
-                _evolutionPanel.Initialize(progress, catalog.EvolutionCatalog, previewService);
+                _evolutionPanel.Initialize(progress, catalog.EvolutionCatalog, previewService, audioService);
             }
 
             RefreshGold();
@@ -142,6 +149,11 @@ namespace _Project.Scripts.Gameplay.UI.Army
             {
                 _goldRewardButton.onClick.AddListener(OnGoldRewardButtonClicked);
                 _goldRewardButton.gameObject.SetActive(false);
+            }
+
+            if (_closeButton != null)
+            {
+                _closeButton.onClick.AddListener(OnCloseButtonClicked);
             }
         }
 
@@ -211,6 +223,9 @@ namespace _Project.Scripts.Gameplay.UI.Army
             if (_goldRewardButton != null)
                 _goldRewardButton.onClick.RemoveListener(OnGoldRewardButtonClicked);
 
+            if (_closeButton != null)
+                _closeButton.onClick.RemoveListener(OnCloseButtonClicked);
+
             if (_progress != null)
             {
                 _progress.OnGoldChanged -= RefreshGold;
@@ -222,11 +237,41 @@ namespace _Project.Scripts.Gameplay.UI.Army
             _controller?.Dispose();
         }
 
-        private void OnBuyButtonClicked() => BuyClicked?.Invoke();
-        private void OnSlotUpgradeButtonClicked() => SlotUpgradeClicked?.Invoke();
-        private void OnToArmyButtonClicked() => ToArmyClicked?.Invoke();
-        private void OnToReserveButtonClicked() => ToReserveClicked?.Invoke();
-        private void OnGoldRewardButtonClicked() => GoldRewardClicked?.Invoke();
+        private void OnBuyButtonClicked()
+        {
+            _audioService?.PlayUIClick();
+            BuyClicked?.Invoke();
+        }
+
+        private void OnSlotUpgradeButtonClicked()
+        {
+            _audioService?.PlayUIClick();
+            SlotUpgradeClicked?.Invoke();
+        }
+
+        private void OnToArmyButtonClicked()
+        {
+            _audioService?.PlayUIClick();
+            ToArmyClicked?.Invoke();
+        }
+
+        private void OnToReserveButtonClicked()
+        {
+            _audioService?.PlayUIClick();
+            ToReserveClicked?.Invoke();
+        }
+
+        private void OnGoldRewardButtonClicked()
+        {
+            _audioService?.PlayUIClick();
+            GoldRewardClicked?.Invoke();
+        }
+
+        private void OnCloseButtonClicked()
+        {
+            _audioService?.PlayUIClick();
+            gameObject.SetActive(false);
+        }
 
         // --- IArmyScreenView (commanded by Controller) ---
 
@@ -254,7 +299,11 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
             var card = Instantiate(_cardPrefab, container);
             int index = _cards.Count;
-            card.Init(name, count, portrait, () => CardClicked?.Invoke(index));
+            card.Init(name, count, portrait, () =>
+            {
+                _audioService?.PlayUIClick();
+                CardClicked?.Invoke(index);
+            });
             _cards.Add(card);
         }
 

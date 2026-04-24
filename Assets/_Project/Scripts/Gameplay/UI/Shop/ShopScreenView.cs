@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using _Project.Scripts.Architecture.Services;
+using _Project.Scripts.Architecture.Services.Audio;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Services;
 using _Project.Scripts.Gameplay.UI;
@@ -75,8 +76,13 @@ namespace _Project.Scripts.Gameplay.UI.Shop
         [SerializeField]
         private TextMeshProUGUI _buyButtonLabel;
 
+        [Header("Close")]
+        [SerializeField]
+        private Button _closeButton;
+
         private ShopScreenController _controller;
         private IPlayerProgressService _progress;
+        private IAudioService _audioService;
         private readonly List<ISelectableCard> _cards = new();
 
         private Transform _currentPreviewModel;
@@ -90,9 +96,11 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             IPlayerProgressService progress,
             IPurchaseService purchaseService,
             IUnitPreviewService previewService,
-            ShopCatalog catalog)
+            ShopCatalog catalog,
+            IAudioService audioService)
         {
             _progress = progress;
+            _audioService = audioService;
             _defaultFullBodyRotation = previewService.DefaultFullBodyRotation;
 
             _progress.OnGoldChanged += RefreshGold;
@@ -104,6 +112,12 @@ namespace _Project.Scripts.Gameplay.UI.Shop
                 this, progress, purchaseService, previewService, catalog);
 
             _buyButton.onClick.AddListener(OnBuyButtonClicked);
+
+            if (_closeButton != null)
+            {
+                _closeButton.onClick.AddListener(OnCloseButtonClicked);
+            }
+
             _cardPreviewParent.gameObject.SetActive(false);
             gameObject.SetActive(false);
         }
@@ -155,6 +169,9 @@ namespace _Project.Scripts.Gameplay.UI.Shop
         {
             _buyButton.onClick.RemoveListener(OnBuyButtonClicked);
 
+            if (_closeButton != null)
+                _closeButton.onClick.RemoveListener(OnCloseButtonClicked);
+
             if (_progress != null)
             {
                 _progress.OnGoldChanged -= RefreshGold;
@@ -163,7 +180,17 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             _controller?.Dispose();
         }
 
-        private void OnBuyButtonClicked() => BuyClicked?.Invoke();
+        private void OnBuyButtonClicked()
+        {
+            _audioService?.PlayUIClick();
+            BuyClicked?.Invoke();
+        }
+
+        private void OnCloseButtonClicked()
+        {
+            _audioService?.PlayUIClick();
+            gameObject.SetActive(false);
+        }
 
         // --- IShopScreenView (commanded by Controller) ---
 
@@ -181,7 +208,11 @@ namespace _Project.Scripts.Gameplay.UI.Shop
         {
             var card = Instantiate(_heroCardPrefab, _cardsContainer);
             int index = _cards.Count;
-            card.Init(name, 1, portrait, () => CardClicked?.Invoke(index));
+            card.Init(name, 1, portrait, () =>
+            {
+                _audioService?.PlayUIClick();
+                CardClicked?.Invoke(index);
+            });
             _cards.Add(card);
         }
 
@@ -189,7 +220,11 @@ namespace _Project.Scripts.Gameplay.UI.Shop
         {
             var card = Instantiate(_itemCardPrefab, _cardsContainer);
             int index = _cards.Count;
-            card.Init(name, icon, () => CardClicked?.Invoke(index));
+            card.Init(name, icon, () =>
+            {
+                _audioService?.PlayUIClick();
+                CardClicked?.Invoke(index);
+            });
             _cards.Add(card);
         }
 
