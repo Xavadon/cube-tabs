@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: mage-fire
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Fire Mage
+  <Description>k__BackingField: 
   <PriceAsHero>k__BackingField: 100
   <Scale>k__BackingField: 1
   <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: a35a61907a93498458b4de72ad15f012, type: 2}
@@ -35,6 +36,9 @@ MonoBehaviour:
     <EvolutionCost>k__BackingField: 100
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: f5c45718665005e4b9ffb57205f2fe78, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: f5c45718665005e4b9ffb57205f2fe78, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField:
+    - {fileID: 8300000, guid: 962b64dc242855c4bb67b147073d66ec, type: 3}
   - <MoveSpeed>k__BackingField: 3.2
     <Stats>k__BackingField:
       <Health>k__BackingField: 210
@@ -53,6 +57,9 @@ MonoBehaviour:
     <EvolutionCost>k__BackingField: 80
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: f5c45718665005e4b9ffb57205f2fe78, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: f5c45718665005e4b9ffb57205f2fe78, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField:
+    - {fileID: 8300000, guid: 962b64dc242855c4bb67b147073d66ec, type: 3}
   - <MoveSpeed>k__BackingField: 3.2
     <Stats>k__BackingField:
       <Health>k__BackingField: 220
@@ -71,7 +78,13 @@ MonoBehaviour:
     <EvolutionCost>k__BackingField: 90
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: f5c45718665005e4b9ffb57205f2fe78, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: f5c45718665005e4b9ffb57205f2fe78, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField:
+    - {fileID: 8300000, guid: 962b64dc242855c4bb67b147073d66ec, type: 3}
   BaseMaterial: {fileID: 2100000, guid: f5c45718665005e4b9ffb57205f2fe78, type: 2}
   BaseWeapon: {fileID: 11400000, guid: 93593aba3031e8147832b1d9aa73f4c4, type: 2}
   BaseAbility: {fileID: 0}
   BaseBrain: {fileID: 11400000, guid: 480d01bedecf65c4d96a76a709148b56, type: 2}
+  BaseHitSounds: []
+  BaseAttackSounds:
+  - {fileID: 8300000, guid: 962b64dc242855c4bb67b147073d66ec, type: 3}

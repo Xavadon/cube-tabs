@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: archer-mage
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Archer-mage
+  <Description>k__BackingField: 
   <PriceAsHero>k__BackingField: 100
   <Scale>k__BackingField: 1
   <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: 8b69dc56e3d9f994c9a3047770ba4b9d, type: 2}
@@ -35,6 +36,9 @@ MonoBehaviour:
     <EvolutionCost>k__BackingField: 70
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 85f3ac7d55b5c7646999710ed049ec1c, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 85f3ac7d55b5c7646999710ed049ec1c, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField:
+    - {fileID: 8300000, guid: 962b64dc242855c4bb67b147073d66ec, type: 3}
   - <MoveSpeed>k__BackingField: 4
     <Stats>k__BackingField:
       <Health>k__BackingField: 265
@@ -53,6 +57,9 @@ MonoBehaviour:
     <EvolutionCost>k__BackingField: 80
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 85f3ac7d55b5c7646999710ed049ec1c, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 85f3ac7d55b5c7646999710ed049ec1c, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField:
+    - {fileID: 8300000, guid: 962b64dc242855c4bb67b147073d66ec, type: 3}
   - <MoveSpeed>k__BackingField: 4
     <Stats>k__BackingField:
       <Health>k__BackingField: 280
@@ -71,7 +78,13 @@ MonoBehaviour:
     <EvolutionCost>k__BackingField: 90
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 85f3ac7d55b5c7646999710ed049ec1c, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 85f3ac7d55b5c7646999710ed049ec1c, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField:
+    - {fileID: 8300000, guid: 962b64dc242855c4bb67b147073d66ec, type: 3}
   BaseMaterial: {fileID: 2100000, guid: 85f3ac7d55b5c7646999710ed049ec1c, type: 2}
   BaseWeapon: {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
   BaseAbility: {fileID: 11400000, guid: 5618c94c742f15748930ebd7afe61d10, type: 2}
   BaseBrain: {fileID: 11400000, guid: 600d209020f8a06429b110c7dea92be3, type: 2}
+  BaseHitSounds: []
+  BaseAttackSounds:
+  - {fileID: 8300000, guid: 962b64dc242855c4bb67b147073d66ec, type: 3}

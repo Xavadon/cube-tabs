@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: "archer-\u0441rossbowman"
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Crossbowman
+  <Description>k__BackingField: 
   <PriceAsHero>k__BackingField: 100
   <Scale>k__BackingField: 1
   <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: e06e578d632259249a7f3cdcd53e6ad5, type: 2}
@@ -35,6 +36,9 @@ MonoBehaviour:
     <EvolutionCost>k__BackingField: 70
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 7bd0421fac0374243b23a57cba4ba4d1, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 7bd0421fac0374243b23a57cba4ba4d1, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField:
+    - {fileID: 8300000, guid: 94d20b9fc5d29e84a8f868e1dca56942, type: 3}
   - <MoveSpeed>k__BackingField: 4.15
     <Stats>k__BackingField:
       <Health>k__BackingField: 275
@@ -53,6 +57,9 @@ MonoBehaviour:
     <EvolutionCost>k__BackingField: 80
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 7bd0421fac0374243b23a57cba4ba4d1, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 7bd0421fac0374243b23a57cba4ba4d1, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField:
+    - {fileID: 8300000, guid: 94d20b9fc5d29e84a8f868e1dca56942, type: 3}
   - <MoveSpeed>k__BackingField: 4.3
     <Stats>k__BackingField:
       <Health>k__BackingField: 305
@@ -71,7 +78,13 @@ MonoBehaviour:
     <EvolutionCost>k__BackingField: 90
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 7bd0421fac0374243b23a57cba4ba4d1, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 7bd0421fac0374243b23a57cba4ba4d1, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField:
+    - {fileID: 8300000, guid: 94d20b9fc5d29e84a8f868e1dca56942, type: 3}
   BaseMaterial: {fileID: 2100000, guid: 7bd0421fac0374243b23a57cba4ba4d1, type: 2}
   BaseWeapon: {fileID: 11400000, guid: 2f7a39d7f44bb424f8520f3cea062972, type: 2}
   BaseAbility: {fileID: 0}
   BaseBrain: {fileID: 11400000, guid: f6a63d9a1972f7c46ad1fcd4dea520fe, type: 2}
+  BaseHitSounds: []
+  BaseAttackSounds:
+  - {fileID: 8300000, guid: 94d20b9fc5d29e84a8f868e1dca56942, type: 3}
