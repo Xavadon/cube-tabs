@@ -1,7 +1,9 @@
+using _Project.Scripts.Architecture;
 using _Project.Scripts.Architecture.BehaviorTree;
 using _Project.Scripts.Gameplay.Character.Components.Abilities;
 using _Project.Scripts.Gameplay.Character.Components.AiBrain;
 using _Project.Scripts.Gameplay.Character.Components.Health;
+using _Project.Scripts.Gameplay.Character.Services;
 using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Character.Data.Abilities
@@ -20,6 +22,10 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
 
         [field: SerializeField]
         public AreaWave Prefab { get; private set; }
+
+        [field: Header("Audio")]
+        [field: SerializeField]
+        public AudioClip[] Sounds { get; private set; }
 
         public override void Execute(Blackboard blackboard, float damage, DamageType affectedLayers)
         {
@@ -44,6 +50,11 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
             // TODO: Заменить Instantiate на пулинг (массовые касты — GC-спайки)
             AreaWave wave = Instantiate(Prefab, spawnPosition, Quaternion.identity);
             wave.Init(Radius, Duration, ApplyMultiplier(damage), affectedLayers, targetLayer);
+
+            if (Sounds is { Length: > 0 })
+            {
+                Project.Get<ICharacterRegistry>()?.NotifyAbilityUsed(spawnPosition, Sounds);
+            }
         }
     }
 }

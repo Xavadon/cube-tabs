@@ -1,7 +1,9 @@
+using _Project.Scripts.Architecture;
 using _Project.Scripts.Architecture.BehaviorTree;
 using _Project.Scripts.Gameplay.Character.Components.Abilities;
 using _Project.Scripts.Gameplay.Character.Components.AiBrain;
 using _Project.Scripts.Gameplay.Character.Components.Health;
+using _Project.Scripts.Gameplay.Character.Services;
 using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Character.Data.Abilities
@@ -21,6 +23,10 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
         [field: SerializeField]
         public HealWave Prefab { get; private set; }
 
+        [field: Header("Audio")]
+        [field: SerializeField]
+        public AudioClip[] Sounds { get; private set; }
+
         public override void Execute(Blackboard blackboard, float damage, DamageType damageType)
         {
             Transform caster = blackboard.Get<Transform>(BrainKeys.Transform);
@@ -32,8 +38,14 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
             LayerMask allyLayer = 1 << caster.gameObject.layer;
 
             // TODO: Заменить Instantiate на пулинг (массовые касты — GC-спайки)
-            HealWave wave = Instantiate(Prefab, caster.position + SpawnOffset, Quaternion.identity);
+            Vector3 spawnPosition = caster.position + SpawnOffset;
+            HealWave wave = Instantiate(Prefab, spawnPosition, Quaternion.identity);
             wave.Init(Radius, Duration, ApplyMultiplier(damage), allyLayer);
+
+            if (Sounds is { Length: > 0 })
+            {
+                Project.Get<ICharacterRegistry>()?.NotifyAbilityUsed(spawnPosition, Sounds);
+            }
         }
     }
 }

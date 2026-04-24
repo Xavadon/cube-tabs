@@ -17,3 +17,5 @@ MonoBehaviour:
   <Duration>k__BackingField: 0.75
   <SpawnOffset>k__BackingField: {x: 0, y: 1, z: 0}
   <Prefab>k__BackingField: {fileID: -6825192595806764821, guid: 004071c7bf6fa49489bc1b21ff61509d, type: 3}
+  <Sounds>k__BackingField:
+  - {fileID: 8300000, guid: b8603686eef7ff849906cc7caf9c7b21, type: 3}

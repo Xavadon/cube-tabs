@@ -26,6 +26,11 @@ namespace _Project.Scripts.Architecture.Services.Audio
         [field: SerializeField, Range(1, 10)] public int MaxConcurrentEnemyAttackSounds { get; private set; } = 3;
         [field: SerializeField, Range(0f, 0.5f)] public float AttackSoundCooldown { get; private set; } = 0.1f;
 
+        [field: Header("Throttling - Ability")]
+        [field: SerializeField, Range(1, 10)] public int MaxConcurrentAbilitySounds { get; private set; } = 3;
+        [field: SerializeField, Range(0f, 0.5f)] public float AbilitySoundCooldown { get; private set; } = 0.1f;
+        [field: SerializeField, Range(0f, 1f)] public float AbilityVolume { get; private set; } = 1f;
+
         [field: Header("UI")]
         [field: SerializeField] public AudioClip ClickSound { get; private set; }
         [field: SerializeField, Range(0f, 1f)] public float ClickVolume { get; private set; } = 1f;

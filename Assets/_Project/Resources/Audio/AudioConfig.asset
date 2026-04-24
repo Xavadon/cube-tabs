@@ -30,6 +30,9 @@ MonoBehaviour:
   <MaxConcurrentAllyAttackSounds>k__BackingField: 7
   <MaxConcurrentEnemyAttackSounds>k__BackingField: 4
   <AttackSoundCooldown>k__BackingField: 0.1
+  <MaxConcurrentAbilitySounds>k__BackingField: 7
+  <AbilitySoundCooldown>k__BackingField: 0.1
+  <AbilityVolume>k__BackingField: 1
   <ClickSound>k__BackingField: {fileID: 8300000, guid: c6dd0f4e22f9da84e8f237d9e1622ccf, type: 3}
   <ClickVolume>k__BackingField: 0.35
   <PoolSize>k__BackingField: 10

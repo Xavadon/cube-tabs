@@ -19,8 +19,10 @@ namespace _Project.Scripts.Architecture.Services.Audio
         private int _activeEnemyHitSounds;
         private int _activeAllyAttackSounds;
         private int _activeEnemyAttackSounds;
+        private int _activeAbilitySounds;
         private float _lastHitSoundTime;
         private float _lastAttackSoundTime;
+        private float _lastAbilitySoundTime;
 
         public GameplayAudioHandler(
             IAudioService audioService,
@@ -36,6 +38,7 @@ namespace _Project.Scripts.Architecture.Services.Audio
         {
             _characterRegistry.OnCharacterDamaged += HandleCharacterDamaged;
             _characterRegistry.OnCharacterAttacked += HandleCharacterAttacked;
+            _characterRegistry.OnAbilityUsed += HandleAbilityUsed;
             _gameResultService.OnGameFinished += HandleGameFinished;
 
             Debug.Log("[GameplayAudioHandler] Initialized");
@@ -46,6 +49,7 @@ namespace _Project.Scripts.Architecture.Services.Audio
         {
             _characterRegistry.OnCharacterDamaged -= HandleCharacterDamaged;
             _characterRegistry.OnCharacterAttacked -= HandleCharacterAttacked;
+            _characterRegistry.OnAbilityUsed -= HandleAbilityUsed;
             _gameResultService.OnGameFinished -= HandleGameFinished;
 
             Debug.Log("[GameplayAudioHandler] Disposed");
@@ -235,6 +239,58 @@ namespace _Project.Scripts.Architecture.Services.Audio
             {
                 _activeEnemyHitSounds--;
             }
+        }
+
+        private void HandleAbilityUsed(Vector3 position, AudioClip[] sounds)
+        {
+            if (sounds == null || sounds.Length == 0)
+            {
+                return;
+            }
+
+            var config = _audioService.Config;
+            if (config == null)
+            {
+                return;
+            }
+
+            if (!CanPlayAbilitySound(config))
+            {
+                return;
+            }
+
+            var clip = sounds[UnityEngine.Random.Range(0, sounds.Length)];
+            if (clip != null)
+            {
+                PlayAbilitySoundAsync(clip, position, config.AbilityVolume).Forget();
+            }
+        }
+
+        private bool CanPlayAbilitySound(AudioConfig config)
+        {
+            if (_activeAbilitySounds >= config.MaxConcurrentAbilitySounds)
+            {
+                return false;
+            }
+
+            if (Time.time - _lastAbilitySoundTime < config.AbilitySoundCooldown)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private async UniTaskVoid PlayAbilitySoundAsync(AudioClip clip, Vector3 position, float volume)
+        {
+            _activeAbilitySounds++;
+            _lastAbilitySoundTime = Time.time;
+
+            _audioService.PlayAtPosition(clip, position, volume);
+
+            await UniTask.Delay(TimeSpan.FromSeconds(clip.length), ignoreTimeScale: true);
+
+            _activeAbilitySounds--;
         }
 
         private void HandleGameFinished(GameResultData data)

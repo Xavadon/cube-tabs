@@ -18,7 +18,9 @@ namespace _Project.Scripts.Gameplay.Character.Services
         event Action<Character> OnCharacterDied;
         event Action<Character, Vector3, AudioClip[]> OnCharacterDamaged;
         event Action<Character, AudioClip[]> OnCharacterAttacked;
+        event Action<Vector3, AudioClip[]> OnAbilityUsed;
         event Action OnBattleStopped;
+        void NotifyAbilityUsed(Vector3 position, AudioClip[] sounds);
     }
 
     public class CharacterRegistry : ICharacterRegistry
@@ -31,6 +33,7 @@ namespace _Project.Scripts.Gameplay.Character.Services
         public event Action<Character> OnCharacterDied;
         public event Action<Character, Vector3, AudioClip[]> OnCharacterDamaged;
         public event Action<Character, AudioClip[]> OnCharacterAttacked;
+        public event Action<Vector3, AudioClip[]> OnAbilityUsed;
         public event Action OnBattleStopped;
 
         public UniTask Initialize()
@@ -85,6 +88,11 @@ namespace _Project.Scripts.Gameplay.Character.Services
         private void HandleCharacterAttacked(Character character, AudioClip[] attackSounds)
         {
             OnCharacterAttacked?.Invoke(character, attackSounds);
+        }
+
+        public void NotifyAbilityUsed(Vector3 position, AudioClip[] sounds)
+        {
+            OnAbilityUsed?.Invoke(position, sounds);
         }
 
         public void StartBattle()
