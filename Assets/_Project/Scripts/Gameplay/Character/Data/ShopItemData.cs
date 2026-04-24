@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Character.Data
@@ -31,5 +32,13 @@ namespace _Project.Scripts.Gameplay.Character.Data
 
         [field: SerializeField]
         public int RewardAmount { get; private set; }
+
+        private void OnValidate()
+        {
+            if (string.IsNullOrEmpty(Name))
+            {
+                Name = name;
+            }
+        }
     }
 }
