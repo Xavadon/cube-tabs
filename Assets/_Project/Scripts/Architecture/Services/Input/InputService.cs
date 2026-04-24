@@ -25,5 +25,11 @@ namespace _Project.Scripts.Architecture.Services.Input
             _playerControls.Enable();
             return UniTask.CompletedTask;
         }
+
+        public void Dispose()
+        {
+            _playerControls?.Disable();
+            _playerControls?.Dispose();
+        }
     }
 }
