@@ -169,11 +169,7 @@ namespace _Project.Scripts.Gameplay.Services
                 TierIndex = 0
             });
 
-            if (_saveData.ArmyInstanceIds.Count < _saveData.ArmySlots)
-                _saveData.ArmyInstanceIds.Add(instanceId);
-
             OnOwnedChanged?.Invoke();
-            OnArmyChanged?.Invoke();
             Save();
             return true;
         }
@@ -196,11 +192,7 @@ namespace _Project.Scripts.Gameplay.Services
                 TierIndex = 0
             });
 
-            if (_saveData.ArmyInstanceIds.Count < _saveData.ArmySlots)
-                _saveData.ArmyInstanceIds.Add(instanceId);
-
             OnOwnedChanged?.Invoke();
-            OnArmyChanged?.Invoke();
             Save();
             return true;
         }
@@ -217,9 +209,6 @@ namespace _Project.Scripts.Gameplay.Services
                 UnitId = unit.Id,
                 TierIndex = 0
             });
-
-            if (_saveData.ArmyInstanceIds.Count < _saveData.ArmySlots)
-                _saveData.ArmyInstanceIds.Add(instanceId);
 
             OnOwnedChanged?.Invoke();
             OnArmyChanged?.Invoke();

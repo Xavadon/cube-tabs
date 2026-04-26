@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
 using _Project.Scripts.Architecture.Services;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Services;
+using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.UI.Shop
 {
@@ -13,9 +13,8 @@ namespace _Project.Scripts.Gameplay.UI.Shop
         private readonly IPurchaseService _purchaseService;
         private readonly IUnitPreviewService _previewService;
         private readonly ShopCatalog _catalog;
-        private readonly List<CardEntry> _cardEntries = new();
 
-        private Selection _selection;
+        private ShopItemData _removeAdsItem;
         private bool _dirty;
 
         public ShopScreenController(
@@ -31,14 +30,13 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             _previewService = previewService;
             _catalog = catalog;
 
-            _view.CardClicked += OnCardClicked;
-            _view.BuyClicked += OnBuyClicked;
+            _view.RemoveAdsClicked += OnRemoveAdsClicked;
             _view.ViewEnabled += OnViewEnabled;
 
             _progress.OnGoldChanged += ScheduleRebuild;
             _progress.OnOwnedChanged += ScheduleRebuild;
-            _progress.OnArmyChanged += ScheduleRebuild;
 
+            FindRemoveAdsItem();
             Rebuild();
         }
 
@@ -53,68 +51,68 @@ namespace _Project.Scripts.Gameplay.UI.Shop
 
         public void Dispose()
         {
-            _view.CardClicked -= OnCardClicked;
-            _view.BuyClicked -= OnBuyClicked;
+            _view.RemoveAdsClicked -= OnRemoveAdsClicked;
             _view.ViewEnabled -= OnViewEnabled;
 
             _progress.OnGoldChanged -= ScheduleRebuild;
             _progress.OnOwnedChanged -= ScheduleRebuild;
-            _progress.OnArmyChanged -= ScheduleRebuild;
         }
 
         private void ScheduleRebuild() => _dirty = true;
 
         private void OnViewEnabled() => Rebuild();
 
-        private void OnBuyClicked()
+        private void FindRemoveAdsItem()
         {
-            if (!_selection.HasValue)
+            if (_catalog.ShopItems == null)
+            {
+                Debug.LogWarning("[ShopController] ShopItems is null");
                 return;
+            }
 
-            if (_selection.IsHero)
+            foreach (var item in _catalog.ShopItems)
             {
-                _progress.BuyUniqueUnit(_selection.HeroData);
+                if (item.RewardType == ShopItemRewardType.NoAds)
+                {
+                    _removeAdsItem = item;
+                    Debug.Log($"[ShopController] Found RemoveAds item: {item.Name}");
+                    break;
+                }
             }
-            else
-            {
-                _purchaseService.Purchase(_selection.ItemData,
-                    onSuccess: () => _progress.GrantItemReward(_selection.ItemData),
-                    onFailure: null);
-            }
+
+            if (_removeAdsItem == null)
+                Debug.LogWarning("[ShopController] No RemoveAds item found in catalog");
         }
 
-        private void OnCardClicked(int cardIndex)
+        private void OnRemoveAdsClicked()
         {
-            if (cardIndex < 0 || cardIndex >= _cardEntries.Count)
+            Debug.Log("[ShopController] RemoveAds clicked");
+
+            if (_removeAdsItem == null)
+            {
+                Debug.LogError("[ShopController] RemoveAds item is null!");
                 return;
+            }
 
-            var entry = _cardEntries[cardIndex];
-
-            _selection = entry.IsHero
-                ? Selection.Hero(entry.HeroData)
-                : Selection.Item(entry.ItemData);
-
-            for (int i = 0; i < _cardEntries.Count; i++)
-                _view.SetCardSelected(i, i == cardIndex);
-
-            RefreshPreview();
-            RefreshBuyButton();
+            Debug.Log($"[ShopController] Purchasing: {_removeAdsItem.Name}");
+            _purchaseService.Purchase(_removeAdsItem,
+                onSuccess: () =>
+                {
+                    Debug.Log("[ShopController] RemoveAds purchase success");
+                    _progress.GrantItemReward(_removeAdsItem);
+                },
+                onFailure: () => Debug.LogWarning("[ShopController] RemoveAds purchase failed"));
         }
 
         private void Rebuild()
         {
             _view.ClearCards();
-            _cardEntries.Clear();
-
-            SpawnHeroCards();
+            SpawnUnitCards();
             SpawnItemCards();
-
-            RestoreSelection();
-            RefreshPreview();
-            RefreshBuyButton();
+            RefreshRemoveAdsButton();
         }
 
-        private void SpawnHeroCards()
+        private void SpawnUnitCards()
         {
             if (_catalog.UniqueHeroes == null)
                 return;
@@ -122,9 +120,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             foreach (var hero in _catalog.UniqueHeroes)
             {
                 var portrait = _previewService.GetPortrait(hero, 0);
-
-                _view.AddHeroCard(hero.Name, portrait);
-                _cardEntries.Add(CardEntry.ForHero(hero));
+                _view.AddUnitCard(hero.Name, portrait, hero.PriceLabel, true, () => BuyUnit(hero));
             }
         }
 
@@ -135,127 +131,41 @@ namespace _Project.Scripts.Gameplay.UI.Shop
 
             foreach (var item in _catalog.ShopItems)
             {
-                _view.AddItemCard(item.Name, item.Icon);
-                _cardEntries.Add(CardEntry.ForItem(item));
+                if (item.RewardType == ShopItemRewardType.NoAds)
+                    continue;
+
+                _view.AddItemCard(item.Name, item.Icon, item.PriceLabel, () => BuyItem(item));
             }
         }
 
-        private void RestoreSelection()
+        private void BuyUnit(CharacterData hero)
         {
-            if (!_selection.HasValue)
-                return;
-
-            bool found = false;
-
-            for (int i = 0; i < _cardEntries.Count; i++)
-            {
-                bool match = _selection.IsHero
-                    ? _cardEntries[i].IsHero && _cardEntries[i].HeroData == _selection.HeroData
-                    : !_cardEntries[i].IsHero && _cardEntries[i].ItemData == _selection.ItemData;
-
-                _view.SetCardSelected(i, match);
-
-                if (match)
-                    found = true;
-            }
-
-            if (!found)
-                _selection.Clear();
-        }
-
-        private void RefreshPreview()
-        {
-            if (!_selection.HasValue)
-            {
-                _view.HidePreview();
-                return;
-            }
-
-            if (_selection.IsHero)
-            {
-                var data = _selection.HeroData;
-                var tier = data.GetTier(0);
-                var handle = _previewService.GetFullBody(data, 0);
-
-                _view.ShowUnitPreview(
-                    handle,
-                    data.Name,
-                    data.Description,
-                    tier.Stats.Health,
-                    tier.Stats.Damage,
-                    tier.MoveSpeed);
-            }
-            else
-            {
-                var item = _selection.ItemData;
-                _view.ShowItemPreview(item.Icon, item.Name, item.Description);
-            }
-        }
-
-        private void RefreshBuyButton()
-        {
-            if (!_selection.HasValue)
-            {
-                _view.SetBuyVisible(false);
-                _view.SetPriceLabel(null);
-                return;
-            }
-
-            _view.SetBuyVisible(true);
-
-            if (_selection.IsHero)
-            {
-                bool owned = _progress.IsUnitOwned(_selection.HeroData.Id);
-
-                if (owned)
+            Debug.Log($"[ShopController] Buying unit: {hero.Name}");
+            _purchaseService.Purchase(hero,
+                onSuccess: () =>
                 {
-                    _view.SetBuyLabel("Куплено");
-                    _view.SetBuyInteractable(false);
-                    _view.SetPriceLabel(null);
-                }
-                else
-                {
-                    int price = _selection.HeroData.PriceAsHero;
-                    _view.SetBuyLabel("Купить");
-                    _view.SetBuyInteractable(_progress.CanAfford(price));
-                    _view.SetPriceLabel(price.ToString());
-                }
-            }
-            else
-            {
-                _view.SetBuyLabel("Купить");
-                _view.SetBuyInteractable(true);
-                _view.SetPriceLabel(_selection.ItemData.PriceLabel);
-            }
+                    Debug.Log($"[ShopController] Unit purchase success: {hero.Name}");
+                    _progress.GrantUnit(hero);
+                },
+                onFailure: () => Debug.LogWarning($"[ShopController] Unit purchase failed: {hero.Name}"));
         }
 
-        private struct Selection
+        private void BuyItem(ShopItemData item)
         {
-            public CharacterData HeroData;
-            public ShopItemData ItemData;
-
-            public bool HasValue => HeroData != null || ItemData != null;
-            public bool IsHero => HeroData != null;
-
-            public static Selection Hero(CharacterData data) => new() { HeroData = data };
-            public static Selection Item(ShopItemData data) => new() { ItemData = data };
-
-            public void Clear()
-            {
-                HeroData = null;
-                ItemData = null;
-            }
+            _purchaseService.Purchase(item,
+                onSuccess: () => _progress.GrantItemReward(item),
+                onFailure: null);
         }
 
-        private struct CardEntry
+        private void RefreshRemoveAdsButton()
         {
-            public CharacterData HeroData;
-            public ShopItemData ItemData;
+            bool hasRemoveAds = _removeAdsItem != null;
+            bool alreadyPurchased = _progress.NoAds;
 
-            public bool IsHero => HeroData != null;
+            Debug.Log($"[ShopController] RefreshRemoveAds: hasItem={hasRemoveAds}, alreadyPurchased={alreadyPurchased}");
 
-            public static CardEntry ForHero(CharacterData data) => new() { HeroData = data };
-            public static CardEntry ForItem(ShopItemData data) => new() { ItemData = data };
+            _view.SetRemoveAdsVisible(hasRemoveAds && !alreadyPurchased);
+            _view.SetRemoveAdsInteractable(hasRemoveAds && !alreadyPurchased);
         }
     }
 }

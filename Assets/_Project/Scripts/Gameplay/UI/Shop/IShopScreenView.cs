@@ -5,20 +5,13 @@ namespace _Project.Scripts.Gameplay.UI.Shop
 {
     public interface IShopScreenView
     {
-        event Action<int> CardClicked;
-        event Action BuyClicked;
+        event Action RemoveAdsClicked;
         event Action ViewEnabled;
 
         void ClearCards();
-        void AddHeroCard(string name, RenderTexture portrait);
-        void AddItemCard(string name, Sprite icon);
-        void SetCardSelected(int index, bool selected);
-        void ShowUnitPreview(PreviewHandle handle, string name, string description, float hp, float damage, float speed);
-        void ShowItemPreview(Sprite icon, string name, string description);
-        void HidePreview();
-        void SetBuyVisible(bool visible);
-        void SetBuyInteractable(bool interactable);
-        void SetBuyLabel(string text);
-        void SetPriceLabel(string text);
+        void AddUnitCard(string name, RenderTexture portrait, string price, bool canAfford, Action onBuy);
+        void AddItemCard(string name, Sprite icon, string price, Action onBuy);
+        void SetRemoveAdsVisible(bool visible);
+        void SetRemoveAdsInteractable(bool interactable);
     }
 }

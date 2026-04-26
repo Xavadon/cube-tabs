@@ -72,5 +72,57 @@ namespace _Project.Scripts.Architecture.Services
             onSuccess?.Invoke();
 #endif
         }
+
+        public void Purchase(CharacterData unit, Action onSuccess, Action onFailure)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"[GamePushPurchaseService] Editor mock purchase unit: {unit.Name}");
+            onSuccess?.Invoke();
+#else
+            if (string.IsNullOrEmpty(unit.YandexProductId))
+            {
+                Debug.LogError($"[GamePushPurchaseService] No YandexProductId for unit: {unit.Name}");
+                onFailure?.Invoke();
+                return;
+            }
+
+            Debug.Log($"[GamePushPurchaseService] Purchasing unit: {unit.YandexProductId}");
+
+            GP_Payments.Purchase(
+                idOrTag: unit.YandexProductId,
+                onPurchaseSuccess: () =>
+                {
+                    Debug.Log($"[GamePushPurchaseService] Unit purchase success: {unit.YandexProductId}");
+                    ConsumeUnit(unit, onSuccess);
+                },
+                onPurchaseError: err =>
+                {
+                    Debug.LogWarning($"[GamePushPurchaseService] Unit purchase error: {err}");
+                    onFailure?.Invoke();
+                }
+            );
+#endif
+        }
+
+        private void ConsumeUnit(CharacterData unit, Action onSuccess)
+        {
+#if !UNITY_EDITOR
+            GP_Payments.Consume(
+                idOrTag: unit.YandexProductId,
+                onConsumeSuccess: () =>
+                {
+                    Debug.Log($"[GamePushPurchaseService] Consumed unit: {unit.YandexProductId}");
+                    onSuccess?.Invoke();
+                },
+                onConsumeError: err =>
+                {
+                    Debug.LogWarning($"[GamePushPurchaseService] Consume unit error: {err}, but purchase succeeded");
+                    onSuccess?.Invoke();
+                }
+            );
+#else
+            onSuccess?.Invoke();
+#endif
+        }
     }
 }

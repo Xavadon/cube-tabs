@@ -1,15 +1,17 @@
 using System;
-using _Project.Scripts.Gameplay.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.Gameplay.UI.Shop
 {
-    public class ShopCardUI : MonoBehaviour, ISelectableCard
+    public class ShopCardUI : MonoBehaviour
     {
         [SerializeField]
         private TextMeshProUGUI _nameLabel;
+
+        [SerializeField]
+        private TextMeshProUGUI _priceLabel;
 
         [SerializeField]
         private Image _iconImage;
@@ -17,18 +19,21 @@ namespace _Project.Scripts.Gameplay.UI.Shop
         [SerializeField]
         private Button _button;
 
-        [SerializeField]
-        private Image _background;
-
-        [SerializeField]
-        private Color _normalColor = new(0.2f, 0.2f, 0.2f, 1f);
-
-        [SerializeField]
-        private Color _selectedColor = new(0.4f, 0.6f, 1f, 1f);
-
         private Action _onClick;
 
-        public void Init(string itemName, Sprite icon, Action onClick)
+        private void OnEnable()
+        {
+            if (_button != null)
+                _button.onClick.AddListener(HandleClick);
+        }
+
+        private void OnDisable()
+        {
+            if (_button != null)
+                _button.onClick.RemoveListener(HandleClick);
+        }
+
+        public void Init(string itemName, Sprite icon, string price, Action onClick)
         {
             _nameLabel.text = itemName;
             _onClick = onClick;
@@ -36,24 +41,14 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             if (_iconImage != null && icon != null)
                 _iconImage.sprite = icon;
 
-            _button.onClick.AddListener(HandleClick);
-            SetSelected(false);
-        }
+            if (_priceLabel != null)
+                _priceLabel.text = PriceFormat.WithIcon(price);
 
-        public void SetSelected(bool selected)
-        {
-            if (_background != null)
-                _background.color = selected ? _selectedColor : _normalColor;
         }
 
         private void HandleClick()
         {
             _onClick?.Invoke();
-        }
-
-        private void OnDestroy()
-        {
-            _button.onClick.RemoveListener(HandleClick);
         }
     }
 }

@@ -21,6 +21,12 @@ namespace _Project.Scripts.Gameplay.Character.Data
         public int PriceAsHero { get; private set; } = 100;
 
         [field: SerializeField]
+        public string YandexProductId { get; private set; }
+
+        [field: SerializeField]
+        public string PriceLabel { get; private set; }
+
+        [field: SerializeField]
         public float Scale { get; private set; } = 1f;
 
         [field: SerializeField]

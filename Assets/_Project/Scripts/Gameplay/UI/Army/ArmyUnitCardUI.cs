@@ -1,12 +1,11 @@
 using System;
-using _Project.Scripts.Gameplay.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace _Project.Scripts.Gameplay.UI.Army
 {
-    public class ArmyUnitCardUI : MonoBehaviour, ISelectableCard
+    public class ArmyUnitCardUI : MonoBehaviour
     {
         [SerializeField]
         private TextMeshProUGUI _nameLabel;
@@ -40,7 +39,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 _nameLabel.text = $"{unitName} x{count}";
                 _countLabel.text = $"{count}";
             }
-            else
+            else if (_countLabel != null)
             {
                 _countLabel.text = "";
             }
@@ -48,9 +47,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
             _onClick = onClick;
 
             if (_previewImage != null && portrait != null)
-            {
                 _previewImage.texture = portrait;
-            }
 
             _button.onClick.AddListener(HandleClick);
             SetSelected(false);
