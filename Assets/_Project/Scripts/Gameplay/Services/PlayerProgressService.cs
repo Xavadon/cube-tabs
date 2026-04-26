@@ -48,6 +48,7 @@ namespace _Project.Scripts.Gameplay.Services
         bool IsMilestoneClaimed(int levelIndex, int milestoneIndex);
         void ClaimMilestone(int levelIndex, int milestoneIndex);
         void Save();
+        bool NoAds { get; }
 
         event Action OnGoldChanged;
         event Action OnArmyChanged;
@@ -66,6 +67,7 @@ namespace _Project.Scripts.Gameplay.Services
         public int Gold => _saveData.Gold;
         public int ArmySlots => _saveData.ArmySlots;
         public int MaxArmySlots => _catalog.MaxArmySlots + _saveData.BonusMaxArmySlots;
+        public bool NoAds => _saveData.NoAds;
 
         public event Action OnGoldChanged;
         public event Action OnArmyChanged;
@@ -253,6 +255,10 @@ namespace _Project.Scripts.Gameplay.Services
                 case ShopItemRewardType.ArmySlot:
                     _saveData.ArmySlots += item.RewardAmount;
                     OnArmyChanged?.Invoke();
+                    Save();
+                    break;
+                case ShopItemRewardType.NoAds:
+                    _saveData.NoAds = true;
                     Save();
                     break;
             }

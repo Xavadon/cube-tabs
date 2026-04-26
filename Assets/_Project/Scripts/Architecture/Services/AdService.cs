@@ -1,4 +1,5 @@
 using System;
+using _Project.Scripts.Gameplay.Services;
 using Cysharp.Threading.Tasks;
 using GamePush;
 using UnityEngine;
@@ -7,13 +8,20 @@ namespace _Project.Scripts.Architecture.Services
 {
     public class AdService : IAdService
     {
+        private readonly IPlayerProgressService _progress;
+
 #if UNITY_EDITOR
         public bool IsInterstitialAvailable => true;
         public bool IsRewardedAvailable => true;
 #else
-        public bool IsInterstitialAvailable => GP_Ads.IsFullscreenAvailable();
+        public bool IsInterstitialAvailable => !_progress.NoAds && GP_Ads.IsFullscreenAvailable();
         public bool IsRewardedAvailable => GP_Ads.IsRewardedAvailable();
 #endif
+
+        public AdService(IPlayerProgressService progress)
+        {
+            _progress = progress;
+        }
 
         public UniTask Initialize()
         {
@@ -22,6 +30,12 @@ namespace _Project.Scripts.Architecture.Services
 
         public void ShowInterstitial(Action onComplete = null)
         {
+            if (_progress.NoAds)
+            {
+                onComplete?.Invoke();
+                return;
+            }
+
 #if UNITY_EDITOR
             onComplete?.Invoke();
 #else

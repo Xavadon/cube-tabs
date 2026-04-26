@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec68e87548ee62245a86e8c8733feb80, type: 3}
   m_Name: Gold2400
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Gold2400
-  <YandexProductId>k__BackingField: 1
-  <Icon>k__BackingField: {fileID: -1993434620, guid: 28161c028da860b4e97e8a4dba406d54, type: 3}
+  <Name>k__BackingField: 
+  <YandexProductId>k__BackingField: Gold2400
+  <Icon>k__BackingField: {fileID: -972652911, guid: 60bf83d1b42b25d49b9c05e0c5a1a1b1, type: 3}
   <Description>k__BackingField: 
-  <PriceLabel>k__BackingField: 30
+  <PriceLabel>k__BackingField: 99
   <RewardType>k__BackingField: 0
-  <RewardAmount>k__BackingField: 5000
+  <RewardAmount>k__BackingField: 2400

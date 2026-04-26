@@ -37,5 +37,6 @@ namespace _Project.Scripts.Architecture.Services.Save
         public List<int> CompletedLevelIndices = new();
         public List<ClaimedMilestoneEntry> ClaimedMilestones = new();
         public int BonusMaxArmySlots;
+        public bool NoAds;
     }
 }

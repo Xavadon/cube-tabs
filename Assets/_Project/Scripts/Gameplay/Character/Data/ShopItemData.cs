@@ -6,7 +6,8 @@ namespace _Project.Scripts.Gameplay.Character.Data
     public enum ShopItemRewardType
     {
         Gold,
-        ArmySlot
+        ArmySlot,
+        NoAds
     }
 
     [CreateAssetMenu(menuName = "Config/ShopItemData")]
@@ -35,9 +36,9 @@ namespace _Project.Scripts.Gameplay.Character.Data
 
         private void OnValidate()
         {
-            if (string.IsNullOrEmpty(Name))
+            if (string.IsNullOrEmpty(YandexProductId))
             {
-                Name = name;
+                YandexProductId = name;
             }
         }
     }

@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec68e87548ee62245a86e8c8733feb80, type: 3}
   m_Name: ArmySlot
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: ArmySlot
-  <YandexProductId>k__BackingField: 2
+  <YandexProductId>k__BackingField: ArmySlot
   <Icon>k__BackingField: {fileID: -1993434620, guid: 28161c028da860b4e97e8a4dba406d54, type: 3}
   <Description>k__BackingField: 
   <PriceLabel>k__BackingField: 30
