@@ -11,20 +11,9 @@ namespace _Project.Scripts.Gameplay.Character.Data
     {
         public string Id => name;
 
+        [field: Header("General")]
         [field: SerializeField]
         public string Name { get; private set; } = "Unit";
-
-        [field: SerializeField, TextArea(2, 4)]
-        public string Description { get; private set; }
-
-        [field: SerializeField]
-        public int PriceAsHero { get; private set; } = 100;
-
-        [field: SerializeField]
-        public string YandexProductId { get; private set; }
-
-        [field: SerializeField]
-        public string PriceLabel { get; private set; }
 
         [field: SerializeField]
         public float Scale { get; private set; } = 1f;
@@ -32,6 +21,18 @@ namespace _Project.Scripts.Gameplay.Character.Data
         [field: SerializeField]
         public RuntimeAnimatorController AnimatorOverride { get; private set; }
 
+        [field: Header("Shop (Gold)")]
+        [field: SerializeField]
+        public int PriceAsHero { get; private set; } = 100;
+
+        [field: Header("Shop (IAP)")]
+        [field: SerializeField]
+        public string YandexProductId { get; private set; }
+
+        [field: SerializeField]
+        public string PriceLabel { get; private set; }
+
+        [field: Header("Tiers")]
         [field: SerializeField]
         public TierData[] Tiers { get; private set; }
 
