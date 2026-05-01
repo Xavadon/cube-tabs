@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: cultist
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Cultist
-  <PriceAsHero>k__BackingField: 100
   <Scale>k__BackingField: 1
   <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: a35a61907a93498458b4de72ad15f012, type: 2}
+  <PriceAsHero>k__BackingField: 100
+  <YandexProductId>k__BackingField: 
+  <PriceLabel>k__BackingField: 
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 4
     <Stats>k__BackingField:
@@ -35,6 +37,9 @@ MonoBehaviour:
     <EvolutionCost>k__BackingField: 70
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: eec38d2399c85ab4bab82fa5e91d1843, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: eec38d2399c85ab4bab82fa5e91d1843, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField:
+    - {fileID: 8300000, guid: f686a3afeadc767409834ebe5d19b4b2, type: 3}
   - <MoveSpeed>k__BackingField: 4
     <Stats>k__BackingField:
       <Health>k__BackingField: 325
@@ -53,6 +58,9 @@ MonoBehaviour:
     <EvolutionCost>k__BackingField: 80
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: eec38d2399c85ab4bab82fa5e91d1843, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: eec38d2399c85ab4bab82fa5e91d1843, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField:
+    - {fileID: 8300000, guid: f686a3afeadc767409834ebe5d19b4b2, type: 3}
   - <MoveSpeed>k__BackingField: 4
     <Stats>k__BackingField:
       <Health>k__BackingField: 355
@@ -71,7 +79,13 @@ MonoBehaviour:
     <EvolutionCost>k__BackingField: 90
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: eec38d2399c85ab4bab82fa5e91d1843, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: eec38d2399c85ab4bab82fa5e91d1843, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField:
+    - {fileID: 8300000, guid: f686a3afeadc767409834ebe5d19b4b2, type: 3}
   BaseMaterial: {fileID: 2100000, guid: eec38d2399c85ab4bab82fa5e91d1843, type: 2}
   BaseWeapon: {fileID: 11400000, guid: 36afeb25725da67449dafdd35ee1c792, type: 2}
   BaseAbility: {fileID: 11400000, guid: 8c306f1a538ac3745bdefac58d738eea, type: 2}
   BaseBrain: {fileID: 11400000, guid: 404a3b9a3ec0b6f4d9758e34d757cbd6, type: 2}
+  BaseHitSounds: []
+  BaseAttackSounds:
+  - {fileID: 8300000, guid: f686a3afeadc767409834ebe5d19b4b2, type: 3}

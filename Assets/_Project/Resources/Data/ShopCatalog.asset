@@ -53,7 +53,6 @@ MonoBehaviour:
   <GrantAllUnitsOnStart>k__BackingField: 0
   <UniqueHeroes>k__BackingField:
   - {fileID: 11400000, guid: 4e5b13890b17a4d4f96030744cc2d9ac, type: 2}
-  - {fileID: 11400000, guid: 068a559471b72364f92cdf57fad8d773, type: 2}
   - {fileID: 11400000, guid: 3ca566c8d99e17249bdc182676f1dbfa, type: 2}
   - {fileID: 11400000, guid: 7232bd23725794e4d8d1b10ab5040363, type: 2}
   <ShopItems>k__BackingField:

@@ -9,6 +9,10 @@ namespace _Project.Scripts.Gameplay.Character.Data
     [CreateAssetMenu(menuName = "Config/CharacterData")]
     public class CharacterData : ScriptableObject
     {
+        //TODO: вытащить из тиров и перенести сюда. В тирах должны остаться только статы.
+        //TODO: ни в коем случае не менять название полей иначе вся сериализация слетит.
+        //TODO: решить пробелму с мозгами и абилками. Можно добавить абилки но поставить мозг который их не использует и наоборот.
+        
         public string Id => name;
 
         [field: Header("General")]

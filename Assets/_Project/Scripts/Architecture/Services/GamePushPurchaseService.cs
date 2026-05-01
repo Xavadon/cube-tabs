@@ -8,16 +8,51 @@ namespace _Project.Scripts.Architecture.Services
 {
     public class GamePushPurchaseService : IPurchaseService
     {
-        public UniTask Initialize()
+        public async UniTask Initialize()
         {
 #if !UNITY_EDITOR
+            // Ждём инициализации GamePush SDK
+            if (!GP_Init.isReady)
+            {
+                Debug.Log("[GamePushPurchaseService] Waiting for GP_Init.OnReady...");
+                var initTcs = new UniTaskCompletionSource();
+                GP_Init.OnReady += () => initTcs.TrySetResult();
+                await initTcs.Task;
+            }
+
+            Debug.Log($"[GamePushPurchaseService] Platform: {GP_Platform.Type()}");
+
+            var tcs = new UniTaskCompletionSource<bool>();
+
             GP_Payments.Fetch(
-                onFetchSuccess: () => Debug.Log("[GamePushPurchaseService] Catalog fetched"),
-                onFetchError: err => Debug.LogWarning($"[GamePushPurchaseService] Fetch error: {err}")
+                onFetchProducts: products =>
+                {
+                    Debug.Log($"[GamePushPurchaseService] Products count: {products?.Count ?? 0}");
+                    if (products != null)
+                    {
+                        foreach (var p in products)
+                        {
+                            Debug.Log($"[GamePushPurchaseService] Product: id={p.id}, tag={p.tag}, name={p.name}, price={p.price}");
+                        }
+                    }
+                    tcs.TrySetResult(true);
+                },
+                onFetchProductsError: () =>
+                {
+                    Debug.LogWarning("[GamePushPurchaseService] Fetch error");
+                    tcs.TrySetResult(false);
+                },
+                onFetchPlayerPurchases: purchases =>
+                {
+                    Debug.Log($"[GamePushPurchaseService] Purchases count: {purchases?.Count ?? 0}");
+                }
             );
+
+            await tcs.Task;
+#else
+            await UniTask.CompletedTask;
 #endif
             Debug.Log("[GamePushPurchaseService] Initialized");
-            return UniTask.CompletedTask;
         }
 
         public void Purchase(ShopItemData item, Action onSuccess, Action onFailure)
@@ -37,14 +72,14 @@ namespace _Project.Scripts.Architecture.Services
 
             GP_Payments.Purchase(
                 idOrTag: item.YandexProductId,
-                onPurchaseSuccess: () =>
+                onPurchaseSuccess: _ =>
                 {
                     Debug.Log($"[GamePushPurchaseService] Purchase success: {item.YandexProductId}");
                     ConsumeIfNeeded(item, onSuccess);
                 },
-                onPurchaseError: err =>
+                onPurchaseError: () =>
                 {
-                    Debug.LogWarning($"[GamePushPurchaseService] Purchase error: {err}");
+                    Debug.LogWarning("[GamePushPurchaseService] Purchase error");
                     onFailure?.Invoke();
                 }
             );
@@ -57,14 +92,14 @@ namespace _Project.Scripts.Architecture.Services
             // Consumable товары (золото, слоты) нужно "потребить"
             GP_Payments.Consume(
                 idOrTag: item.YandexProductId,
-                onConsumeSuccess: () =>
+                onConsumeSuccess: _ =>
                 {
                     Debug.Log($"[GamePushPurchaseService] Consumed: {item.YandexProductId}");
                     onSuccess?.Invoke();
                 },
-                onConsumeError: err =>
+                onConsumeError: () =>
                 {
-                    Debug.LogWarning($"[GamePushPurchaseService] Consume error: {err}, but purchase succeeded");
+                    Debug.LogWarning($"[GamePushPurchaseService] Consume error for {item.YandexProductId}, but purchase succeeded");
                     onSuccess?.Invoke();
                 }
             );
@@ -90,14 +125,14 @@ namespace _Project.Scripts.Architecture.Services
 
             GP_Payments.Purchase(
                 idOrTag: unit.YandexProductId,
-                onPurchaseSuccess: () =>
+                onPurchaseSuccess: _ =>
                 {
                     Debug.Log($"[GamePushPurchaseService] Unit purchase success: {unit.YandexProductId}");
                     ConsumeUnit(unit, onSuccess);
                 },
-                onPurchaseError: err =>
+                onPurchaseError: () =>
                 {
-                    Debug.LogWarning($"[GamePushPurchaseService] Unit purchase error: {err}");
+                    Debug.LogWarning("[GamePushPurchaseService] Unit purchase error");
                     onFailure?.Invoke();
                 }
             );
@@ -109,14 +144,14 @@ namespace _Project.Scripts.Architecture.Services
 #if !UNITY_EDITOR
             GP_Payments.Consume(
                 idOrTag: unit.YandexProductId,
-                onConsumeSuccess: () =>
+                onConsumeSuccess: _ =>
                 {
                     Debug.Log($"[GamePushPurchaseService] Consumed unit: {unit.YandexProductId}");
                     onSuccess?.Invoke();
                 },
-                onConsumeError: err =>
+                onConsumeError: () =>
                 {
-                    Debug.LogWarning($"[GamePushPurchaseService] Consume unit error: {err}, but purchase succeeded");
+                    Debug.LogWarning($"[GamePushPurchaseService] Consume unit error for {unit.YandexProductId}, but purchase succeeded");
                     onSuccess?.Invoke();
                 }
             );

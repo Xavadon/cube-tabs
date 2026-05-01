@@ -26,7 +26,8 @@ MonoBehaviour:
     period: 0
     trialPeriod: 0
   purchases:
-  - productId: 123
+  - tag: 
+    productId: 123
     payload: 
     createdAt: 
     expiredAt: 

@@ -1,3 +1,3 @@
-const dataProjectId = '27699';
-const dataPublicToken = 'lPaduGmxswa0hvOAFyTzYtp0Zu1EReLA';
+const dataProjectId = '16831';
+const dataPublicToken = 'ZXZZ8gWWE0kDw2rw3KWROQ0DIQacDY56';
 const showPreloaderAd = 'True';
