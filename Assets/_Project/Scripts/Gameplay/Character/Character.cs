@@ -12,6 +12,7 @@ using _Project.Scripts.Gameplay.Character.Services;
 using _Project.Scripts.Gameplay.Services;
 using Game.Scripts.Core.Gameplay.Enemies.Components;
 using MinecraftModels.Scripts;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -42,6 +43,37 @@ namespace _Project.Scripts.Gameplay.Character
 
         [SerializeField]
         private WeaponChanger _weaponChanger;
+
+#if UNITY_EDITOR
+        [Header("Editor skin")]
+        [SerializeField]
+        private CharacterData _charaSkindata;
+        
+        private const int EditorTierIndex = 0;
+
+        [Button]
+        public void ApplySkin()
+        {
+            if (_charaSkindata == null)
+            {
+                Debug.LogWarning("CharacterData not assigned for editor preview");
+                return;
+            }
+
+            var editorTier = _charaSkindata.GetTier(EditorTierIndex);
+
+            SkinChanger.ChangeSkin(editorTier.SkinMaterial);
+
+            if (editorTier.ArmorMaterial != null)
+            {
+                ArmorChanger.ChangeSkin(editorTier.ArmorMaterial);
+            }
+            else
+            {
+                ArmorChanger.ChangeSkin(editorTier.SkinMaterial);
+            }
+        }
+#endif
 
         private CharacterBrain _brain;
         private AnimatorController _animatorController;
