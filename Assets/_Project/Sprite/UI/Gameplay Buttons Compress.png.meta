@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2403b7b7d515d0a4c8fa14d6a291c73b
+guid: b5c1a6c0ba2182345a2000d5768388bd
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -69,10 +69,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 128
+    maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -108,7 +108,70 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Camera Mode
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 147
+        width: 191
+        height: 193
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d67b186552ab4243a548ddab359d43c
+      internalID: 906747731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surrender
+      rect:
+        serializedVersion: 2
+        x: 318
+        y: 147
+        width: 193
+        height: 193
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 95044cdc5df772b4ebc0ccc8167fc732
+      internalID: 1848659255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Speed Time
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 147
+        width: 190
+        height: 193
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39b7ce77a6021f545b8acf64677ef621
+      internalID: -2138736086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -119,7 +182,18 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Camera Mode: 906747731
+      Gameplay Buttons Compress_10: 1836108579
+      Gameplay Buttons Compress_3: -332313468
+      Gameplay Buttons Compress_4: 1295655713
+      Gameplay Buttons Compress_5: -1436564088
+      Gameplay Buttons Compress_6: -187588443
+      Gameplay Buttons Compress_7: 296470496
+      Gameplay Buttons Compress_8: -2028383948
+      Gameplay Buttons Compress_9: -896818272
+      Speed Time: -2138736086
+      Surrender: 1848659255
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

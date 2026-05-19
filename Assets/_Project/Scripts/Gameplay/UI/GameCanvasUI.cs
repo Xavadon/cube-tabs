@@ -93,10 +93,15 @@ namespace _Project.Scripts.Gameplay.UI
             _audioService?.PlayUIClick();
 
             if (_speedBoostButton != null)
-                _speedBoostButton.gameObject.SetActive(false);
+            {
+                //_speedBoostButton.gameObject.SetActive(false);
+                _speedBoostButton.interactable = false;
+            }
 
             if (!_adService.IsRewardedAvailable)
+            {
                 return;
+            }
 
             Debug.Log("[GameCanvasUI] Showing rewarded ad for speed boost");
             _adService.ShowRewarded("SPEED_BOOST", success =>
@@ -136,10 +141,15 @@ namespace _Project.Scripts.Gameplay.UI
             bool boostActive = remaining > 0f;
 
             if (_speedBoostButton != null)
-                _speedBoostButton.gameObject.SetActive(!boostActive);
+            {
+                //_speedBoostButton.gameObject.SetActive(!boostActive);
+                _speedBoostButton.interactable = !boostActive;
+            }
 
             if (_speedBoostTimerPanel != null)
+            {
                 _speedBoostTimerPanel.SetActive(boostActive);
+            }
 
             if (boostActive)
             {
