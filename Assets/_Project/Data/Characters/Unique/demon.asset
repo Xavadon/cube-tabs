@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b574c7249b5861d43abc286ee8fcc848, type: 3}
+  m_Name: demon
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Demon
+  <Scale>k__BackingField: 1
+  <AnimatorOverride>k__BackingField: {fileID: 0}
+  <PriceAsHero>k__BackingField: 100
+  <YandexProductId>k__BackingField: 
+  <PriceLabel>k__BackingField: 
+  <Tiers>k__BackingField:
+  - <MoveSpeed>k__BackingField: 7
+    <Stats>k__BackingField:
+      <Health>k__BackingField: 200
+      <PhysicalResist>k__BackingField: 0
+      <MagicResist>k__BackingField: 0.25
+      <FireResist>k__BackingField: 0
+      <FaithResist>k__BackingField: 0
+      <Damage>k__BackingField: 35
+      <DamageType>k__BackingField: 1
+    <WeaponData>k__BackingField: []
+    <BrainData>k__BackingField: {fileID: 11400000, guid: 9b4258595442995419e87b9cd45b7363, type: 2}
+    <Ability>k__BackingField: {fileID: 0}
+    <DeathAbility>k__BackingField: {fileID: 11400000, guid: dd2c6287ebb51594bbd11d237819079c, type: 2}
+    <KillReward>k__BackingField: 9
+    <EvolutionCost>k__BackingField: 0
+    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: a745224998213af4884abeba2b90cc34, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: a745224998213af4884abeba2b90cc34, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField: []
+  BaseMaterial: {fileID: 2100000, guid: a745224998213af4884abeba2b90cc34, type: 2}
+  BaseWeapon: {fileID: 11400000, guid: 2609461451f571f488176b574bb3b33e, type: 2}
+  BaseAbility: {fileID: 0}
+  BaseBrain: {fileID: 11400000, guid: f6a63d9a1972f7c46ad1fcd4dea520fe, type: 2}
+  BaseHitSounds: []
+  BaseAttackSounds: []

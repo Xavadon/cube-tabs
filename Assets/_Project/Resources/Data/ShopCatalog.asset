@@ -43,8 +43,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 23bd883c6cb45e24c9088c3fe88df052, type: 2}
   - {fileID: 11400000, guid: 33554e75e1fe2594ea97961b77d43e67, type: 2}
   - {fileID: 11400000, guid: 3ab3625fed4cddf459d83819429d18a3, type: 2}
+  - {fileID: 11400000, guid: 0a553cfd5824df549aa29385e8518d53, type: 2}
+  - {fileID: 11400000, guid: 6362f975a187e2f4ab78da9b11bc6eb7, type: 2}
   <BaseUnit>k__BackingField: {fileID: 11400000, guid: bdf6d4b84d650514488104946a498409, type: 2}
-  <StartingUnit>k__BackingField: {fileID: 11400000, guid: 4e5b13890b17a4d4f96030744cc2d9ac, type: 2}
+  <StartingUnit>k__BackingField: {fileID: 11400000, guid: 0a553cfd5824df549aa29385e8518d53, type: 2}
   <EvolutionCatalog>k__BackingField: {fileID: 11400000, guid: 8bf77b34c2191ba4c8b6f7ec6adfaa8d, type: 2}
   <BaseArmySlots>k__BackingField: 5
   <SlotUpgradeCost>k__BackingField: 55
@@ -53,8 +55,8 @@ MonoBehaviour:
   <GrantAllUnitsOnStart>k__BackingField: 0
   <UniqueHeroes>k__BackingField:
   - {fileID: 11400000, guid: 4e5b13890b17a4d4f96030744cc2d9ac, type: 2}
-  - {fileID: 11400000, guid: 3ca566c8d99e17249bdc182676f1dbfa, type: 2}
-  - {fileID: 11400000, guid: 7232bd23725794e4d8d1b10ab5040363, type: 2}
+  - {fileID: 11400000, guid: 0a553cfd5824df549aa29385e8518d53, type: 2}
+  - {fileID: 11400000, guid: 6362f975a187e2f4ab78da9b11bc6eb7, type: 2}
   <ShopItems>k__BackingField:
   - {fileID: 11400000, guid: 49ec0b94c8e3a5b49a2f535ddb019f78, type: 2}
   - {fileID: 11400000, guid: 38e13c1c6ef6e4142a025334c1bd11fb, type: 2}
