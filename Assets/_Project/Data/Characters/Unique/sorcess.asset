@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b574c7249b5861d43abc286ee8fcc848, type: 3}
+  m_Name: sorcess
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Sorcess
+  <Scale>k__BackingField: 1
+  <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: a35a61907a93498458b4de72ad15f012, type: 2}
+  <PriceAsHero>k__BackingField: 100
+  <YandexProductId>k__BackingField: 
+  <PriceLabel>k__BackingField: 
+  <Tiers>k__BackingField:
+  - <MoveSpeed>k__BackingField: 3.65
+    <Stats>k__BackingField:
+      <Health>k__BackingField: 350
+      <PhysicalResist>k__BackingField: 0
+      <MagicResist>k__BackingField: 0.1
+      <FireResist>k__BackingField: 0
+      <FaithResist>k__BackingField: 0
+      <Damage>k__BackingField: 155
+      <DamageType>k__BackingField: 1
+    <WeaponData>k__BackingField:
+    - {fileID: 11400000, guid: f60addf0a6f68d145bdf2c3259035da7, type: 2}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: 79ebde33eea9fd847a71d67f3b5f1979, type: 2}
+    <Ability>k__BackingField: {fileID: 11400000, guid: f79b50ce998728947bdb9733cd86ad59, type: 2}
+    <DeathAbility>k__BackingField: {fileID: 0}
+    <KillReward>k__BackingField: 0
+    <EvolutionCost>k__BackingField: 0
+    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: bc6cebf0a1473fa4b82adc644fa6d57b, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: bc6cebf0a1473fa4b82adc644fa6d57b, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField:
+    - {fileID: 8300000, guid: 962b64dc242855c4bb67b147073d66ec, type: 3}
+  BaseMaterial: {fileID: 2100000, guid: bc6cebf0a1473fa4b82adc644fa6d57b, type: 2}
+  BaseWeapon: {fileID: 11400000, guid: f60addf0a6f68d145bdf2c3259035da7, type: 2}
+  BaseAbility: {fileID: 0}
+  BaseBrain: {fileID: 11400000, guid: c54867ea57e6233499caeb1c4793ac01, type: 2}
+  BaseHitSounds: []
+  BaseAttackSounds:
+  - {fileID: 8300000, guid: 962b64dc242855c4bb67b147073d66ec, type: 3}

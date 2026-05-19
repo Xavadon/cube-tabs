@@ -22,6 +22,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
         private readonly IUnitPreviewService _unitPreviewService;
         private readonly IAdService _adService;
         private readonly IAudioService _audioService;
+        private readonly IResurrectionService _resurrectionService;
 
         private GameCanvasUI _gameCanvasUI;
 
@@ -33,7 +34,8 @@ namespace _Project.Scripts.Gameplay.Services.Scene
             ICameraService cameraService,
             IUnitPreviewService unitPreviewService,
             IAdService adService,
-            IAudioService audioService)
+            IAudioService audioService,
+            IResurrectionService resurrectionService)
         {
             _characterSpawner = characterSpawner;
             _gameSessionService = gameSessionService;
@@ -43,6 +45,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
             _unitPreviewService = unitPreviewService;
             _adService = adService;
             _audioService = audioService;
+            _resurrectionService = resurrectionService;
         }
 
         public UniTask Initialize()
@@ -75,6 +78,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
             // TODO: Убрать Find — грузить HealthBarPool-префаб из Resources/SO и инстанциировать из кода
             var healthBarPool = Object.FindAnyObjectByType<HealthBarPool>();
 
+            _resurrectionService.SetHealthBarPool(healthBarPool);
             _characterSpawner.SpawnAllies(armyUnits, healthBarPool);
 
             InitializeGameCanvas(levelConfig, sceneService);

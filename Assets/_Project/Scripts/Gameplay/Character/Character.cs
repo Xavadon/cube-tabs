@@ -1,12 +1,12 @@
 using System;
 using _Project.Scripts.Architecture;
+using _Project.Scripts.Architecture.BehaviorTree;
 using _Project.Scripts.Architecture.Services.Input;
 using _Project.Scripts.Gameplay.Character.Components;
 using _Project.Scripts.Gameplay.Character.Components.AiBrain;
 using _Project.Scripts.Gameplay.Character.Components.Health;
 using _Project.Scripts.Gameplay.Character.Components.UI;
 using _Project.Scripts.Gameplay.Character.Data;
-using _Project.Scripts.Gameplay.Character.Data.Abilities;
 using _Project.Scripts.Gameplay.Character.Data.AiBrain;
 using _Project.Scripts.Gameplay.Character.Services;
 using _Project.Scripts.Gameplay.Services;
@@ -20,12 +20,17 @@ namespace _Project.Scripts.Gameplay.Character
 {
     public class Character : MonoBehaviour, IDamageAble, IHealable
     {
+        private const float NavMeshAcceleration = 1000f;
+        
+        public event Action<Character, Vector3, AudioClip[]> OnDamag;
+        public event Action<Character, AudioClip[]> OnAttack;
+        
         public CharacterType CharacterType { get; private set; }
         public bool IsRanged { get; private set; }
-
-        public event Action<Character, Vector3, AudioClip[]> OnDamaged;
-        public event Action<Character, AudioClip[]> OnAttacked;
-
+        public CharacterData CharacterDataRef => _characterData;
+        public int TierIndex => _tierIndex;
+        public float HealthRatio => _health.HealthRatio;
+        
         [SerializeField]
         private Animator _animator;
 
@@ -43,38 +48,7 @@ namespace _Project.Scripts.Gameplay.Character
 
         [SerializeField]
         private WeaponChanger _weaponChanger;
-
-#if UNITY_EDITOR
-        [Header("Editor skin")]
-        [SerializeField]
-        private CharacterData _charaSkindata;
         
-        private const int EditorTierIndex = 0;
-
-        [Button]
-        public void ApplySkin()
-        {
-            if (_charaSkindata == null)
-            {
-                Debug.LogWarning("CharacterData not assigned for editor preview");
-                return;
-            }
-
-            var editorTier = _charaSkindata.GetTier(EditorTierIndex);
-
-            SkinChanger.ChangeSkin(editorTier.SkinMaterial);
-
-            if (editorTier.ArmorMaterial != null)
-            {
-                ArmorChanger.ChangeSkin(editorTier.ArmorMaterial);
-            }
-            else
-            {
-                ArmorChanger.ChangeSkin(editorTier.SkinMaterial);
-            }
-        }
-#endif
-
         private CharacterBrain _brain;
         private AnimatorController _animatorController;
         private NavMeshMovementComponent _movement;
@@ -87,16 +61,6 @@ namespace _Project.Scripts.Gameplay.Character
         private int _tierIndex;
         private bool _stopped;
 
-        public void ApplyDamage(float amount, Vector3 hitPoint, DamageType type = DamageType.Physical)
-        {
-            _health.ApplyDamage(amount, hitPoint, type);
-            _animatorController.PlayHitReact();
-            _hitEffect.Play();
-        }
-
-        public float HealthRatio => _health.HealthRatio;
-        public void Heal(float amount) => _health.Heal(amount);
-
         public void Initialize(CharacterType characterType, CharacterData characterData, int tierIndex,
             IInputService inputService = null)
         {
@@ -105,62 +69,78 @@ namespace _Project.Scripts.Gameplay.Character
             _tierIndex = tierIndex;
             _tier = characterData.GetTier(tierIndex);
 
-            (int ownLayer, LayerMask targetLayer) = characterType switch
+            int ownLayer;
+            LayerMask targetLayer;
+
+            if (characterType == CharacterType.Ally)
             {
-                CharacterType.Ally  => (LayerMask.NameToLayer("Ally"),  (LayerMask)LayerMask.GetMask("Enemy")),
-                CharacterType.Enemy => (LayerMask.NameToLayer("Enemy"), (LayerMask)LayerMask.GetMask("Ally")),
-                _ => throw new ArgumentOutOfRangeException(nameof(characterType), characterType, null)
-            };
+                ownLayer = LayerMask.NameToLayer("Ally");
+                targetLayer = LayerMask.GetMask("Enemy");
+            }
+            else if (characterType == CharacterType.Enemy)
+            {
+                ownLayer = LayerMask.NameToLayer("Enemy");
+                targetLayer = LayerMask.GetMask("Ally");
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(nameof(characterType), characterType, null);
+            }
 
             gameObject.layer = ownLayer;
 
             WeaponData weapon = null;
 
-            if (_tier.WeaponData is { Length: > 0 })
+            if (_tier.WeaponData != null && _tier.WeaponData.Length > 0)
+            {
                 weapon = _tier.WeaponData[0];
+            }
 
             if (characterData.AnimatorOverride != null)
+            {
                 _animator.runtimeAnimatorController = characterData.AnimatorOverride;
+            }
 
-            _animatorController = new(_animator);
+            _animatorController = new AnimatorController(_animator);
 
             IsRanged = _tier.BrainData is RangeBrainDataBase;
-            _brain = new(targetLayer, _tier.BrainData, _tier, _navMeshAgent, _animatorController, transform, weapon, inputService, HandleAttack);
-            _movement = new(_navMeshAgent, transform, _tier.MoveSpeed);
-            _health = new(_tier);
-            _resistance = new(_tier);
+            _brain = new CharacterBrain(targetLayer, _tier.BrainData, _tier, _navMeshAgent, _animatorController, transform, weapon, inputService, HandleAttack);
+            _movement = new NavMeshMovementComponent(_navMeshAgent, transform, _tier.MoveSpeed);
+            _health = new HealthComponent(_tier);
+            _resistance = new ResistanceComponent(_tier);
 
             _navMeshAgent.speed = _tier.MoveSpeed;
-            _navMeshAgent.acceleration = 1000f;
+            _navMeshAgent.acceleration = NavMeshAcceleration;
             _health.OnDeath += HandleDeath;
             _health.OnDamaged += HandleDamaged;
 
-            SkinChanger.ChangeSkin(_tier.SkinMaterial);
-
-            if (_tier.ArmorMaterial != null)
-            {
-                ArmorChanger.ChangeSkin(_tier.ArmorMaterial);
-            }
-            else
-            {
-                ArmorChanger.ChangeSkin(_tier.SkinMaterial);
-            }
-
-            if (_tier.WeaponData != null)
-            {
-                for (int i = 0; i < _tier.WeaponData.Length; i++)
-                {
-                    _weaponChanger.SetWeapon(_tier.WeaponData[i], i);
-                }
-            }
+            ApplySkinAndArmor();
+            ApplyWeapons();
         }
 
         private void Update()
         {
             if (_stopped)
+            {
                 return;
+            }
 
-            _brain?.Tick();
+            if (_brain != null)
+            {
+                _brain.Tick();
+            }
+        }
+
+        public void ApplyDamage(float amount, Vector3 hitPoint, DamageType type = DamageType.Physical)
+        {
+            _health.ApplyDamage(amount, hitPoint, type);
+            _animatorController.PlayHitReact();
+            _hitEffect.Play();
+        }
+
+        public void Heal(float amount)
+        {
+            _health.Heal(amount);
         }
 
         public void Stop()
@@ -182,27 +162,61 @@ namespace _Project.Scripts.Gameplay.Character
             _healthBar.Bind(transform, _health, pool.GetCamera(), pool);
         }
 
+        private void ApplySkinAndArmor()
+        {
+            SkinChanger.ChangeSkin(_tier.SkinMaterial);
+
+            if (_tier.ArmorMaterial != null)
+            {
+                ArmorChanger.ChangeSkin(_tier.ArmorMaterial);
+            }
+            else
+            {
+                ArmorChanger.ChangeSkin(_tier.SkinMaterial);
+            }
+        }
+
+        private void ApplyWeapons()
+        {
+            if (_tier.WeaponData == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < _tier.WeaponData.Length; i++)
+            {
+                _weaponChanger.SetWeapon(_tier.WeaponData[i], i);
+            }
+        }
+
         private void HandleDamaged(Vector3 hitPoint)
         {
-            OnDamaged?.Invoke(this, hitPoint, _tier.HitSounds);
+            OnDamag?.Invoke(this, hitPoint, _tier.HitSounds);
         }
 
         private void HandleAttack()
         {
-            OnAttacked?.Invoke(this, _tier.AttackSounds);
+            OnAttack?.Invoke(this, _tier.AttackSounds);
         }
 
         private void HandleDeath()
         {
-            var tier = _characterData.GetTier(_tierIndex);
+            TierData tier = _characterData.GetTier(_tierIndex);
 
             if (CharacterType == CharacterType.Enemy && tier.KillReward > 0)
+            {
                 Project.Get<IPlayerProgressService>().AddGold(tier.KillReward);
+            }
 
             if (tier.DeathAbility != null)
+            {
                 ExecuteDeathAbility(tier);
+            }
 
-            _healthBar?.Release();
+            if (_healthBar != null)
+            {
+                _healthBar.Release();
+            }
 
             if (_registry != null)
             {
@@ -219,11 +233,49 @@ namespace _Project.Scripts.Gameplay.Character
 
         private void ExecuteDeathAbility(TierData tier)
         {
-            var blackboard = _brain?.Blackboard;
-            if (blackboard == null)
+            if (_brain == null)
+            {
                 return;
+            }
+
+            Blackboard blackboard = _brain.Blackboard;
+            if (blackboard == null)
+            {
+                return;
+            }
 
             tier.DeathAbility.Execute(blackboard, tier.Stats.Damage, tier.Stats.DamageType);
         }
+
+#if UNITY_EDITOR
+        [Header("Editor skin")]
+        [SerializeField]
+        private CharacterData _charaSkindata;
+
+        private const int EditorTierIndex = 0;
+
+        [Button]
+        public void ApplySkin()
+        {
+            if (_charaSkindata == null)
+            {
+                Debug.LogWarning("CharacterData not assigned for editor preview");
+                return;
+            }
+
+            TierData editorTier = _charaSkindata.GetTier(EditorTierIndex);
+
+            SkinChanger.ChangeSkin(editorTier.SkinMaterial);
+
+            if (editorTier.ArmorMaterial != null)
+            {
+                ArmorChanger.ChangeSkin(editorTier.ArmorMaterial);
+            }
+            else
+            {
+                ArmorChanger.ChangeSkin(editorTier.SkinMaterial);
+            }
+        }
+#endif
     }
 }

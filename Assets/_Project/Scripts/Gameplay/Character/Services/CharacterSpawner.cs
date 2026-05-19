@@ -112,7 +112,9 @@ namespace _Project.Scripts.Gameplay.Character.Services
             character.SetRegistry(_characterRegistry);
 
             if (_healthBarPool != null)
+            {
                 character.SetHealthBarPool(_healthBarPool);
+            }
 
             _characterRegistry.Register(character);
 

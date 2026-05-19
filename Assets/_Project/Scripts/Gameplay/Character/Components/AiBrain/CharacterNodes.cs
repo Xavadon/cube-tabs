@@ -1,10 +1,10 @@
 using System;
+using _Project.Scripts.Architecture;
 using _Project.Scripts.Architecture.BehaviorTree;
 using _Project.Scripts.Architecture.Services.Input;
-using _Project.Scripts.Architecture.State_Machine;
 using _Project.Scripts.Gameplay.Character.Components.Health;
-using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Character.Data.Abilities;
+using _Project.Scripts.Gameplay.Character.Services;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -812,10 +812,52 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             Transform target = Blackboard.Get<Transform>(_sourceKey);
 
             if (target == null)
+            {
                 return Status = NodeStatus.Failure;
+            }
 
             Blackboard.Set(_targetKey, target);
             return Status = NodeStatus.Success;
+        }
+    }
+
+    public class HasDeadAlly : BTNode
+    {
+        protected override NodeStatus Process()
+        {
+            Transform self = Blackboard.Get<Transform>(BrainKeys.Transform);
+            if (self == null)
+            {
+                return Status = NodeStatus.Failure;
+            }
+
+            if (!self.TryGetComponent(out Character character))
+            {
+                return Status = NodeStatus.Failure;
+            }
+
+            ICharacterRegistry registry = Project.Get<ICharacterRegistry>();
+            if (registry == null)
+            {
+                return Status = NodeStatus.Failure;
+            }
+
+            if (character.CharacterType == CharacterType.Ally)
+            {
+                if (registry.TryGetDeadAlly(out _))
+                {
+                    return Status = NodeStatus.Success;
+                }
+            }
+            else
+            {
+                if (registry.TryGetDeadEnemy(out _))
+                {
+                    return Status = NodeStatus.Success;
+                }
+            }
+
+            return Status = NodeStatus.Failure;
         }
     }
 }
