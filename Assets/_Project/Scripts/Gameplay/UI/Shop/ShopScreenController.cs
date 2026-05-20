@@ -120,7 +120,8 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             foreach (var hero in _catalog.UniqueHeroes)
             {
                 var portrait = _previewService.GetPortrait(hero, 0);
-                _view.AddUnitCard(hero.Name, portrait, hero.PriceLabel, true, () => BuyUnit(hero));
+                var price = _purchaseService.GetPrice(hero.YandexProductId, hero.PriceLabel);
+                _view.AddUnitCard(hero.Name, portrait, price, true, () => BuyUnit(hero));
             }
         }
 
@@ -134,7 +135,8 @@ namespace _Project.Scripts.Gameplay.UI.Shop
                 if (item.RewardType == ShopItemRewardType.NoAds)
                     continue;
 
-                _view.AddItemCard(item.Name, item.Icon, item.PriceLabel, () => BuyItem(item));
+                var price = _purchaseService.GetPrice(item.YandexProductId, item.PriceLabel);
+                _view.AddItemCard(item.Name, item.Icon, price, () => BuyItem(item));
             }
         }
 

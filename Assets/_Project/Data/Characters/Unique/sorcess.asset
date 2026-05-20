@@ -16,7 +16,7 @@ MonoBehaviour:
   <Scale>k__BackingField: 1
   <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: a35a61907a93498458b4de72ad15f012, type: 2}
   <PriceAsHero>k__BackingField: 100
-  <YandexProductId>k__BackingField: 
+  <YandexProductId>k__BackingField: hero_sorcess
   <PriceLabel>k__BackingField: 
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 3.65

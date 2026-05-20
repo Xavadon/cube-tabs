@@ -16,7 +16,7 @@ MonoBehaviour:
   <Scale>k__BackingField: 1.1
   <AnimatorOverride>k__BackingField: {fileID: 0}
   <PriceAsHero>k__BackingField: 100
-  <YandexProductId>k__BackingField: 
+  <YandexProductId>k__BackingField: hero_kaneki
   <PriceLabel>k__BackingField: 
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 5

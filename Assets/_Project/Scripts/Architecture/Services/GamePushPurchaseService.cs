@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using _Project.Scripts.Gameplay.Character.Data;
 using Cysharp.Threading.Tasks;
 using GamePush;
@@ -8,6 +9,8 @@ namespace _Project.Scripts.Architecture.Services
 {
     public class GamePushPurchaseService : IPurchaseService
     {
+        private readonly Dictionary<string, FetchProducts> _productsByTag = new();
+
         public async UniTask Initialize()
         {
 #if !UNITY_EDITOR
@@ -33,6 +36,9 @@ namespace _Project.Scripts.Architecture.Services
                         foreach (var p in products)
                         {
                             Debug.Log($"[GamePushPurchaseService] Product: id={p.id}, tag={p.tag}, name={p.name}, price={p.price}");
+                            _productsByTag[p.id.ToString()] = p;
+                            if (!string.IsNullOrEmpty(p.tag))
+                                _productsByTag[p.tag] = p;
                         }
                     }
                     tcs.TrySetResult(true);
@@ -53,6 +59,24 @@ namespace _Project.Scripts.Architecture.Services
             await UniTask.CompletedTask;
 #endif
             Debug.Log("[GamePushPurchaseService] Initialized");
+        }
+
+        public string GetPrice(string productId, string fallback)
+        {
+            if (string.IsNullOrEmpty(productId))
+            {
+                Debug.LogWarning($"[GamePushPurchaseService] GetPrice: empty productId, using fallback '{fallback}'");
+                return fallback;
+            }
+
+            if (_productsByTag.TryGetValue(productId, out var product))
+            {
+                Debug.Log($"[GamePushPurchaseService] GetPrice: found '{productId}' -> {product.price}");
+                return product.price.ToString();
+            }
+
+            Debug.LogWarning($"[GamePushPurchaseService] GetPrice: '{productId}' not found in cache ({_productsByTag.Count} products), using fallback '{fallback}'");
+            return fallback;
         }
 
         public void Purchase(ShopItemData item, Action onSuccess, Action onFailure)

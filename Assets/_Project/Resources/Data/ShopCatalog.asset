@@ -59,10 +59,10 @@ MonoBehaviour:
   <UniqueHeroes>k__BackingField:
   - {fileID: 11400000, guid: 4e5b13890b17a4d4f96030744cc2d9ac, type: 2}
   - {fileID: 11400000, guid: 0a553cfd5824df549aa29385e8518d53, type: 2}
-  - {fileID: 11400000, guid: 6362f975a187e2f4ab78da9b11bc6eb7, type: 2}
-  - {fileID: 11400000, guid: 9e6d76c83f323e642b700106ea59a446, type: 2}
   - {fileID: 11400000, guid: f29ad569e9ab5a741b1470067d1795a2, type: 2}
   - {fileID: 11400000, guid: ce320dfa321a5844ca102b99bca82247, type: 2}
+  - {fileID: 11400000, guid: 6362f975a187e2f4ab78da9b11bc6eb7, type: 2}
+  - {fileID: 11400000, guid: 9e6d76c83f323e642b700106ea59a446, type: 2}
   <ShopItems>k__BackingField:
   - {fileID: 11400000, guid: 49ec0b94c8e3a5b49a2f535ddb019f78, type: 2}
   - {fileID: 11400000, guid: 38e13c1c6ef6e4142a025334c1bd11fb, type: 2}
