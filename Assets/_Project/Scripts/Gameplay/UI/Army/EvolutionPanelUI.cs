@@ -1,4 +1,6 @@
 using _Project.Scripts.Architecture.Services.Audio;
+using _Project.Scripts.Architecture.Services.Localization;
+using static _Project.Scripts.Architecture.Services.Localization.LocalizationKeys;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Services;
 using UnityEngine;
@@ -17,14 +19,16 @@ namespace _Project.Scripts.Gameplay.UI.Army
         private EvolutionCatalog _evolutionCatalog;
         private IUnitPreviewService _previewService;
         private IAudioService _audioService;
+        private ILocalizationService _localization;
 
         public void Initialize(IPlayerProgressService progress, EvolutionCatalog evolutionCatalog,
-            IUnitPreviewService previewService, IAudioService audioService)
+            IUnitPreviewService previewService, IAudioService audioService, ILocalizationService localization)
         {
             _progress = progress;
             _evolutionCatalog = evolutionCatalog;
             _previewService = previewService;
             _audioService = audioService;
+            _localization = localization;
         }
 
         public void Show(int instanceId, CharacterData currentData, int tierIndex)
@@ -67,7 +71,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
             int capturedId = instanceId;
 
             optionUI.Init(
-                $"{data.Name} T{tierIndex + 2}",
+                _localization.Get(Evolution.Tier, data.Name, tierIndex + 2),
                 cost,
                 _progress.CanAfford(cost),
                 preview,

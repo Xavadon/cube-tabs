@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using _Project.Scripts.Architecture.Services;
 using _Project.Scripts.Architecture.Services.Audio;
+using _Project.Scripts.Architecture.Services.Localization;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Services;
 using _Project.Scripts.Gameplay.UI.Shop;
@@ -35,6 +36,9 @@ namespace _Project.Scripts.Gameplay.UI.Army
         private Button _buyButton;
 
         [SerializeField]
+        private TextMeshProUGUI _buyButtonLabel;
+
+        [SerializeField]
         private TextMeshProUGUI _buyButtonCostLabel;
 
         [SerializeField]
@@ -46,6 +50,9 @@ namespace _Project.Scripts.Gameplay.UI.Army
         [Header("Slot Upgrade")]
         [SerializeField]
         private Button _slotUpgradeButton;
+
+        [SerializeField]
+        private TextMeshProUGUI _slotUpgradeLabel;
 
         [SerializeField]
         private TextMeshProUGUI _slotUpgradeCostLabel;
@@ -95,6 +102,7 @@ namespace _Project.Scripts.Gameplay.UI.Army
         private IPlayerProgressService _progress;
         private ShopCatalog _catalog;
         private IAudioService _audioService;
+        private ILocalizationService _localization;
         private readonly List<ArmyUnitCardUI> _cards = new();
 
         private Transform _currentPreviewModel;
@@ -109,11 +117,13 @@ namespace _Project.Scripts.Gameplay.UI.Army
         public event Action GoldRewardClicked;
 
         public void Initialize(IPlayerProgressService progress, ShopCatalog catalog,
-            IUnitPreviewService previewService, IAdService adService, IAudioService audioService)
+            IUnitPreviewService previewService, IAdService adService, IAudioService audioService,
+            ILocalizationService localization)
         {
             _progress = progress;
             _catalog = catalog;
             _audioService = audioService;
+            _localization = localization;
             _defaultFullBodyRotation = previewService.DefaultFullBodyRotation;
 
             // View binds to Model directly for simple data display (Supervising Controller)
@@ -121,15 +131,17 @@ namespace _Project.Scripts.Gameplay.UI.Army
             _progress.OnGoldChanged += RefreshSlotUpgrade;
             _progress.OnArmyChanged += RefreshSlotCount;
             _progress.OnArmyChanged += RefreshSlotUpgrade;
+            _localization.OnLanguageChanged += UpdateLocalizedTexts;
 
             if (_evolutionPanel != null)
             {
-                _evolutionPanel.Initialize(progress, catalog.EvolutionCatalog, previewService, audioService);
+                _evolutionPanel.Initialize(progress, catalog.EvolutionCatalog, previewService, audioService, localization);
             }
 
             RefreshGold();
             RefreshSlotCount();
             RefreshSlotUpgrade();
+            UpdateLocalizedTexts();
 
             if (_catalog.BaseUnit != null)
             {
@@ -167,7 +179,22 @@ namespace _Project.Scripts.Gameplay.UI.Army
 
         private void RefreshSlotCount()
         {
-            _slotCountLabel.text = $"Army {_progress.ArmyUnits.Count}/{_progress.ArmySlots}";
+            _slotCountLabel.text = _localization.Get(LocalizationKeys.Army.Slots, _progress.ArmyUnits.Count, _progress.ArmySlots);
+        }
+
+        private void UpdateLocalizedTexts()
+        {
+            RefreshSlotCount();
+
+            if (_buyButtonLabel != null)
+            {
+                _buyButtonLabel.text = _localization.Get(LocalizationKeys.Army.Buy);
+            }
+
+            if (_slotUpgradeLabel != null)
+            {
+                _slotUpgradeLabel.text = _localization.Get(LocalizationKeys.Army.UpgradeSlot);
+            }
         }
 
         private void RefreshSlotUpgrade()
@@ -232,6 +259,11 @@ namespace _Project.Scripts.Gameplay.UI.Army
                 _progress.OnGoldChanged -= RefreshSlotUpgrade;
                 _progress.OnArmyChanged -= RefreshSlotCount;
                 _progress.OnArmyChanged -= RefreshSlotUpgrade;
+            }
+
+            if (_localization != null)
+            {
+                _localization.OnLanguageChanged -= UpdateLocalizedTexts;
             }
 
             _controller?.Dispose();

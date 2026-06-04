@@ -1,6 +1,7 @@
 using System;
 using _Project.Scripts.Architecture.Services;
 using _Project.Scripts.Architecture.Services.Audio;
+using _Project.Scripts.Architecture.Services.Localization;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Services;
 using TMPro;
@@ -49,7 +50,8 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             IPurchaseService purchaseService,
             IUnitPreviewService previewService,
             ShopCatalog catalog,
-            IAudioService audioService)
+            IAudioService audioService,
+            ILocalizationService localization)
         {
             _progress = progress;
             _audioService = audioService;

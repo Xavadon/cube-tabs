@@ -1,7 +1,4 @@
 using _Project.Scripts.Architecture.Services.Audio;
-using _Project.Scripts.Gameplay.UI.Army;
-using _Project.Scripts.Gameplay.UI.LevelMap;
-using _Project.Scripts.Gameplay.UI.Shop;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,7 +24,7 @@ namespace _Project.Scripts.Gameplay.UI
         [SerializeField]
         private Button _levelMapButton;
         
-        [Header("Test To Delete")]
+        [Header("Test To Delete")] //TODO: delete
         [SerializeField]
         private Button _clearButton;
 

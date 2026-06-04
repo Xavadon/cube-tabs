@@ -1,6 +1,7 @@
 using _Project.Scripts.Architecture.Services;
 using _Project.Scripts.Architecture.Services.Audio;
 using _Project.Scripts.Architecture.Services.Camera;
+using _Project.Scripts.Architecture.Services.Localization;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Character.Components.UI;
 using _Project.Scripts.Gameplay.Character.Services;
@@ -23,6 +24,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
         private readonly IAdService _adService;
         private readonly IAudioService _audioService;
         private readonly IResurrectionService _resurrectionService;
+        private readonly ILocalizationService _localizationService;
 
         private GameCanvasUI _gameCanvasUI;
 
@@ -35,7 +37,8 @@ namespace _Project.Scripts.Gameplay.Services.Scene
             IUnitPreviewService unitPreviewService,
             IAdService adService,
             IAudioService audioService,
-            IResurrectionService resurrectionService)
+            IResurrectionService resurrectionService,
+            ILocalizationService localizationService)
         {
             _characterSpawner = characterSpawner;
             _gameSessionService = gameSessionService;
@@ -46,6 +49,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
             _adService = adService;
             _audioService = audioService;
             _resurrectionService = resurrectionService;
+            _localizationService = localizationService;
         }
 
         public UniTask Initialize()
@@ -107,7 +111,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
                 return;
             }
 
-            _gameCanvasUI.Initialize(sceneService, _playerProgressService, levelConfig, _cameraService, _gameResultService, _unitPreviewService, _adService, _audioService);
+            _gameCanvasUI.Initialize(sceneService, _playerProgressService, levelConfig, _cameraService, _gameResultService, _unitPreviewService, _adService, _audioService, _localizationService);
             _gameResultService.OnGameFinished += _gameCanvasUI.ShowResult;
         }
     }

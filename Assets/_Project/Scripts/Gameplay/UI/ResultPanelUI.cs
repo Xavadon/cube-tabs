@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Threading;
 using _Project.Scripts.Architecture.Services;
 using _Project.Scripts.Architecture.Services.Audio;
+using _Project.Scripts.Architecture.Services.Localization;
+using static _Project.Scripts.Architecture.Services.Localization.LocalizationKeys;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Services;
 using Cysharp.Threading.Tasks;
@@ -28,6 +30,9 @@ namespace _Project.Scripts.Gameplay.UI
         private GameObject _goldRewardPanel;
 
         [SerializeField]
+        private TextMeshProUGUI _goldRewardLabel;
+
+        [SerializeField]
         private TextMeshProUGUI _goldRewardText;
 
         [Header("Unit Reward")]
@@ -48,7 +53,13 @@ namespace _Project.Scripts.Gameplay.UI
         private Button _doubleRewardButton;
 
         [SerializeField]
+        private TextMeshProUGUI _doubleRewardButtonLabel;
+
+        [SerializeField]
         private Button _noThanksButton;
+
+        [SerializeField]
+        private TextMeshProUGUI _noThanksButtonLabel;
 
         [SerializeField]
         private float _elementDelay = 0.25f;
@@ -61,6 +72,7 @@ namespace _Project.Scripts.Gameplay.UI
         private IAdService _adService;
         private IPlayerProgressService _playerProgressService;
         private IAudioService _audioService;
+        private ILocalizationService _localization;
         private CancellationTokenSource _showCts;
         private readonly List<RewardUnitIconUI> _spawnedIcons = new();
         private int _goldEarned;
@@ -85,13 +97,15 @@ namespace _Project.Scripts.Gameplay.UI
             IUnitPreviewService unitPreviewService,
             IAdService adService,
             IPlayerProgressService playerProgressService,
-            IAudioService audioService)
+            IAudioService audioService,
+            ILocalizationService localization)
         {
             _sceneService = sceneService;
             _unitPreviewService = unitPreviewService;
             _adService = adService;
             _playerProgressService = playerProgressService;
             _audioService = audioService;
+            _localization = localization;
         }
 
         public void Show(GameResultData data, int currentLevelKills, int nextMilestoneKills)
@@ -115,14 +129,29 @@ namespace _Project.Scripts.Gameplay.UI
         {
             if (data.Result == GameResult.Victory)
             {
-                _titleText.text = "Победа";
+                _titleText.text = _localization.Get(Result.Victory);
             }
             else
             {
-                _titleText.text = "Поражение";
+                _titleText.text = _localization.Get(Result.Defeat);
             }
-            
+
+            if (_goldRewardLabel != null)
+            {
+                _goldRewardLabel.text = _localization.Get(Common.Reward);
+            }
+
             _goldRewardText.text = $"+{data.GoldEarned}";
+
+            if (_doubleRewardButtonLabel != null)
+            {
+                _doubleRewardButtonLabel.text = _localization.Get(Result.DoubleReward);
+            }
+
+            if (_noThanksButtonLabel != null)
+            {
+                _noThanksButtonLabel.text = _localization.Get(Result.NoThanks);
+            }
 
             bool hasRewards = data.ClaimedMilestones is { Length: > 0 };
 
@@ -138,7 +167,7 @@ namespace _Project.Scripts.Gameplay.UI
 
         private void PrepareUnitRewards(ClaimedMilestoneData[] milestones)
         {
-            _unitRewardLabel.text = "Новые бойцы:";
+            _unitRewardLabel.text = _localization.Get(Result.NewUnits);
 
             foreach (var milestone in milestones)
             {
@@ -158,11 +187,11 @@ namespace _Project.Scripts.Gameplay.UI
         {
             if (nextMilestoneKills > 0)
             {
-                _unitRewardLabel.text = $"{currentKills}/{nextMilestoneKills} убийств до награды";
+                _unitRewardLabel.text = _localization.Get(Result.Progress, currentKills, nextMilestoneKills);
             }
             else
             {
-                _unitRewardLabel.text = "Все награды получены";
+                _unitRewardLabel.text = _localization.Get(Result.AllRewards);
             }
         }
 
@@ -258,11 +287,29 @@ namespace _Project.Scripts.Gameplay.UI
         {
             HideAllElements();
             _titlePanel.SetActive(true);
-            _titleText.text = "Победа";
+
+            if (_localization != null)
+            {
+                _titleText.text = _localization.Get(Result.Victory);
+            }
+            else
+            {
+                _titleText.text = "Victory";
+            }
+
             _goldRewardPanel.SetActive(true);
             _goldRewardText.text = "+150";
             _unitRewardPanel.SetActive(true);
-            _unitRewardLabel.text = "Новые бойцы:";
+
+            if (_localization != null)
+            {
+                _unitRewardLabel.text = _localization.Get(Result.NewUnits);
+            }
+            else
+            {
+                _unitRewardLabel.text = "New Units:";
+            }
+
             _doubleRewardButton.gameObject.SetActive(true);
             _noThanksButton.gameObject.SetActive(true);
         }
@@ -272,11 +319,29 @@ namespace _Project.Scripts.Gameplay.UI
         {
             HideAllElements();
             _titlePanel.SetActive(true);
-            _titleText.text = "Победа";
+
+            if (_localization != null)
+            {
+                _titleText.text = _localization.Get(Result.Victory);
+            }
+            else
+            {
+                _titleText.text = "Victory";
+            }
+
             _goldRewardPanel.SetActive(true);
             _goldRewardText.text = "+75";
             _unitRewardPanel.SetActive(true);
-            _unitRewardLabel.text = "8/15 убийств до награды";
+
+            if (_localization != null)
+            {
+                _unitRewardLabel.text = _localization.Get(Result.Progress, 8, 15);
+            }
+            else
+            {
+                _unitRewardLabel.text = "8/15 kills to reward";
+            }
+
             _doubleRewardButton.gameObject.SetActive(true);
             _noThanksButton.gameObject.SetActive(true);
         }
@@ -286,11 +351,29 @@ namespace _Project.Scripts.Gameplay.UI
         {
             HideAllElements();
             _titlePanel.SetActive(true);
-            _titleText.text = "Поражение";
+
+            if (_localization != null)
+            {
+                _titleText.text = _localization.Get(Result.Defeat);
+            }
+            else
+            {
+                _titleText.text = "Defeat";
+            }
+
             _goldRewardPanel.SetActive(true);
             _goldRewardText.text = "+25";
             _unitRewardPanel.SetActive(true);
-            _unitRewardLabel.text = "3/10 убийств до награды";
+
+            if (_localization != null)
+            {
+                _unitRewardLabel.text = _localization.Get(Result.Progress, 3, 10);
+            }
+            else
+            {
+                _unitRewardLabel.text = "3/10 kills to reward";
+            }
+
             _doubleRewardButton.gameObject.SetActive(true);
             _noThanksButton.gameObject.SetActive(true);
         }

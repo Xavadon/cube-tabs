@@ -102,6 +102,7 @@ namespace _Project.Scripts.Gameplay.Services
             return UniTask.CompletedTask;
         }
 
+        // TODO: Аллоцирует List каждый вызов — кешировать или NonAlloc (FillArmyUnits с переиспользуемым списком)
         public List<ResolvedUnit> ArmyUnits
         {
             get
@@ -120,6 +121,7 @@ namespace _Project.Scripts.Gameplay.Services
             }
         }
 
+        // TODO: Аллоцирует List каждый вызов — кешировать или NonAlloc
         public List<ResolvedUnit> BacklogUnits
         {
             get

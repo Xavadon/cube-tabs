@@ -1,6 +1,7 @@
 using _Project.Scripts.Architecture.Services;
 using _Project.Scripts.Architecture.Services.Audio;
 using _Project.Scripts.Architecture.Services.Camera;
+using _Project.Scripts.Architecture.Services.Localization;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Services;
 using _Project.Scripts.Gameplay.Services.Scene;
@@ -45,7 +46,8 @@ namespace _Project.Scripts.Gameplay.UI
 
         public void Initialize(ISceneService sceneService, IPlayerProgressService playerProgressService,
             LevelConfig levelConfig, ICameraService cameraService, IGameResultService gameResultService,
-            IUnitPreviewService unitPreviewService, IAdService adService, IAudioService audioService)
+            IUnitPreviewService unitPreviewService, IAdService adService, IAudioService audioService,
+            ILocalizationService localizationService)
         {
             _playerProgressService = playerProgressService;
             _levelConfig = levelConfig;
@@ -53,7 +55,7 @@ namespace _Project.Scripts.Gameplay.UI
             _adService = adService;
             _audioService = audioService;
 
-            _resultPanel.Initialize(sceneService, unitPreviewService, adService, playerProgressService, audioService);
+            _resultPanel.Initialize(sceneService, unitPreviewService, adService, playerProgressService, audioService, localizationService);
             _resultPanel.gameObject.SetActive(false);
 
             if (_cameraModeButton != null)

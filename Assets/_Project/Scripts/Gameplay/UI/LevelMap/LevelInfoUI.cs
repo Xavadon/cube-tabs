@@ -1,5 +1,7 @@
 using System.Text;
 using _Project.Scripts.Architecture.Services.Audio;
+using _Project.Scripts.Architecture.Services.Localization;
+using static _Project.Scripts.Architecture.Services.Localization.LocalizationKeys;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Services;
 using _Project.Scripts.Gameplay.Services.Scene;
@@ -21,12 +23,16 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
         [SerializeField]
         private Button _playButton;
 
+        [SerializeField]
+        private TMP_Text _playButtonLabel;
+
         private readonly StringBuilder _statsBuilder = new();
 
         private IGameSessionService _sessionService;
         private ISceneService _sceneService;
         private IPlayerProgressService _progress;
         private IAudioService _audioService;
+        private ILocalizationService _localization;
         private LevelConfig _selectedLevel;
         
         private void OnEnable()
@@ -40,12 +46,13 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
         }
 
         public void Initalize(IGameSessionService sessionService, ISceneService sceneService,
-            IPlayerProgressService progress, IAudioService audioService)
+            IPlayerProgressService progress, IAudioService audioService, ILocalizationService localization)
         {
             _sessionService = sessionService;
             _sceneService = sceneService;
             _progress = progress;
             _audioService = audioService;
+            _localization = localization;
 
             gameObject.SetActive(false);
         }
@@ -69,6 +76,12 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
             gameObject.SetActive(true);
             _selectedLevel = level;
             _levelName.text = _selectedLevel.LevelName;
+
+            if (_playButtonLabel != null)
+            {
+                _playButtonLabel.text = _localization.Get(Level.Play);
+            }
+
             RefreshStats();
         }
 
@@ -83,14 +96,14 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
             var milestones = _selectedLevel.Milestones;
             if (milestones is { Length: > 0 })
             {
-                _statsBuilder.Append("Kills: ").AppendLine(currentKills.ToString());
+                _statsBuilder.AppendLine(_localization.Get(Level.Kills, currentKills));
 
                 for (int i = 0; i < milestones.Length; i++)
                 {
                     bool claimed = _progress.IsMilestoneClaimed(levelIndex, i);
                     string status = claimed ? "✓" : currentKills >= milestones[i].KillsRequired ? "!" : " ";
                     _statsBuilder.Append("[").Append(status).Append("] ")
-                        .Append(milestones[i].KillsRequired).AppendLine(" kills");
+                        .AppendLine(_localization.Get(Level.KillsMilestone, milestones[i].KillsRequired));
                 }
             }
 

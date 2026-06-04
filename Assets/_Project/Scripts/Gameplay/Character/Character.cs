@@ -69,6 +69,7 @@ namespace _Project.Scripts.Gameplay.Character
             _tierIndex = tierIndex;
             _tier = characterData.GetTier(tierIndex);
 
+            // TODO: LayerMask по строке — вынести в SO (CharacterLayerConfig) или прокинуть через Initialize
             int ownLayer;
             LayerMask targetLayer;
 
@@ -203,6 +204,7 @@ namespace _Project.Scripts.Gameplay.Character
         {
             TierData tier = _characterData.GetTier(_tierIndex);
 
+            // TODO: ServiceLocator нарушение — прокинуть IPlayerProgressService через Initialize или ICharacterRegistry
             if (CharacterType == CharacterType.Enemy && tier.KillReward > 0)
             {
                 Project.Get<IPlayerProgressService>().AddGold(tier.KillReward);

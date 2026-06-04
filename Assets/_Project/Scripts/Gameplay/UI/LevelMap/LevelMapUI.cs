@@ -1,4 +1,5 @@
 using _Project.Scripts.Architecture.Services.Audio;
+using _Project.Scripts.Architecture.Services.Localization;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Services;
 using _Project.Scripts.Gameplay.Services.Scene;
@@ -21,7 +22,7 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
         private IAudioService _audioService;
 
         public void Initalize(LevelCatalog catalog, IGameSessionService sessionService, ISceneService sceneService,
-            IPlayerProgressService progress, IAudioService audioService)
+            IPlayerProgressService progress, IAudioService audioService, ILocalizationService localization)
         {
             _audioService = audioService;
 
@@ -45,7 +46,7 @@ namespace _Project.Scripts.Gameplay.UI.LevelMap
                 }
             }
 
-            _levelInfo.Initalize(sessionService, sceneService, progress, audioService);
+            _levelInfo.Initalize(sessionService, sceneService, progress, audioService, localization);
 
             if (_closeButton != null)
             {

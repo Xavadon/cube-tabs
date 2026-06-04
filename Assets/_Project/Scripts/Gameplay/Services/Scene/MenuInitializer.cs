@@ -1,5 +1,6 @@
 using _Project.Scripts.Architecture.Services;
 using _Project.Scripts.Architecture.Services.Audio;
+using _Project.Scripts.Architecture.Services.Localization;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.UI;
@@ -23,6 +24,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
         private readonly IUnitPreviewService _unitPreviewService;
         private readonly IAdService _adService;
         private readonly IAudioService _audioService;
+        private readonly ILocalizationService _localizationService;
 
         public MenuInitializer(
             IGameSessionService gameSessionService,
@@ -30,7 +32,8 @@ namespace _Project.Scripts.Gameplay.Services.Scene
             IPurchaseService purchaseService,
             IUnitPreviewService unitPreviewService,
             IAdService adService,
-            IAudioService audioService)
+            IAudioService audioService,
+            ILocalizationService localizationService)
         {
             _gameSessionService = gameSessionService;
             _playerProgressService = playerProgressService;
@@ -38,6 +41,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
             _unitPreviewService = unitPreviewService;
             _adService = adService;
             _audioService = audioService;
+            _localizationService = localizationService;
         }
 
         public UniTask Initialize()
@@ -73,7 +77,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 
             if (levelMap != null)
             {
-                levelMap.Initalize(levelCatalog, _gameSessionService, sceneService, _playerProgressService, _audioService);
+                levelMap.Initalize(levelCatalog, _gameSessionService, sceneService, _playerProgressService, _audioService, _localizationService);
             }
             else
             {
@@ -82,7 +86,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 
             if (shop != null)
             {
-                shop.Initialize(_playerProgressService, _purchaseService, _unitPreviewService, shopCatalog, _audioService);
+                shop.Initialize(_playerProgressService, _purchaseService, _unitPreviewService, shopCatalog, _audioService, _localizationService);
             }
             else
             {
@@ -91,7 +95,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
 
             if (army != null)
             {
-                army.Initialize(_playerProgressService, shopCatalog, _unitPreviewService, _adService, _audioService);
+                army.Initialize(_playerProgressService, shopCatalog, _unitPreviewService, _adService, _audioService, _localizationService);
             }
             else
             {

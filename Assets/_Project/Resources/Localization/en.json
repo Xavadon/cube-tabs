@@ -1,0 +1,35 @@
+{
+  "entries": [
+    { "key": "ui.army.title", "value": "Army" },
+    { "key": "ui.army.slots", "value": "Army {0}/{1}" },
+    { "key": "ui.army.to_army", "value": "To Army" },
+    { "key": "ui.army.to_reserve", "value": "To Reserve" },
+    { "key": "ui.army.buy", "value": "Buy noob" },
+    { "key": "ui.army.upgrade_slot", "value": "Buy Slot" },
+
+    { "key": "ui.stats.hp", "value": "HP" },
+    { "key": "ui.stats.damage", "value": "Damage" },
+    { "key": "ui.stats.speed", "value": "Speed" },
+
+    { "key": "ui.result.victory", "value": "Victory" },
+    { "key": "ui.result.defeat", "value": "Defeat" },
+    { "key": "ui.result.new_units", "value": "New Units:" },
+    { "key": "ui.result.progress", "value": "{0}/{1} kills to reward" },
+    { "key": "ui.result.all_rewards", "value": "All rewards claimed" },
+    { "key": "ui.result.double_reward", "value": "Double Reward" },
+    { "key": "ui.result.no_thanks", "value": "No Thanks" },
+
+    { "key": "ui.level.kills", "value": "Kills: {0}" },
+    { "key": "ui.level.kills_milestone", "value": "{0} kills" },
+    { "key": "ui.level.play", "value": "Play" },
+
+    { "key": "ui.shop.title", "value": "Shop" },
+    { "key": "ui.shop.remove_ads", "value": "Remove Ads" },
+
+    { "key": "ui.evolution.tier", "value": "{0} T{1}" },
+
+    { "key": "ui.common.close", "value": "Close" },
+    { "key": "ui.common.gold", "value": "Gold" },
+    { "key": "ui.common.reward", "value": "Reward" }
+  ]
+}
