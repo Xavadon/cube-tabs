@@ -40,8 +40,12 @@ namespace _Project.Scripts.Architecture.Services
             onComplete?.Invoke();
 #else
             GP_Ads.ShowFullscreen(
-                onFullscreenStart: null,
-                onFullscreenClose: _ => onComplete?.Invoke()
+                onFullscreenStart: PauseGame,
+                onFullscreenClose: _ =>
+                {
+                    ResumeGame();
+                    onComplete?.Invoke();
+                }
             );
 #endif
         }
@@ -56,14 +60,27 @@ namespace _Project.Scripts.Architecture.Services
             GP_Ads.ShowRewarded(
                 idOrTag: tag,
                 onRewardedReward: null,
-                onRewardedStart: null,
+                onRewardedStart: PauseGame,
                 onRewardedClose: success =>
                 {
+                    ResumeGame();
                     Debug.Log($"[AdService] onRewardedClose: success={success}");
                     onComplete?.Invoke(success);
                 }
             );
 #endif
+        }
+
+        private void PauseGame()
+        {
+            Time.timeScale = 0f;
+            AudioListener.pause = true;
+        }
+
+        private void ResumeGame()
+        {
+            Time.timeScale = 1f;
+            AudioListener.pause = false;
         }
     }
 }
