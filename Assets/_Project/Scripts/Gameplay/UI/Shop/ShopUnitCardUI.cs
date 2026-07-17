@@ -26,7 +26,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             _nameLabel.text = unitName;
 
             if (_priceLabel != null)
-                _priceLabel.text = PriceFormat.WithIcon(price);
+                _priceLabel.text = price;
 
             _onClick = onClick;
             _button.interactable = canAfford;

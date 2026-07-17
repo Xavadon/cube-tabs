@@ -100,6 +100,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
                 {
                     Debug.Log("[ShopController] RemoveAds purchase success");
                     _progress.GrantItemReward(_removeAdsItem);
+                    _view.ShowPurchaseSuccessItem(_removeAdsItem.Name, _removeAdsItem.Icon);
                 },
                 onFailure: () => Debug.LogWarning("[ShopController] RemoveAds purchase failed"));
         }
@@ -148,6 +149,8 @@ namespace _Project.Scripts.Gameplay.UI.Shop
                 {
                     Debug.Log($"[ShopController] Unit purchase success: {hero.Name}");
                     _progress.GrantUnit(hero);
+                    var portrait = _previewService.GetPortrait(hero, 0);
+                    _view.ShowPurchaseSuccessUnit(hero.Name, portrait);
                 },
                 onFailure: () => Debug.LogWarning($"[ShopController] Unit purchase failed: {hero.Name}"));
         }
@@ -155,7 +158,11 @@ namespace _Project.Scripts.Gameplay.UI.Shop
         private void BuyItem(ShopItemData item)
         {
             _purchaseService.Purchase(item,
-                onSuccess: () => _progress.GrantItemReward(item),
+                onSuccess: () =>
+                {
+                    _progress.GrantItemReward(item);
+                    _view.ShowPurchaseSuccessItem(item.Name, item.Icon);
+                },
                 onFailure: null);
         }
 

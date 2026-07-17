@@ -42,7 +42,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
                 _iconImage.sprite = icon;
 
             if (_priceLabel != null)
-                _priceLabel.text = PriceFormat.WithIcon(price);
+                _priceLabel.text = price;
 
         }
 

@@ -13,5 +13,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
         void AddItemCard(string name, Sprite icon, string price, Action onBuy);
         void SetRemoveAdsVisible(bool visible);
         void SetRemoveAdsInteractable(bool interactable);
+        void ShowPurchaseSuccessItem(string itemName, Sprite icon);
+        void ShowPurchaseSuccessUnit(string unitName, RenderTexture portrait);
     }
 }

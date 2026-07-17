@@ -25,6 +25,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
         private readonly IAudioService _audioService;
         private readonly IResurrectionService _resurrectionService;
         private readonly ILocalizationService _localizationService;
+        private readonly ITimeScaleService _timeScaleService;
 
         private GameCanvasUI _gameCanvasUI;
 
@@ -38,7 +39,8 @@ namespace _Project.Scripts.Gameplay.Services.Scene
             IAdService adService,
             IAudioService audioService,
             IResurrectionService resurrectionService,
-            ILocalizationService localizationService)
+            ILocalizationService localizationService,
+            ITimeScaleService timeScaleService)
         {
             _characterSpawner = characterSpawner;
             _gameSessionService = gameSessionService;
@@ -50,6 +52,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
             _audioService = audioService;
             _resurrectionService = resurrectionService;
             _localizationService = localizationService;
+            _timeScaleService = timeScaleService;
         }
 
         public UniTask Initialize()
@@ -111,7 +114,7 @@ namespace _Project.Scripts.Gameplay.Services.Scene
                 return;
             }
 
-            _gameCanvasUI.Initialize(sceneService, _playerProgressService, levelConfig, _cameraService, _gameResultService, _unitPreviewService, _adService, _audioService, _localizationService);
+            _gameCanvasUI.Initialize(sceneService, _playerProgressService, levelConfig, _cameraService, _gameResultService, _unitPreviewService, _adService, _audioService, _localizationService, _timeScaleService);
             _gameResultService.OnGameFinished += _gameCanvasUI.ShowResult;
         }
     }

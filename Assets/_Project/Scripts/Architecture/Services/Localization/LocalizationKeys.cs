@@ -41,6 +41,9 @@ namespace _Project.Scripts.Architecture.Services.Localization
         {
             public const string Title = "ui.shop.title";
             public const string RemoveAds = "ui.shop.remove_ads";
+            public const string PurchaseSuccessTitle = "ui.shop.purchase_success_title";
+            public const string PurchaseSuccessReward = "ui.shop.purchase_success_reward";
+            public const string PurchaseSuccessOk = "ui.shop.purchase_success_ok";
         }
 
         public static class Evolution

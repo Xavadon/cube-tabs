@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using _Project.Scripts.Gameplay.Character.Data;
 using Cysharp.Threading.Tasks;
 using GamePush;
@@ -10,6 +11,9 @@ namespace _Project.Scripts.Architecture.Services
     public class GamePushPurchaseService : IPurchaseService
     {
         private readonly Dictionary<string, FetchProducts> _productsByTag = new();
+
+        // Незакрытые покупки платформы (оплачено, ещё не потреблено). Ключ — tag или productId.
+        private readonly List<string> _pendingPurchases = new();
 
         public async UniTask Initialize()
         {
@@ -35,7 +39,7 @@ namespace _Project.Scripts.Architecture.Services
                     {
                         foreach (var p in products)
                         {
-                            Debug.Log($"[GamePushPurchaseService] Product: id={p.id}, tag={p.tag}, name={p.name}, price={p.price}");
+                            Debug.Log($"[GamePushPurchaseService] Product: id={p.id}, tag={p.tag}, name={p.name}, price={p.price}, currency={p.currency}, currencySymbol={p.currencySymbol}");
                             _productsByTag[p.id.ToString()] = p;
                             if (!string.IsNullOrEmpty(p.tag))
                                 _productsByTag[p.tag] = p;
@@ -50,7 +54,8 @@ namespace _Project.Scripts.Architecture.Services
                 },
                 onFetchPlayerPurchases: purchases =>
                 {
-                    Debug.Log($"[GamePushPurchaseService] Purchases count: {purchases?.Count ?? 0}");
+                    Debug.Log($"[GamePushPurchaseService] Pending purchases count: {purchases?.Count ?? 0}");
+                    CachePendingPurchases(purchases);
                 }
             );
 
@@ -59,6 +64,52 @@ namespace _Project.Scripts.Architecture.Services
             await UniTask.CompletedTask;
 #endif
             Debug.Log("[GamePushPurchaseService] Initialized");
+        }
+
+        private void CachePendingPurchases(List<FetchPlayerPurchases> purchases)
+        {
+            _pendingPurchases.Clear();
+
+            if (purchases == null)
+                return;
+
+            foreach (var p in purchases)
+            {
+                string key = !string.IsNullOrEmpty(p.tag) ? p.tag : p.productId.ToString();
+                if (!string.IsNullOrEmpty(key))
+                {
+                    _pendingPurchases.Add(key);
+                    Debug.Log($"[GamePushPurchaseService] Pending: {key}");
+                }
+            }
+        }
+
+        public UniTask RestorePendingPurchases(Func<string, bool> fulfill)
+        {
+#if !UNITY_EDITOR
+            if (_pendingPurchases.Count == 0)
+            {
+                Debug.Log("[GamePushPurchaseService] No pending purchases to restore");
+                return UniTask.CompletedTask;
+            }
+
+            foreach (var productId in _pendingPurchases.ToList())
+            {
+                bool applied = fulfill != null && fulfill(productId);
+
+                if (applied)
+                {
+                    Debug.Log($"[GamePushPurchaseService] Restored '{productId}', consuming");
+                    ConsumeSilent(productId);
+                    _pendingPurchases.Remove(productId);
+                }
+                else
+                {
+                    Debug.LogWarning($"[GamePushPurchaseService] Pending '{productId}' has no catalog reward, left unconsumed");
+                }
+            }
+#endif
+            return UniTask.CompletedTask;
         }
 
         public string GetPrice(string productId, string fallback)
@@ -71,8 +122,14 @@ namespace _Project.Scripts.Architecture.Services
 
             if (_productsByTag.TryGetValue(productId, out var product))
             {
-                Debug.Log($"[GamePushPurchaseService] GetPrice: found '{productId}' -> {product.price}");
-                return product.price.ToString();
+                // Валюта берётся автоматически из свойств продукта (SDK), не хардкодится
+                // (требование Yandex п.3.8: название/иконка валюты — из IProduct).
+                string priceStr = product.price.ToString();
+                string symbol = product.currencySymbol;
+
+                string result = string.IsNullOrEmpty(symbol) ? priceStr : $"{priceStr} {symbol}";
+                Debug.Log($"[GamePushPurchaseService] GetPrice: found '{productId}' -> {result}");
+                return result;
             }
 
             Debug.LogWarning($"[GamePushPurchaseService] GetPrice: '{productId}' not found in cache ({_productsByTag.Count} products), using fallback '{fallback}'");
@@ -99,7 +156,9 @@ namespace _Project.Scripts.Architecture.Services
                 onPurchaseSuccess: _ =>
                 {
                     Debug.Log($"[GamePushPurchaseService] Purchase success: {item.YandexProductId}");
-                    ConsumeIfNeeded(item, onSuccess);
+                    // Порядок по докам Yandex: сначала выдать награду, потом consume.
+                    onSuccess?.Invoke();
+                    ConsumeSilent(item.YandexProductId);
                 },
                 onPurchaseError: () =>
                 {
@@ -107,28 +166,6 @@ namespace _Project.Scripts.Architecture.Services
                     onFailure?.Invoke();
                 }
             );
-#endif
-        }
-
-        private void ConsumeIfNeeded(ShopItemData item, Action onSuccess)
-        {
-#if !UNITY_EDITOR
-            // Consumable товары (золото, слоты) нужно "потребить"
-            GP_Payments.Consume(
-                idOrTag: item.YandexProductId,
-                onConsumeSuccess: _ =>
-                {
-                    Debug.Log($"[GamePushPurchaseService] Consumed: {item.YandexProductId}");
-                    onSuccess?.Invoke();
-                },
-                onConsumeError: () =>
-                {
-                    Debug.LogWarning($"[GamePushPurchaseService] Consume error for {item.YandexProductId}, but purchase succeeded");
-                    onSuccess?.Invoke();
-                }
-            );
-#else
-            onSuccess?.Invoke();
 #endif
         }
 
@@ -152,7 +189,9 @@ namespace _Project.Scripts.Architecture.Services
                 onPurchaseSuccess: _ =>
                 {
                     Debug.Log($"[GamePushPurchaseService] Unit purchase success: {unit.YandexProductId}");
-                    ConsumeUnit(unit, onSuccess);
+                    // Сначала выдать награду, потом consume.
+                    onSuccess?.Invoke();
+                    ConsumeSilent(unit.YandexProductId);
                 },
                 onPurchaseError: () =>
                 {
@@ -163,24 +202,14 @@ namespace _Project.Scripts.Architecture.Services
 #endif
         }
 
-        private void ConsumeUnit(CharacterData unit, Action onSuccess)
+        private void ConsumeSilent(string productId)
         {
 #if !UNITY_EDITOR
             GP_Payments.Consume(
-                idOrTag: unit.YandexProductId,
-                onConsumeSuccess: _ =>
-                {
-                    Debug.Log($"[GamePushPurchaseService] Consumed unit: {unit.YandexProductId}");
-                    onSuccess?.Invoke();
-                },
-                onConsumeError: () =>
-                {
-                    Debug.LogWarning($"[GamePushPurchaseService] Consume unit error for {unit.YandexProductId}, but purchase succeeded");
-                    onSuccess?.Invoke();
-                }
+                idOrTag: productId,
+                onConsumeSuccess: _ => Debug.Log($"[GamePushPurchaseService] Consumed: {productId}"),
+                onConsumeError: () => Debug.LogWarning($"[GamePushPurchaseService] Consume error: {productId}")
             );
-#else
-            onSuccess?.Invoke();
 #endif
         }
     }

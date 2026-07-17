@@ -60,6 +60,7 @@ namespace _Project.Scripts.Gameplay.Services
         private const string CatalogPath = "Data/ShopCatalog";
 
         private readonly ISaveService _saveService;
+        private readonly IPurchaseService _purchaseService;
 
         private ShopCatalog _catalog;
         private SaveData _saveData;
@@ -73,19 +74,20 @@ namespace _Project.Scripts.Gameplay.Services
         public event Action OnArmyChanged;
         public event Action OnOwnedChanged;
 
-        public PlayerProgressService(ISaveService saveService)
+        public PlayerProgressService(ISaveService saveService, IPurchaseService purchaseService)
         {
             _saveService = saveService;
+            _purchaseService = purchaseService;
         }
 
-        public UniTask Initialize()
+        public async UniTask Initialize()
         {
             _catalog = Resources.Load<ShopCatalog>(CatalogPath);
 
             if (_catalog == null)
             {
                 Debug.LogError($"[PlayerProgressService] ShopCatalog not found at '{CatalogPath}'");
-                return UniTask.CompletedTask;
+                return;
             }
 
             if (_saveService.HasSave())
@@ -99,7 +101,44 @@ namespace _Project.Scripts.Gameplay.Services
             }
 
             Debug.Log($"[PlayerProgressService] Initialized. Gold: {Gold}, Owned: {_saveData.OwnedUnits.Count}, Army: {_saveData.ArmyInstanceIds.Count}, Slots: {ArmySlots}");
-            return UniTask.CompletedTask;
+
+            // Незакрытые покупки (оплачено, но не выдано — вкладку закрыли до consume): выдать + потребить.
+            await _purchaseService.RestorePendingPurchases(TryFulfillPurchase);
+        }
+
+        // Маппинг productId платформы -> награда из каталога. Возвращает true если награда выдана.
+        private bool TryFulfillPurchase(string productId)
+        {
+            if (string.IsNullOrEmpty(productId))
+                return false;
+
+            if (_catalog.ShopItems != null)
+            {
+                foreach (var item in _catalog.ShopItems)
+                {
+                    if (item.YandexProductId == productId)
+                    {
+                        Debug.Log($"[PlayerProgressService] Fulfilling pending item purchase: {item.Name}");
+                        GrantItemReward(item);
+                        return true;
+                    }
+                }
+            }
+
+            if (_catalog.UniqueHeroes != null)
+            {
+                foreach (var hero in _catalog.UniqueHeroes)
+                {
+                    if (hero.YandexProductId == productId)
+                    {
+                        Debug.Log($"[PlayerProgressService] Fulfilling pending unit purchase: {hero.Name}");
+                        GrantUnit(hero);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         // TODO: Аллоцирует List каждый вызов — кешировать или NonAlloc (FillArmyUnits с переиспользуемым списком)

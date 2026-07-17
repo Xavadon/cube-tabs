@@ -2,13 +2,13 @@ using System;
 using _Project.Scripts.Gameplay.Services;
 using Cysharp.Threading.Tasks;
 using GamePush;
-using UnityEngine;
 
 namespace _Project.Scripts.Architecture.Services
 {
     public class AdService : IAdService
     {
         private readonly IPlayerProgressService _progress;
+        private readonly ITimeScaleService _timeScaleService;
 
 #if UNITY_EDITOR
         public bool IsInterstitialAvailable => true;
@@ -18,9 +18,10 @@ namespace _Project.Scripts.Architecture.Services
         public bool IsRewardedAvailable => GP_Ads.IsRewardedAvailable();
 #endif
 
-        public AdService(IPlayerProgressService progress)
+        public AdService(IPlayerProgressService progress, ITimeScaleService timeScaleService)
         {
             _progress = progress;
+            _timeScaleService = timeScaleService;
         }
 
         public UniTask Initialize()
@@ -39,8 +40,9 @@ namespace _Project.Scripts.Architecture.Services
 #if UNITY_EDITOR
             onComplete?.Invoke();
 #else
+            PauseGame();
             GP_Ads.ShowFullscreen(
-                onFullscreenStart: PauseGame,
+                onFullscreenStart: null,
                 onFullscreenClose: _ =>
                 {
                     ResumeGame();
@@ -49,22 +51,20 @@ namespace _Project.Scripts.Architecture.Services
             );
 #endif
         }
-
+        
         public void ShowRewarded(string tag, Action<bool> onComplete)
         {
 #if UNITY_EDITOR
             onComplete?.Invoke(true);
 #else
-            Debug.Log($"[AdService] ShowRewarded: tag={tag}");
-
+            PauseGame();
             GP_Ads.ShowRewarded(
                 idOrTag: tag,
                 onRewardedReward: null,
-                onRewardedStart: PauseGame,
+                onRewardedStart: null,
                 onRewardedClose: success =>
                 {
                     ResumeGame();
-                    Debug.Log($"[AdService] onRewardedClose: success={success}");
                     onComplete?.Invoke(success);
                 }
             );
@@ -73,14 +73,14 @@ namespace _Project.Scripts.Architecture.Services
 
         private void PauseGame()
         {
-            Time.timeScale = 0f;
-            AudioListener.pause = true;
+            _timeScaleService.Pause();
+            GP_Game.Pause();
         }
 
         private void ResumeGame()
         {
-            Time.timeScale = 1f;
-            AudioListener.pause = false;
+            _timeScaleService.Resume();
+            GP_Game.Resume();
         }
     }
 }

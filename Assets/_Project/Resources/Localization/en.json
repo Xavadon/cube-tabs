@@ -25,6 +25,9 @@
 
     { "key": "ui.shop.title", "value": "Shop" },
     { "key": "ui.shop.remove_ads", "value": "Remove Ads" },
+    { "key": "ui.shop.purchase_success_title", "value": "Purchase successful!" },
+    { "key": "ui.shop.purchase_success_reward", "value": "{0} received" },
+    { "key": "ui.shop.purchase_success_ok", "value": "Great!" },
 
     { "key": "ui.evolution.tier", "value": "{0} T{1}" },
 

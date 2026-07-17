@@ -38,6 +38,10 @@ namespace _Project.Scripts.Gameplay.UI.Shop
         [SerializeField]
         private Button _closeButton;
 
+        [Header("Purchase Success Popup")]
+        [SerializeField]
+        private PurchaseSuccessPopup _purchaseSuccessPopup;
+
         private ShopScreenController _controller;
         private IPlayerProgressService _progress;
         private IAudioService _audioService;
@@ -58,6 +62,9 @@ namespace _Project.Scripts.Gameplay.UI.Shop
 
             _progress.OnGoldChanged += RefreshGold;
             RefreshGold();
+
+            if (_purchaseSuccessPopup != null)
+                _purchaseSuccessPopup.Initialize(audioService, localization);
 
             _controller = new ShopScreenController(
                 this, progress, purchaseService, previewService, catalog);
@@ -153,6 +160,18 @@ namespace _Project.Scripts.Gameplay.UI.Shop
         {
             if (_removeAdsButton != null)
                 _removeAdsButton.interactable = interactable;
+        }
+
+        public void ShowPurchaseSuccessItem(string itemName, Sprite icon)
+        {
+            if (_purchaseSuccessPopup != null)
+                _purchaseSuccessPopup.ShowItem(itemName, icon);
+        }
+
+        public void ShowPurchaseSuccessUnit(string unitName, RenderTexture portrait)
+        {
+            if (_purchaseSuccessPopup != null)
+                _purchaseSuccessPopup.ShowUnit(unitName, portrait);
         }
     }
 }

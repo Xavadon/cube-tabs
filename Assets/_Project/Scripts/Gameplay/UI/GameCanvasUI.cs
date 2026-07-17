@@ -16,8 +16,6 @@ namespace _Project.Scripts.Gameplay.UI
         private const float SpeedBoostMultiplier = 2f;
         private const float SpeedBoostDuration = 300f;
 
-        private static float _speedBoostEndRealtime;
-
         [SerializeField]
         private ResultPanelUI _resultPanel;
 
@@ -42,29 +40,29 @@ namespace _Project.Scripts.Gameplay.UI
         private IGameResultService _gameResultService;
         private IAdService _adService;
         private IAudioService _audioService;
+        private ITimeScaleService _timeScaleService;
+        private ICameraService _cameraService;
         private bool _battleActive;
 
         public void Initialize(ISceneService sceneService, IPlayerProgressService playerProgressService,
             LevelConfig levelConfig, ICameraService cameraService, IGameResultService gameResultService,
             IUnitPreviewService unitPreviewService, IAdService adService, IAudioService audioService,
-            ILocalizationService localizationService)
+            ILocalizationService localizationService, ITimeScaleService timeScaleService)
         {
             _playerProgressService = playerProgressService;
             _levelConfig = levelConfig;
             _gameResultService = gameResultService;
             _adService = adService;
             _audioService = audioService;
+            _timeScaleService = timeScaleService;
+            _cameraService = cameraService;
 
             _resultPanel.Initialize(sceneService, unitPreviewService, adService, playerProgressService, audioService, localizationService);
             _resultPanel.gameObject.SetActive(false);
 
             if (_cameraModeButton != null)
             {
-                _cameraModeButton.onClick.AddListener(() =>
-                {
-                    _audioService?.PlayUIClick();
-                    cameraService.CycleMode();
-                });
+                _cameraModeButton.onClick.AddListener(OnCameraModeClicked);
             }
 
             if (_surrenderButton != null)
@@ -77,11 +75,21 @@ namespace _Project.Scripts.Gameplay.UI
                 _speedBoostButton.onClick.AddListener(OnSpeedBoostClicked);
             }
 
+            _timeScaleService.OnSpeedBoostEnded += OnSpeedBoostEnded;
+
             _battleActive = true;
             RefreshSpeedBoostUI();
+        }
 
-            float remaining = _speedBoostEndRealtime - Time.realtimeSinceStartup;
-            Debug.Log($"[GameCanvasUI] Initialize: boost remaining = {remaining:F1}s, timeScale = {Time.timeScale}");
+        private void OnSpeedBoostEnded()
+        {
+            RefreshSpeedBoostUI();
+        }
+
+        private void OnCameraModeClicked()
+        {
+            _audioService?.PlayUIClick();
+            _cameraService.CycleMode();
         }
 
         private void OnSurrenderClicked()
@@ -105,46 +113,39 @@ namespace _Project.Scripts.Gameplay.UI
                 return;
             }
 
-            Debug.Log("[GameCanvasUI] Showing rewarded ad for speed boost");
-            _adService.ShowRewarded("SPEED_BOOST", success =>
+            _adService.ShowRewarded("SPEED_BOOST", OnSpeedBoostRewardReceived);
+        }
+
+        private void OnSpeedBoostRewardReceived(bool success)
+        {
+            if (success)
             {
-                Debug.Log($"[GameCanvasUI] Rewarded callback: success={success}");
-                if (success)
-                {
-                    Debug.Log("[GameCanvasUI] Activating speed boost");
-                    _speedBoostEndRealtime = Time.realtimeSinceStartup + SpeedBoostDuration;
-                    RefreshSpeedBoostUI();
-                }
-            });
+                _timeScaleService.StartSpeedBoost(SpeedBoostDuration, SpeedBoostMultiplier);
+                RefreshSpeedBoostUI();
+            }
         }
 
         private void Update()
         {
             if (!_battleActive)
+            {
                 return;
+            }
 
-            float remaining = _speedBoostEndRealtime - Time.realtimeSinceStartup;
-
+            float remaining = _timeScaleService.SpeedBoostRemainingSeconds;
             if (remaining > 0f)
             {
-                Time.timeScale = SpeedBoostMultiplier;
                 UpdateTimerText(remaining);
-            }
-            else if (Time.timeScale > 1f)
-            {
-                Time.timeScale = 1f;
-                RefreshSpeedBoostUI();
             }
         }
 
         private void RefreshSpeedBoostUI()
         {
-            float remaining = _speedBoostEndRealtime - Time.realtimeSinceStartup;
+            float remaining = _timeScaleService.SpeedBoostRemainingSeconds;
             bool boostActive = remaining > 0f;
 
             if (_speedBoostButton != null)
             {
-                //_speedBoostButton.gameObject.SetActive(!boostActive);
                 _speedBoostButton.interactable = !boostActive;
             }
 
@@ -155,7 +156,6 @@ namespace _Project.Scripts.Gameplay.UI
 
             if (boostActive)
             {
-                Time.timeScale = SpeedBoostMultiplier;
                 UpdateTimerText(remaining);
             }
         }
@@ -173,19 +173,33 @@ namespace _Project.Scripts.Gameplay.UI
         private void OnDisable()
         {
             _battleActive = false;
-            Time.timeScale = 1f;
+
+            if (_timeScaleService != null)
+            {
+                _timeScaleService.OnSpeedBoostEnded -= OnSpeedBoostEnded;
+                _timeScaleService.StopSpeedBoost();
+            }
+
+            if (_cameraModeButton != null)
+            {
+                _cameraModeButton.onClick.RemoveListener(OnCameraModeClicked);
+            }
 
             if (_surrenderButton != null)
+            {
                 _surrenderButton.onClick.RemoveListener(OnSurrenderClicked);
+            }
 
             if (_speedBoostButton != null)
+            {
                 _speedBoostButton.onClick.RemoveListener(OnSpeedBoostClicked);
+            }
         }
 
         public void ShowResult(GameResultData data)
         {
             _battleActive = false;
-            Time.timeScale = 1f;
+            _timeScaleService.StopSpeedBoost();
 
             if (_surrenderButton != null)
                 _surrenderButton.gameObject.SetActive(false);
