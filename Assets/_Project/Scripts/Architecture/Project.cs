@@ -21,6 +21,10 @@ namespace _Project.Scripts.Architecture
             var sceneService = _container.Resolve<ISceneService>();
             await sceneService.LoadMenuScene();
 
+            // Меню отрисовано — только теперь игра считается загруженной для платформы (Yandex п.1.19).
+            await UniTask.DelayFrame(2);
+            PlatformSignals.GameReady();
+
             Debug.Log("[Project] Приложение инициализировано успешно");
         }
         

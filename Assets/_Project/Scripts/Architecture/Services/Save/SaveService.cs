@@ -61,23 +61,61 @@ namespace _Project.Scripts.Architecture.Services.Save
         public SaveData Load()
         {
             // Приоритет облаку — оно кросс-девайс. Иначе локаль.
-            string json = CloudHasSave()
-                ? GP_Player.GetString(CloudKey)
-                : PlayerPrefs.GetString(LocalKey, string.Empty);
+            if (CloudHasSave() && TryParse(GP_Player.GetString(CloudKey), out SaveData cloudData))
+                return cloudData;
 
-            if (string.IsNullOrEmpty(json))
-                return new SaveData();
+            if (TryParse(PlayerPrefs.GetString(LocalKey, string.Empty), out SaveData localData))
+                return localData;
 
-            SaveData data = JsonUtility.FromJson<SaveData>(json);
+            return new SaveData();
+        }
+
+        private static bool TryParse(string json, out SaveData data)
+        {
+            data = null;
+
+            if (!IsJsonObject(json))
+                return false;
+
+            try
+            {
+                data = JsonUtility.FromJson<SaveData>(json);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"[SaveService] Save unparseable ({e.Message}), starting fresh");
+                return false;
+            }
 
             if (data == null)
             {
                 Debug.LogWarning("[SaveService] Save unparseable, starting fresh");
-                return new SaveData();
+                return false;
             }
 
             Debug.Log($"[SaveService] Loaded: {json}");
-            return data;
+            return true;
+        }
+
+        /// <summary>
+        /// JsonUtility кидает "JSON must represent an object type" на любом не-объекте.
+        /// Отдельная проверка нужна из-за GamePush: в редакторе GP_Prefs на отсутствующем
+        /// ключе возвращает дефолт "0", а не пустую строку.
+        /// </summary>
+        private static bool IsJsonObject(string json)
+        {
+            return !string.IsNullOrEmpty(json) && json.TrimStart().StartsWith("{");
+        }
+
+        /// <summary>
+        /// Пуш в облако без учёта кулдауна. Троттлинг нужен для частых автосейвов, но перед
+        /// consume покупки данные обязаны уехать сразу — иначе награда теряется навсегда.
+        /// </summary>
+        public void ForceSync()
+        {
+            _lastSyncTime = Time.realtimeSinceStartup;
+            GP_Player.Sync(SyncStorageType.cloud);
+            Debug.Log("[SaveService] Forced cloud sync");
         }
 
         public bool HasSave()
@@ -99,13 +137,18 @@ namespace _Project.Scripts.Architecture.Services.Save
         /// <summary>
         /// Есть ли валидный сейв в облаке. GP_Player.Has возвращает bool и безопасен при
         /// отсутствии поля (GetString при undefined роняет jslib — поэтому только после Has).
+        /// В редакторе облака нет: Has всегда true, а GetString отдаёт мусорный дефолт "0".
         /// </summary>
         private bool CloudHasSave()
         {
+#if UNITY_EDITOR
+            return false;
+#else
             if (!GP_Player.Has(CloudKey))
                 return false;
 
-            return !string.IsNullOrEmpty(GP_Player.GetString(CloudKey));
+            return IsJsonObject(GP_Player.GetString(CloudKey));
+#endif
         }
 
         /// <summary>

@@ -68,6 +68,8 @@ namespace _Project.Scripts.Architecture.Services.Scene
 
         public async UniTask LoadMenuScene()
         {
+            // Выход из боя в меню — геймплей закончился (Yandex GameplayAPI).
+            PlatformSignals.GameplayStop();
             _playerProgressService.Save();
             _cameraService.ResetToDefault();
             await LoadSceneAsync("Menu");

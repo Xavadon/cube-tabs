@@ -80,14 +80,14 @@ namespace _Project.Scripts.Gameplay.Services
             _purchaseService = purchaseService;
         }
 
-        public async UniTask Initialize()
+        public UniTask Initialize()
         {
             _catalog = Resources.Load<ShopCatalog>(CatalogPath);
 
             if (_catalog == null)
             {
                 Debug.LogError($"[PlayerProgressService] ShopCatalog not found at '{CatalogPath}'");
-                return;
+                return UniTask.CompletedTask;
             }
 
             if (_saveService.HasSave())
@@ -103,14 +103,18 @@ namespace _Project.Scripts.Gameplay.Services
             Debug.Log($"[PlayerProgressService] Initialized. Gold: {Gold}, Owned: {_saveData.OwnedUnits.Count}, Army: {_saveData.ArmyInstanceIds.Count}, Slots: {ArmySlots}");
 
             // Незакрытые покупки (оплачено, но не выдано — вкладку закрыли до consume): выдать + потребить.
-            await _purchaseService.RestorePendingPurchases(TryFulfillPurchase);
+            // Не блокируем загрузку меню: платформа может отвечать долго, а GameReady ждать нельзя.
+            // Награды прилетят по событиям OnGoldChanged/OnOwnedChanged, UI перерисуется сам.
+            _purchaseService.RestorePendingPurchases(TryFulfillPurchase).Forget();
+
+            return UniTask.CompletedTask;
         }
 
-        // Маппинг productId платформы -> награда из каталога. Возвращает true если награда выдана.
-        private bool TryFulfillPurchase(string productId)
+        // Маппинг productId платформы -> награда из каталога.
+        private PurchaseFulfillResult TryFulfillPurchase(string productId)
         {
             if (string.IsNullOrEmpty(productId))
-                return false;
+                return PurchaseFulfillResult.Unknown;
 
             if (_catalog.ShopItems != null)
             {
@@ -120,7 +124,12 @@ namespace _Project.Scripts.Gameplay.Services
                     {
                         Debug.Log($"[PlayerProgressService] Fulfilling pending item purchase: {item.Name}");
                         GrantItemReward(item);
-                        return true;
+
+                        // NoAds постоянная: живёт в списке покупок платформы и восстанавливается
+                        // каждый запуск, поэтому консумить её нельзя. Выдача идемпотентна.
+                        return item.RewardType == ShopItemRewardType.NoAds
+                            ? PurchaseFulfillResult.Keep
+                            : PurchaseFulfillResult.Consume;
                     }
                 }
             }
@@ -133,12 +142,12 @@ namespace _Project.Scripts.Gameplay.Services
                     {
                         Debug.Log($"[PlayerProgressService] Fulfilling pending unit purchase: {hero.Name}");
                         GrantUnit(hero);
-                        return true;
+                        return PurchaseFulfillResult.Consume;
                     }
                 }
             }
 
-            return false;
+            return PurchaseFulfillResult.Unknown;
         }
 
         // TODO: Аллоцирует List каждый вызов — кешировать или NonAlloc (FillArmyUnits с переиспользуемым списком)
@@ -281,6 +290,8 @@ namespace _Project.Scripts.Gameplay.Services
             {
                 case ShopItemRewardType.Gold:
                     AddGold(item.RewardAmount);
+                    // AddGold сам не сохраняет — без этого купленная голда терялась после consume.
+                    Save();
                     break;
                 case ShopItemRewardType.ArmySlot:
                     _saveData.ArmySlots += item.RewardAmount;

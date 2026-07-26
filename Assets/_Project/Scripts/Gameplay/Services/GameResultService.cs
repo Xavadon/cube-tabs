@@ -84,6 +84,7 @@ namespace _Project.Scripts.Gameplay.Services
 
             _characterRegistry.StartBattle();
             SpawnCurrentWave();
+            PlatformSignals.GameplayStart();
             Debug.Log("[GameResultService] Battle started");
         }
 
@@ -133,6 +134,7 @@ namespace _Project.Scripts.Gameplay.Services
         {
             _battleActive = false;
             _characterRegistry.StopBattle();
+            PlatformSignals.GameplayStop();
 
             int goldEarned = _playerProgressService.Gold - _goldBefore;
             ClaimedMilestoneData[] claimedMilestones = null;
