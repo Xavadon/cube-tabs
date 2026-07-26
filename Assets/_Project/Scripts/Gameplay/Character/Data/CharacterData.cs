@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 namespace _Project.Scripts.Gameplay.Character.Data
-{
+{ //
     [CreateAssetMenu(menuName = "Config/CharacterData")]
     public class CharacterData : ScriptableObject
     {
