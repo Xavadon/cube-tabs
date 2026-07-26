@@ -68,7 +68,17 @@ namespace _Project.Scripts.Architecture.Services.Save
             if (string.IsNullOrEmpty(json))
                 return new SaveData();
 
-            SaveData data = JsonUtility.FromJson<SaveData>(json);
+            SaveData data;
+
+            try
+            {
+                data = JsonUtility.FromJson<SaveData>(json);
+            }
+            catch (System.Exception)
+            {
+                Debug.LogWarning($"[SaveService] Save unparseable, starting fresh: {json}");
+                return new SaveData();
+            }
 
             if (data == null)
             {

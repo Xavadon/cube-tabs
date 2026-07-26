@@ -20,6 +20,7 @@ namespace _Project.Scripts.Gameplay.Services
     public interface IPlayerProgressService : IService
     {
         int Gold { get; }
+        int Exp { get; }
         int ArmySlots { get; }
         int MaxArmySlots { get; }
         List<ResolvedUnit> ArmyUnits { get; }
@@ -28,6 +29,7 @@ namespace _Project.Scripts.Gameplay.Services
         bool CanAfford(int cost);
         void AddGold(int amount);
         void SpendGold(int amount);
+        void AddExp(int amount);
         bool BuyBaseUnit();
         bool BuyUniqueUnit(CharacterData unit);
         bool IsUnitOwned(string unitId);
@@ -51,6 +53,7 @@ namespace _Project.Scripts.Gameplay.Services
         bool NoAds { get; }
 
         event Action OnGoldChanged;
+        event Action OnExpChanged;
         event Action OnArmyChanged;
         event Action OnOwnedChanged;
     }
@@ -66,11 +69,13 @@ namespace _Project.Scripts.Gameplay.Services
         private SaveData _saveData;
 
         public int Gold => _saveData.Gold;
+        public int Exp => _saveData.Exp;
         public int ArmySlots => _saveData.ArmySlots;
         public int MaxArmySlots => _catalog.MaxArmySlots + _saveData.BonusMaxArmySlots;
         public bool NoAds => _saveData.NoAds;
 
         public event Action OnGoldChanged;
+        public event Action OnExpChanged;
         public event Action OnArmyChanged;
         public event Action OnOwnedChanged;
 
@@ -185,6 +190,12 @@ namespace _Project.Scripts.Gameplay.Services
         {
             _saveData.Gold += amount;
             OnGoldChanged?.Invoke();
+        }
+
+        public void AddExp(int amount)
+        {
+            _saveData.Exp += amount;
+            OnExpChanged?.Invoke();
         }
 
         public void SpendGold(int amount)

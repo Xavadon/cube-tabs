@@ -19,6 +19,7 @@ namespace _Project.Scripts.Architecture.Services.Camera
         private const float FreeMaxPitch = 89f;
 
         private static readonly Vector3 BaseOffset = new(0f, 7f, -10f);
+        private static readonly Vector3 TopDownOffset = new(0f, 16f, -11f);
         private static readonly Vector3 ThirdPersonOffset = new(0f, 3f, -5f);
         private static readonly Vector3 FirstPersonOffset = new(0f, 1.6f, 0f);
 
@@ -150,45 +151,16 @@ namespace _Project.Scripts.Architecture.Services.Camera
 
         private void TickTopDown()
         {
-            if (_characters == null || _characters.Count == 0) return;
+            if (_target == null) return;
 
-            Vector3 rawCenter = Vector3.zero;
-            int aliveCount = 0;
-            Bounds bounds = default;
-            bool boundsInitialized = false;
+            Vector3 targetPos = _target.position;
+            Vector3 desiredPosition = targetPos + TopDownOffset;
 
-            for (int i = 0; i < _characters.Count; i++)
-            {
-                if (_characters[i] == null) continue;
-
-                Vector3 pos = _characters[i].transform.position;
-                rawCenter += pos;
-                aliveCount++;
-
-                if (!boundsInitialized)
-                {
-                    bounds = new Bounds(pos, Vector3.zero);
-                    boundsInitialized = true;
-                }
-                else
-                {
-                    bounds.Encapsulate(pos);
-                }
-            }
-
-            if (aliveCount == 0) return;
-
-            rawCenter /= aliveCount;
-
-            _smoothCenter = Vector3.SmoothDamp(_smoothCenter, rawCenter, ref _centerVelocity, SmoothTime);
-
-            float spread = Mathf.Max(bounds.size.x, bounds.size.z) + BoundsPadding;
-            float distanceFactor = Mathf.Clamp(spread / 10f, 1f, MaxDistance / MinDistance);
-            Vector3 offset = BaseOffset * distanceFactor;
+            _smoothPosition = Vector3.SmoothDamp(_smoothPosition, desiredPosition, ref _positionVelocity, SmoothTime);
 
             Transform camTransform = _playerCamera.transform;
-            camTransform.position = _smoothCenter + offset;
-            camTransform.LookAt(_smoothCenter);
+            camTransform.position = _smoothPosition;
+            camTransform.LookAt(targetPos);
         }
 
         private void TickThirdPerson()

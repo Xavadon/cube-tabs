@@ -30,6 +30,9 @@ namespace _Project.Scripts.Gameplay.Character.Data
         public int KillReward { get; private set; } = 10;
 
         [field: SerializeField]
+        public int ExpReward { get; private set; } = 5;
+
+        [field: SerializeField]
         public int EvolutionCost { get; private set; } = 100;
 
         [field: SerializeField]

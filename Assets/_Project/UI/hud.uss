@@ -1,0 +1,49 @@
+.root {
+    flex-grow: 1;
+}
+
+.hp-bar {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    width: 320px;
+    height: 34px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 6px;
+    border-width: 2px;
+    border-color: rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+}
+
+.hp-fill {
+    height: 100%;
+    width: 100%;
+    background-color: rgb(206, 48, 48);
+    border-radius: 4px;
+}
+
+.stats {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    flex-direction: column;
+}
+
+.stat-row {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 180px;
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    color: rgb(210, 210, 210);
+    font-size: 22px;
+    -unity-font-style: bold;
+}
+
+.stat-value {
+    color: rgb(255, 214, 64);
+    font-size: 24px;
+    -unity-font-style: bold;
+}

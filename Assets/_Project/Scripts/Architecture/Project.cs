@@ -14,14 +14,19 @@ namespace _Project.Scripts.Architecture
         
         public static async UniTask Initialize()
         {
-            Dispose();
-            RegisterServices();
-            await InitializeServices();
-            
+            await InitializeServicesOnly();
+
             var sceneService = _container.Resolve<ISceneService>();
             await sceneService.LoadMenuScene();
 
             Debug.Log("[Project] Приложение инициализировано успешно");
+        }
+
+        public static async UniTask InitializeServicesOnly()
+        {
+            Dispose();
+            RegisterServices();
+            await InitializeServices();
         }
         
         private static void RegisterServices()

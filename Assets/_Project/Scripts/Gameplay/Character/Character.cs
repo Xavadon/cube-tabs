@@ -205,9 +205,13 @@ namespace _Project.Scripts.Gameplay.Character
             TierData tier = _characterData.GetTier(_tierIndex);
 
             // TODO: ServiceLocator нарушение — прокинуть IPlayerProgressService через Initialize или ICharacterRegistry
-            if (CharacterType == CharacterType.Enemy && tier.KillReward > 0)
+            if (CharacterType == CharacterType.Enemy)
             {
-                Project.Get<IPlayerProgressService>().AddGold(tier.KillReward);
+                var progress = Project.Get<IPlayerProgressService>();
+                if (tier.KillReward > 0)
+                    progress.AddGold(tier.KillReward);
+                if (tier.ExpReward > 0)
+                    progress.AddExp(tier.ExpReward);
             }
 
             if (tier.DeathAbility != null)
