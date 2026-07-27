@@ -2,7 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.UI
-{
+{ //
     public enum UIAnimationType
     {
         None,
