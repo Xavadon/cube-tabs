@@ -1,17 +1,17 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
     <ui:Style src="project://database/Assets/_Project/UI/hud.uss" />
-    <ui:VisualElement name="root" class="root">
-        <ui:VisualElement name="hp-bar" class="hp-bar">
-            <ui:VisualElement name="hp-fill" class="hp-fill" />
+    <ui:VisualElement name="root" class="root" picking-mode="Ignore">
+        <ui:VisualElement name="hp-bar" class="hp-bar" picking-mode="Ignore">
+            <ui:VisualElement name="hp-fill" class="hp-fill" picking-mode="Ignore" />
         </ui:VisualElement>
-        <ui:VisualElement name="stats" class="stats">
-            <ui:VisualElement class="stat-row">
-                <ui:Label text="GOLD" class="stat-label" />
-                <ui:Label name="gold-value" text="0" class="stat-value" />
+        <ui:VisualElement name="stats" class="stats" picking-mode="Ignore">
+            <ui:VisualElement class="stat-row" picking-mode="Ignore">
+                <ui:Label text="GOLD" class="stat-label" picking-mode="Ignore" />
+                <ui:Label name="gold-value" text="0" class="stat-value" picking-mode="Ignore" />
             </ui:VisualElement>
-            <ui:VisualElement class="stat-row">
-                <ui:Label text="EXP" class="stat-label" />
-                <ui:Label name="exp-value" text="0" class="stat-value" />
+            <ui:VisualElement class="stat-row" picking-mode="Ignore">
+                <ui:Label text="EXP" class="stat-label" picking-mode="Ignore" />
+                <ui:Label name="exp-value" text="0" class="stat-value" picking-mode="Ignore" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
