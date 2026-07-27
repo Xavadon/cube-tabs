@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
-    <ui:Style src="project://database/Assets/_Project/UI/shop.uss" />
+    <ui:Style src="project://database/Assets/_Project/UI/merchant.uss" />
     <ui:VisualElement name="root" class="root" picking-mode="Ignore">
         <ui:VisualElement name="window" class="window">
             <ui:VisualElement name="header" class="header">

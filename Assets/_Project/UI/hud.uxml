@@ -1,10 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
     <ui:Style src="project://database/Assets/_Project/UI/hud.uss" />
+    <ui:Style src="project://database/Assets/_Project/UI/inventory.uss" />
     <ui:VisualElement name="root" class="root" picking-mode="Ignore">
-        <ui:VisualElement name="hp-bar" class="hp-bar" picking-mode="Ignore">
-            <ui:VisualElement name="hp-fill" class="hp-fill" picking-mode="Ignore" />
-        </ui:VisualElement>
-        <ui:VisualElement name="stats" class="stats" picking-mode="Ignore">
+
+        <ui:VisualElement name="top-right" class="top-right" picking-mode="Ignore">
             <ui:VisualElement class="stat-row" picking-mode="Ignore">
                 <ui:Label text="GOLD" class="stat-label" picking-mode="Ignore" />
                 <ui:Label name="gold-value" text="0" class="stat-value" picking-mode="Ignore" />
@@ -13,12 +12,41 @@
                 <ui:Label text="EXP" class="stat-label" picking-mode="Ignore" />
                 <ui:Label name="exp-value" text="0" class="stat-value" picking-mode="Ignore" />
             </ui:VisualElement>
-            <ui:VisualElement class="stat-row" picking-mode="Ignore">
-                <ui:Button name="character-button" text="ПЕРСОНАЖ" class="menu-button" />
+            <ui:Button name="shop-button" class="menu-button" />
+        </ui:VisualElement>
+
+        <ui:VisualElement name="bottom" class="bottom" picking-mode="Ignore">
+            <ui:VisualElement name="bar" class="bar" picking-mode="Ignore">
+                <ui:VisualElement name="portrait" class="portrait" picking-mode="Ignore" />
+
+                <ui:VisualElement name="stats" class="bar-stats" picking-mode="Ignore">
+                    <ui:Label name="stat-damage" class="bar-stat" picking-mode="Ignore" />
+                    <ui:Label name="stat-physical" class="bar-stat" picking-mode="Ignore" />
+                    <ui:Label name="stat-magic" class="bar-stat" picking-mode="Ignore" />
+                    <ui:Label name="stat-fire" class="bar-stat" picking-mode="Ignore" />
+                </ui:VisualElement>
+
+                <ui:VisualElement name="hp-column" class="hp-column" picking-mode="Ignore">
+                    <ui:VisualElement name="hp-bar" class="hp-bar" picking-mode="Ignore">
+                        <ui:VisualElement name="hp-fill" class="hp-fill" picking-mode="Ignore" />
+                    </ui:VisualElement>
+                    <ui:Label name="hp-text" class="hp-text" picking-mode="Ignore" />
+                </ui:VisualElement>
+
+                <ui:VisualElement name="equipment" class="slot-grid equipment-grid" />
+
+                <ui:Button name="backpack-toggle" class="backpack-toggle" />
+
+                <ui:VisualElement name="backpack-panel" class="backpack-panel">
+                    <ui:Label name="backpack-title" class="backpack-title" picking-mode="Ignore" />
+                    <ui:VisualElement name="backpack" class="slot-grid backpack-grid" />
+                </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement class="stat-row" picking-mode="Ignore">
-                <ui:Button name="shop-button" text="ЛАВКА" class="menu-button" />
-            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="tooltip" class="tooltip" picking-mode="Ignore">
+            <ui:Label name="tooltip-title" class="tooltip-title" picking-mode="Ignore" />
+            <ui:Label name="tooltip-body" class="tooltip-body" picking-mode="Ignore" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -5,8 +5,9 @@
 }
 
 .window {
-    width: 860px;
-    height: 600px;
+    width: 900px;
+    height: 560px;
+    margin-bottom: 180px;
     background-color: rgb(198, 198, 198);
     border-width: 4px;
     border-top-color: rgb(255, 255, 255);

@@ -1,16 +1,13 @@
 using System;
 using System.Text;
 using _Project.Scripts.Architecture.Services.Localization;
-using _Project.Scripts.Gameplay.Character.Data;
-using _Project.Scripts.Gameplay.UI.Arpg;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.UIElements.Experimental;
-using CharacterEntity = _Project.Scripts.Gameplay.Character.Character;
 
 namespace _Project.Scripts.Gameplay.Inventory.UI
 {
-    public class CharacterView : UIDocumentView
+    public class InventoryPanel
     {
         private const float DragThreshold = 6f;
         private const int DropAnimationMs = 120;
@@ -23,185 +20,58 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
             public ItemData Item;
         }
 
-        private IEquipmentService _equipment;
-        private ILocalizationService _localization;
-        private CharacterEntity _player;
-
-        private VisualElement _tooltip;
-        private Label _tooltipTitle;
-        private Label _tooltipBody;
-        private VisualElement _equipmentGrid;
-        private VisualElement _backpackGrid;
-        private VisualElement _ghost;
-        private Label _health;
-        private Label _damage;
-        private Label _physical;
-        private Label _magic;
-        private Label _fire;
-        private Label _faith;
+        private readonly IEquipmentService _equipment;
+        private readonly ILocalizationService _localization;
+        private readonly VisualElement _root;
+        private readonly VisualElement _equipmentGrid;
+        private readonly VisualElement _backpackGrid;
+        private readonly VisualElement _tooltip;
+        private readonly Label _tooltipTitle;
+        private readonly Label _tooltipBody;
 
         private SlotRef _pressed;
         private VisualElement _pressedSlot;
         private VisualElement _hiddenContent;
         private VisualElement _highlighted;
+        private VisualElement _ghost;
         private Vector2 _pressPosition;
         private int _pointerId;
         private bool _dragging;
-        private bool _open;
         private Action _pendingLanding;
 
-        private float _shownHealth = -1f;
-        private float _shownMaxHealth = -1f;
-        private float _shownDamage = -1f;
-
-        public bool IsOpen => _open;
-
-        public void Bind(IEquipmentService equipment, ILocalizationService localization, CharacterEntity player)
+        public InventoryPanel(IEquipmentService equipment, ILocalizationService localization, VisualElement root,
+            VisualElement equipmentGrid, VisualElement backpackGrid)
         {
             _equipment = equipment;
             _localization = localization;
-            _player = player;
+            _root = root;
+            _equipmentGrid = equipmentGrid;
+            _backpackGrid = backpackGrid;
 
-            _equipment.OnChanged += Refresh;
+            _tooltip = root.Q<VisualElement>("tooltip");
+            _tooltipTitle = root.Q<Label>("tooltip-title");
+            _tooltipBody = root.Q<Label>("tooltip-body");
 
-            StartWiring();
-        }
+            _root.RegisterCallback<PointerMoveEvent>(OnPointerMove);
+            _root.RegisterCallback<PointerUpEvent>(OnPointerUp);
 
-        protected override void Wire()
-        {
-            _equipmentGrid = Root.Q<VisualElement>("equipment");
-            _backpackGrid = Root.Q<VisualElement>("backpack");
-            _health = Root.Q<Label>("stat-health");
-            _damage = Root.Q<Label>("stat-damage");
-            _physical = Root.Q<Label>("stat-physical");
-            _magic = Root.Q<Label>("stat-magic");
-            _fire = Root.Q<Label>("stat-fire");
-            _faith = Root.Q<Label>("stat-faith");
-            _tooltip = Root.Q<VisualElement>("tooltip");
-            _tooltipTitle = Root.Q<Label>("tooltip-title");
-            _tooltipBody = Root.Q<Label>("tooltip-body");
-
-            Root.Q<Label>("title").text = _localization.Get(LocalizationKeys.Arpg.CharacterTitle);
-            Root.Q<Label>("stats-title").text = _localization.Get(LocalizationKeys.Arpg.StatsSection);
-            Root.Q<Label>("equipment-title").text = _localization.Get(LocalizationKeys.Arpg.EquipmentSection);
-            Root.Q<Label>("backpack-title").text = _localization.Get(LocalizationKeys.Arpg.BackpackSection);
-
-            Root.Q<Button>("close").clicked += Close;
-            Root.RegisterCallback<PointerMoveEvent>(OnPointerMove);
-            Root.RegisterCallback<PointerUpEvent>(OnPointerUp);
-
-            AbandonDrag();
-            ApplyOpenState();
             Refresh();
         }
 
-        private void AbandonDrag()
+        public void Refresh()
         {
-            _pendingLanding = null;
-            _ghost = null;
-            _hiddenContent = null;
+            if (_equipmentGrid != null)
+            {
+                _equipmentGrid.Clear();
 
-            ResetDragState();
-        }
+                for (int i = 0; i < _equipment.SlotCount; i++)
+                    _equipmentGrid.Add(CreateSlot(_equipment.Slots[i], true, i));
+            }
 
-        private void OnDestroy()
-        {
-            if (_equipment != null)
-                _equipment.OnChanged -= Refresh;
-        }
-
-        public void Toggle()
-        {
-            if (_open)
-                Close();
-            else
-                Open();
-        }
-
-        public void Open()
-        {
-            _open = true;
-            ApplyOpenState();
-            Refresh();
-        }
-
-        public void Close()
-        {
-            FinishDrag();
-            _open = false;
-            ApplyOpenState();
-        }
-
-        protected override void Update()
-        {
-            base.Update();
-
-            if (_open)
-                RefreshStats();
-        }
-
-        private void ApplyOpenState()
-        {
-            Root.style.display = _open ? DisplayStyle.Flex : DisplayStyle.None;
-        }
-
-        private void Refresh()
-        {
-            if (!_open)
+            if (_backpackGrid == null)
                 return;
 
-            InvalidateShownStats();
-            RefreshStats();
-            RefreshSlots();
-        }
-
-        private void InvalidateShownStats()
-        {
-            _shownHealth = -1f;
-            _shownMaxHealth = -1f;
-            _shownDamage = -1f;
-        }
-
-        private void RefreshStats()
-        {
-            if (_player == null)
-                return;
-
-            CharacterStats stats = _player.Stats;
-            if (stats == null)
-                return;
-
-            if (Mathf.Approximately(_shownHealth, _player.CurrentHealth)
-                && Mathf.Approximately(_shownMaxHealth, _player.MaxHealth)
-                && Mathf.Approximately(_shownDamage, stats.Damage))
-                return;
-
-            _shownHealth = _player.CurrentHealth;
-            _shownMaxHealth = _player.MaxHealth;
-            _shownDamage = stats.Damage;
-
-            _health.text = _localization.Get(LocalizationKeys.Arpg.StatHealth,
-                _player.CurrentHealth.ToString("F0"), _player.MaxHealth.ToString("F0"));
-            _damage.text = _localization.Get(LocalizationKeys.Arpg.StatDamage,
-                stats.Damage.ToString("F0"), stats.DamageType);
-            _physical.text = _localization.Get(LocalizationKeys.Arpg.StatPhysical, Percent(stats.PhysicalResist));
-            _magic.text = _localization.Get(LocalizationKeys.Arpg.StatMagic, Percent(stats.MagicResist));
-            _fire.text = _localization.Get(LocalizationKeys.Arpg.StatFire, Percent(stats.FireResist));
-            _faith.text = _localization.Get(LocalizationKeys.Arpg.StatFaith, Percent(stats.FaithResist));
-        }
-
-        private static string Percent(float value)
-        {
-            return value.ToString("P0");
-        }
-
-        private void RefreshSlots()
-        {
-            _equipmentGrid.Clear();
             _backpackGrid.Clear();
-
-            for (int i = 0; i < _equipment.SlotCount; i++)
-                _equipmentGrid.Add(CreateSlot(_equipment.Slots[i], true, i));
 
             for (int i = 0; i < _equipment.BackpackCapacity; i++)
                 _backpackGrid.Add(CreateSlot(_equipment.Backpack[i], false, i));
@@ -261,7 +131,7 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
             _pointerId = evt.pointerId;
             _dragging = false;
 
-            Root.CapturePointer(_pointerId);
+            _root.CapturePointer(_pointerId);
             evt.StopPropagation();
         }
 
@@ -277,7 +147,7 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
                 return;
 
             MoveGhost(evt.position);
-            HighlightSlotUnder(evt.position);
+            SetHighlight(FindApplicableSlot(evt.position));
         }
 
         private void OnPointerUp(PointerUpEvent evt)
@@ -294,7 +164,7 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
                 return;
             }
 
-            VisualElement targetSlot = FindSlotElement(Root.panel.Pick(evt.position));
+            VisualElement targetSlot = FindSlotElement(_root.panel.Pick(evt.position));
             SlotRef target = targetSlot?.userData as SlotRef;
             bool willApply = CanApply(source, target);
             VisualElement landing = willApply ? targetSlot : _pressedSlot;
@@ -307,8 +177,7 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
 
             ReleaseGesture();
 
-            // предмет остаётся спрятанным в исходном слоте, пока призрак не долетит:
-            // иначе он виден и в слоте, и в полёте одновременно
+            // предмет прячется в исходном слоте, пока призрак летит: иначе он виден дважды
             _pendingLanding = () =>
             {
                 _pendingLanding = null;
@@ -348,10 +217,10 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
                 .OnCompleted(() => _pendingLanding?.Invoke());
         }
 
-        private void HighlightSlotUnder(Vector2 position)
+        private VisualElement FindApplicableSlot(Vector2 position)
         {
-            VisualElement slot = FindSlotElement(Root.panel.Pick(position));
-            SetHighlight(CanApply(_pressed, slot?.userData as SlotRef) ? slot : null);
+            VisualElement slot = FindSlotElement(_root.panel.Pick(position));
+            return CanApply(_pressed, slot?.userData as SlotRef) ? slot : null;
         }
 
         private bool CanApply(SlotRef source, SlotRef target)
@@ -393,7 +262,7 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
             _ghost.AddToClassList("ghost");
             _ghost.pickingMode = PickingMode.Ignore;
             _ghost.Add(BuildItemContent(_pressed.Item));
-            Root.Add(_ghost);
+            _root.Add(_ghost);
         }
 
         private void MoveGhost(Vector2 position)
@@ -402,7 +271,7 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
             _ghost.style.top = position.y - _ghost.resolvedStyle.height * 0.5f;
         }
 
-        private void FinishDrag()
+        public void FinishDrag()
         {
             FlushPendingLanding();
 
@@ -426,22 +295,16 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
             SetHighlight(null);
 
             if (_pressed != null)
-                Root.ReleasePointer(_pointerId);
+                _root.ReleasePointer(_pointerId);
 
-            ResetDragState();
+            _pressed = null;
+            _pressedSlot = null;
+            _dragging = false;
         }
 
         private void FlushPendingLanding()
         {
             _pendingLanding?.Invoke();
-        }
-
-        private void ResetDragState()
-        {
-            _pressed = null;
-            _pressedSlot = null;
-            _highlighted = null;
-            _dragging = false;
         }
 
         private void ApplyDrop(SlotRef source, SlotRef target)
@@ -456,9 +319,34 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
                 _equipment.MoveInBackpack(source.Index, target.Index);
         }
 
+        private void QuickMove(SlotRef source)
+        {
+            if (source.IsEquipment)
+            {
+                _equipment.Unequip(source.Index);
+                return;
+            }
+
+            int free = FirstFreeSlot();
+
+            if (free >= 0)
+                _equipment.EquipFromBackpack(source.Index, free);
+        }
+
+        private int FirstFreeSlot()
+        {
+            for (int i = 0; i < _equipment.SlotCount; i++)
+            {
+                if (_equipment.Slots[i] == null)
+                    return i;
+            }
+
+            return -1;
+        }
+
         private void ShowTooltip(ItemData item, VisualElement slot)
         {
-            if (item == null || _dragging)
+            if (item == null || _dragging || _tooltip == null)
                 return;
 
             _tooltipTitle.text = ItemName(item);
@@ -466,9 +354,15 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
             _tooltip.style.display = DisplayStyle.Flex;
 
             Rect bounds = slot.worldBound;
-            float left = Mathf.Min(bounds.xMax + TooltipOffset, Root.worldBound.width - _tooltip.resolvedStyle.width);
+            float left = Mathf.Min(bounds.xMax + TooltipOffset, _root.worldBound.width - _tooltip.resolvedStyle.width);
             _tooltip.style.left = Mathf.Max(0f, left);
-            _tooltip.style.top = bounds.yMin;
+            _tooltip.style.top = Mathf.Max(0f, bounds.yMin - _tooltip.resolvedStyle.height - TooltipOffset);
+        }
+
+        private void HideTooltip()
+        {
+            if (_tooltip != null)
+                _tooltip.style.display = DisplayStyle.None;
         }
 
         private string DescribeBonus(StatBonus bonus)
@@ -501,36 +395,6 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
                 : (value > 0 ? "+" : "") + value.ToString("0.#");
 
             builder.Append(_localization.Get(key, amount));
-        }
-
-        private void HideTooltip()
-        {
-            _tooltip.style.display = DisplayStyle.None;
-        }
-
-        private void QuickMove(SlotRef source)
-        {
-            if (source.IsEquipment)
-            {
-                _equipment.Unequip(source.Index);
-                return;
-            }
-
-            int free = FirstFreeSlot();
-
-            if (free >= 0)
-                _equipment.EquipFromBackpack(source.Index, free);
-        }
-
-        private int FirstFreeSlot()
-        {
-            for (int i = 0; i < _equipment.SlotCount; i++)
-            {
-                if (_equipment.Slots[i] == null)
-                    return i;
-            }
-
-            return -1;
         }
 
         private VisualElement FindSlotElement(VisualElement element)

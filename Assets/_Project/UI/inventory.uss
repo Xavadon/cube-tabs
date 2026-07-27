@@ -1,0 +1,74 @@
+.slot-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.slot {
+    width: 76px;
+    height: 76px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    background-color: rgb(139, 139, 139);
+    border-width: 3px;
+    border-top-color: rgb(55, 55, 55);
+    border-left-color: rgb(55, 55, 55);
+    border-bottom-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-radius: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.slot-empty {
+    background-color: rgb(120, 120, 120);
+}
+
+.slot-hover {
+    background-color: rgb(200, 200, 200);
+}
+
+.slot-icon {
+    width: 56px;
+    height: 56px;
+}
+
+.slot-label {
+    color: rgb(255, 255, 255);
+    font-size: 13px;
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+.tooltip {
+    position: absolute;
+    display: none;
+    max-width: 320px;
+    background-color: rgb(16, 0, 16);
+    border-width: 3px;
+    border-color: rgb(45, 0, 100);
+    border-radius: 0;
+    padding: 8px;
+}
+
+.tooltip-title {
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+    white-space: normal;
+}
+
+.tooltip-body {
+    color: rgb(170, 170, 170);
+    font-size: 16px;
+    white-space: normal;
+}
+
+.ghost {
+    position: absolute;
+    width: 76px;
+    height: 76px;
+    background-color: rgba(0, 0, 0, 0);
+    align-items: center;
+    justify-content: center;
+}

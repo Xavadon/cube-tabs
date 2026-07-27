@@ -5,7 +5,6 @@ using _Project.Scripts.Gameplay.Character;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Character.Services;
 using _Project.Scripts.Gameplay.Inventory;
-using _Project.Scripts.Gameplay.Inventory.UI;
 using _Project.Scripts.Gameplay.Services;
 using _Project.Scripts.Gameplay.Merchant;
 using _Project.Scripts.Gameplay.Merchant.UI;
@@ -52,11 +51,7 @@ namespace _Project.Scripts.Dev
 
             var progress = Project.Get<IPlayerProgressService>();
             var localization = Project.Get<ILocalizationService>();
-            var characterView = FindAnyObjectByType<CharacterView>();
             var merchantView = FindAnyObjectByType<MerchantView>();
-
-            if (characterView != null)
-                characterView.Bind(_equipment, localization, _player);
 
             if (merchantView != null)
                 merchantView.Bind(Project.Get<IMerchantService>(), progress, localization);
@@ -64,29 +59,10 @@ namespace _Project.Scripts.Dev
             var hud = FindAnyObjectByType<HudView>();
             if (hud != null)
             {
-                hud.Bind(progress, localization, _player);
-
-                if (characterView != null)
-                {
-                    hud.OnCharacterClicked += () =>
-                    {
-                        if (merchantView != null)
-                            merchantView.Close();
-
-                        characterView.Toggle();
-                    };
-                }
+                hud.Bind(progress, _equipment, localization, Project.Get<IUnitPreviewService>(), _player);
 
                 if (merchantView != null)
-                {
-                    hud.OnMerchantClicked += () =>
-                    {
-                        if (characterView != null)
-                            characterView.Close();
-
-                        merchantView.Toggle();
-                    };
-                }
+                    hud.OnMerchantClicked += merchantView.Toggle;
             }
 
             _registry.StartBattle();
