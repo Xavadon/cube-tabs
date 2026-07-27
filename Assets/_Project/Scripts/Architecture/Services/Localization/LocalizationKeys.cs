@@ -57,5 +57,39 @@ namespace _Project.Scripts.Architecture.Services.Localization
             public const string Gold = "ui.common.gold";
             public const string Reward = "ui.common.reward";
         }
+
+        public static class Arpg
+        {
+            public const string CharacterTitle = "ui.arpg.character.title";
+            public const string StatsSection = "ui.arpg.character.stats";
+            public const string EquipmentSection = "ui.arpg.character.equipment";
+            public const string BackpackSection = "ui.arpg.character.backpack";
+
+            public const string StatHealth = "ui.arpg.stat.health";
+            public const string StatDamage = "ui.arpg.stat.damage";
+            public const string StatPhysical = "ui.arpg.stat.physical";
+            public const string StatMagic = "ui.arpg.stat.magic";
+            public const string StatFire = "ui.arpg.stat.fire";
+            public const string StatFaith = "ui.arpg.stat.faith";
+
+            public const string BonusDamage = "ui.arpg.bonus.damage";
+            public const string BonusHealth = "ui.arpg.bonus.health";
+            public const string BonusPhysical = "ui.arpg.bonus.physical";
+            public const string BonusMagic = "ui.arpg.bonus.magic";
+            public const string BonusFire = "ui.arpg.bonus.fire";
+            public const string BonusFaith = "ui.arpg.bonus.faith";
+            public const string BonusNone = "ui.arpg.bonus.none";
+
+            public const string MerchantTitle = "ui.arpg.merchant.title";
+            public const string MerchantGoods = "ui.arpg.merchant.goods";
+            public const string MerchantCraft = "ui.arpg.merchant.craft";
+            public const string MerchantGold = "ui.arpg.merchant.gold";
+            public const string MerchantPrice = "ui.arpg.merchant.price";
+            public const string MerchantCraftButton = "ui.arpg.merchant.craft_button";
+            public const string MerchantNoComponents = "ui.arpg.merchant.no_components";
+
+            public const string HudCharacter = "ui.arpg.hud.character";
+            public const string HudMerchant = "ui.arpg.hud.merchant";
+        }
     }
 }

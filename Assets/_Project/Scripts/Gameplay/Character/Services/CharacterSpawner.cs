@@ -7,6 +7,7 @@ using _Project.Scripts.Architecture.Services.Input;
 using _Project.Scripts.Gameplay.Character.Components.UI;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Character.Data.AiBrain;
+using _Project.Scripts.Gameplay.Inventory;
 using _Project.Scripts.Gameplay.Services.Scene;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -138,11 +139,13 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
         private readonly IInputService _inputService;
         private readonly ICameraService _cameraService;
+        private readonly IEquipmentService _equipmentService;
 
-        public CharacterFactory(IInputService inputService, ICameraService cameraService)
+        public CharacterFactory(IInputService inputService, ICameraService cameraService, IEquipmentService equipmentService)
         {
             _inputService = inputService;
             _cameraService = cameraService;
+            _equipmentService = equipmentService;
         }
 
         public UniTask Initialize()
@@ -174,10 +177,11 @@ namespace _Project.Scripts.Gameplay.Character.Services
 
             bool isPlayerControlled = data.GetTier(tierIndex).BrainData is PlayerBrainDataBase;
             IInputService input = isPlayerControlled ? _inputService : null;
+            StatBonus bonus = isPlayerControlled ? _equipmentService.TotalBonus : null;
 
             if (characterGO.TryGetComponent(out Character character))
             {
-                character.Initialize(type, data, tierIndex, input);
+                character.Initialize(type, data, tierIndex, input, bonus);
 
                 if (isPlayerControlled)
                     _cameraService.SetTarget(character.transform);

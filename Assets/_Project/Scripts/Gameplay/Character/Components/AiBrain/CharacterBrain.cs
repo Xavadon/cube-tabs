@@ -31,8 +31,8 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
 
         public Blackboard Blackboard => _tree?.Blackboard;
 
-        public CharacterBrain(LayerMask layerMask, BrainDataBase dataBase, TierData tier, NavMeshAgent agent,
-            AnimatorController animatorController, Transform transform, WeaponData weaponData,
+        public CharacterBrain(LayerMask layerMask, BrainDataBase dataBase, TierData tier, CharacterStats stats,
+            NavMeshAgent agent, AnimatorController animatorController, Transform transform, WeaponData weaponData,
             IInputService inputService = null, Action onAttack = null)
         {
             _tree = new BehaviourTree(dataBase.BuildTree(layerMask, tier));
@@ -40,8 +40,8 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             _tree.Blackboard.Set(BrainKeys.Transform, transform);
             _tree.Blackboard.Set(BrainKeys.AnimatorController, animatorController);
             _tree.Blackboard.Set(BrainKeys.TargetLayer, layerMask);
-            _tree.Blackboard.Set(BrainKeys.Damage, tier.Stats.Damage);
-            _tree.Blackboard.Set(BrainKeys.DamageType, tier.Stats.DamageType);
+            _tree.Blackboard.Set(BrainKeys.Damage, stats.Damage);
+            _tree.Blackboard.Set(BrainKeys.DamageType, stats.DamageType);
 
             if (weaponData != null)
             {
@@ -62,6 +62,12 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             {
                 _tree.Blackboard.Set(BrainKeys.OnAttackCallback, onAttack);
             }
+        }
+
+        public void SetStats(CharacterStats stats)
+        {
+            _tree.Blackboard.Set(BrainKeys.Damage, stats.Damage);
+            _tree.Blackboard.Set(BrainKeys.DamageType, stats.DamageType);
         }
 
         public void Tick()

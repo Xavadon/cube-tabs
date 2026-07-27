@@ -1,38 +1,220 @@
 {
   "entries": [
-    { "key": "ui.army.title", "value": "Army" },
-    { "key": "ui.army.slots", "value": "Army {0}/{1}" },
-    { "key": "ui.army.to_army", "value": "To Army" },
-    { "key": "ui.army.to_reserve", "value": "To Reserve" },
-    { "key": "ui.army.buy", "value": "Buy noob" },
-    { "key": "ui.army.upgrade_slot", "value": "Buy Slot" },
-
-    { "key": "ui.stats.hp", "value": "HP" },
-    { "key": "ui.stats.damage", "value": "Damage" },
-    { "key": "ui.stats.speed", "value": "Speed" },
-
-    { "key": "ui.result.victory", "value": "Victory" },
-    { "key": "ui.result.defeat", "value": "Defeat" },
-    { "key": "ui.result.new_units", "value": "New Units:" },
-    { "key": "ui.result.progress", "value": "{0}/{1} kills to reward" },
-    { "key": "ui.result.all_rewards", "value": "All rewards claimed" },
-    { "key": "ui.result.double_reward", "value": "Double Reward" },
-    { "key": "ui.result.no_thanks", "value": "No Thanks" },
-
-    { "key": "ui.level.kills", "value": "Kills: {0}" },
-    { "key": "ui.level.kills_milestone", "value": "{0} kills" },
-    { "key": "ui.level.play", "value": "Play" },
-
-    { "key": "ui.shop.title", "value": "Shop" },
-    { "key": "ui.shop.remove_ads", "value": "Remove Ads" },
-    { "key": "ui.shop.purchase_success_title", "value": "Purchase successful!" },
-    { "key": "ui.shop.purchase_success_reward", "value": "{0} received" },
-    { "key": "ui.shop.purchase_success_ok", "value": "Great!" },
-
-    { "key": "ui.evolution.tier", "value": "{0} T{1}" },
-
-    { "key": "ui.common.close", "value": "Close" },
-    { "key": "ui.common.gold", "value": "Gold" },
-    { "key": "ui.common.reward", "value": "Reward" }
+    {
+      "key": "ui.army.title",
+      "value": "Army"
+    },
+    {
+      "key": "ui.army.slots",
+      "value": "Army {0}/{1}"
+    },
+    {
+      "key": "ui.army.to_army",
+      "value": "To Army"
+    },
+    {
+      "key": "ui.army.to_reserve",
+      "value": "To Reserve"
+    },
+    {
+      "key": "ui.army.buy",
+      "value": "Buy noob"
+    },
+    {
+      "key": "ui.army.upgrade_slot",
+      "value": "Buy Slot"
+    },
+    {
+      "key": "ui.stats.hp",
+      "value": "HP"
+    },
+    {
+      "key": "ui.stats.damage",
+      "value": "Damage"
+    },
+    {
+      "key": "ui.stats.speed",
+      "value": "Speed"
+    },
+    {
+      "key": "ui.result.victory",
+      "value": "Victory"
+    },
+    {
+      "key": "ui.result.defeat",
+      "value": "Defeat"
+    },
+    {
+      "key": "ui.result.new_units",
+      "value": "New Units:"
+    },
+    {
+      "key": "ui.result.progress",
+      "value": "{0}/{1} kills to reward"
+    },
+    {
+      "key": "ui.result.all_rewards",
+      "value": "All rewards claimed"
+    },
+    {
+      "key": "ui.result.double_reward",
+      "value": "Double Reward"
+    },
+    {
+      "key": "ui.result.no_thanks",
+      "value": "No Thanks"
+    },
+    {
+      "key": "ui.level.kills",
+      "value": "Kills: {0}"
+    },
+    {
+      "key": "ui.level.kills_milestone",
+      "value": "{0} kills"
+    },
+    {
+      "key": "ui.level.play",
+      "value": "Play"
+    },
+    {
+      "key": "ui.shop.title",
+      "value": "Shop"
+    },
+    {
+      "key": "ui.shop.remove_ads",
+      "value": "Remove Ads"
+    },
+    {
+      "key": "ui.shop.purchase_success_title",
+      "value": "Purchase successful!"
+    },
+    {
+      "key": "ui.shop.purchase_success_reward",
+      "value": "{0} received"
+    },
+    {
+      "key": "ui.shop.purchase_success_ok",
+      "value": "Great!"
+    },
+    {
+      "key": "ui.evolution.tier",
+      "value": "{0} T{1}"
+    },
+    {
+      "key": "ui.common.close",
+      "value": "Close"
+    },
+    {
+      "key": "ui.common.gold",
+      "value": "Gold"
+    },
+    {
+      "key": "ui.common.reward",
+      "value": "Reward"
+    },
+    {
+      "key": "ui.arpg.character.title",
+      "value": "CHARACTER"
+    },
+    {
+      "key": "ui.arpg.character.stats",
+      "value": "STATS"
+    },
+    {
+      "key": "ui.arpg.character.equipment",
+      "value": "EQUIPMENT"
+    },
+    {
+      "key": "ui.arpg.character.backpack",
+      "value": "BACKPACK"
+    },
+    {
+      "key": "ui.arpg.stat.health",
+      "value": "Health: {0} / {1}"
+    },
+    {
+      "key": "ui.arpg.stat.damage",
+      "value": "Damage: {0} ({1})"
+    },
+    {
+      "key": "ui.arpg.stat.physical",
+      "value": "Phys. resist: {0}"
+    },
+    {
+      "key": "ui.arpg.stat.magic",
+      "value": "Magic resist: {0}"
+    },
+    {
+      "key": "ui.arpg.stat.fire",
+      "value": "Fire resist: {0}"
+    },
+    {
+      "key": "ui.arpg.stat.faith",
+      "value": "Holy resist: {0}"
+    },
+    {
+      "key": "ui.arpg.bonus.damage",
+      "value": "{0} Damage"
+    },
+    {
+      "key": "ui.arpg.bonus.health",
+      "value": "{0} Health"
+    },
+    {
+      "key": "ui.arpg.bonus.physical",
+      "value": "{0} Phys. resist"
+    },
+    {
+      "key": "ui.arpg.bonus.magic",
+      "value": "{0} Magic resist"
+    },
+    {
+      "key": "ui.arpg.bonus.fire",
+      "value": "{0} Fire resist"
+    },
+    {
+      "key": "ui.arpg.bonus.faith",
+      "value": "{0} Holy resist"
+    },
+    {
+      "key": "ui.arpg.bonus.none",
+      "value": "No bonuses"
+    },
+    {
+      "key": "ui.arpg.merchant.title",
+      "value": "MERCHANT"
+    },
+    {
+      "key": "ui.arpg.merchant.goods",
+      "value": "GOODS"
+    },
+    {
+      "key": "ui.arpg.merchant.craft",
+      "value": "CRAFT"
+    },
+    {
+      "key": "ui.arpg.merchant.gold",
+      "value": "Gold: {0}"
+    },
+    {
+      "key": "ui.arpg.merchant.price",
+      "value": "{0} g"
+    },
+    {
+      "key": "ui.arpg.merchant.craft_button",
+      "value": "Craft"
+    },
+    {
+      "key": "ui.arpg.merchant.no_components",
+      "value": "no components"
+    },
+    {
+      "key": "ui.arpg.hud.character",
+      "value": "CHARACTER"
+    },
+    {
+      "key": "ui.arpg.hud.merchant",
+      "value": "MERCHANT"
+    }
   ]
 }

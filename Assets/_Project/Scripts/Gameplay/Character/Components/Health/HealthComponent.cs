@@ -33,10 +33,10 @@ namespace _Project.Scripts.Gameplay.Character.Components.Health
         public float HealthRatio => _maxHealth > 0f ? _currentHealth / _maxHealth : 0f;
         public bool IsAlive => _currentHealth > 0;
 
-        private readonly CharacterResistances _resistances;
         private readonly DamageStrategyFactory _damageStrategyFactory;
-        private readonly float _maxHealth;
 
+        private CharacterResistances _resistances;
+        private float _maxHealth;
         private float _currentHealth;
         private string _charaName;  // Debug (TODO: удалить в релизе)
 
@@ -44,12 +44,23 @@ namespace _Project.Scripts.Gameplay.Character.Components.Health
         public event Action<float, float> OnHealthChanged;
         public event Action<Vector3> OnDamaged;
 
-        public HealthComponent(TierData tier)
+        public HealthComponent(CharacterStats stats)
         {
             _damageStrategyFactory = new();
-            _maxHealth = tier.Stats.Health;
+            _maxHealth = stats.Health;
             _currentHealth = _maxHealth;
-            _resistances = CharacterResistances.FromTierData(tier);
+            _resistances = stats.ToResistances();
+        }
+
+        public void SetStats(CharacterStats stats)
+        {
+            float ratio = HealthRatio;
+
+            _maxHealth = stats.Health;
+            _currentHealth = _maxHealth * ratio;
+            _resistances = stats.ToResistances();
+
+            OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
         }
 
         public void ApplyDamage(float amount, Vector3 hitPoint, DamageType type = DamageType.Physical)

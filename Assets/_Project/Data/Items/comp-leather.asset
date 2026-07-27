@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0ae68fc16152f44fa9fec7a21a11ab3, type: 3}
+  m_Name: comp-leather
+  m_EditorClassIdentifier: 
+  <Id>k__BackingField: comp-leather
+  <Name>k__BackingField: "\u041A\u043E\u0436\u0430"
+  <Icon>k__BackingField: {fileID: 21300000, guid: c0e7217a07e49364db48c62cc2e2b376, type: 3}
+  <Tier>k__BackingField: 1
+  <Bonus>k__BackingField:
+    <Health>k__BackingField: 30
+    <Damage>k__BackingField: 0
+    <PhysicalResist>k__BackingField: 0
+    <MagicResist>k__BackingField: 0
+    <FireResist>k__BackingField: 0
+    <FaithResist>k__BackingField: 0

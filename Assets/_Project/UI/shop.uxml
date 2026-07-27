@@ -1,0 +1,24 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Style src="project://database/Assets/_Project/UI/shop.uss" />
+    <ui:VisualElement name="root" class="root" picking-mode="Ignore">
+        <ui:VisualElement name="window" class="window">
+            <ui:VisualElement name="header" class="header">
+                <ui:Label name="title" class="title" picking-mode="Ignore" />
+                <ui:Label name="gold" class="gold" picking-mode="Ignore" />
+                <ui:Button name="close" text="X" class="close" />
+            </ui:VisualElement>
+
+            <ui:VisualElement name="body" class="body">
+                <ui:VisualElement name="stock-column" class="column">
+                    <ui:Label name="stock-title" class="section-title" picking-mode="Ignore" />
+                    <ui:VisualElement name="stock" class="list" />
+                </ui:VisualElement>
+
+                <ui:VisualElement name="craft-column" class="column">
+                    <ui:Label name="recipes-title" class="section-title" picking-mode="Ignore" />
+                    <ui:VisualElement name="recipes" class="list" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

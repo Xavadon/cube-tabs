@@ -1,9 +1,14 @@
 using System;
 using _Project.Scripts.Architecture;
+using _Project.Scripts.Architecture.Services.Localization;
 using _Project.Scripts.Gameplay.Character;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Character.Services;
+using _Project.Scripts.Gameplay.Inventory;
+using _Project.Scripts.Gameplay.Inventory.UI;
 using _Project.Scripts.Gameplay.Services;
+using _Project.Scripts.Gameplay.Merchant;
+using _Project.Scripts.Gameplay.Merchant.UI;
 using _Project.Scripts.Gameplay.Services.Scene;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -22,8 +27,14 @@ namespace _Project.Scripts.Dev
         [SerializeField] private int _enemyCount = 5;
         [SerializeField] private float _respawnDelay = 2f;
 
+        [Header("Equipment")]
+        [SerializeField] private ItemData[] _startingItems;
+        [SerializeField] private ItemData[] _startingBackpack;
+
         private ICharacterSpawner _spawner;
         private ICharacterRegistry _registry;
+        private IEquipmentService _equipment;
+        private Character _player;
         private bool _respawning;
 
         private async void Awake()
@@ -32,12 +43,51 @@ namespace _Project.Scripts.Dev
 
             _spawner = Project.Get<ICharacterSpawner>();
             _registry = Project.Get<ICharacterRegistry>();
+            _equipment = Project.Get<IEquipmentService>();
 
-            Character player = SpawnPlayer();
+            EquipStartingItems();
+
+            _player = SpawnPlayer();
+            _equipment.OnChanged += HandleEquipmentChanged;
+
+            var progress = Project.Get<IPlayerProgressService>();
+            var localization = Project.Get<ILocalizationService>();
+            var characterView = FindAnyObjectByType<CharacterView>();
+            var merchantView = FindAnyObjectByType<MerchantView>();
+
+            if (characterView != null)
+                characterView.Bind(_equipment, localization, _player);
+
+            if (merchantView != null)
+                merchantView.Bind(Project.Get<IMerchantService>(), progress, localization);
 
             var hud = FindAnyObjectByType<HudView>();
             if (hud != null)
-                hud.Bind(Project.Get<IPlayerProgressService>(), player);
+            {
+                hud.Bind(progress, localization, _player);
+
+                if (characterView != null)
+                {
+                    hud.OnCharacterClicked += () =>
+                    {
+                        if (merchantView != null)
+                            merchantView.Close();
+
+                        characterView.Toggle();
+                    };
+                }
+
+                if (merchantView != null)
+                {
+                    hud.OnMerchantClicked += () =>
+                    {
+                        if (characterView != null)
+                            characterView.Close();
+
+                        merchantView.Toggle();
+                    };
+                }
+            }
 
             _registry.StartBattle();
             _registry.OnCharacterDied += HandleCharacterDied;
@@ -49,7 +99,34 @@ namespace _Project.Scripts.Dev
             if (_registry != null)
                 _registry.OnCharacterDied -= HandleCharacterDied;
 
+            if (_equipment != null)
+                _equipment.OnChanged -= HandleEquipmentChanged;
+
             Project.Dispose();
+        }
+
+        private void EquipStartingItems()
+        {
+            if (_startingItems != null)
+            {
+                for (int i = 0; i < _startingItems.Length && i < _equipment.SlotCount; i++)
+                {
+                    if (_startingItems[i] != null)
+                        _equipment.Equip(_startingItems[i], i);
+                }
+            }
+
+            if (_startingBackpack == null)
+                return;
+
+            foreach (ItemData item in _startingBackpack)
+                _equipment.AddToBackpack(item);
+        }
+
+        private void HandleEquipmentChanged()
+        {
+            if (_player != null)
+                _player.RefreshStats(_equipment.TotalBonus);
         }
 
         private Character SpawnPlayer()

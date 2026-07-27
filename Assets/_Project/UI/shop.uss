@@ -1,0 +1,131 @@
+.root {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.window {
+    width: 860px;
+    height: 600px;
+    background-color: rgb(198, 198, 198);
+    border-width: 4px;
+    border-top-color: rgb(255, 255, 255);
+    border-left-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(85, 85, 85);
+    border-right-color: rgb(85, 85, 85);
+    border-radius: 0;
+    padding: 14px;
+}
+
+.header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.title {
+    color: rgb(64, 64, 64);
+    font-size: 26px;
+    -unity-font-style: bold;
+}
+
+.gold {
+    color: rgb(64, 64, 64);
+    font-size: 20px;
+    -unity-font-style: bold;
+}
+
+.close {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    background-color: rgb(139, 139, 139);
+    border-width: 3px;
+    border-top-color: rgb(255, 255, 255);
+    border-left-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(85, 85, 85);
+    border-right-color: rgb(85, 85, 85);
+    border-radius: 0;
+}
+
+.close:hover {
+    background-color: rgb(160, 160, 160);
+}
+
+.body {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.column {
+    flex-grow: 1;
+    flex-basis: 0;
+    margin-right: 14px;
+}
+
+.section-title {
+    color: rgb(64, 64, 64);
+    font-size: 18px;
+    -unity-font-style: bold;
+    margin-bottom: 6px;
+}
+
+.list {
+    flex-grow: 1;
+    background-color: rgb(139, 139, 139);
+    border-width: 3px;
+    border-top-color: rgb(55, 55, 55);
+    border-left-color: rgb(55, 55, 55);
+    border-bottom-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    padding: 6px;
+}
+
+.row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(110, 110, 110);
+    border-width: 3px;
+    border-top-color: rgb(55, 55, 55);
+    border-left-color: rgb(55, 55, 55);
+    border-bottom-color: rgb(198, 198, 198);
+    border-right-color: rgb(198, 198, 198);
+    border-radius: 0;
+    padding: 6px;
+    margin-bottom: 6px;
+}
+
+.row-text {
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    flex-grow: 1;
+    white-space: normal;
+}
+
+.row-button {
+    width: 120px;
+    height: 40px;
+    font-size: 16px;
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    background-color: rgb(139, 139, 139);
+    border-width: 3px;
+    border-top-color: rgb(255, 255, 255);
+    border-left-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(85, 85, 85);
+    border-right-color: rgb(85, 85, 85);
+    border-radius: 0;
+}
+
+.row-button:hover {
+    background-color: rgb(160, 160, 160);
+}
+
+.row-button:disabled {
+    background-color: rgb(100, 100, 100);
+    color: rgb(160, 160, 160);
+}

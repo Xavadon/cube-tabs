@@ -1,5 +1,3 @@
-using _Project.Scripts.Gameplay.Character.Data;
-
 namespace _Project.Scripts.Gameplay.Character.Health.DamageStrategies
 {
     public interface IDamageStrategy
@@ -21,17 +19,6 @@ namespace _Project.Scripts.Gameplay.Character.Health.DamageStrategies
             MagicResist = magic;
             FireResist = fire;
             FaithResist = faith;
-        }
-        
-        public static CharacterResistances FromTierData(TierData tier)
-        {
-            var stats = tier.Stats;
-            return new CharacterResistances(
-                stats.PhysicalResist,
-                stats.MagicResist,
-                stats.FireResist,
-                stats.FaithResist
-            );
         }
     }
 }

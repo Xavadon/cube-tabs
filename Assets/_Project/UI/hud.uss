@@ -7,19 +7,22 @@
     top: 24px;
     left: 24px;
     width: 320px;
-    height: 34px;
-    background-color: rgba(0, 0, 0, 0.6);
-    border-radius: 6px;
-    border-width: 2px;
-    border-color: rgba(0, 0, 0, 0.8);
+    height: 30px;
+    background-color: rgb(60, 60, 60);
+    border-radius: 0;
+    border-width: 3px;
+    border-top-color: rgb(55, 55, 55);
+    border-left-color: rgb(55, 55, 55);
+    border-bottom-color: rgb(198, 198, 198);
+    border-right-color: rgb(198, 198, 198);
     overflow: hidden;
 }
 
 .hp-fill {
     height: 100%;
     width: 100%;
-    background-color: rgb(206, 48, 48);
-    border-radius: 4px;
+    background-color: rgb(190, 40, 40);
+    border-radius: 0;
 }
 
 .stats {
@@ -46,4 +49,23 @@
     color: rgb(255, 214, 64);
     font-size: 24px;
     -unity-font-style: bold;
+}
+
+.menu-button {
+    width: 180px;
+    height: 46px;
+    font-size: 17px;
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    background-color: rgb(139, 139, 139);
+    border-width: 3px;
+    border-top-color: rgb(255, 255, 255);
+    border-left-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(85, 85, 85);
+    border-right-color: rgb(85, 85, 85);
+    border-radius: 0;
+}
+
+.menu-button:hover {
+    background-color: rgb(160, 160, 160);
 }

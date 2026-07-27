@@ -9,6 +9,7 @@ using _Project.Scripts.Gameplay.Character.Components.UI;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Character.Data.AiBrain;
 using _Project.Scripts.Gameplay.Character.Services;
+using _Project.Scripts.Gameplay.Inventory;
 using _Project.Scripts.Gameplay.Services;
 using Game.Scripts.Core.Gameplay.Enemies.Components;
 using MinecraftModels.Scripts;
@@ -30,6 +31,9 @@ namespace _Project.Scripts.Gameplay.Character
         public CharacterData CharacterDataRef => _characterData;
         public int TierIndex => _tierIndex;
         public float HealthRatio => _health.HealthRatio;
+        public CharacterStats Stats => _stats;
+        public float CurrentHealth => _health.CurrentHealth;
+        public float MaxHealth => _health.MaxHealth;
         
         [SerializeField]
         private Animator _animator;
@@ -53,21 +57,22 @@ namespace _Project.Scripts.Gameplay.Character
         private AnimatorController _animatorController;
         private NavMeshMovementComponent _movement;
         private HealthComponent _health;
-        private ResistanceComponent _resistance;
         private ICharacterRegistry _registry;
         private HealthBarElement _healthBar;
         private CharacterData _characterData;
         private TierData _tier;
+        private CharacterStats _stats;
         private int _tierIndex;
         private bool _stopped;
 
         public void Initialize(CharacterType characterType, CharacterData characterData, int tierIndex,
-            IInputService inputService = null)
+            IInputService inputService = null, StatBonus bonus = null)
         {
             CharacterType = characterType;
             _characterData = characterData;
             _tierIndex = tierIndex;
             _tier = characterData.GetTier(tierIndex);
+            _stats = new CharacterStats(_tier.Stats, bonus);
 
             // TODO: LayerMask по строке — вынести в SO (CharacterLayerConfig) или прокинуть через Initialize
             int ownLayer;
@@ -105,10 +110,9 @@ namespace _Project.Scripts.Gameplay.Character
             _animatorController = new AnimatorController(_animator);
 
             IsRanged = _tier.BrainData is RangeBrainDataBase;
-            _brain = new CharacterBrain(targetLayer, _tier.BrainData, _tier, _navMeshAgent, _animatorController, transform, weapon, inputService, HandleAttack);
+            _brain = new CharacterBrain(targetLayer, _tier.BrainData, _tier, _stats, _navMeshAgent, _animatorController, transform, weapon, inputService, HandleAttack);
             _movement = new NavMeshMovementComponent(_navMeshAgent, transform, _tier.MoveSpeed);
-            _health = new HealthComponent(_tier);
-            _resistance = new ResistanceComponent(_tier);
+            _health = new HealthComponent(_stats);
 
             _navMeshAgent.speed = _tier.MoveSpeed;
             _navMeshAgent.acceleration = NavMeshAcceleration;
@@ -142,6 +146,14 @@ namespace _Project.Scripts.Gameplay.Character
         public void Heal(float amount)
         {
             _health.Heal(amount);
+        }
+
+        public void RefreshStats(StatBonus bonus)
+        {
+            _stats = new CharacterStats(_tier.Stats, bonus);
+
+            _health.SetStats(_stats);
+            _brain.SetStats(_stats);
         }
 
         public void Stop()
@@ -250,7 +262,7 @@ namespace _Project.Scripts.Gameplay.Character
                 return;
             }
 
-            tier.DeathAbility.Execute(blackboard, tier.Stats.Damage, tier.Stats.DamageType);
+            tier.DeathAbility.Execute(blackboard, _stats.Damage, _stats.DamageType);
         }
 
 #if UNITY_EDITOR

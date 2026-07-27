@@ -13,6 +13,12 @@
                 <ui:Label text="EXP" class="stat-label" picking-mode="Ignore" />
                 <ui:Label name="exp-value" text="0" class="stat-value" picking-mode="Ignore" />
             </ui:VisualElement>
+            <ui:VisualElement class="stat-row" picking-mode="Ignore">
+                <ui:Button name="character-button" text="ПЕРСОНАЖ" class="menu-button" />
+            </ui:VisualElement>
+            <ui:VisualElement class="stat-row" picking-mode="Ignore">
+                <ui:Button name="shop-button" text="ЛАВКА" class="menu-button" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
