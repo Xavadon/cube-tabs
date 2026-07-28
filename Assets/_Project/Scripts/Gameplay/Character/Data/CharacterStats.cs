@@ -13,6 +13,8 @@ namespace _Project.Scripts.Gameplay.Character.Data
 
         public float Health { get; }
         public float HealthRegen { get; }
+        public float Mana { get; }
+        public float ManaRegen { get; }
         public float Armor { get; }
         public float PhysicalReduction { get; }
         public float MagicResist { get; }
@@ -31,6 +33,9 @@ namespace _Project.Scripts.Gameplay.Character.Data
 
             Health = Mathf.Max(1f, baseStats.Health + bonus.Health + Strength * StatFormulas.HealthPerStrength);
             HealthRegen = baseStats.HealthRegen + Strength * StatFormulas.HealthRegenPerStrength;
+
+            Mana = Mathf.Max(0f, baseStats.Mana + Intelligence * StatFormulas.ManaPerIntelligence);
+            ManaRegen = baseStats.ManaRegen + Intelligence * StatFormulas.ManaRegenPerIntelligence;
 
             Armor = baseStats.Armor + bonus.Armor + Agility * StatFormulas.ArmorPerAgility;
             PhysicalReduction = StatFormulas.PhysicalReduction(Armor);

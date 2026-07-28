@@ -1,6 +1,7 @@
 using System;
 using _Project.Scripts.Gameplay.Character.Data.Abilities;
 using _Project.Scripts.Gameplay.Character.Data.AiBrain;
+using _Project.Scripts.Gameplay.Inventory;
 using UnityEngine;
 
 namespace _Project.Scripts.Gameplay.Character.Data
@@ -31,6 +32,9 @@ namespace _Project.Scripts.Gameplay.Character.Data
 
         [field: SerializeField]
         public int ExpReward { get; private set; } = 5;
+
+        [field: SerializeField]
+        public ItemData SoulDrop { get; private set; }
 
         [field: SerializeField]
         public int EvolutionCost { get; private set; } = 100;

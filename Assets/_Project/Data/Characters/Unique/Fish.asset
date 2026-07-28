@@ -13,64 +13,99 @@ MonoBehaviour:
   m_Name: fish
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Fish
+  <Scale>k__BackingField: 1
+  <AnimatorOverride>k__BackingField: {fileID: 0}
   <PriceAsHero>k__BackingField: 100
+  <YandexProductId>k__BackingField: 
+  <PriceLabel>k__BackingField: 
+  <Abilities>k__BackingField:
+  - <Ability>k__BackingField: {fileID: 11400000, guid: 7ba13cb501d3de941bff002257fffe45, type: 2}
+    <Name>k__BackingField: Shockwave
+    <Icon>k__BackingField: {fileID: 21300000, guid: b9a847102a75c8c429a8f749008df6c2, type: 3}
+    <ManaCost>k__BackingField: 50
+    <Cooldown>k__BackingField: 6
   <Tiers>k__BackingField:
   - <MoveSpeed>k__BackingField: 5
     <Stats>k__BackingField:
+      <Strength>k__BackingField: 0
+      <Agility>k__BackingField: 0
+      <Intelligence>k__BackingField: 0
       <Health>k__BackingField: 500
-      <PhysicalResist>k__BackingField: 0
+      <HealthRegen>k__BackingField: 0
+      <Mana>k__BackingField: 300
+      <ManaRegen>k__BackingField: 5
+      <Armor>k__BackingField: 0
       <MagicResist>k__BackingField: 0
-      <FireResist>k__BackingField: 0
-      <FaithResist>k__BackingField: 0
+      <AttackSpeed>k__BackingField: 100
       <Damage>k__BackingField: 20
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 7984b5a34478b3b4fbaf92d78807396a, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: ba624ccb0781e5044bb1d57fdcab11c3, type: 2}
     <Ability>k__BackingField: {fileID: 0}
-    <AnimationType>k__BackingField: 0
+    <DeathAbility>k__BackingField: {fileID: 0}
     <KillReward>k__BackingField: 0
+    <ExpReward>k__BackingField: 5
     <EvolutionCost>k__BackingField: 0
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: defc4bc62f05eb849bdaf6fb64505ee6, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: defc4bc62f05eb849bdaf6fb64505ee6, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField: []
   - <MoveSpeed>k__BackingField: 6
     <Stats>k__BackingField:
+      <Strength>k__BackingField: 0
+      <Agility>k__BackingField: 0
+      <Intelligence>k__BackingField: 0
       <Health>k__BackingField: 800
-      <PhysicalResist>k__BackingField: 0
+      <HealthRegen>k__BackingField: 0
+      <Mana>k__BackingField: 0
+      <ManaRegen>k__BackingField: 0
+      <Armor>k__BackingField: 0
       <MagicResist>k__BackingField: 0
-      <FireResist>k__BackingField: 0
-      <FaithResist>k__BackingField: 0
+      <AttackSpeed>k__BackingField: 100
       <Damage>k__BackingField: 20
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 7984b5a34478b3b4fbaf92d78807396a, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: ba624ccb0781e5044bb1d57fdcab11c3, type: 2}
     <Ability>k__BackingField: {fileID: 0}
-    <AnimationType>k__BackingField: 0
+    <DeathAbility>k__BackingField: {fileID: 0}
     <KillReward>k__BackingField: 0
+    <ExpReward>k__BackingField: 5
     <EvolutionCost>k__BackingField: 300
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: defc4bc62f05eb849bdaf6fb64505ee6, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: defc4bc62f05eb849bdaf6fb64505ee6, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField: []
   - <MoveSpeed>k__BackingField: 7
     <Stats>k__BackingField:
+      <Strength>k__BackingField: 0
+      <Agility>k__BackingField: 0
+      <Intelligence>k__BackingField: 0
       <Health>k__BackingField: 1100
-      <PhysicalResist>k__BackingField: 0
+      <HealthRegen>k__BackingField: 0
+      <Mana>k__BackingField: 0
+      <ManaRegen>k__BackingField: 0
+      <Armor>k__BackingField: 0
       <MagicResist>k__BackingField: 0
-      <FireResist>k__BackingField: 0
-      <FaithResist>k__BackingField: 0
+      <AttackSpeed>k__BackingField: 100
       <Damage>k__BackingField: 25
       <DamageType>k__BackingField: 0
     <WeaponData>k__BackingField:
     - {fileID: 11400000, guid: 7984b5a34478b3b4fbaf92d78807396a, type: 2}
     <BrainData>k__BackingField: {fileID: 11400000, guid: ba624ccb0781e5044bb1d57fdcab11c3, type: 2}
     <Ability>k__BackingField: {fileID: 0}
-    <AnimationType>k__BackingField: 0
+    <DeathAbility>k__BackingField: {fileID: 0}
     <KillReward>k__BackingField: 0
+    <ExpReward>k__BackingField: 5
     <EvolutionCost>k__BackingField: 600
     <SkinMaterial>k__BackingField: {fileID: 2100000, guid: defc4bc62f05eb849bdaf6fb64505ee6, type: 2}
     <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: defc4bc62f05eb849bdaf6fb64505ee6, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField: []
   BaseMaterial: {fileID: 2100000, guid: defc4bc62f05eb849bdaf6fb64505ee6, type: 2}
   BaseWeapon: {fileID: 11400000, guid: 7984b5a34478b3b4fbaf92d78807396a, type: 2}
   BaseAbility: {fileID: 0}
-  BaseAbilityAnimation: 0
   BaseBrain: {fileID: 11400000, guid: ba624ccb0781e5044bb1d57fdcab11c3, type: 2}
+  BaseHitSounds: []
+  BaseAttackSounds: []

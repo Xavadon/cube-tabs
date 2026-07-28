@@ -3,8 +3,10 @@ using _Project.Scripts.Architecture;
 using _Project.Scripts.Architecture.BehaviorTree;
 using _Project.Scripts.Architecture.Services.Input;
 using _Project.Scripts.Gameplay.Character.Components;
+using _Project.Scripts.Gameplay.Character.Components.Abilities;
 using _Project.Scripts.Gameplay.Character.Components.AiBrain;
 using _Project.Scripts.Gameplay.Character.Components.Health;
+using _Project.Scripts.Gameplay.Character.Components.Mana;
 using _Project.Scripts.Gameplay.Character.Components.UI;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Character.Data.AiBrain;
@@ -34,6 +36,10 @@ namespace _Project.Scripts.Gameplay.Character
         public CharacterStats Stats => _stats;
         public float CurrentHealth => _health.CurrentHealth;
         public float MaxHealth => _health.MaxHealth;
+        public float CurrentMana => _mana.CurrentMana;
+        public float MaxMana => _mana.MaxMana;
+        public float ManaRatio => _mana.ManaRatio;
+        public AbilityCaster Abilities => _abilities;
         
         [SerializeField]
         private Animator _animator;
@@ -57,6 +63,8 @@ namespace _Project.Scripts.Gameplay.Character
         private AnimatorController _animatorController;
         private NavMeshMovementComponent _movement;
         private HealthComponent _health;
+        private ManaComponent _mana;
+        private AbilityCaster _abilities;
         private ICharacterRegistry _registry;
         private HealthBarElement _healthBar;
         private CharacterData _characterData;
@@ -113,6 +121,12 @@ namespace _Project.Scripts.Gameplay.Character
             _brain = new CharacterBrain(targetLayer, _tier.BrainData, _tier, _stats, _navMeshAgent, _animatorController, transform, weapon, inputService, HandleAttack);
             _movement = new NavMeshMovementComponent(_navMeshAgent, transform, _tier.MoveSpeed);
             _health = new HealthComponent(_stats);
+            _mana = new ManaComponent(_stats);
+
+            if (characterData.Abilities is { Length: > 0 })
+            {
+                _abilities = new AbilityCaster(characterData.Abilities, _mana, _brain.Blackboard, _stats);
+            }
 
             _navMeshAgent.speed = _tier.MoveSpeed;
             _navMeshAgent.acceleration = NavMeshAcceleration;
@@ -131,6 +145,7 @@ namespace _Project.Scripts.Gameplay.Character
             }
 
             _health.Tick(Time.deltaTime);
+            _mana.Tick(Time.deltaTime);
 
             if (_brain != null)
             {
@@ -155,7 +170,9 @@ namespace _Project.Scripts.Gameplay.Character
             _stats = new CharacterStats(_tier.Stats, bonus);
 
             _health.SetStats(_stats);
+            _mana.SetStats(_stats);
             _brain.SetStats(_stats);
+            _abilities?.SetStats(_stats);
         }
 
         public void Stop()
@@ -226,6 +243,9 @@ namespace _Project.Scripts.Gameplay.Character
                     progress.AddGold(tier.KillReward);
                 if (tier.ExpReward > 0)
                     progress.AddExp(tier.ExpReward);
+
+                if (tier.SoulDrop != null)
+                    DropSoul(tier.SoulDrop);
             }
 
             if (tier.DeathAbility != null)
@@ -249,6 +269,14 @@ namespace _Project.Scripts.Gameplay.Character
             // TODO: Анимация смерти
 
             Destroy(gameObject);
+        }
+
+        private void DropSoul(ItemData soul)
+        {
+            var equipment = Project.Get<IEquipmentService>();
+
+            if (!equipment.AddToBackpack(soul))
+                Debug.LogWarning($"[Character] Душа '{soul.DisplayName}' потеряна — рюкзак полон");
         }
 
         private void ExecuteDeathAbility(TierData tier)

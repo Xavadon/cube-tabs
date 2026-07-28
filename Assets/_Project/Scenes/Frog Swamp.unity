@@ -1160,8 +1160,13 @@ MonoBehaviour:
   _enemyTier: 0
   _enemyCount: 5
   _respawnDelay: 2
+  _bossUnit: {fileID: 11400000, guid: 663c6f41ded2367448328caa86035fb4, type: 2}
+  _bossTier: 0
+  _bossSpawnPoint: {fileID: 0}
   _startingItems:
   - {fileID: 11400000, guid: e615a65eccfc75a4483b4599bc6358cc, type: 2}
+  - {fileID: 11400000, guid: 9c3e8d5a7f1b2e0c6d4a9f8b5c1e3a79, type: 2}
+  - {fileID: 11400000, guid: 9c3e8d5a7f1b2e0c6d4a9f8b5c1e3a79, type: 2}
   _startingBackpack:
   - {fileID: 11400000, guid: 7149d8eacf951e544b66eafed3028dbf, type: 2}
   - {fileID: 11400000, guid: caef4e5f442212e4f857dda92a52d92a, type: 2}

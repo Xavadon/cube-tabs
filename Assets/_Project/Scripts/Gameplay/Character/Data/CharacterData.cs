@@ -36,6 +36,11 @@ namespace _Project.Scripts.Gameplay.Character.Data
         [field: SerializeField]
         public string PriceLabel { get; private set; }
 
+        // временно живут на персонаже: по дизайну активные абилки открываются в passive tree (шаг 8)
+        [field: Header("Active abilities")]
+        [field: SerializeField]
+        public AbilitySlotData[] Abilities { get; private set; }
+
         [field: Header("Tiers")]
         [field: SerializeField]
         public TierData[] Tiers { get; private set; }

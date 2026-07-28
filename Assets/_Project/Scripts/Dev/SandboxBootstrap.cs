@@ -26,6 +26,11 @@ namespace _Project.Scripts.Dev
         [SerializeField] private int _enemyCount = 5;
         [SerializeField] private float _respawnDelay = 2f;
 
+        [Header("Boss")]
+        [SerializeField] private CharacterData _bossUnit;
+        [SerializeField] private int _bossTier;
+        [SerializeField] private Transform _bossSpawnPoint;
+
         [Header("Equipment")]
         [SerializeField] private ItemData[] _startingItems;
         [SerializeField] private ItemData[] _startingBackpack;
@@ -67,10 +72,15 @@ namespace _Project.Scripts.Dev
             if (merchantView != null)
                 merchantView.Bind(Project.Get<IMerchantService>(), _equipment, progress, localization);
 
+            Character boss = SpawnBoss();
+
             var hud = FindAnyObjectByType<HudView>();
             if (hud != null)
             {
                 hud.Bind(progress, _equipment, localization, Project.Get<IUnitPreviewService>(), _player);
+
+                if (boss != null)
+                    hud.ShowBoss(boss);
 
                 if (merchantView != null)
                 {
@@ -131,6 +141,24 @@ namespace _Project.Scripts.Dev
             character.transform.position = spawnPosition;
 
             return character;
+        }
+
+        private Character SpawnBoss()
+        {
+            if (_bossUnit == null)
+                return null;
+
+            var factory = Project.Get<ICharacterFactory>();
+
+            Character boss = factory.Create(CharacterType.Enemy, _bossUnit, _bossTier);
+            boss.SetRegistry(_registry);
+            _registry.Register(boss);
+
+            boss.transform.position = _bossSpawnPoint != null
+                ? _bossSpawnPoint.position
+                : transform.position + Vector3.forward * 15f;
+
+            return boss;
         }
 
         private async UniTaskVoid RespawnWave()

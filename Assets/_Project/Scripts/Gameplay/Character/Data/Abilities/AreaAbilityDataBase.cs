@@ -16,6 +16,10 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
 
         [field: SerializeField]
         public float Duration { get; private set; } = 1f;
+
+        // задержка перед ударом: круг на земле уже видно, урона ещё нет
+        [field: SerializeField]
+        public float TelegraphDuration { get; private set; }
         
         [field: SerializeField]
         public Vector3 SpawnOffset { get; private set; } = new(0f, 2f, 1f);
@@ -49,7 +53,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.Abilities
 
             // TODO: Заменить Instantiate на пулинг (массовые касты — GC-спайки)
             AreaWave wave = Instantiate(Prefab, spawnPosition, Quaternion.identity);
-            wave.Init(Radius, Duration, ApplyMultiplier(damage), affectedLayers, targetLayer);
+            wave.Init(Radius, Duration, ApplyMultiplier(damage), affectedLayers, targetLayer, TelegraphDuration);
 
             if (Sounds is { Length: > 0 })
             {

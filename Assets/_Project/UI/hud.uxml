@@ -3,6 +3,14 @@
     <ui:Style src="project://database/Assets/_Project/UI/inventory.uss" />
     <ui:VisualElement name="root" class="root" picking-mode="Ignore">
 
+        <ui:VisualElement name="boss-panel" class="boss-panel" picking-mode="Ignore">
+            <ui:Label name="boss-name" class="boss-name" picking-mode="Ignore" />
+            <ui:VisualElement name="boss-bar" class="boss-bar" picking-mode="Ignore">
+                <ui:VisualElement name="boss-fill" class="boss-fill" picking-mode="Ignore" />
+                <ui:Label name="boss-hp" class="hp-text" picking-mode="Ignore" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
         <ui:VisualElement name="top-right" class="top-right" picking-mode="Ignore">
             <ui:Button name="shop-button" class="menu-button" />
         </ui:VisualElement>
@@ -31,6 +39,13 @@
                         <ui:Label name="hp-text" class="hp-text" picking-mode="Ignore" />
                         <ui:Label name="hp-regen" class="hp-regen" picking-mode="Ignore" />
                     </ui:VisualElement>
+
+                    <ui:VisualElement name="mana-bar" class="mana-bar" picking-mode="Ignore">
+                        <ui:VisualElement name="mana-fill" class="mana-fill" picking-mode="Ignore" />
+                        <ui:Label name="mana-text" class="hp-text" picking-mode="Ignore" />
+                    </ui:VisualElement>
+
+                    <ui:VisualElement name="abilities" class="ability-row" />
                 </ui:VisualElement>
 
                 <ui:VisualElement name="equipment" class="slot-grid equipment-grid" />

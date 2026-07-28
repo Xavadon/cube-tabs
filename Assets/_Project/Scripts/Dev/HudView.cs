@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using _Project.Scripts.Architecture.Services.Localization;
+using _Project.Scripts.Gameplay.Character.Components.Abilities;
 using _Project.Scripts.Gameplay.Character.Data;
+using _Project.Scripts.Gameplay.Character.Data.Abilities;
 using _Project.Scripts.Gameplay.Inventory;
 using _Project.Scripts.Gameplay.Inventory.UI;
 using _Project.Scripts.Gameplay.Services;
@@ -14,6 +17,7 @@ namespace _Project.Scripts.Dev
     public class HudView : UIDocumentView
     {
         private const string OpenToggleClass = "backpack-toggle--open";
+        private const string EmptyAbilityClass = "ability-button--empty";
 
         private IPlayerProgressService _progress;
         private IEquipmentService _equipment;
@@ -28,6 +32,15 @@ namespace _Project.Scripts.Dev
         private VisualElement _hpFill;
         private Label _hpText;
         private Label _hpRegen;
+        private VisualElement _manaFill;
+        private Label _manaText;
+        private VisualElement _abilityRow;
+        private VisualElement _bossPanel;
+        private VisualElement _bossFill;
+        private Label _bossName;
+        private Label _bossHp;
+        private CharacterEntity _boss;
+        private int _shownBossHealth = -1;
         private Label _damage;
         private Label _armor;
         private Label _magic;
@@ -36,10 +49,23 @@ namespace _Project.Scripts.Dev
         private VisualElement _backpackPanel;
         private Button _backpackToggle;
 
+        private readonly List<AbilityButton> _abilityButtons = new();
+
         private bool _backpackOpen;
         private int _shownHealth = -1;
         private int _shownMaxHealth = -1;
         private int _shownDamage = -1;
+        private int _shownMana = -1;
+
+        private class AbilityButton
+        {
+            public int Index;
+            public VisualElement Cooldown;
+            public Label Timer;
+            public VisualElement Root;
+            public int ShownSeconds = -1;
+            public bool ShownEmpty;
+        }
 
         public event Action OnMerchantClicked;
 
@@ -71,6 +97,13 @@ namespace _Project.Scripts.Dev
             _hpFill = Root.Q<VisualElement>("hp-fill");
             _hpText = Root.Q<Label>("hp-text");
             _hpRegen = Root.Q<Label>("hp-regen");
+            _manaFill = Root.Q<VisualElement>("mana-fill");
+            _manaText = Root.Q<Label>("mana-text");
+            _abilityRow = Root.Q<VisualElement>("abilities");
+            _bossPanel = Root.Q<VisualElement>("boss-panel");
+            _bossFill = Root.Q<VisualElement>("boss-fill");
+            _bossName = Root.Q<Label>("boss-name");
+            _bossHp = Root.Q<Label>("boss-hp");
             _damage = Root.Q<Label>("stat-damage");
             _armor = Root.Q<Label>("stat-armor");
             _magic = Root.Q<Label>("stat-magic");
@@ -93,11 +126,139 @@ namespace _Project.Scripts.Dev
                 ClickInterceptor = item => ItemClickInterceptor != null && ItemClickInterceptor(item)
             };
 
+            BuildAbilities();
             ApplyBackpackState();
             ApplyPortrait();
             InvalidateShownStats();
             RefreshGold();
             RefreshExp();
+        }
+
+        public void ShowBoss(CharacterEntity boss)
+        {
+            _boss = boss;
+            _shownBossHealth = -1;
+
+            if (_bossName != null && boss != null && boss.CharacterDataRef != null)
+                _bossName.text = boss.CharacterDataRef.Name;
+
+            ApplyBossState();
+        }
+
+        private void ApplyBossState()
+        {
+            if (_bossPanel != null)
+                _bossPanel.style.display = _boss != null ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        // босс уничтожается вместе с объектом, поэтому панель снимается по проверке на null
+        private void RefreshBoss()
+        {
+            if (_boss == null)
+            {
+                if (_bossPanel != null && _bossPanel.style.display == DisplayStyle.Flex)
+                    ApplyBossState();
+
+                return;
+            }
+
+            _bossFill.style.width = Length.Percent(_boss.HealthRatio * 100f);
+
+            int health = Mathf.CeilToInt(_boss.CurrentHealth);
+
+            if (health == _shownBossHealth)
+                return;
+
+            _shownBossHealth = health;
+            _bossHp.text = $"{health}/{Mathf.RoundToInt(_boss.MaxHealth)}";
+        }
+
+        private void BuildAbilities()
+        {
+            _abilityRow.Clear();
+            _abilityButtons.Clear();
+
+            AbilityCaster caster = _player != null ? _player.Abilities : null;
+
+            if (caster == null)
+            {
+                _abilityRow.style.display = DisplayStyle.None;
+                return;
+            }
+
+            _abilityRow.style.display = DisplayStyle.Flex;
+
+            for (int i = 0; i < caster.Slots.Count; i++)
+            {
+                AbilitySlotData slot = caster.Slots[i];
+
+                if (slot?.Ability == null)
+                    continue;
+
+                _abilityButtons.Add(BuildAbilityButton(caster, slot, i));
+            }
+        }
+
+        private AbilityButton BuildAbilityButton(AbilityCaster caster, AbilitySlotData slot, int index)
+        {
+            int captured = index;
+            var button = new Button(() => caster.TryCast(captured));
+            button.AddToClassList("ability-button");
+
+            var icon = new VisualElement();
+            icon.AddToClassList("ability-icon");
+            icon.pickingMode = PickingMode.Ignore;
+
+            if (slot.Icon != null)
+                icon.style.backgroundImage = Background.FromSprite(slot.Icon);
+
+            var cooldown = new VisualElement();
+            cooldown.AddToClassList("ability-cooldown");
+            cooldown.pickingMode = PickingMode.Ignore;
+
+            var timer = new Label();
+            timer.AddToClassList("ability-timer");
+            timer.pickingMode = PickingMode.Ignore;
+
+            button.Add(icon);
+            button.Add(cooldown);
+            button.Add(timer);
+            _abilityRow.Add(button);
+
+            return new AbilityButton { Index = index, Root = button, Cooldown = cooldown, Timer = timer };
+        }
+
+        private void RefreshAbilities()
+        {
+            AbilityCaster caster = _player.Abilities;
+
+            if (caster == null)
+                return;
+
+            foreach (AbilityButton button in _abilityButtons)
+            {
+                float left = caster.CooldownLeft(button.Index);
+                int seconds = Mathf.CeilToInt(left);
+
+                if (seconds != button.ShownSeconds)
+                {
+                    button.ShownSeconds = seconds;
+                    button.Timer.text = seconds > 0 ? seconds.ToString() : string.Empty;
+                    button.Cooldown.style.height = Length.Percent(caster.CooldownRatio(button.Index) * 100f);
+                }
+
+                bool empty = !caster.CanCast(button.Index) && left <= 0f;
+
+                if (empty == button.ShownEmpty)
+                    continue;
+
+                button.ShownEmpty = empty;
+
+                if (empty)
+                    button.Root.AddToClassList(EmptyAbilityClass);
+                else
+                    button.Root.RemoveFromClassList(EmptyAbilityClass);
+            }
         }
 
         private void ApplyPortrait()
@@ -174,6 +335,10 @@ namespace _Project.Scripts.Dev
             if (_hpFill != null)
                 _hpFill.style.width = Length.Percent(_player.HealthRatio * 100f);
 
+            RefreshMana();
+            RefreshAbilities();
+            RefreshBoss();
+
             // сравниваем округлённые значения: реген тикает каждый кадр,
             // иначе строки пересобирались бы постоянно
             int health = Mathf.CeilToInt(_player.CurrentHealth);
@@ -195,6 +360,20 @@ namespace _Project.Scripts.Dev
             _magic.text = _localization.Get(LocalizationKeys.Arpg.StatMagic, stats.MagicResist.ToString("P1"));
             _attackSpeed.text = _localization.Get(LocalizationKeys.Arpg.StatAttackSpeed, stats.AttackSpeed.ToString("F0"));
             _attributes.text = $"{stats.Strength:F0} / {stats.Agility:F0} / {stats.Intelligence:F0}";
+        }
+
+        private void RefreshMana()
+        {
+            if (_manaFill != null)
+                _manaFill.style.width = Length.Percent(_player.ManaRatio * 100f);
+
+            int mana = Mathf.FloorToInt(_player.CurrentMana);
+
+            if (mana == _shownMana || _manaText == null)
+                return;
+
+            _shownMana = mana;
+            _manaText.text = $"{mana}/{Mathf.RoundToInt(_player.MaxMana)}";
         }
 
         private void RefreshGold()

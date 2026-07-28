@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d1a0c92fd76944293a5abc39455227, type: 3}
+  m_Name: brain-boss-frog
+  m_EditorClassIdentifier: 
+  <FindTargetType>k__BackingField: 0
+  <DetectionRadius>k__BackingField: 25
+  <WindUpDuration>k__BackingField: 0.3
+  <AttackDuration>k__BackingField: 0.8
+  <AttackRange>k__BackingField: 1.75
+  <AttackStopRange>k__BackingField: 3
+  <AttackCooldown>k__BackingField: 0.35
+  <AbilityRange>k__BackingField: 9
+  <AbilityCooldown>k__BackingField: 6
+  <AbilityWindUpDuration>k__BackingField: 0.4
+  <AbilityDuration>k__BackingField: 0.6

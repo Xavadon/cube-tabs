@@ -23,6 +23,12 @@ namespace _Project.Scripts.Gameplay.Character.Data
         public float HealthRegen { get; private set; }
 
         [field: SerializeField]
+        public float Mana { get; private set; }
+
+        [field: SerializeField]
+        public float ManaRegen { get; private set; }
+
+        [field: SerializeField]
         public float Armor { get; private set; }
 
         [field: SerializeField]
