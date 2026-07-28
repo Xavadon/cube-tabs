@@ -38,6 +38,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.Health
         private CharacterResistances _resistances;
         private float _maxHealth;
         private float _currentHealth;
+        private float _regenPerSecond;
         private string _charaName;  // Debug (TODO: удалить в релизе)
 
         public event Action OnDeath;
@@ -50,6 +51,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.Health
             _maxHealth = stats.Health;
             _currentHealth = _maxHealth;
             _resistances = stats.ToResistances();
+            _regenPerSecond = stats.HealthRegen;
         }
 
         public void SetStats(CharacterStats stats)
@@ -59,7 +61,17 @@ namespace _Project.Scripts.Gameplay.Character.Components.Health
             _maxHealth = stats.Health;
             _currentHealth = _maxHealth * ratio;
             _resistances = stats.ToResistances();
+            _regenPerSecond = stats.HealthRegen;
 
+            OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
+        }
+
+        public void Tick(float deltaTime)
+        {
+            if (!IsAlive || _regenPerSecond <= 0f || _currentHealth >= _maxHealth)
+                return;
+
+            _currentHealth = Mathf.Min(_maxHealth, _currentHealth + _regenPerSecond * deltaTime);
             OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
         }
 
@@ -129,10 +141,8 @@ namespace _Project.Scripts.Gameplay.Character.Components.Health
             Debug.Log($"[CharacterHealth] === Статус {_charaName} ===" +
                      $"\n  HP: {_currentHealth:F1}/{_maxHealth}" +
                      $"\n  Жив: {IsAlive}" +
-                     $"\n  Физ. сопротивление: {_resistances.PhysicalResist:P0}" +
-                     $"\n  Маг. сопротивление: {_resistances.MagicResist:P0}" +
-                     $"\n  Огн. сопротивление: {_resistances.FireResist:P0}" +
-                     $"\n  Свят. сопротивление: {_resistances.FaithResist:P0}");
+                     $"\n  Снижение физ. урона: {_resistances.PhysicalReduction:P0}" +
+                     $"\n  Маг. сопротивление: {_resistances.MagicResist:P0}");
         }
     }
 }

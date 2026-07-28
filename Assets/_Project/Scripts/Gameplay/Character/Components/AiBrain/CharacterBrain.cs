@@ -23,6 +23,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         public const string HitPoint = "HitPoint";
         public const string AttackSounds = "AttackSounds";
         public const string OnAttackCallback = "OnAttackCallback";
+        public const string AttackIntervalMultiplier = "AttackIntervalMultiplier";
     }
     
     public class CharacterBrain
@@ -42,6 +43,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
             _tree.Blackboard.Set(BrainKeys.TargetLayer, layerMask);
             _tree.Blackboard.Set(BrainKeys.Damage, stats.Damage);
             _tree.Blackboard.Set(BrainKeys.DamageType, stats.DamageType);
+            _tree.Blackboard.Set(BrainKeys.AttackIntervalMultiplier, stats.AttackIntervalMultiplier);
 
             if (weaponData != null)
             {
@@ -68,6 +70,7 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         {
             _tree.Blackboard.Set(BrainKeys.Damage, stats.Damage);
             _tree.Blackboard.Set(BrainKeys.DamageType, stats.DamageType);
+            _tree.Blackboard.Set(BrainKeys.AttackIntervalMultiplier, stats.AttackIntervalMultiplier);
         }
 
         public void Tick()

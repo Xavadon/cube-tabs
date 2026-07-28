@@ -19,5 +19,7 @@ namespace _Project.Scripts.Gameplay.Inventory
 
         [field: SerializeField]
         public StatBonus Bonus { get; private set; } = new();
+
+        public string DisplayName => string.IsNullOrEmpty(Name) ? name : Name;
     }
 }

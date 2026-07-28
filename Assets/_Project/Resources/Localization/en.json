@@ -185,8 +185,12 @@
       "value": "MERCHANT"
     },
     {
-      "key": "ui.arpg.merchant.goods",
-      "value": "GOODS"
+      "key": "ui.arpg.merchant.materials",
+      "value": "MATERIALS"
+    },
+    {
+      "key": "ui.arpg.merchant.craftables",
+      "value": "CRAFTED"
     },
     {
       "key": "ui.arpg.merchant.craft",
@@ -201,12 +205,16 @@
       "value": "{0} g"
     },
     {
-      "key": "ui.arpg.merchant.craft_button",
-      "value": "Craft"
+      "key": "ui.arpg.merchant.craft_hint",
+      "value": "Drag components here — they combine on their own"
     },
     {
-      "key": "ui.arpg.merchant.no_components",
-      "value": "no components"
+      "key": "ui.arpg.merchant.tree",
+      "value": "RECIPE"
+    },
+    {
+      "key": "ui.arpg.merchant.tree_hint",
+      "value": "Click an item to see what it builds into and what it is made of"
     },
     {
       "key": "ui.arpg.hud.character",
@@ -215,6 +223,58 @@
     {
       "key": "ui.arpg.hud.merchant",
       "value": "MERCHANT"
+    },
+    {
+      "key": "ui.arpg.level",
+      "value": "Level {0}"
+    },
+    {
+      "key": "ui.arpg.stat.armor",
+      "value": "Armor: {0}"
+    },
+    {
+      "key": "ui.arpg.stat.attack_speed",
+      "value": "Attack speed: {0}"
+    },
+    {
+      "key": "ui.arpg.stat.strength",
+      "value": "STR: {0}"
+    },
+    {
+      "key": "ui.arpg.stat.agility",
+      "value": "AGI: {0}"
+    },
+    {
+      "key": "ui.arpg.stat.intelligence",
+      "value": "INT: {0}"
+    },
+    {
+      "key": "ui.arpg.bonus.strength",
+      "value": "{0} Strength"
+    },
+    {
+      "key": "ui.arpg.bonus.agility",
+      "value": "{0} Agility"
+    },
+    {
+      "key": "ui.arpg.bonus.intelligence",
+      "value": "{0} Intelligence"
+    },
+    {
+      "key": "ui.arpg.bonus.armor",
+      "value": "{0} Armor"
+    },
+    {
+      "key": "ui.arpg.bonus.attack_speed",
+      "value": "{0} Attack speed"
+    },
+    {
+      "key": "ui.arpg.stat.health_short",
+      "value": "{0} / {1}"
+    },
+    {
+      "key": "ui.arpg.stat.health_regen",
+      "value": "+{0}"
     }
   ]
 }

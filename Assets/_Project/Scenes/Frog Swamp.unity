@@ -1163,9 +1163,19 @@ MonoBehaviour:
   _startingItems:
   - {fileID: 11400000, guid: e615a65eccfc75a4483b4599bc6358cc, type: 2}
   _startingBackpack:
-  - {fileID: 11400000, guid: 77b58d66abd785340bdec918e7494b45, type: 2}
-  - {fileID: 11400000, guid: a17a5de016ffb084eba285c444e545e5, type: 2}
-  - {fileID: 11400000, guid: cbdd54860876abc45bf36f1d81e19064, type: 2}
+  - {fileID: 11400000, guid: 7149d8eacf951e544b66eafed3028dbf, type: 2}
+  - {fileID: 11400000, guid: caef4e5f442212e4f857dda92a52d92a, type: 2}
+  - {fileID: 11400000, guid: 4d27f0f44f4885940bedde2ca8b4f9bb, type: 2}
+  _startingGold: 0
+  _startingStats:
+    <Strength>k__BackingField: 10
+    <Agility>k__BackingField: 10
+    <Intelligence>k__BackingField: 10
+    <Damage>k__BackingField: 0
+    <Health>k__BackingField: 0
+    <Armor>k__BackingField: 0
+    <AttackSpeed>k__BackingField: 0
+    <MagicResist>k__BackingField: 0
 --- !u!4 &1706374718
 Transform:
   m_ObjectHideFlags: 0

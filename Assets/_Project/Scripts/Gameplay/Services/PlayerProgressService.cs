@@ -21,6 +21,10 @@ namespace _Project.Scripts.Gameplay.Services
     {
         int Gold { get; }
         int Exp { get; }
+        int Level { get; }
+        int SkillPoints { get; }
+        int ExpToNextLevel { get; }
+        float ExpProgress { get; }
         int ArmySlots { get; }
         int MaxArmySlots { get; }
         List<ResolvedUnit> ArmyUnits { get; }
@@ -30,6 +34,7 @@ namespace _Project.Scripts.Gameplay.Services
         void AddGold(int amount);
         void SpendGold(int amount);
         void AddExp(int amount);
+        bool SpendSkillPoint();
         bool BuyBaseUnit();
         bool BuyUniqueUnit(CharacterData unit);
         bool IsUnitOwned(string unitId);
@@ -54,6 +59,7 @@ namespace _Project.Scripts.Gameplay.Services
 
         event Action OnGoldChanged;
         event Action OnExpChanged;
+        event Action OnLevelChanged;
         event Action OnArmyChanged;
         event Action OnOwnedChanged;
     }
@@ -68,14 +74,23 @@ namespace _Project.Scripts.Gameplay.Services
         private ShopCatalog _catalog;
         private SaveData _saveData;
 
+        // Кривая уровня (решено 2026-07-27): 50 эксп + 5% от 50 за каждый текущий уровень.
+        private const int BaseExpToLevel = 50;
+        private const float ExpGrowthPerLevel = 0.05f;
+
         public int Gold => _saveData.Gold;
         public int Exp => _saveData.Exp;
+        public int Level => _saveData.Level;
+        public int SkillPoints => _saveData.SkillPoints;
+        public int ExpToNextLevel => Mathf.RoundToInt(BaseExpToLevel * (1f + ExpGrowthPerLevel * _saveData.Level));
+        public float ExpProgress => ExpToNextLevel > 0 ? Mathf.Clamp01((float)_saveData.Exp / ExpToNextLevel) : 0f;
         public int ArmySlots => _saveData.ArmySlots;
         public int MaxArmySlots => _catalog.MaxArmySlots + _saveData.BonusMaxArmySlots;
         public bool NoAds => _saveData.NoAds;
 
         public event Action OnGoldChanged;
         public event Action OnExpChanged;
+        public event Action OnLevelChanged;
         public event Action OnArmyChanged;
         public event Action OnOwnedChanged;
 
@@ -203,8 +218,35 @@ namespace _Project.Scripts.Gameplay.Services
 
         public void AddExp(int amount)
         {
+            if (amount <= 0)
+                return;
+
             _saveData.Exp += amount;
+
+            bool leveled = false;
+
+            while (_saveData.Exp >= ExpToNextLevel)
+            {
+                _saveData.Exp -= ExpToNextLevel;
+                _saveData.Level++;
+                _saveData.SkillPoints++;
+                leveled = true;
+            }
+
             OnExpChanged?.Invoke();
+
+            if (leveled)
+                OnLevelChanged?.Invoke();
+        }
+
+        public bool SpendSkillPoint()
+        {
+            if (_saveData.SkillPoints <= 0)
+                return false;
+
+            _saveData.SkillPoints--;
+            OnLevelChanged?.Invoke();
+            return true;
         }
 
         public void SpendGold(int amount)

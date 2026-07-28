@@ -30,6 +30,11 @@ namespace _Project.Scripts.Dev
         [SerializeField] private ItemData[] _startingItems;
         [SerializeField] private ItemData[] _startingBackpack;
 
+        // ТЕСТ: стартовые голда и статы для проверки лавки, крафта и баланса — убрать вместе с песочницей
+        [Header("Test")]
+        [SerializeField] private int _startingGold = 1000;
+        [SerializeField] private StatBonus _startingStats = new();
+
         private ICharacterSpawner _spawner;
         private ICharacterRegistry _registry;
         private IEquipmentService _equipment;
@@ -49,12 +54,18 @@ namespace _Project.Scripts.Dev
             _player = SpawnPlayer();
             _equipment.OnChanged += HandleEquipmentChanged;
 
+            HandleEquipmentChanged();
+
             var progress = Project.Get<IPlayerProgressService>();
             var localization = Project.Get<ILocalizationService>();
+
+            // добираем до порога, а не прибавляем: иначе голда копилась бы по 1000 за каждый вход в Play
+            if (progress.Gold < _startingGold)
+                progress.AddGold(_startingGold - progress.Gold);
             var merchantView = FindAnyObjectByType<MerchantView>();
 
             if (merchantView != null)
-                merchantView.Bind(Project.Get<IMerchantService>(), progress, localization);
+                merchantView.Bind(Project.Get<IMerchantService>(), _equipment, progress, localization);
 
             var hud = FindAnyObjectByType<HudView>();
             if (hud != null)
@@ -62,7 +73,10 @@ namespace _Project.Scripts.Dev
                 hud.Bind(progress, _equipment, localization, Project.Get<IUnitPreviewService>(), _player);
 
                 if (merchantView != null)
+                {
                     hud.OnMerchantClicked += merchantView.Toggle;
+                    hud.ItemClickInterceptor = merchantView.TryShowRecipe;
+                }
             }
 
             _registry.StartBattle();
@@ -102,7 +116,7 @@ namespace _Project.Scripts.Dev
         private void HandleEquipmentChanged()
         {
             if (_player != null)
-                _player.RefreshStats(_equipment.TotalBonus);
+                _player.RefreshStats(_equipment.TotalBonus + _startingStats);
         }
 
         private Character SpawnPlayer()

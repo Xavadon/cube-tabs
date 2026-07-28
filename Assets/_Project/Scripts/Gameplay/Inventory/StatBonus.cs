@@ -8,23 +8,29 @@ namespace _Project.Scripts.Gameplay.Inventory
     {
         public static readonly StatBonus Empty = new();
 
+        [field: SerializeField] [field: Header("Attributes")]
+        public float Strength { get; private set; }
+
+        [field: SerializeField]
+        public float Agility { get; private set; }
+
+        [field: SerializeField]
+        public float Intelligence { get; private set; }
+
+        [field: SerializeField] [field: Header("Flat")]
+        public float Damage { get; private set; }
+
         [field: SerializeField]
         public float Health { get; private set; }
 
         [field: SerializeField]
-        public float Damage { get; private set; }
+        public float Armor { get; private set; }
 
-        [field: SerializeField] [field: Header("Resistances")]
-        public float PhysicalResist { get; private set; }
+        [field: SerializeField]
+        public float AttackSpeed { get; private set; }
 
         [field: SerializeField]
         public float MagicResist { get; private set; }
-
-        [field: SerializeField]
-        public float FireResist { get; private set; }
-
-        [field: SerializeField]
-        public float FaithResist { get; private set; }
 
         public static StatBonus operator +(StatBonus a, StatBonus b)
         {
@@ -36,12 +42,14 @@ namespace _Project.Scripts.Gameplay.Inventory
 
             return new StatBonus
             {
-                Health = a.Health + b.Health,
+                Strength = a.Strength + b.Strength,
+                Agility = a.Agility + b.Agility,
+                Intelligence = a.Intelligence + b.Intelligence,
                 Damage = a.Damage + b.Damage,
-                PhysicalResist = a.PhysicalResist + b.PhysicalResist,
-                MagicResist = a.MagicResist + b.MagicResist,
-                FireResist = a.FireResist + b.FireResist,
-                FaithResist = a.FaithResist + b.FaithResist
+                Health = a.Health + b.Health,
+                Armor = a.Armor + b.Armor,
+                AttackSpeed = a.AttackSpeed + b.AttackSpeed,
+                MagicResist = a.MagicResist + b.MagicResist
             };
         }
     }

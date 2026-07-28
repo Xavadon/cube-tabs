@@ -17,3 +17,9 @@ MonoBehaviour:
     <Price>k__BackingField: 20
   - <Item>k__BackingField: {fileID: 11400000, guid: cbdd54860876abc45bf36f1d81e19064, type: 2}
     <Price>k__BackingField: 25
+  - <Item>k__BackingField: {fileID: 11400000, guid: 1a5c0b7e9d3f4c2a8b6e1d0f7a3c5e91, type: 2}
+    <Price>k__BackingField: 15
+  - <Item>k__BackingField: {fileID: 11400000, guid: 3c7e2d9a1f5b6e4c0d8a3f2b9c5e7a13, type: 2}
+    <Price>k__BackingField: 40
+  - <Item>k__BackingField: {fileID: 11400000, guid: 2b6d1c8f0e4a5d3b9c7f2e1a8b4d6f02, type: 2}
+    <Price>k__BackingField: 60

@@ -7,22 +7,31 @@ namespace _Project.Scripts.Gameplay.Character.Data
     [Serializable]
     public class CharacterStatsData
     {
+        [field: SerializeField] [field: Header("Attributes")]
+        public float Strength { get; private set; }
+
         [field: SerializeField]
+        public float Agility { get; private set; }
+
+        [field: SerializeField]
+        public float Intelligence { get; private set; }
+
+        [field: SerializeField] [field: Header("Base")]
         public float Health { get; private set; } = 100f;
-        
-        [field: SerializeField] [field: Header("Resistances")]
-        public float PhysicalResist { get; private set; } 
 
         [field: SerializeField]
-        public float MagicResist { get; private set; }
+        public float HealthRegen { get; private set; }
 
         [field: SerializeField]
-        public float FireResist { get; private set; }
+        public float Armor { get; private set; }
 
         [field: SerializeField]
-        public float FaithResist { get; private set; } 
-        
-        [field: SerializeField] [field: Header("Damage")] 
+        public float MagicResist { get; private set; } = 0.25f;
+
+        [field: SerializeField]
+        public float AttackSpeed { get; private set; } = 100f;
+
+        [field: SerializeField] [field: Header("Damage")]
         public float Damage { get; private set; } = 20f;
 
         [field: SerializeField]

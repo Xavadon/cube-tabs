@@ -30,6 +30,8 @@ namespace _Project.Scripts.Architecture.Services.Save
     {
         public int Gold;
         public int Exp;
+        public int Level = 1;
+        public int SkillPoints;
         public int ArmySlots;
         public int NextInstanceId;
         public List<OwnedUnit> OwnedUnits = new();

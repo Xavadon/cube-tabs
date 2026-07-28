@@ -130,6 +130,8 @@ namespace _Project.Scripts.Gameplay.Character
                 return;
             }
 
+            _health.Tick(Time.deltaTime);
+
             if (_brain != null)
             {
                 _brain.Tick();

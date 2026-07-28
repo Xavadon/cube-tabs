@@ -7,7 +7,7 @@ namespace _Project.Scripts.Architecture.Services.Save
         bool HasSave();
         void DeleteSave();
 
-        /// <summary>
+        /// <summary> ///
         /// Немедленный пуш в облако в обход троттлинга. Нужен перед consume покупки:
         /// по докам Yandex сначала сохраняем данные игрока, только потом потребляем покупку.
         /// </summary>

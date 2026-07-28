@@ -1,4 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Style src="project://database/Assets/_Project/UI/inventory.uss" />
     <ui:Style src="project://database/Assets/_Project/UI/merchant.uss" />
     <ui:VisualElement name="root" class="root" picking-mode="Ignore">
         <ui:VisualElement name="window" class="window">
@@ -11,14 +12,26 @@
             <ui:VisualElement name="body" class="body">
                 <ui:VisualElement name="stock-column" class="column">
                     <ui:Label name="stock-title" class="section-title" picking-mode="Ignore" />
-                    <ui:VisualElement name="stock" class="list" />
+                    <ui:VisualElement name="stock" class="list slot-grid" />
+
+                    <ui:Label name="craftables-title" class="section-title section-title--second" picking-mode="Ignore" />
+                    <ui:VisualElement name="craftables" class="list slot-grid" />
                 </ui:VisualElement>
 
                 <ui:VisualElement name="craft-column" class="column">
-                    <ui:Label name="recipes-title" class="section-title" picking-mode="Ignore" />
-                    <ui:VisualElement name="recipes" class="list" />
+                    <ui:Label name="craft-title" class="section-title" picking-mode="Ignore" />
+                    <ui:VisualElement name="craft" class="list slot-grid craft-grid" />
+                    <ui:Label name="craft-hint" class="craft-hint" picking-mode="Ignore" />
+
+                    <ui:Label name="tree-title" class="section-title" picking-mode="Ignore" />
+                    <ui:VisualElement name="recipe-tree" class="list recipe-tree" />
                 </ui:VisualElement>
             </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="tooltip" class="tooltip" picking-mode="Ignore">
+            <ui:Label name="tooltip-title" class="tooltip-title" picking-mode="Ignore" />
+            <ui:Label name="tooltip-body" class="tooltip-body" picking-mode="Ignore" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

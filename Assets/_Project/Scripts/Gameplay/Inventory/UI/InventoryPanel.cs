@@ -1,5 +1,5 @@
 using System;
-using System.Text;
+using System.Collections.Generic;
 using _Project.Scripts.Architecture.Services.Localization;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,23 +11,29 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
     {
         private const float DragThreshold = 6f;
         private const int DropAnimationMs = 120;
-        private const float TooltipOffset = 12f;
+        private const float GhostSize = 76f;
+        private const float GhostIconSize = 56f;
+
+        private enum SlotZone
+        {
+            Equipment,
+            Backpack,
+            Craft
+        }
 
         private class SlotRef
         {
-            public bool IsEquipment;
+            public SlotZone Zone;
             public int Index;
             public ItemData Item;
         }
 
         private readonly IEquipmentService _equipment;
-        private readonly ILocalizationService _localization;
         private readonly VisualElement _root;
         private readonly VisualElement _equipmentGrid;
         private readonly VisualElement _backpackGrid;
-        private readonly VisualElement _tooltip;
-        private readonly Label _tooltipTitle;
-        private readonly Label _tooltipBody;
+        private readonly VisualElement _craftGrid;
+        private readonly ItemTooltip _tooltip;
 
         private SlotRef _pressed;
         private VisualElement _pressedSlot;
@@ -39,18 +45,18 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
         private bool _dragging;
         private Action _pendingLanding;
 
+        // перехватывает короткий клик по предмету; вернул true — быстрое перемещение не выполняется
+        public Func<ItemData, bool> ClickInterceptor { get; set; }
+
         public InventoryPanel(IEquipmentService equipment, ILocalizationService localization, VisualElement root,
-            VisualElement equipmentGrid, VisualElement backpackGrid)
+            VisualElement equipmentGrid, VisualElement backpackGrid, VisualElement craftGrid = null)
         {
             _equipment = equipment;
-            _localization = localization;
             _root = root;
             _equipmentGrid = equipmentGrid;
             _backpackGrid = backpackGrid;
-
-            _tooltip = root.Q<VisualElement>("tooltip");
-            _tooltipTitle = root.Q<Label>("tooltip-title");
-            _tooltipBody = root.Q<Label>("tooltip-body");
+            _craftGrid = craftGrid;
+            _tooltip = new ItemTooltip(localization, root);
 
             _root.RegisterCallback<PointerMoveEvent>(OnPointerMove);
             _root.RegisterCallback<PointerUpEvent>(OnPointerUp);
@@ -60,28 +66,27 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
 
         public void Refresh()
         {
-            if (_equipmentGrid != null)
-            {
-                _equipmentGrid.Clear();
-
-                for (int i = 0; i < _equipment.SlotCount; i++)
-                    _equipmentGrid.Add(CreateSlot(_equipment.Slots[i], true, i));
-            }
-
-            if (_backpackGrid == null)
-                return;
-
-            _backpackGrid.Clear();
-
-            for (int i = 0; i < _equipment.BackpackCapacity; i++)
-                _backpackGrid.Add(CreateSlot(_equipment.Backpack[i], false, i));
+            Fill(_equipmentGrid, SlotZone.Equipment, _equipment.Slots, _equipment.SlotCount);
+            Fill(_backpackGrid, SlotZone.Backpack, _equipment.Backpack, _equipment.BackpackCapacity);
+            Fill(_craftGrid, SlotZone.Craft, _equipment.CraftZone, _equipment.CraftCapacity);
         }
 
-        private VisualElement CreateSlot(ItemData item, bool isEquipment, int index)
+        private void Fill(VisualElement grid, SlotZone zone, IReadOnlyList<ItemData> items, int count)
+        {
+            if (grid == null)
+                return;
+
+            grid.Clear();
+
+            for (int i = 0; i < count; i++)
+                grid.Add(CreateSlot(items[i], zone, i));
+        }
+
+        private VisualElement CreateSlot(ItemData item, SlotZone zone, int index)
         {
             var slot = new VisualElement();
             slot.AddToClassList("slot");
-            slot.userData = new SlotRef { IsEquipment = isEquipment, Index = index, Item = item };
+            slot.userData = new SlotRef { Zone = zone, Index = index, Item = item };
 
             if (item == null)
             {
@@ -89,33 +94,12 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
                 return slot;
             }
 
-            slot.Add(BuildItemContent(item));
+            slot.Add(ItemVisual.CreateContent(item));
             slot.RegisterCallback<PointerDownEvent>(OnPointerDown);
             slot.RegisterCallback<PointerEnterEvent>(_ => ShowTooltip(item, slot));
-            slot.RegisterCallback<PointerLeaveEvent>(_ => HideTooltip());
+            slot.RegisterCallback<PointerLeaveEvent>(_ => _tooltip.Hide());
 
             return slot;
-        }
-
-        private VisualElement BuildItemContent(ItemData item)
-        {
-            if (item.Icon != null)
-            {
-                var icon = new Image { sprite = item.Icon };
-                icon.AddToClassList("slot-icon");
-                icon.pickingMode = PickingMode.Ignore;
-                return icon;
-            }
-
-            var label = new Label(ItemName(item));
-            label.AddToClassList("slot-label");
-            label.pickingMode = PickingMode.Ignore;
-            return label;
-        }
-
-        private static string ItemName(ItemData item)
-        {
-            return string.IsNullOrEmpty(item.Name) ? item.name : item.Name;
         }
 
         private void OnPointerDown(PointerDownEvent evt)
@@ -228,10 +212,11 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
             if (source == null || target == null || source == target)
                 return false;
 
-            if (source.IsEquipment == target.IsEquipment)
+            if (source.Zone == target.Zone)
                 return source.Index != target.Index;
 
-            if (source.IsEquipment)
+            // снять в рюкзак можно только в свободную ячейку, остальные переносы — обмен содержимым
+            if (source.Zone == SlotZone.Equipment && target.Zone == SlotZone.Backpack)
                 return target.Item == null;
 
             return true;
@@ -250,7 +235,7 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
         private void BeginDrag()
         {
             _dragging = true;
-            HideTooltip();
+            _tooltip.Hide();
 
             if (_pressedSlot != null && _pressedSlot.childCount > 0)
             {
@@ -258,11 +243,45 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
                 _hiddenContent.style.display = DisplayStyle.None;
             }
 
-            _ghost = new VisualElement();
-            _ghost.AddToClassList("ghost");
-            _ghost.pickingMode = PickingMode.Ignore;
-            _ghost.Add(BuildItemContent(_pressed.Item));
-            _root.Add(_ghost);
+            _ghost = BuildGhost(_pressed.Item);
+
+            // призрак живёт в корне панели, а не документа: только так он рисуется поверх окна лавки,
+            // у которой свой UIDocument с большим sortingOrder. Стили документа туда не достают,
+            // поэтому размеры заданы инлайном — иначе иконка разворачивается в натуральный размер спрайта
+            VisualElement host = _root.panel != null ? _root.panel.visualTree : _root;
+            host.Add(_ghost);
+            _ghost.BringToFront();
+        }
+
+        private VisualElement BuildGhost(ItemData item)
+        {
+            var ghost = new VisualElement();
+            ghost.AddToClassList("ghost");
+            ghost.pickingMode = PickingMode.Ignore;
+            ghost.style.position = Position.Absolute;
+            ghost.style.width = GhostSize;
+            ghost.style.height = GhostSize;
+            ghost.style.alignItems = Align.Center;
+            ghost.style.justifyContent = Justify.Center;
+
+            VisualElement content = ItemVisual.CreateContent(item);
+
+            if (content is Image)
+            {
+                content.style.width = GhostIconSize;
+                content.style.height = GhostIconSize;
+            }
+            else
+            {
+                content.style.width = GhostSize;
+                content.style.fontSize = 13;
+                content.style.color = Color.white;
+                content.style.whiteSpace = WhiteSpace.Normal;
+                content.style.unityTextAlign = TextAnchor.MiddleCenter;
+            }
+
+            ghost.Add(content);
+            return ghost;
         }
 
         private void MoveGhost(Vector2 position)
@@ -309,35 +328,70 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
 
         private void ApplyDrop(SlotRef source, SlotRef target)
         {
-            if (source.IsEquipment && target.IsEquipment)
-                _equipment.SwapSlots(source.Index, target.Index);
-            else if (target.IsEquipment)
+            if (source.Zone == target.Zone)
+            {
+                switch (source.Zone)
+                {
+                    case SlotZone.Equipment:
+                        _equipment.SwapSlots(source.Index, target.Index);
+                        break;
+                    case SlotZone.Backpack:
+                        _equipment.MoveInBackpack(source.Index, target.Index);
+                        break;
+                    case SlotZone.Craft:
+                        _equipment.MoveInCraft(source.Index, target.Index);
+                        break;
+                }
+
+                return;
+            }
+
+            if (source.Zone == SlotZone.Backpack && target.Zone == SlotZone.Equipment)
                 _equipment.EquipFromBackpack(source.Index, target.Index);
-            else if (source.IsEquipment)
+            else if (source.Zone == SlotZone.Equipment && target.Zone == SlotZone.Backpack)
                 _equipment.UnequipTo(source.Index, target.Index);
-            else
-                _equipment.MoveInBackpack(source.Index, target.Index);
+            else if (source.Zone == SlotZone.Backpack && target.Zone == SlotZone.Craft)
+                _equipment.BackpackToCraft(source.Index, target.Index);
+            else if (source.Zone == SlotZone.Craft && target.Zone == SlotZone.Backpack)
+                _equipment.CraftToBackpack(source.Index, target.Index);
+            else if (source.Zone == SlotZone.Craft && target.Zone == SlotZone.Equipment)
+                _equipment.CraftToEquipment(source.Index, target.Index);
+            else if (source.Zone == SlotZone.Equipment && target.Zone == SlotZone.Craft)
+                _equipment.EquipmentToCraft(source.Index, target.Index);
         }
 
         private void QuickMove(SlotRef source)
         {
-            if (source.IsEquipment)
+            if (source.Item != null && ClickInterceptor != null && ClickInterceptor(source.Item))
+                return;
+
+            if (source.Zone == SlotZone.Equipment)
             {
                 _equipment.Unequip(source.Index);
                 return;
             }
 
-            int free = FirstFreeSlot();
+            if (source.Zone == SlotZone.Craft)
+            {
+                int cell = FirstFree(_equipment.Backpack, _equipment.BackpackCapacity);
+
+                if (cell >= 0)
+                    _equipment.CraftToBackpack(source.Index, cell);
+
+                return;
+            }
+
+            int free = FirstFree(_equipment.Slots, _equipment.SlotCount);
 
             if (free >= 0)
                 _equipment.EquipFromBackpack(source.Index, free);
         }
 
-        private int FirstFreeSlot()
+        private static int FirstFree(IReadOnlyList<ItemData> items, int count)
         {
-            for (int i = 0; i < _equipment.SlotCount; i++)
+            for (int i = 0; i < count; i++)
             {
-                if (_equipment.Slots[i] == null)
+                if (items[i] == null)
                     return i;
             }
 
@@ -346,55 +400,10 @@ namespace _Project.Scripts.Gameplay.Inventory.UI
 
         private void ShowTooltip(ItemData item, VisualElement slot)
         {
-            if (item == null || _dragging || _tooltip == null)
+            if (_dragging)
                 return;
 
-            _tooltipTitle.text = ItemName(item);
-            _tooltipBody.text = DescribeBonus(item.Bonus);
-            _tooltip.style.display = DisplayStyle.Flex;
-
-            Rect bounds = slot.worldBound;
-            float left = Mathf.Min(bounds.xMax + TooltipOffset, _root.worldBound.width - _tooltip.resolvedStyle.width);
-            _tooltip.style.left = Mathf.Max(0f, left);
-            _tooltip.style.top = Mathf.Max(0f, bounds.yMin - _tooltip.resolvedStyle.height - TooltipOffset);
-        }
-
-        private void HideTooltip()
-        {
-            if (_tooltip != null)
-                _tooltip.style.display = DisplayStyle.None;
-        }
-
-        private string DescribeBonus(StatBonus bonus)
-        {
-            if (bonus == null)
-                return _localization.Get(LocalizationKeys.Arpg.BonusNone);
-
-            var builder = new StringBuilder();
-
-            AppendBonus(builder, LocalizationKeys.Arpg.BonusDamage, bonus.Damage, false);
-            AppendBonus(builder, LocalizationKeys.Arpg.BonusHealth, bonus.Health, false);
-            AppendBonus(builder, LocalizationKeys.Arpg.BonusPhysical, bonus.PhysicalResist, true);
-            AppendBonus(builder, LocalizationKeys.Arpg.BonusMagic, bonus.MagicResist, true);
-            AppendBonus(builder, LocalizationKeys.Arpg.BonusFire, bonus.FireResist, true);
-            AppendBonus(builder, LocalizationKeys.Arpg.BonusFaith, bonus.FaithResist, true);
-
-            return builder.Length > 0 ? builder.ToString() : _localization.Get(LocalizationKeys.Arpg.BonusNone);
-        }
-
-        private void AppendBonus(StringBuilder builder, string key, float value, bool percent)
-        {
-            if (Mathf.Approximately(value, 0f))
-                return;
-
-            if (builder.Length > 0)
-                builder.Append('\n');
-
-            string amount = percent
-                ? (value > 0 ? "+" : "") + (value * 100f).ToString("0.#") + "%"
-                : (value > 0 ? "+" : "") + value.ToString("0.#");
-
-            builder.Append(_localization.Get(key, amount));
+            _tooltip.Show(item, slot);
         }
 
         private VisualElement FindSlotElement(VisualElement element)

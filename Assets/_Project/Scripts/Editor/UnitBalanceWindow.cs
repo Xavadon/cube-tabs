@@ -121,10 +121,10 @@ namespace _Project.Scripts.Editor
                         HP = tier.Stats.Health,
                         Damage = tier.Stats.Damage,
                         DamageType = tier.Stats.DamageType.ToString(),
-                        PhysRes = tier.Stats.PhysicalResist,
+                        PhysRes = tier.Stats.Armor,
                         MagRes = tier.Stats.MagicResist,
-                        FireRes = tier.Stats.FireResist,
-                        FaithRes = tier.Stats.FaithResist,
+                        FireRes = tier.Stats.Strength,
+                        FaithRes = tier.Stats.Agility,
                         Speed = tier.MoveSpeed,
                         Cooldown = cooldown,
                         DPS = dps,
@@ -326,11 +326,11 @@ namespace _Project.Scripts.Editor
                 var typeRect = CellRect(ref x, colIdx++, rowRect.y);
                 EditorGUI.LabelField(typeRect, row.DamageType, Styles.CenterLabel);
 
-                // Resists
-                DrawCellProperty(ref x, ref colIdx, rowRect.y, statsProp, "<PhysicalResist>k__BackingField");
+                // Броня, магрезист и атрибуты (после перехода на дота-статы)
+                DrawCellProperty(ref x, ref colIdx, rowRect.y, statsProp, "<Armor>k__BackingField");
                 DrawCellProperty(ref x, ref colIdx, rowRect.y, statsProp, "<MagicResist>k__BackingField");
-                DrawCellProperty(ref x, ref colIdx, rowRect.y, statsProp, "<FireResist>k__BackingField");
-                DrawCellProperty(ref x, ref colIdx, rowRect.y, statsProp, "<FaithResist>k__BackingField");
+                DrawCellProperty(ref x, ref colIdx, rowRect.y, statsProp, "<Strength>k__BackingField");
+                DrawCellProperty(ref x, ref colIdx, rowRect.y, statsProp, "<Agility>k__BackingField");
 
                 // Speed
                 DrawCellProperty(ref x, ref colIdx, rowRect.y, tierProp, "<MoveSpeed>k__BackingField");

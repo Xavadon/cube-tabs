@@ -1,7 +1,7 @@
-using System;
-using System.Text;
+using System.Collections.Generic;
 using _Project.Scripts.Architecture.Services.Localization;
 using _Project.Scripts.Gameplay.Inventory;
+using _Project.Scripts.Gameplay.Inventory.UI;
 using _Project.Scripts.Gameplay.Merchant.Data;
 using _Project.Scripts.Gameplay.Services;
 using _Project.Scripts.Gameplay.UI.Arpg;
@@ -11,25 +11,36 @@ namespace _Project.Scripts.Gameplay.Merchant.UI
 {
     public class MerchantView : UIDocumentView
     {
+        private readonly List<MerchantSlot> _stockSlots = new();
+        private readonly List<MerchantSlot> _craftableSlots = new();
+
         private IMerchantService _merchant;
+        private IEquipmentService _equipment;
         private IPlayerProgressService _progress;
         private ILocalizationService _localization;
 
+        private ItemTooltip _tooltip;
+        private MerchantSlotFactory _slots;
+        private RecipeTreeView _tree;
+        private InventoryPanel _craftPanel;
         private VisualElement _stock;
-        private VisualElement _recipes;
+        private VisualElement _craftables;
         private Label _gold;
         private bool _open;
 
         public bool IsOpen => _open;
 
-        public void Bind(IMerchantService merchant, IPlayerProgressService progress, ILocalizationService localization)
+        public void Bind(IMerchantService merchant, IEquipmentService equipment, IPlayerProgressService progress,
+            ILocalizationService localization)
         {
             _merchant = merchant;
+            _equipment = equipment;
             _progress = progress;
             _localization = localization;
 
             _merchant.OnChanged += Refresh;
             _progress.OnGoldChanged += Refresh;
+            _equipment.OnChanged += RefreshCraft;
 
             StartWiring();
         }
@@ -37,14 +48,27 @@ namespace _Project.Scripts.Gameplay.Merchant.UI
         protected override void Wire()
         {
             _stock = Root.Q<VisualElement>("stock");
-            _recipes = Root.Q<VisualElement>("recipes");
+            _craftables = Root.Q<VisualElement>("craftables");
             _gold = Root.Q<Label>("gold");
+            _tooltip = new ItemTooltip(_localization, Root);
+            _slots = new MerchantSlotFactory(_merchant, _localization, _tooltip);
 
             Root.Q<Label>("title").text = _localization.Get(LocalizationKeys.Arpg.MerchantTitle);
-            Root.Q<Label>("stock-title").text = _localization.Get(LocalizationKeys.Arpg.MerchantGoods);
-            Root.Q<Label>("recipes-title").text = _localization.Get(LocalizationKeys.Arpg.MerchantCraft);
+            Root.Q<Label>("stock-title").text = _localization.Get(LocalizationKeys.Arpg.MerchantMaterials);
+            Root.Q<Label>("craftables-title").text = _localization.Get(LocalizationKeys.Arpg.MerchantCraftables);
+            Root.Q<Label>("craft-title").text = _localization.Get(LocalizationKeys.Arpg.MerchantCraft);
+            Root.Q<Label>("craft-hint").text = _localization.Get(LocalizationKeys.Arpg.MerchantCraftHint);
+            Root.Q<Label>("tree-title").text = _localization.Get(LocalizationKeys.Arpg.MerchantTree);
             Root.Q<Button>("close").clicked += Close;
 
+            _tree = new RecipeTreeView(_merchant, _slots, _localization, Root.Q<VisualElement>("recipe-tree"));
+
+            _craftPanel = new InventoryPanel(_equipment, _localization, Root, null, null, Root.Q<VisualElement>("craft"))
+            {
+                ClickInterceptor = TryShowRecipe
+            };
+
+            BuildShowcases();
             ApplyOpenState();
             Refresh();
         }
@@ -56,6 +80,20 @@ namespace _Project.Scripts.Gameplay.Merchant.UI
 
             if (_progress != null)
                 _progress.OnGoldChanged -= Refresh;
+
+            if (_equipment != null)
+                _equipment.OnChanged -= RefreshCraft;
+        }
+
+        // единая точка входа в дерево: работает только при открытой лавке,
+        // поэтому её же вешаем на клики по рюкзаку и слотам HUD
+        public bool TryShowRecipe(ItemData item)
+        {
+            if (!_open || item == null)
+                return false;
+
+            _tree.Show(item);
+            return true;
         }
 
         public void Toggle()
@@ -76,6 +114,7 @@ namespace _Project.Scripts.Gameplay.Merchant.UI
         public void Close()
         {
             _open = false;
+            _tooltip.Hide();
             ApplyOpenState();
         }
 
@@ -91,88 +130,47 @@ namespace _Project.Scripts.Gameplay.Merchant.UI
 
             _gold.text = _localization.Get(LocalizationKeys.Arpg.MerchantGold, _progress.Gold);
 
-            RefreshStock();
-            RefreshRecipes();
+            _slots.RefreshAffordable(_stockSlots);
+            _slots.RefreshAffordable(_craftableSlots);
+            _tree.RefreshAffordable();
         }
 
-        private void RefreshStock()
+        private void RefreshCraft()
         {
-            _stock.Clear();
+            _craftPanel?.Refresh();
+        }
+
+        // витрины неизменны, пересобирать их на каждую покупку незачем:
+        // ячейка живёт от Wire до Wire, меняется только подсветка цены
+        private void BuildShowcases()
+        {
+            var materials = new List<ItemData>();
 
             foreach (MerchantEntry entry in _merchant.Stock)
             {
-                if (entry?.Item == null)
-                    continue;
-
-                MerchantEntry captured = entry;
-                _stock.Add(BuildRow(
-                    ItemName(entry.Item),
-                    _localization.Get(LocalizationKeys.Arpg.MerchantPrice, entry.Price),
-                    _merchant.CanBuy(entry),
-                    () => _merchant.Buy(captured)));
+                if (entry?.Item != null)
+                    materials.Add(entry.Item);
             }
+
+            Fill(_stock, _stockSlots, materials);
+            Fill(_craftables, _craftableSlots, _merchant.Craftables);
         }
 
-        private void RefreshRecipes()
+        private void Fill(VisualElement grid, List<MerchantSlot> slots, IReadOnlyList<ItemData> items)
         {
-            _recipes.Clear();
+            grid.Clear();
+            slots.Clear();
 
-            foreach (RecipeData recipe in _merchant.Recipes)
+            foreach (ItemData item in items)
             {
-                if (recipe?.Result == null)
+                if (item == null)
                     continue;
 
-                RecipeData captured = recipe;
-                _recipes.Add(BuildRow(
-                    $"{ItemName(recipe.Result)}\n<size=14>{Ingredients(recipe)}</size>",
-                    _localization.Get(LocalizationKeys.Arpg.MerchantCraftButton),
-                    _merchant.CanCraft(recipe),
-                    () => _merchant.Craft(captured)));
+                MerchantSlot slot = _slots.Create(item, selected => TryShowRecipe(selected));
+
+                slots.Add(slot);
+                grid.Add(slot.Element);
             }
-        }
-
-        private VisualElement BuildRow(string text, string buttonText, bool enabled, Action action)
-        {
-            var row = new VisualElement();
-            row.AddToClassList("row");
-
-            var label = new Label(text) { enableRichText = true };
-            label.AddToClassList("row-text");
-            label.pickingMode = PickingMode.Ignore;
-            row.Add(label);
-
-            var button = new Button(() => action()) { text = buttonText };
-            button.AddToClassList("row-button");
-            button.SetEnabled(enabled);
-            row.Add(button);
-
-            return row;
-        }
-
-        private string Ingredients(RecipeData recipe)
-        {
-            if (recipe.Ingredients == null || recipe.Ingredients.Length == 0)
-                return _localization.Get(LocalizationKeys.Arpg.MerchantNoComponents);
-
-            var builder = new StringBuilder();
-
-            foreach (ItemData ingredient in recipe.Ingredients)
-            {
-                if (ingredient == null)
-                    continue;
-
-                if (builder.Length > 0)
-                    builder.Append(" + ");
-
-                builder.Append(ItemName(ingredient));
-            }
-
-            return builder.ToString();
-        }
-
-        private static string ItemName(ItemData item)
-        {
-            return string.IsNullOrEmpty(item.Name) ? item.name : item.Name;
         }
     }
 }

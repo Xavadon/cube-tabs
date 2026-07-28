@@ -15,3 +15,9 @@ MonoBehaviour:
   <Recipes>k__BackingField:
   - {fileID: 11400000, guid: b9d57e7888081284dacd7cb024b82300, type: 2}
   - {fileID: 11400000, guid: 5e7bb8ff876ba4c4ca8458973c0b2f4a, type: 2}
+  - {fileID: 11400000, guid: a1b2c3d4e5f60718293a4b5c6d7e8f01, type: 2}
+  - {fileID: 11400000, guid: b2c3d4e5f60718293a4b5c6d7e8f0102, type: 2}
+  - {fileID: 11400000, guid: c3d4e5f60718293a4b5c6d7e8f010203, type: 2}
+  - {fileID: 11400000, guid: d4e5f60718293a4b5c6d7e8f01020304, type: 2}
+  - {fileID: 11400000, guid: e5f60718293a4b5c6d7e8f0102030405, type: 2}
+  - {fileID: 11400000, guid: f60718293a4b5c6d7e8f010203040506, type: 2}

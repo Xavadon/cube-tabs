@@ -681,6 +681,49 @@ namespace _Project.Scripts.Gameplay.Character.Components.AiBrain
         }
     }
 
+    public class AttackCooldown : BTNode
+    {
+        private readonly BTNode _child;
+        private readonly float _baseInterval;
+
+        private float _lastSuccessTime;
+
+        public AttackCooldown(float baseInterval, BTNode child)
+        {
+            _baseInterval = baseInterval;
+            _child = child;
+        }
+
+        protected override NodeStatus Process()
+        {
+            float multiplier = Blackboard.Get<float>(BrainKeys.AttackIntervalMultiplier);
+
+            if (multiplier <= 0f)
+                multiplier = 1f;
+
+            if (Time.time - _lastSuccessTime < _baseInterval * multiplier)
+                return Status = NodeStatus.Failure;
+
+            Status = _child.Evaluate();
+
+            if (Status == NodeStatus.Success)
+                _lastSuccessTime = Time.time;
+
+            return Status;
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            _child.Reset();
+        }
+
+        protected override void OnBlackboardSet()
+        {
+            _child.SetBlackboard(Blackboard);
+        }
+    }
+
     public class HasMoveInput : BTNode
     {
         private const float Deadzone = 0.1f;

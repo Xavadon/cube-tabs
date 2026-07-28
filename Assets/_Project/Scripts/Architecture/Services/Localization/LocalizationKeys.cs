@@ -65,7 +65,22 @@ namespace _Project.Scripts.Architecture.Services.Localization
             public const string EquipmentSection = "ui.arpg.character.equipment";
             public const string BackpackSection = "ui.arpg.character.backpack";
 
+            public const string Level = "ui.arpg.level";
+
             public const string StatHealth = "ui.arpg.stat.health";
+            public const string StatHealthShort = "ui.arpg.stat.health_short";
+            public const string StatHealthRegen = "ui.arpg.stat.health_regen";
+            public const string StatArmor = "ui.arpg.stat.armor";
+            public const string StatAttackSpeed = "ui.arpg.stat.attack_speed";
+            public const string StatStrength = "ui.arpg.stat.strength";
+            public const string StatAgility = "ui.arpg.stat.agility";
+            public const string StatIntelligence = "ui.arpg.stat.intelligence";
+
+            public const string BonusStrength = "ui.arpg.bonus.strength";
+            public const string BonusAgility = "ui.arpg.bonus.agility";
+            public const string BonusIntelligence = "ui.arpg.bonus.intelligence";
+            public const string BonusArmor = "ui.arpg.bonus.armor";
+            public const string BonusAttackSpeed = "ui.arpg.bonus.attack_speed";
             public const string StatDamage = "ui.arpg.stat.damage";
             public const string StatPhysical = "ui.arpg.stat.physical";
             public const string StatMagic = "ui.arpg.stat.magic";
@@ -81,12 +96,14 @@ namespace _Project.Scripts.Architecture.Services.Localization
             public const string BonusNone = "ui.arpg.bonus.none";
 
             public const string MerchantTitle = "ui.arpg.merchant.title";
-            public const string MerchantGoods = "ui.arpg.merchant.goods";
+            public const string MerchantMaterials = "ui.arpg.merchant.materials";
+            public const string MerchantCraftables = "ui.arpg.merchant.craftables";
             public const string MerchantCraft = "ui.arpg.merchant.craft";
             public const string MerchantGold = "ui.arpg.merchant.gold";
             public const string MerchantPrice = "ui.arpg.merchant.price";
-            public const string MerchantCraftButton = "ui.arpg.merchant.craft_button";
-            public const string MerchantNoComponents = "ui.arpg.merchant.no_components";
+            public const string MerchantCraftHint = "ui.arpg.merchant.craft_hint";
+            public const string MerchantTree = "ui.arpg.merchant.tree";
+            public const string MerchantTreeHint = "ui.arpg.merchant.tree_hint";
 
             public const string HudCharacter = "ui.arpg.hud.character";
             public const string HudMerchant = "ui.arpg.hud.merchant";

@@ -40,7 +40,7 @@ namespace _Project.Scripts.Gameplay.Character.Data.AiBrain
                         new IsInRange(AttackStopRange),
                         new Selector
                         (
-                            new Cooldown(AttackCooldown, new Parallel(CreateAttackNode(tier), new RotateTowardsTarget())),
+                            new AttackCooldown(AttackCooldown, new Parallel(CreateAttackNode(tier), new RotateTowardsTarget())),
                             new Wait(0.1f)
                         )
                     )
