@@ -1,5 +1,4 @@
 ﻿#if UNITY_EDITOR
-using _Project.Scripts.Dev;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -21,14 +20,9 @@ namespace Game.Core.Utils.Editor
                 SetPlayModeStartScene();
         }
 
+        // Play с любой сцены всегда идёт через Boot: как настоящий запуск игры
         private static void SetPlayModeStartScene()
         {
-            if (Object.FindAnyObjectByType<SandboxBootstrap>() != null)
-            {
-                EditorSceneManager.playModeStartScene = null;
-                return;
-            }
-
             var path = "Assets/_Project/Scenes/Boot.unity";
             SceneAsset myWantedStartScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
             if (myWantedStartScene != null)

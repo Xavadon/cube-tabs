@@ -27,6 +27,9 @@ namespace _Project.Scripts.Gameplay.Character
         
         public event Action<Character, Vector3, AudioClip[]> OnDamag;
         public event Action<Character, AudioClip[]> OnAttack;
+
+        // прямое событие смерти: реестр шлёт своё только пока идёт бой TABS (_battleStarted)
+        public event Action<Character> OnDied;
         
         public CharacterType CharacterType { get; private set; }
         public bool IsRanged { get; private set; }
@@ -265,6 +268,8 @@ namespace _Project.Scripts.Gameplay.Character
             }
 
             _movement.Stop();
+
+            OnDied?.Invoke(this);
 
             // TODO: Анимация смерти
 

@@ -1,5 +1,6 @@
 using _Project.Scripts.Architecture.Services.Camera;
 using _Project.Scripts.Gameplay.Services;
+using _Project.Scripts.Gameplay.Services.Scene;
 using _Project.Scripts.Gameplay.UI.Army;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -13,6 +14,9 @@ namespace _Project.Scripts.Architecture.Services.Scene
         UniTask LoadGameScene();
         UniTask LoadMenuScene();
         UniTask LoadDemoLevelScene();
+        UniTask LoadStartScene();
+        UniTask LoadArpgScene(string sceneName, string entryId = null);
+        string PendingEntry { get; }
     }
 
     public class SceneService : ISceneService
@@ -75,6 +79,29 @@ namespace _Project.Scripts.Architecture.Services.Scene
             await LoadSceneAsync("Menu");
             _menuInitializer.InitializeMenu(this);
             Debug.Log("[SceneService] Menu scene loaded and initialized");
+        }
+
+        // вход в ARPG: стартовая сцена берётся из конфига, меню TABS в этой ветке не грузится
+        public async UniTask LoadStartScene()
+        {
+            var config = Resources.Load<ArpgConfig>(ArpgConfig.ResourcePath);
+
+            if (config == null || string.IsNullOrEmpty(config.StartScene))
+            {
+                Debug.LogError($"[SceneService] Нет конфига Resources/{ArpgConfig.ResourcePath} или не задана стартовая сцена");
+                return;
+            }
+
+            await LoadArpgScene(config.StartScene);
+        }
+
+        public string PendingEntry { get; private set; }
+
+        public async UniTask LoadArpgScene(string sceneName, string entryId = null)
+        {
+            PendingEntry = entryId;
+            _cameraService.ResetToDefault();
+            await LoadSceneAsync(sceneName);
         }
 
         public async UniTask LoadDemoLevelScene()

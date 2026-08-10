@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using _Project.Scripts.Architecture.Services;
 using _Project.Scripts.Architecture.Services.Scene;
 using _Project.Scripts.Architecture.Services.Tick;
+using _Project.Scripts.Gameplay.Services.Scene;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -11,15 +12,22 @@ namespace _Project.Scripts.Architecture
     public static class Project
     {
         private static DiContainer _container;
-        
+        private static bool _servicesReady;
+
+        // именно флаг, а не проверка контейнера на null: Dispose чистит его содержимое, но ссылку оставляет
+        public static bool IsInitialized => _servicesReady;
+
         public static async UniTask Initialize()
         {
             await InitializeServicesOnly();
 
-            var sceneService = _container.Resolve<ISceneService>();
-            await sceneService.LoadMenuScene();
+            // стартовый контент выдаётся до первой сцены и ровно один раз за запуск
+            _container.Resolve<IArpgStartupService>().GrantStartingContent();
 
-            // Меню отрисовано — только теперь игра считается загруженной для платформы (Yandex п.1.19).
+            var sceneService = _container.Resolve<ISceneService>();
+            await sceneService.LoadStartScene();
+
+            // Сцена отрисована — только теперь игра считается загруженной для платформы (Yandex п.1.19).
             await UniTask.DelayFrame(2);
             PlatformSignals.GameReady();
 
@@ -31,6 +39,8 @@ namespace _Project.Scripts.Architecture
             Dispose();
             RegisterServices();
             await InitializeServices();
+
+            _servicesReady = true;
         }
         
         private static void RegisterServices()
@@ -78,6 +88,8 @@ namespace _Project.Scripts.Architecture
         
         public static void Dispose()
         {
+            _servicesReady = false;
+
             if (_container != null)
             {
                 _container.Clear();

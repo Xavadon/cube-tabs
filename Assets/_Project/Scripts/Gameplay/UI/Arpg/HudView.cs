@@ -7,12 +7,11 @@ using _Project.Scripts.Gameplay.Character.Data.Abilities;
 using _Project.Scripts.Gameplay.Inventory;
 using _Project.Scripts.Gameplay.Inventory.UI;
 using _Project.Scripts.Gameplay.Services;
-using _Project.Scripts.Gameplay.UI.Arpg;
 using UnityEngine;
 using UnityEngine.UIElements;
 using CharacterEntity = _Project.Scripts.Gameplay.Character.Character;
 
-namespace _Project.Scripts.Dev
+namespace _Project.Scripts.Gameplay.UI.Arpg
 {
     public class HudView : UIDocumentView
     {
