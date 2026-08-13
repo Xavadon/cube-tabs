@@ -1,4 +1,5 @@
 using _Project.Scripts.Architecture;
+using _Project.Scripts.Dev;
 using UnityEngine;
 
 namespace _Project.Scripts
@@ -6,6 +7,9 @@ namespace _Project.Scripts
     public class BootStrap : MonoBehaviour
     {
         private static BootStrap _instance;
+
+        [SerializeField]
+        private bool _showResetSaveButton = true;
 
         private async void Awake()
         {
@@ -20,6 +24,10 @@ namespace _Project.Scripts
             _instance = this;
             DontDestroyOnLoad(gameObject);
             await Project.Initialize();
+
+            // Тестовая кнопка. Работает и в обычном WebGL-билде — снять галку перед релизом.
+            if (_showResetSaveButton)
+                gameObject.AddComponent<DevResetSaveButton>();
         }
 
         private void OnDestroy()

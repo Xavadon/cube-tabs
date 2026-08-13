@@ -33,9 +33,6 @@ namespace _Project.Scripts.Gameplay.Character.Data
         [field: SerializeField]
         public string YandexProductId { get; private set; }
 
-        [field: SerializeField]
-        public string PriceLabel { get; private set; }
-
         // временно живут на персонаже: по дизайну активные абилки открываются в passive tree (шаг 8)
         [field: Header("Active abilities")]
         [field: SerializeField]

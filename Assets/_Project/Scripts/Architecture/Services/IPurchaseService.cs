@@ -26,7 +26,7 @@ namespace _Project.Scripts.Architecture.Services
     {
         void Purchase(ShopItemData item, Action onSuccess, Action onFailure);
         void Purchase(CharacterData unit, Action onSuccess, Action onFailure);
-        string GetPrice(string productId, string fallback);
+        string GetPrice(string productId);
 
         /// <summary>
         /// Обрабатывает незакрытые покупки платформы (оплачено, но не выдано/не потреблено —

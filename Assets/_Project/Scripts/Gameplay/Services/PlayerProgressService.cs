@@ -62,6 +62,7 @@ namespace _Project.Scripts.Gameplay.Services
         event Action OnLevelChanged;
         event Action OnArmyChanged;
         event Action OnOwnedChanged;
+        event Action OnNoAdsChanged;
     }
 
     public class PlayerProgressService : IPlayerProgressService
@@ -93,6 +94,7 @@ namespace _Project.Scripts.Gameplay.Services
         public event Action OnLevelChanged;
         public event Action OnArmyChanged;
         public event Action OnOwnedChanged;
+        public event Action OnNoAdsChanged;
 
         public PlayerProgressService(ISaveService saveService, IPurchaseService purchaseService)
         {
@@ -120,7 +122,10 @@ namespace _Project.Scripts.Gameplay.Services
                 _saveService.Save(_saveData);
             }
 
-            Debug.Log($"[PlayerProgressService] Initialized. Gold: {Gold}, Owned: {_saveData.OwnedUnits.Count}, Army: {_saveData.ArmyInstanceIds.Count}, Slots: {ArmySlots}");
+            Debug.Log($"[PlayerProgressService] Initialized. Gold: {Gold}, Owned: {_saveData.OwnedUnits.Count}, Army: {_saveData.ArmyInstanceIds.Count}, Slots: {ArmySlots}, NoAds: {NoAds}");
+
+            if (_saveData.NoAds)
+                OnNoAdsChanged?.Invoke();
 
             // Незакрытые покупки (оплачено, но не выдано — вкладку закрыли до consume): выдать + потребить.
             // Не блокируем загрузку меню: платформа может отвечать долго, а GameReady ждать нельзя.
@@ -354,6 +359,7 @@ namespace _Project.Scripts.Gameplay.Services
                 case ShopItemRewardType.NoAds:
                     _saveData.NoAds = true;
                     Save();
+                    OnNoAdsChanged?.Invoke();
                     break;
             }
         }

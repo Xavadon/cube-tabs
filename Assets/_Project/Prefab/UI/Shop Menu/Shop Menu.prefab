@@ -210,6 +210,7 @@ MonoBehaviour:
   _itemsContainer: {fileID: 5727052211590395648}
   _goldLabel: {fileID: 41730663952896459}
   _removeAdsButton: {fileID: 2978172472622787537}
+  _removeAdsCard: {fileID: 0}
   _closeButton: {fileID: 4278255491219246329}
   _purchaseSuccessPopup: {fileID: 1315252147137440174}
 --- !u!1 &643603293147949687
@@ -2557,6 +2558,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2367230554020106330, guid: 3cee7cd547039bd459627503069c1567, type: 3}
       propertyPath: _button
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3764533706044717534, guid: 3cee7cd547039bd459627503069c1567, type: 3}
+      propertyPath: m_text
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5360919466641098714, guid: 3cee7cd547039bd459627503069c1567, type: 3}

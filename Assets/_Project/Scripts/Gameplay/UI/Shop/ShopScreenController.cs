@@ -35,6 +35,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
 
             _progress.OnGoldChanged += ScheduleRebuild;
             _progress.OnOwnedChanged += ScheduleRebuild;
+            _progress.OnNoAdsChanged += ScheduleRebuild;
 
             FindRemoveAdsItem();
             Rebuild();
@@ -56,6 +57,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
 
             _progress.OnGoldChanged -= ScheduleRebuild;
             _progress.OnOwnedChanged -= ScheduleRebuild;
+            _progress.OnNoAdsChanged -= ScheduleRebuild;
         }
 
         private void ScheduleRebuild() => _dirty = true;
@@ -121,7 +123,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
             foreach (var hero in _catalog.UniqueHeroes)
             {
                 var portrait = _previewService.GetPortrait(hero, 0);
-                var price = _purchaseService.GetPrice(hero.YandexProductId, hero.PriceLabel);
+                var price = _purchaseService.GetPrice(hero.YandexProductId);
                 _view.AddUnitCard(hero.Name, portrait, price, true, () => BuyUnit(hero));
             }
         }
@@ -136,7 +138,7 @@ namespace _Project.Scripts.Gameplay.UI.Shop
                 if (item.RewardType == ShopItemRewardType.NoAds)
                     continue;
 
-                var price = _purchaseService.GetPrice(item.YandexProductId, item.PriceLabel);
+                var price = _purchaseService.GetPrice(item.YandexProductId);
                 _view.AddItemCard(item.Name, item.Icon, price, () => BuyItem(item));
             }
         }
@@ -175,6 +177,14 @@ namespace _Project.Scripts.Gameplay.UI.Shop
 
             _view.SetRemoveAdsVisible(hasRemoveAds && !alreadyPurchased);
             _view.SetRemoveAdsInteractable(hasRemoveAds && !alreadyPurchased);
+
+            if (hasRemoveAds)
+            {
+                _view.SetRemoveAdsCard(
+                    _removeAdsItem.Name,
+                    _removeAdsItem.Icon,
+                    _purchaseService.GetPrice(_removeAdsItem.YandexProductId));
+            }
         }
     }
 }
