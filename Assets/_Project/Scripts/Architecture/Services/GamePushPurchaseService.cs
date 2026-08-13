@@ -12,6 +12,8 @@ namespace _Project.Scripts.Architecture.Services
     public class GamePushPurchaseService : IPurchaseService
     {
         private const int FetchTimeoutSeconds = 10;
+        private const string YanCurrency = "YAN";
+        private const string YanSprite = "<sprite=\"yan\" name=\"yan\">";
 
         private readonly ISaveService _saveService;
 
@@ -242,12 +244,14 @@ namespace _Project.Scripts.Architecture.Services
             return keys;
         }
 
-        public string GetPrice(string productId, string fallback)
+        // Цена только из ответа платформы: любой локальный дефолт разъезжается с Консолью
+        // разработчика, а это замечание модерации (Yandex п.1.13.5, «некорректная цена»).
+        public string GetPrice(string productId)
         {
             if (string.IsNullOrEmpty(productId))
             {
-                Debug.LogWarning($"[GamePushPurchaseService] GetPrice: empty productId, using fallback '{fallback}'");
-                return fallback;
+                Debug.LogWarning("[GamePushPurchaseService] GetPrice: empty productId");
+                return string.Empty;
             }
 
             if (_productsByKey.TryGetValue(productId, out var product))
@@ -255,15 +259,24 @@ namespace _Project.Scripts.Architecture.Services
                 // Валюта берётся автоматически из свойств продукта (SDK), не хардкодится
                 // (требование Yandex п.3.8: название/иконка валюты — из IProduct).
                 string priceStr = product.price.ToString();
-                string symbol = product.currencySymbol;
+                string result = $"{priceStr} {GetCurrencyLabel(product)}".TrimEnd();
 
-                string result = string.IsNullOrEmpty(symbol) ? priceStr : $"{priceStr} {symbol}";
-                Debug.Log($"[GamePushPurchaseService] GetPrice: found '{productId}' -> {result}");
+                Debug.Log($"[GamePushPurchaseService] GetPrice: found '{productId}' -> {result} " +
+                          $"(currency='{product.currency}', symbol='{product.currencySymbol}')");
                 return result;
             }
 
-            Debug.LogWarning($"[GamePushPurchaseService] GetPrice: '{productId}' not found in cache ({_productsByKey.Count} products), using fallback '{fallback}'");
-            return fallback;
+            Debug.LogWarning($"[GamePushPurchaseService] GetPrice: '{productId}' not found in cache ({_productsByKey.Count} products)");
+            return string.Empty;
+        }
+
+        // Портальная валюта Яндекса рисуется иконкой (п.1.13.2), текстовый символ у неё пустой.
+        private static string GetCurrencyLabel(FetchProducts product)
+        {
+            if (string.Equals(product.currency, YanCurrency, StringComparison.OrdinalIgnoreCase))
+                return YanSprite;
+
+            return string.IsNullOrEmpty(product.currencySymbol) ? product.currency : product.currencySymbol;
         }
 
         public void Purchase(ShopItemData item, Action onSuccess, Action onFailure)

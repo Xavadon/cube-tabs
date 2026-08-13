@@ -35,15 +35,20 @@ namespace _Project.Scripts.Gameplay.UI.Shop
 
         public void Init(string itemName, Sprite icon, string price, Action onClick)
         {
-            _nameLabel.text = itemName;
             _onClick = onClick;
+            SetContent(itemName, icon, price);
+        }
+
+        public void SetContent(string itemName, Sprite icon, string price)
+        {
+            if (_nameLabel != null)
+                _nameLabel.text = itemName;
 
             if (_iconImage != null && icon != null)
                 _iconImage.sprite = icon;
 
             if (_priceLabel != null)
                 _priceLabel.text = price;
-
         }
 
         private void HandleClick()

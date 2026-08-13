@@ -45,6 +45,8 @@ namespace _Project.Scripts.Gameplay.UI.Shop
         private ShopScreenController _controller;
         private IPlayerProgressService _progress;
         private IAudioService _audioService;
+        private ShopCardUI _removeAdsCard;
+        private GameObject _removeAdsRoot;
 
         public event Action RemoveAdsClicked;
         public event Action ViewEnabled;
@@ -59,6 +61,17 @@ namespace _Project.Scripts.Gameplay.UI.Shop
         {
             _progress = progress;
             _audioService = audioService;
+
+            if (_removeAdsButton != null)
+            {
+                _removeAdsCard = _removeAdsButton.GetComponentInParent<ShopCardUI>(true);
+
+                // Прячем всю секцию (карточка + рамка + заголовок), а не одну кнопку:
+                // NoAds покупается один раз и после выдачи награды не должен маячить в магазине.
+                _removeAdsRoot = _removeAdsCard != null
+                    ? _removeAdsCard.transform.parent.gameObject
+                    : _removeAdsButton.gameObject;
+            }
 
             _progress.OnGoldChanged += RefreshGold;
             RefreshGold();
@@ -152,14 +165,20 @@ namespace _Project.Scripts.Gameplay.UI.Shop
 
         public void SetRemoveAdsVisible(bool visible)
         {
-            if (_removeAdsButton != null)
-                _removeAdsButton.gameObject.SetActive(visible);
+            if (_removeAdsRoot != null)
+                _removeAdsRoot.SetActive(visible);
         }
 
         public void SetRemoveAdsInteractable(bool interactable)
         {
             if (_removeAdsButton != null)
                 _removeAdsButton.interactable = interactable;
+        }
+
+        public void SetRemoveAdsCard(string name, Sprite icon, string price)
+        {
+            if (_removeAdsCard != null)
+                _removeAdsCard.SetContent(name, icon, price);
         }
 
         public void ShowPurchaseSuccessItem(string itemName, Sprite icon)

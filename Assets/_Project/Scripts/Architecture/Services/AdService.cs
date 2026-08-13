@@ -2,6 +2,7 @@ using System;
 using _Project.Scripts.Gameplay.Services;
 using Cysharp.Threading.Tasks;
 using GamePush;
+using UnityEngine;
 
 namespace _Project.Scripts.Architecture.Services
 {
@@ -22,11 +23,34 @@ namespace _Project.Scripts.Architecture.Services
         {
             _progress = progress;
             _timeScaleService = timeScaleService;
+
+            // Подписка в конструкторе, а не в Initialize: порядок Initialize сервисов в DI не
+            // гарантирован, и NoAds из загруженного сейва мог бы прилететь до неё.
+            _progress.OnNoAdsChanged += CloseSticky;
+
+            GP_Ads.OnStickyStart += CloseStickyIfNoAds;
+            GP_Ads.OnStickyRender += CloseStickyIfNoAds;
+            GP_Ads.OnStickyRefresh += CloseStickyIfNoAds;
         }
 
         public UniTask Initialize()
         {
+            CloseStickyIfNoAds();
             return UniTask.CompletedTask;
+        }
+
+        private void CloseStickyIfNoAds()
+        {
+            if (_progress.NoAds)
+                CloseSticky();
+        }
+
+        private void CloseSticky()
+        {
+#if !UNITY_EDITOR
+            Debug.Log("[AdService] NoAds active, closing sticky banner");
+            GP_Ads.CloseSticky();
+#endif
         }
 
         public void ShowInterstitial(Action onComplete = null)

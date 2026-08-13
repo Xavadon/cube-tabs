@@ -33,9 +33,6 @@ namespace _Project.Scripts.Gameplay.Character.Data
         [field: SerializeField]
         public string YandexProductId { get; private set; }
 
-        [field: SerializeField]
-        public string PriceLabel { get; private set; }
-
         [field: Header("Tiers")]
         [field: SerializeField]
         public TierData[] Tiers { get; private set; }

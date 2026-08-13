@@ -26,9 +26,6 @@ namespace _Project.Scripts.Gameplay.Character.Data
         public string Description { get; private set; }
 
         [field: SerializeField]
-        public string PriceLabel { get; private set; }
-
-        [field: SerializeField]
         public ShopItemRewardType RewardType { get; private set; }
 
         [field: SerializeField]
