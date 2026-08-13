@@ -48,6 +48,7 @@ namespace _Project.Scripts.Gameplay.Services
         bool IsMilestoneClaimed(int levelIndex, int milestoneIndex);
         void ClaimMilestone(int levelIndex, int milestoneIndex);
         void Save();
+        void ResetProgress();
         bool NoAds { get; }
 
         event Action OnGoldChanged;
@@ -479,6 +480,24 @@ namespace _Project.Scripts.Gameplay.Services
         public void Save()
         {
             _saveService.Save(_saveData);
+        }
+
+        // Тестовый сброс. Мало удалить ключи: в памяти сервисов лежат старые данные, а облако
+        // GamePush синкается само — поэтому сразу пишем дефолт и пушим его мимо троттла.
+        public void ResetProgress()
+        {
+            _saveService.DeleteSave();
+
+            _saveData = CreateDefaultSave();
+            _saveService.Save(_saveData);
+            _saveService.ForceSync();
+
+            OnGoldChanged?.Invoke();
+            OnArmyChanged?.Invoke();
+            OnOwnedChanged?.Invoke();
+            OnNoAdsChanged?.Invoke();
+
+            Debug.Log($"[PlayerProgressService] Progress reset. Gold: {Gold}, NoAds: {NoAds}");
         }
 
         private SaveData CreateDefaultSave()
