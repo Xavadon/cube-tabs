@@ -26,7 +26,7 @@ namespace _Project.Scripts.Architecture.Services
 
             // Подписка в конструкторе, а не в Initialize: порядок Initialize сервисов в DI не
             // гарантирован, и NoAds из загруженного сейва мог бы прилететь до неё.
-            _progress.OnNoAdsChanged += CloseSticky;
+            _progress.OnNoAdsChanged += CloseStickyIfNoAds;
 
             GP_Ads.OnStickyStart += CloseStickyIfNoAds;
             GP_Ads.OnStickyRender += CloseStickyIfNoAds;

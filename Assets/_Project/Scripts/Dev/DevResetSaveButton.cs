@@ -1,5 +1,5 @@
 using _Project.Scripts.Architecture;
-using _Project.Scripts.Architecture.Services.Save;
+using _Project.Scripts.Gameplay.Services;
 using UnityEngine;
 
 namespace _Project.Scripts.Dev
@@ -25,16 +25,16 @@ namespace _Project.Scripts.Dev
 
         private void ResetSave()
         {
-            var saveService = Project.Get<ISaveService>();
+            var progress = Project.Get<IPlayerProgressService>();
 
-            if (saveService == null)
+            if (progress == null)
             {
-                _status = "SaveService not resolved";
+                _status = "PlayerProgressService not resolved";
                 return;
             }
 
-            saveService.DeleteSave();
-            _status = "Save deleted. Reload the page (F5) to start clean.";
+            progress.ResetProgress();
+            _status = "Progress reset (local + cloud). Reload the page (F5).";
         }
     }
 }
