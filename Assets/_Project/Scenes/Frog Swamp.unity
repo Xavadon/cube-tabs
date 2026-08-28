@@ -473,9 +473,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c27a90a9d1462744b518bd9c03af4bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _openOnStart: 1
   _targetScene: Hub
   _targetEntry: default
-  _openOnStart: 1
 --- !u!54 &606426231
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1319,6 +1319,59 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 41df18a1eda761a4b8555f310d7424f8, type: 3}
   m_SortingOrder: 2
+--- !u!1 &1659139544
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1659139546}
+  - component: {fileID: 1659139545}
+  m_Layer: 0
+  m_Name: Camp_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1659139545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659139544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8f426315ed520746aac275dc68db5bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _autoBegin: 1
+  _unit: {fileID: 11400000, guid: ef4e7c734bbb1b04eac7134cbd274688, type: 2}
+  _tier: 0
+  _count: 4
+  _spreadRadius: 1.5
+  _points: []
+  _respawn: 1
+  _respawnPeriod: 60
+  _openOnClear: {fileID: 0}
+--- !u!4 &1659139546
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659139544}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.000002, y: -1.4394814, z: 8.000002}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1844399491
 GameObject:
   m_ObjectHideFlags: 0
@@ -1522,57 +1575,6 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -28.66, y: -1.52, z: -2.36}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1970011229
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1970011231}
-  - component: {fileID: 1970011230}
-  m_Layer: 0
-  m_Name: FrogCamp
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1970011230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1970011229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8f426315ed520746aac275dc68db5bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _unit: {fileID: 11400000, guid: ef4e7c734bbb1b04eac7134cbd274688, type: 2}
-  _tier: 0
-  _count: 5
-  _spreadRadius: 6
-  _points: []
-  _respawn: 1
-  _respawnDelay: 2
---- !u!4 &1970011231
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1970011229}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -28.66, y: -1.52, z: 12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1786,9 +1788,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c27a90a9d1462744b518bd9c03af4bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _openOnStart: 1
   _targetScene: Dungeon Frog
   _targetEntry: default
-  _openOnStart: 1
 --- !u!54 &2013728148
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1933,6 +1935,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 988000600}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2147270393
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2147270395}
+  - component: {fileID: 2147270394}
+  m_Layer: 0
+  m_Name: Camp_2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2147270394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147270393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8f426315ed520746aac275dc68db5bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _autoBegin: 1
+  _unit: {fileID: 11400000, guid: ef4e7c734bbb1b04eac7134cbd274688, type: 2}
+  _tier: 0
+  _count: 4
+  _spreadRadius: 1.5
+  _points: []
+  _respawn: 1
+  _respawnPeriod: 60
+  _openOnClear: {fileID: 0}
+--- !u!4 &2147270395
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147270393}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 14.000004, y: -1.4394814, z: -12.000004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1941,8 +1996,9 @@ SceneRoots:
   - {fileID: 988000600}
   - {fileID: 473259442}
   - {fileID: 1253492828}
-  - {fileID: 1970011231}
   - {fileID: 1919094432}
   - {fileID: 1844399493}
   - {fileID: 606426235}
   - {fileID: 2013728152}
+  - {fileID: 1659139546}
+  - {fileID: 2147270395}

@@ -5,7 +5,6 @@ using _Project.Scripts.Gameplay.Character;
 using _Project.Scripts.Gameplay.Character.Data;
 using _Project.Scripts.Gameplay.Character.Services;
 using _Project.Scripts.Gameplay.Services.Scene;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 using CharacterEntity = _Project.Scripts.Gameplay.Character.Character;
 
@@ -23,7 +22,10 @@ namespace _Project.Scripts.Gameplay.Spawning
 
         [Header("Respawn")]
         [SerializeField] private bool _respawn = true;
-        [SerializeField] private float _respawnDelay = 2f;
+
+        // кемп как в доте: ресается не через N секунд после зачистки, а на ближайшем тике
+        // общего таймера. Отсчёт у всех кемпов от загрузки сцены, поэтому они ресаются разом.
+        [SerializeField] private float _respawnPeriod = 60f;
 
         [SerializeField] private Portal _openOnClear;
 
@@ -32,7 +34,8 @@ namespace _Project.Scripts.Gameplay.Spawning
         private ICharacterFactory _factory;
         private ICharacterRegistry _registry;
         private float _nextPrune;
-        private bool _pending;
+        private float _nextRespawnTime;
+        private bool _cleared;
         private bool _started;
 
         public int AliveCount => _alive.Count;
@@ -54,6 +57,7 @@ namespace _Project.Scripts.Gameplay.Spawning
         private void Spawn()
         {
             _alive.Clear();
+            _cleared = false;
 
             for (int i = 0; i < _count; i++)
             {
@@ -67,10 +71,21 @@ namespace _Project.Scripts.Gameplay.Spawning
             }
         }
 
-        // подчищаем список от уничтоженных: если крип умер мимо события, этап иначе залипнет навсегда
         private void Update()
         {
-            if (!_started || _alive.Count == 0 || Time.time < _nextPrune)
+            if (!_started)
+                return;
+
+            Prune();
+
+            if (_cleared && _respawn && Time.timeSinceLevelLoad >= _nextRespawnTime)
+                Spawn();
+        }
+
+        // подчищаем список от уничтоженных: если крип умер мимо события, этап иначе залипнет навсегда
+        private void Prune()
+        {
+            if (_alive.Count == 0 || Time.time < _nextPrune)
                 return;
 
             _nextPrune = Time.time + PruneInterval;
@@ -97,23 +112,31 @@ namespace _Project.Scripts.Gameplay.Spawning
 
         private void HandleCleared()
         {
+            if (_cleared)
+                return;
+
+            _cleared = true;
+            _nextRespawnTime = NextTickAfter(Time.timeSinceLevelLoad);
+
             if (_openOnClear != null)
                 _openOnClear.SetOpen(true);
 
             OnCleared?.Invoke();
-
-            if (_respawn && !_pending)
-                RespawnAfterDelay().Forget();
         }
 
-        private async UniTaskVoid RespawnAfterDelay()
+        private float NextTickAfter(float time)
         {
-            _pending = true;
-            await UniTask.Delay(TimeSpan.FromSeconds(_respawnDelay));
-            _pending = false;
+            if (_respawnPeriod <= 0f)
+                return time;
 
-            if (this != null)
-                Spawn();
+            return Mathf.Ceil((time + 0.01f) / _respawnPeriod) * _respawnPeriod;
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireCube(transform.position, Vector3.one * 2f);
+            Gizmos.DrawWireSphere(transform.position, _spreadRadius);
         }
 
         private Vector3 PositionFor(int index)
