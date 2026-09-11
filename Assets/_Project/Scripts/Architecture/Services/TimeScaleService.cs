@@ -11,24 +11,45 @@ namespace _Project.Scripts.Architecture.Services
         bool IsPaused { get; }
         float SpeedMultiplier { get; }
         float SpeedBoostRemainingSeconds { get; }
+        bool IsSpeedBoostActive { get; }
         event Action OnSpeedBoostEnded;
         void Pause();
         void Resume();
         void StartSpeedBoost(float duration, float multiplier);
         void StopSpeedBoost();
+        void SetSpeedBoostApplied(bool applied);
     }
 
     public class TimeScaleService : ITimeScaleService
     {
         private CancellationTokenSource _boostCts;
-        private float _boostEndRealtime;
+
+        // Каждый ран заканчивается пересозданием контейнера (ResultPanel -> LoadBootScene -> Project.Initialize),
+        // поэтому буст живёт в статике: Time.realtimeSinceStartup обнуляется только с рестартом приложения.
+        private static float _boostEndRealtime;
+        private static float _boostMultiplier = 1f;
+
+        // Ускорение живёт между ранами: таймер идёт в реальном времени всегда,
+        // но сам timeScale множится только в бою (в меню и на экране результата — 1x).
+        private bool _boostApplied;
 
         public bool IsPaused { get; private set; }
-        public float SpeedMultiplier { get; private set; } = 1f;
+        public float SpeedMultiplier => IsSpeedBoostActive && _boostApplied ? _boostMultiplier : 1f;
         public float SpeedBoostRemainingSeconds => Mathf.Max(0f, _boostEndRealtime - Time.realtimeSinceStartup);
+        public bool IsSpeedBoostActive => SpeedBoostRemainingSeconds > 0f;
         public event Action OnSpeedBoostEnded;
 
-        public UniTask Initialize() => UniTask.CompletedTask;
+        public UniTask Initialize()
+        {
+            if (IsSpeedBoostActive)
+            {
+                _boostCts = new CancellationTokenSource();
+                RunBoostTimerAsync(_boostCts.Token).Forget();
+                Debug.Log($"[TimeScaleService] SpeedBoost restored: {_boostMultiplier}x, {SpeedBoostRemainingSeconds:F0}s left");
+            }
+
+            return UniTask.CompletedTask;
+        }
 
         public void Pause()
         {
@@ -59,7 +80,7 @@ namespace _Project.Scripts.Architecture.Services
             _boostCts?.Cancel();
             _boostCts = new CancellationTokenSource();
 
-            SpeedMultiplier = multiplier;
+            _boostMultiplier = multiplier;
             _boostEndRealtime = Time.realtimeSinceStartup + duration;
 
             if (!IsPaused)
@@ -76,14 +97,29 @@ namespace _Project.Scripts.Architecture.Services
             _boostCts?.Cancel();
             _boostCts = null;
             _boostEndRealtime = 0f;
+            _boostMultiplier = 1f;
 
-            SpeedMultiplier = 1f;
             if (!IsPaused)
             {
                 ApplyTimeScale();
             }
 
             Debug.Log("[TimeScaleService] SpeedBoost stopped");
+        }
+
+        public void SetSpeedBoostApplied(bool applied)
+        {
+            if (_boostApplied == applied)
+            {
+                return;
+            }
+
+            _boostApplied = applied;
+
+            if (!IsPaused)
+            {
+                ApplyTimeScale();
+            }
         }
 
         private async UniTaskVoid RunBoostTimerAsync(CancellationToken ct)
@@ -103,7 +139,7 @@ namespace _Project.Scripts.Architecture.Services
                 return;
             }
 
-            SpeedMultiplier = 1f;
+            _boostMultiplier = 1f;
             _boostEndRealtime = 0f;
 
             if (!IsPaused)

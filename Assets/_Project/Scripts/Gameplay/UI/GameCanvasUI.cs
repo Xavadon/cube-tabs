@@ -78,6 +78,7 @@ namespace _Project.Scripts.Gameplay.UI
             _timeScaleService.OnSpeedBoostEnded += OnSpeedBoostEnded;
 
             _battleActive = true;
+            _timeScaleService.SetSpeedBoostApplied(true);
             RefreshSpeedBoostUI();
         }
 
@@ -177,7 +178,7 @@ namespace _Project.Scripts.Gameplay.UI
             if (_timeScaleService != null)
             {
                 _timeScaleService.OnSpeedBoostEnded -= OnSpeedBoostEnded;
-                _timeScaleService.StopSpeedBoost();
+                _timeScaleService.SetSpeedBoostApplied(false);
             }
 
             if (_cameraModeButton != null)
@@ -199,7 +200,7 @@ namespace _Project.Scripts.Gameplay.UI
         public void ShowResult(GameResultData data)
         {
             _battleActive = false;
-            _timeScaleService.StopSpeedBoost();
+            _timeScaleService.SetSpeedBoostApplied(false);
 
             if (_surrenderButton != null)
                 _surrenderButton.gameObject.SetActive(false);
