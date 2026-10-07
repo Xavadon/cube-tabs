@@ -1,0 +1,5 @@
+<linker>
+  <assembly fullname="Assembly-CSharp" preserve="all"/>
+  <assembly fullname="GamePush" preserve="all"/>
+  <assembly fullname="GamePush.Data" preserve="all"/>
+</linker>

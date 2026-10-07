@@ -1,0 +1,53 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <Style src="/Assets/_Project/UI/Game/Game.uss" />
+    <ui:VisualElement class="layer" picking-mode="Ignore">
+        <ui:VisualElement name="hud" class="layer" picking-mode="Ignore">
+            <ui:VisualElement name="camera-gestures" class="layer camera-gestures" />
+            <ui:Button name="surrender-button" class="btn btn--icon hud__surrender">
+                <ui:VisualElement class="icon icon--flag" picking-mode="Ignore" />
+            </ui:Button>
+            <ui:VisualElement class="hud__top-right" picking-mode="Ignore">
+                <ui:VisualElement name="speed-timer" class="inset row hud__timer">
+                    <ui:VisualElement class="icon icon--speed" />
+                    <ui:Label name="speed-timer-label" />
+                </ui:VisualElement>
+                <ui:Button name="speed-button" class="btn hud__button">
+                    <ui:VisualElement class="icon icon--video" picking-mode="Ignore" />
+                    <ui:VisualElement class="icon icon--speed" picking-mode="Ignore" />
+                </ui:Button>
+                <ui:Button name="camera-button" class="btn btn--icon hud__button">
+                    <ui:VisualElement class="icon icon--camera" picking-mode="Ignore" />
+                </ui:Button>
+            </ui:VisualElement>
+            <ui:VisualElement name="wave-banner" class="wave-banner" picking-mode="Ignore">
+                <ui:Label name="wave-title" class="wave-banner__title" />
+                <ui:Label name="wave-subtitle" class="wave-banner__subtitle" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="result" class="backdrop">
+            <ui:VisualElement name="result-sun" class="result__sun" picking-mode="Ignore" />
+            <ui:VisualElement class="panel result__panel">
+                <ui:Label name="result-title" class="title result__title" />
+                <ui:VisualElement name="result-gold" class="inset row result__gold">
+                    <ui:Label class="loc" text="ui.common.reward" />
+                    <ui:Label name="result-gold-value" class="result__gold-value" />
+                    <ui:VisualElement class="coin" />
+                </ui:VisualElement>
+                <ui:VisualElement name="result-units" class="result__units">
+                    <ui:Label name="result-task-label" class="text-s" />
+                    <ui:Label name="result-slots-label" class="text-s result__slots" />
+                    <ui:Label name="result-units-label" class="text-s" />
+                    <ui:VisualElement name="result-units-list" class="result__units-list" />
+                </ui:VisualElement>
+                <ui:Button name="double-reward-button" class="btn btn--gold result__main-button">
+                    <ui:VisualElement class="icon icon--video icon--on-gold" picking-mode="Ignore" />
+                    <ui:Label class="loc" text="ui.result.double_reward" picking-mode="Ignore" />
+                </ui:Button>
+                <ui:VisualElement class="row">
+                    <ui:Button name="restart-button" class="btn result__secondary-button loc" text="ui.result.restart" />
+                    <ui:Button name="no-thanks-button" class="btn result__secondary-button loc" text="ui.result.no_thanks" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

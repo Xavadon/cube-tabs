@@ -1,0 +1,24 @@
+.menu-nav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: var(--space-l);
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.menu-nav__button {
+    width: 280px;
+    margin: 0 var(--space-s);
+}
+
+.menu-nav__button--main {
+    width: 400px;
+    height: 104px;
+    font-size: var(--font-size-l);
+}
+
+.compact .menu-nav {
+    bottom: var(--space-edge);
+}

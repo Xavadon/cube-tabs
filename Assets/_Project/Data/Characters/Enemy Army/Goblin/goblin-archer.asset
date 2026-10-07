@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b574c7249b5861d43abc286ee8fcc848, type: 3}
+  m_Name: goblin-archer
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Goblin Archer
+  <NameKey>k__BackingField: unit.goblin_archer.name
+  <Description>k__BackingField: 
+  <PriceAsHero>k__BackingField: 100
+  <Scale>k__BackingField: 0.9
+  <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: e06e578d632259249a7f3cdcd53e6ad5, type: 2}
+  <Tiers>k__BackingField:
+  - <MoveSpeed>k__BackingField: 3
+    <Stats>k__BackingField:
+      <Health>k__BackingField: 125
+      <PhysicalResist>k__BackingField: 0
+      <MagicResist>k__BackingField: 0
+      <FireResist>k__BackingField: 0
+      <FaithResist>k__BackingField: 0
+      <Damage>k__BackingField: 30
+      <DamageType>k__BackingField: 0
+    <WeaponData>k__BackingField:
+    - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: f6a63d9a1972f7c46ad1fcd4dea520fe, type: 2}
+    <Ability>k__BackingField: {fileID: 11400000, guid: 985f8e9e5699ab842ab5909bbfa14c47, type: 2}
+    <DeathAbility>k__BackingField: {fileID: 0}
+    <KillReward>k__BackingField: 9
+    <EvolutionCost>k__BackingField: 0
+    <SellPrice>k__BackingField: 15
+    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: b5eb0a9ecbd2a4f42ac4d356ca078d45, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: b5eb0a9ecbd2a4f42ac4d356ca078d45, type: 2}
+  - <MoveSpeed>k__BackingField: 3
+    <Stats>k__BackingField:
+      <Health>k__BackingField: 150
+      <PhysicalResist>k__BackingField: 0
+      <MagicResist>k__BackingField: 0
+      <FireResist>k__BackingField: 0
+      <FaithResist>k__BackingField: 0
+      <Damage>k__BackingField: 35
+      <DamageType>k__BackingField: 0
+    <WeaponData>k__BackingField:
+    - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: f6a63d9a1972f7c46ad1fcd4dea520fe, type: 2}
+    <Ability>k__BackingField: {fileID: 11400000, guid: 985f8e9e5699ab842ab5909bbfa14c47, type: 2}
+    <DeathAbility>k__BackingField: {fileID: 0}
+    <KillReward>k__BackingField: 9
+    <EvolutionCost>k__BackingField: 35
+    <SellPrice>k__BackingField: 30
+    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: b5eb0a9ecbd2a4f42ac4d356ca078d45, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: b5eb0a9ecbd2a4f42ac4d356ca078d45, type: 2}
+  - <MoveSpeed>k__BackingField: 3
+    <Stats>k__BackingField:
+      <Health>k__BackingField: 180
+      <PhysicalResist>k__BackingField: 0
+      <MagicResist>k__BackingField: 0
+      <FireResist>k__BackingField: 0
+      <FaithResist>k__BackingField: 0
+      <Damage>k__BackingField: 40
+      <DamageType>k__BackingField: 0
+    <WeaponData>k__BackingField:
+    - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: f6a63d9a1972f7c46ad1fcd4dea520fe, type: 2}
+    <Ability>k__BackingField: {fileID: 11400000, guid: 985f8e9e5699ab842ab5909bbfa14c47, type: 2}
+    <DeathAbility>k__BackingField: {fileID: 0}
+    <KillReward>k__BackingField: 9
+    <EvolutionCost>k__BackingField: 45
+    <SellPrice>k__BackingField: 50
+    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: b5eb0a9ecbd2a4f42ac4d356ca078d45, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: b5eb0a9ecbd2a4f42ac4d356ca078d45, type: 2}
+  BaseMaterial: {fileID: 0}
+  BaseWeapon: {fileID: 0}
+  BaseAbility: {fileID: 0}
+  BaseBrain: {fileID: 11400000, guid: f6a63d9a1972f7c46ad1fcd4dea520fe, type: 2}

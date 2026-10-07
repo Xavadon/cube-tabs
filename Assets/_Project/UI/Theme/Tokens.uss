@@ -1,0 +1,56 @@
+:root {
+    --color-outline: #0B0B0E;
+    --color-panel: #262830;
+    --color-inset: #17181D;
+    --color-text: #F3EEE3;
+    --color-text-muted: #9A9CA6;
+    --color-text-on-gold: #2A1B06;
+    --color-gold: #E8A93A;
+    --color-green: #3FAE55;
+    --color-stone: #5A5E6B;
+    --color-card: #3A3D4A;
+    --color-card-hover: #555A6C;
+    --color-backdrop: rgba(11, 11, 14, 0.7);
+    --color-text-shadow: rgba(11, 11, 14, 0.8);
+
+    --space-xs: 8px;
+    --space-s: 16px;
+    --space-m: 24px;
+    --space-l: 40px;
+    --space-edge: 24px;
+
+    --font-size-s: 24px;
+    --font-size-m: 32px;
+    --font-size-l: 44px;
+    --font-size-xl: 72px;
+
+    --button-height: 72px;
+    --icon-size: 48px;
+    --icon-button-size: 80px;
+    --coin-size: 36px;
+    --stat-icon-size: 32px;
+    --corner-reserve: 128px;
+    --slider-height: 48px;
+    --slider-handle-width: 32px;
+    --scrollbar-width: 16px;
+    --portrait-size: 128px;
+}
+
+.touch {
+    --button-height: 88px;
+    --icon-button-size: 96px;
+    --slider-height: 72px;
+    --slider-handle-width: 48px;
+    --corner-reserve: 144px;
+}
+
+.compact {
+    --space-xs: 6px;
+    --space-s: 12px;
+    --space-m: 16px;
+    --space-l: 24px;
+    --space-edge: 32px;
+    --font-size-s: 28px;
+    --font-size-l: 40px;
+    --font-size-xl: 64px;
+}

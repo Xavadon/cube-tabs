@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b574c7249b5861d43abc286ee8fcc848, type: 3}
+  m_Name: archer
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Archer
+  <NameKey>k__BackingField: unit.archer.name
+  <Scale>k__BackingField: 1
+  <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: e06e578d632259249a7f3cdcd53e6ad5, type: 2}
+  <PriceAsHero>k__BackingField: 100
+  <YandexProductId>k__BackingField: 
+  <Tiers>k__BackingField:
+  - <MoveSpeed>k__BackingField: 3.7
+    <Stats>k__BackingField:
+      <Health>k__BackingField: 140
+      <PhysicalResist>k__BackingField: 0.05
+      <MagicResist>k__BackingField: 0.05
+      <FireResist>k__BackingField: 0
+      <FaithResist>k__BackingField: 0
+      <Damage>k__BackingField: 45
+      <DamageType>k__BackingField: 0
+    <WeaponData>k__BackingField:
+    - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: f6a63d9a1972f7c46ad1fcd4dea520fe, type: 2}
+    <Ability>k__BackingField: {fileID: 11400000, guid: 985f8e9e5699ab842ab5909bbfa14c47, type: 2}
+    <DeathAbility>k__BackingField: {fileID: 0}
+    <KillReward>k__BackingField: 0
+    <EvolutionCost>k__BackingField: 0
+    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 96765532322262d44af19a5803a314d9, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 96765532322262d44af19a5803a314d9, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField:
+    - {fileID: 8300000, guid: 73d3fa840ce02cc4caf2840b2435dfb8, type: 3}
+  - <MoveSpeed>k__BackingField: 3.6
+    <Stats>k__BackingField:
+      <Health>k__BackingField: 180
+      <PhysicalResist>k__BackingField: 0.05
+      <MagicResist>k__BackingField: 0.05
+      <FireResist>k__BackingField: 0
+      <FaithResist>k__BackingField: 0
+      <Damage>k__BackingField: 55
+      <DamageType>k__BackingField: 0
+    <WeaponData>k__BackingField:
+    - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: f6a63d9a1972f7c46ad1fcd4dea520fe, type: 2}
+    <Ability>k__BackingField: {fileID: 11400000, guid: 985f8e9e5699ab842ab5909bbfa14c47, type: 2}
+    <DeathAbility>k__BackingField: {fileID: 0}
+    <KillReward>k__BackingField: 0
+    <EvolutionCost>k__BackingField: 50
+    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 96765532322262d44af19a5803a314d9, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 96765532322262d44af19a5803a314d9, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField:
+    - {fileID: 8300000, guid: 73d3fa840ce02cc4caf2840b2435dfb8, type: 3}
+  - <MoveSpeed>k__BackingField: 3.6
+    <Stats>k__BackingField:
+      <Health>k__BackingField: 220
+      <PhysicalResist>k__BackingField: 0.05
+      <MagicResist>k__BackingField: 0.05
+      <FireResist>k__BackingField: 0
+      <FaithResist>k__BackingField: 0
+      <Damage>k__BackingField: 60
+      <DamageType>k__BackingField: 0
+    <WeaponData>k__BackingField:
+    - {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: f6a63d9a1972f7c46ad1fcd4dea520fe, type: 2}
+    <Ability>k__BackingField: {fileID: 11400000, guid: 985f8e9e5699ab842ab5909bbfa14c47, type: 2}
+    <DeathAbility>k__BackingField: {fileID: 0}
+    <KillReward>k__BackingField: 0
+    <EvolutionCost>k__BackingField: 60
+    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: 96765532322262d44af19a5803a314d9, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: 96765532322262d44af19a5803a314d9, type: 2}
+    <HitSounds>k__BackingField: []
+    <AttackSounds>k__BackingField:
+    - {fileID: 8300000, guid: 73d3fa840ce02cc4caf2840b2435dfb8, type: 3}
+  BaseMaterial: {fileID: 2100000, guid: 96765532322262d44af19a5803a314d9, type: 2}
+  BaseWeapon: {fileID: 11400000, guid: 7b4eea3309c3de04b9d405e187dcd17c, type: 2}
+  BaseAbility: {fileID: 0}
+  BaseBrain: {fileID: 11400000, guid: f6a63d9a1972f7c46ad1fcd4dea520fe, type: 2}
+  BaseHitSounds: []
+  BaseAttackSounds:
+  - {fileID: 8300000, guid: 73d3fa840ce02cc4caf2840b2435dfb8, type: 3}

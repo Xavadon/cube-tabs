@@ -1,0 +1,5 @@
+@import url("unity-theme://default");
+@import url("/Assets/_Project/UI/Theme/Tokens.uss");
+@import url("/Assets/_Project/UI/Theme/Kit.uss");
+
+VisualElement {}

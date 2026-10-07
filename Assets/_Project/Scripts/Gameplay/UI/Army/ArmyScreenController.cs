@@ -1,0 +1,389 @@
+using System;
+using System.Collections.Generic;
+using _Project.Scripts.Architecture.Services;
+using _Project.Scripts.Architecture.Services.Localization;
+using _Project.Scripts.Gameplay.Character.Data;
+using _Project.Scripts.Gameplay.Character.Data.AiBrain;
+using _Project.Scripts.Gameplay.Services;
+using _Project.Scripts.Gameplay.UI.Kit;
+using UnityEngine;
+
+namespace _Project.Scripts.Gameplay.UI.Army
+{
+    public class ArmyScreenController : IDisposable
+    {
+        public const int GoldRewardAmount = 25;
+        private const string RewardedTag = "GOLD_REWARD";
+        private const float GoldRewardCooldown = 30f;
+
+        private static float _goldRewardCooldownEnd;
+
+        public static void ResetGoldRewardCooldown() => _goldRewardCooldownEnd = 0f;
+
+        private readonly IArmyScreenView _view;
+        private readonly IPlayerProgressService _progress;
+        private readonly IUnitPreviewService _previewService;
+        private readonly ShopCatalog _catalog;
+        private readonly IAdService _adService;
+        private readonly ILocalizationService _localization;
+        private readonly List<CardEntry> _cardEntries = new();
+        private readonly List<(ResolvedUnit unit, int count)> _groupBuffer = new();
+        private readonly Dictionary<string, int> _groupCounts = new();
+        private readonly Dictionary<string, ResolvedUnit> _groupFirst = new();
+
+        private CardSelection _selection;
+        private bool _dirty;
+
+        public ArmyScreenController(
+            IArmyScreenView view,
+            IPlayerProgressService progress,
+            IUnitPreviewService previewService,
+            ShopCatalog catalog,
+            IAdService adService,
+            ILocalizationService localization)
+        {
+            _view = view;
+            _progress = progress;
+            _previewService = previewService;
+            _catalog = catalog;
+            _adService = adService;
+            _localization = localization;
+            _localization.OnLanguageChanged += ScheduleRebuild;
+
+            _view.CardClicked += OnCardClicked;
+            _view.CardDropped += OnCardDropped;
+            _view.BuyClicked += OnBuyClicked;
+            _view.SlotUpgradeClicked += OnSlotUpgradeClicked;
+            _view.ToArmyClicked += OnToArmyClicked;
+            _view.ToReserveClicked += OnToReserveClicked;
+            _view.SellClicked += OnSellClicked;
+            _view.ViewEnabled += OnViewEnabled;
+            _view.GoldRewardClicked += OnGoldRewardClicked;
+
+            _progress.OnArmyChanged += ScheduleRebuild;
+            _progress.OnOwnedChanged += ScheduleRebuild;
+
+            Rebuild();
+            _view.SetActive(false);
+        }
+
+        public void OnLateUpdate()
+        {
+            if (!_dirty)
+                return;
+
+            _dirty = false;
+            Rebuild();
+        }
+
+        public void Dispose()
+        {
+            _localization.OnLanguageChanged -= ScheduleRebuild;
+            _view.BuyClicked -= OnBuyClicked;
+            _view.SlotUpgradeClicked -= OnSlotUpgradeClicked;
+            _view.ToArmyClicked -= OnToArmyClicked;
+            _view.ToReserveClicked -= OnToReserveClicked;
+            _view.SellClicked -= OnSellClicked;
+            _view.CardClicked -= OnCardClicked;
+            _view.CardDropped -= OnCardDropped;
+            _view.ViewEnabled -= OnViewEnabled;
+            _view.GoldRewardClicked -= OnGoldRewardClicked;
+
+            _progress.OnArmyChanged -= ScheduleRebuild;
+            _progress.OnOwnedChanged -= ScheduleRebuild;
+        }
+
+        private void ScheduleRebuild() => _dirty = true;
+
+        private void OnViewEnabled() => Rebuild();
+
+        private void OnBuyClicked()
+        {
+            if (_progress.BuyBaseUnit())
+            {
+                _view.SetGoldRewardButtonVisible(false);
+                return;
+            }
+
+            bool cooldownActive = Time.realtimeSinceStartup < _goldRewardCooldownEnd;
+            if (!cooldownActive)
+                _view.SetGoldRewardButtonVisible(true);
+        }
+
+        private void OnGoldRewardClicked()
+        {
+            _goldRewardCooldownEnd = Time.realtimeSinceStartup + GoldRewardCooldown;
+            _view.SetGoldRewardButtonVisible(false);
+
+            if (!_adService.IsRewardedAvailable)
+                return;
+
+            Debug.Log("[ArmyScreenController] Showing rewarded ad for gold");
+            _adService.ShowRewarded(RewardedTag, success =>
+            {
+                Debug.Log($"[ArmyScreenController] Rewarded callback: success={success}");
+                if (success)
+                {
+                    Debug.Log($"[ArmyScreenController] Adding {GoldRewardAmount} gold");
+                    _progress.AddGold(GoldRewardAmount);
+                    _progress.Save();
+                }
+            });
+        }
+
+        private void OnSlotUpgradeClicked()
+        {
+            _progress.UpgradeArmySlots();
+        }
+
+        private void OnToArmyClicked()
+        {
+            if (!_selection.HasValue || _selection.IsInArmy)
+                return;
+
+            _progress.AddToArmy(_selection.InstanceId);
+        }
+
+        private void OnToReserveClicked()
+        {
+            if (!_selection.HasValue || !_selection.IsInArmy)
+                return;
+
+            _progress.RemoveFromArmy(_selection.InstanceId);
+        }
+
+        private void OnSellClicked()
+        {
+            if (!_selection.HasValue || _selection.IsInArmy)
+            {
+                return;
+            }
+
+            _progress.SellUnit(_selection.InstanceId);
+        }
+
+        private void OnCardClicked(int cardIndex)
+        {
+            if (cardIndex < 0 || cardIndex >= _cardEntries.Count)
+                return;
+
+            var entry = _cardEntries[cardIndex];
+            _selection = new CardSelection
+            {
+                InstanceId = entry.Resolved.InstanceId,
+                Unit = entry.Resolved.Data,
+                TierIndex = entry.Resolved.TierIndex,
+                IsInArmy = entry.IsInArmy
+            };
+
+            for (int i = 0; i < _cardEntries.Count; i++)
+                _view.SetCardSelected(i, i == cardIndex);
+
+            RefreshSelectedStats();
+            RefreshFullBodyPreview();
+            RefreshEvolutionPanel();
+            RefreshTransferButton();
+            RefreshSellButton();
+        }
+
+        private void OnCardDropped(int cardIndex, bool toArmy)
+        {
+            if (cardIndex < 0 || cardIndex >= _cardEntries.Count)
+            {
+                return;
+            }
+
+            OnCardClicked(cardIndex);
+
+            if (toArmy)
+            {
+                OnToArmyClicked();
+            }
+            else
+            {
+                OnToReserveClicked();
+            }
+        }
+
+        private void Rebuild()
+        {
+            _view.ClearCards();
+            _cardEntries.Clear();
+
+            SpawnCards(_progress.ArmyUnits, true);
+            SpawnCards(_progress.BacklogUnits, false);
+
+            RestoreSelection();
+            RefreshSelectedStats();
+            RefreshFullBodyPreview();
+            RefreshEvolutionPanel();
+            RefreshTransferButton();
+            RefreshSellButton();
+        }
+
+        private void SpawnCards(List<ResolvedUnit> units, bool isInArmy)
+        {
+            GroupUnits(units);
+
+            foreach (var (unit, count) in _groupBuffer)
+            {
+                var portrait = _previewService.GetPortrait(unit.Data, unit.TierIndex);
+                string displayName = _localization.GetUnitName(unit.Data, unit.TierIndex);
+
+                _view.AddCard(displayName, count, portrait, isInArmy);
+                _cardEntries.Add(new CardEntry { Resolved = unit, IsInArmy = isInArmy });
+            }
+        }
+
+        private void RestoreSelection()
+        {
+            if (!_selection.HasValue)
+                return;
+
+            bool found = false;
+
+            for (int i = 0; i < _cardEntries.Count; i++)
+            {
+                var entry = _cardEntries[i];
+                bool match = entry.Resolved.Data.Id == _selection.Unit.Id
+                             && entry.Resolved.TierIndex == _selection.TierIndex
+                             && entry.IsInArmy == _selection.IsInArmy;
+                _view.SetCardSelected(i, match);
+
+                if (match)
+                {
+                    _selection.InstanceId = entry.Resolved.InstanceId;
+                    found = true;
+                }
+            }
+
+            if (!found)
+                _selection.Clear();
+        }
+
+        private void RefreshEvolutionPanel()
+        {
+            if (!_selection.HasValue)
+            {
+                _view.HideEvolution();
+                return;
+            }
+
+            if (_progress.TryGetUnitInstance(_selection.InstanceId, out var instance))
+                _view.ShowEvolution(instance.InstanceId, instance.Data, instance.TierIndex);
+            else
+                _view.HideEvolution();
+        }
+
+        private void RefreshSelectedStats()
+        {
+            if (!_selection.HasValue)
+            {
+                _view.HideSelectedStats();
+                return;
+            }
+
+            var tier = _selection.Unit.GetTier(_selection.TierIndex);
+            string displayName = _localization.GetUnitName(_selection.Unit, _selection.TierIndex);
+            _view.ShowSelectedStats(displayName, tier.Stats.Health, tier.Stats.Damage, tier.MoveSpeed);
+        }
+
+        private void RefreshFullBodyPreview()
+        {
+            if (!_selection.HasValue)
+            {
+                _view.HideFullBodyPreview();
+                return;
+            }
+
+            var handle = _previewService.GetFullBody(_selection.Unit, _selection.TierIndex);
+            _view.ShowFullBodyPreview(handle);
+        }
+
+        private void RefreshTransferButton()
+        {
+            bool hasSelection = _selection.HasValue;
+
+            _view.SetToArmyInteractable(hasSelection && !_selection.IsInArmy
+                                         && _progress.ArmyUnits.Count < _progress.ArmySlots);
+            _view.SetToReserveInteractable(hasSelection && _selection.IsInArmy);
+        }
+
+        private void RefreshSellButton()
+        {
+            if (!_selection.HasValue || _selection.IsInArmy)
+            {
+                _view.HideSell();
+                return;
+            }
+
+            int price = _selection.Unit.GetTier(_selection.TierIndex).SellPrice;
+            if (price <= 0)
+            {
+                _view.HideSell();
+                return;
+            }
+
+            _view.ShowSell(price);
+        }
+
+        private void GroupUnits(List<ResolvedUnit> units)
+        {
+            _groupBuffer.Clear();
+            _groupCounts.Clear();
+            _groupFirst.Clear();
+
+            foreach (var unit in units)
+            {
+                string key = $"{unit.Data.Id}_{unit.TierIndex}";
+
+                if (_groupCounts.ContainsKey(key))
+                {
+                    _groupCounts[key]++;
+                }
+                else
+                {
+                    _groupCounts[key] = 1;
+                    _groupFirst[key] = unit;
+                }
+            }
+
+            foreach (var kvp in _groupFirst)
+                _groupBuffer.Add((kvp.Value, _groupCounts[kvp.Key]));
+
+            _groupBuffer.Sort(CompareByUnitType);
+        }
+
+        private static int CompareByUnitType((ResolvedUnit unit, int count) a, (ResolvedUnit unit, int count) b)
+        {
+            bool aIsRanged = a.unit.Data.GetTier(a.unit.TierIndex).BrainData is RangeBrainDataBase;
+            bool bIsRanged = b.unit.Data.GetTier(b.unit.TierIndex).BrainData is RangeBrainDataBase;
+
+            return aIsRanged.CompareTo(bIsRanged);
+        }
+
+        private struct CardSelection
+        {
+            public int InstanceId;
+            public CharacterData Unit;
+            public int TierIndex;
+            public bool IsInArmy;
+
+            public bool HasValue => Unit != null;
+
+            public void Clear()
+            {
+                Unit = null;
+                IsInArmy = false;
+                InstanceId = -1;
+                TierIndex = 0;
+            }
+        }
+
+        private struct CardEntry
+        {
+            public ResolvedUnit Resolved;
+            public bool IsInArmy;
+        }
+    }
+}

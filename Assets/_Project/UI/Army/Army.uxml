@@ -1,0 +1,104 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <Style src="/Assets/_Project/UI/Army/Army.uss" />
+    <ui:VisualElement name="army-screen" class="screen">
+        <ui:VisualElement class="screen__header">
+            <ui:Label class="title screen__title loc" text="ui.army.title" />
+            <ui:VisualElement class="gold">
+                <ui:Label name="gold-label" />
+                <ui:VisualElement class="coin" />
+            </ui:VisualElement>
+            <ui:Button name="close-button" class="btn btn--icon">
+                <ui:VisualElement class="icon icon--close" picking-mode="Ignore" />
+            </ui:Button>
+        </ui:VisualElement>
+        <ui:VisualElement class="screen__body">
+            <ui:VisualElement class="army-lists">
+                <ui:VisualElement name="army-section" class="panel army-section">
+                    <ui:VisualElement class="army-section__header">
+                        <ui:Label name="slot-count-label" class="section-title" />
+                        <ui:VisualElement class="army-section__arrows">
+                            <ui:Button name="army-prev" class="btn btn--icon army-arrow">
+                                <ui:VisualElement class="icon icon--arrow icon--left" picking-mode="Ignore" />
+                            </ui:Button>
+                            <ui:Button name="army-next" class="btn btn--icon army-arrow">
+                                <ui:VisualElement class="icon icon--arrow" picking-mode="Ignore" />
+                            </ui:Button>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:ScrollView name="army-list" mode="Horizontal" class="scroll army-section__list" mouse-wheel-scroll-size="240" vertical-scroller-visibility="Hidden" />
+                </ui:VisualElement>
+                <ui:VisualElement class="army-transfer">
+                    <ui:Button name="to-army-button" class="btn">
+                        <ui:VisualElement class="icon icon--arrow icon--up" picking-mode="Ignore" />
+                        <ui:Label class="loc" text="ui.army.to_army" picking-mode="Ignore" />
+                    </ui:Button>
+                    <ui:Button name="to-reserve-button" class="btn">
+                        <ui:VisualElement class="icon icon--arrow icon--down" picking-mode="Ignore" />
+                        <ui:Label class="loc" text="ui.army.to_reserve" picking-mode="Ignore" />
+                    </ui:Button>
+                </ui:VisualElement>
+                <ui:VisualElement name="reserve-section" class="panel army-section">
+                    <ui:VisualElement class="army-section__header">
+                        <ui:Label class="section-title loc" text="ui.army.reserve" />
+                        <ui:VisualElement class="army-section__arrows">
+                            <ui:Button name="reserve-prev" class="btn btn--icon army-arrow">
+                                <ui:VisualElement class="icon icon--arrow icon--left" picking-mode="Ignore" />
+                            </ui:Button>
+                            <ui:Button name="reserve-next" class="btn btn--icon army-arrow">
+                                <ui:VisualElement class="icon icon--arrow" picking-mode="Ignore" />
+                            </ui:Button>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:ScrollView name="reserve-list" mode="Horizontal" class="scroll army-section__list" mouse-wheel-scroll-size="240" vertical-scroller-visibility="Hidden" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="panel army-selected">
+                <ui:VisualElement name="preview" class="inset army-selected__preview" />
+                <ui:VisualElement name="selected-info" class="army-selected__info">
+                    <ui:Label name="selected-name" class="title" />
+                    <ui:VisualElement class="row army-selected__stats">
+                        <ui:VisualElement class="stat">
+                            <ui:VisualElement class="stat__icon stat__icon--hp" />
+                            <ui:Label name="selected-hp" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="stat">
+                            <ui:VisualElement class="stat__icon stat__icon--damage" />
+                            <ui:Label name="selected-damage" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="stat">
+                            <ui:VisualElement class="stat__icon stat__icon--speed" />
+                            <ui:Label name="selected-speed" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:Button name="sell-button" class="btn army-selected__sell">
+                    <ui:Label class="loc" text="ui.army.sell" picking-mode="Ignore" />
+                    <ui:Label name="sell-price" class="army-price" picking-mode="Ignore" />
+                    <ui:VisualElement class="coin" picking-mode="Ignore" />
+                </ui:Button>
+            </ui:VisualElement>
+            <ui:VisualElement name="evolution" class="panel army-evolution">
+                <ui:Label class="section-title loc" text="ui.evolution.title" />
+                <ui:ScrollView name="evolution-options" class="scroll army-evolution__list" mouse-wheel-scroll-size="240" horizontal-scroller-visibility="Hidden" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement class="screen__footer">
+            <ui:Button name="buy-button" class="btn btn--green">
+                <ui:Label class="loc" text="ui.army.buy" picking-mode="Ignore" />
+                <ui:Label name="buy-cost" class="army-price" picking-mode="Ignore" />
+                <ui:VisualElement class="coin" picking-mode="Ignore" />
+            </ui:Button>
+            <ui:Button name="slot-upgrade-button" class="btn btn--green">
+                <ui:VisualElement class="icon icon--plus" picking-mode="Ignore" />
+                <ui:Label class="loc" text="ui.army.upgrade_slot" picking-mode="Ignore" />
+                <ui:Label name="slot-upgrade-cost" class="army-price" picking-mode="Ignore" />
+                <ui:VisualElement class="coin" picking-mode="Ignore" />
+            </ui:Button>
+            <ui:Button name="gold-reward-button" class="btn">
+                <ui:VisualElement class="icon icon--video" picking-mode="Ignore" />
+                <ui:Label name="gold-reward-amount" picking-mode="Ignore" />
+                <ui:VisualElement class="coin" picking-mode="Ignore" />
+            </ui:Button>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

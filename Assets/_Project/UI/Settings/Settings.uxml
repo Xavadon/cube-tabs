@@ -1,0 +1,28 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <Style src="/Assets/_Project/UI/Settings/Settings.uss" />
+    <ui:VisualElement class="layer" picking-mode="Ignore">
+        <ui:Button name="open-button" class="btn btn--icon settings__open">
+            <ui:VisualElement class="icon icon--gear" picking-mode="Ignore" />
+        </ui:Button>
+        <ui:VisualElement name="overlay" class="backdrop">
+            <ui:VisualElement class="panel settings__panel">
+                <ui:VisualElement class="panel__header">
+                    <ui:Label name="title" class="title" />
+                    <ui:Button name="close-button" class="btn btn--icon">
+                        <ui:VisualElement class="icon icon--close" picking-mode="Ignore" />
+                    </ui:Button>
+                </ui:VisualElement>
+                <ui:VisualElement class="settings__row">
+                    <ui:VisualElement class="icon icon--sound settings__row-icon" />
+                    <ui:Label name="sound-label" class="settings__label" />
+                    <ui:Slider name="sound-slider" low-value="0" high-value="1" fill="true" class="slider settings__slider" />
+                </ui:VisualElement>
+                <ui:VisualElement class="settings__row">
+                    <ui:VisualElement class="icon icon--music settings__row-icon" />
+                    <ui:Label name="music-label" class="settings__label" />
+                    <ui:Slider name="music-slider" low-value="0" high-value="1" fill="true" class="slider settings__slider" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

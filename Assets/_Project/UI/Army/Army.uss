@@ -1,0 +1,232 @@
+.army-lists {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0;
+}
+
+.army-section {
+    flex-grow: 1;
+    flex-basis: 0;
+    padding: var(--space-m);
+}
+
+.panel.army-section--drop-target {
+    background-image: url("/Assets/_Project/Sprite/UI/Kit/ui-panel-gold.png#ui-panel-gold");
+}
+
+.army-section__header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-xs);
+}
+
+.army-section__header > .section-title {
+    margin-bottom: 0;
+}
+
+.army-section__arrows {
+    flex-direction: row;
+}
+
+.btn.army-arrow {
+    width: 64px;
+    height: 64px;
+    min-width: 64px;
+    min-height: 64px;
+    margin-left: var(--space-xs);
+}
+
+.army-arrow > .icon {
+    width: 32px;
+    height: 32px;
+}
+
+.army-section__list {
+    flex-grow: 1;
+}
+
+.army-transfer {
+    flex-direction: row;
+    justify-content: center;
+    margin: var(--space-s) 0;
+}
+
+.army-transfer > .btn {
+    margin: 0 var(--space-s);
+}
+
+.army-selected {
+    width: 480px;
+    flex-shrink: 0;
+    margin-left: var(--space-m);
+    padding: var(--space-m);
+}
+
+.army-selected__preview {
+    flex-grow: 1;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.army-selected__info {
+    margin-top: var(--space-s);
+}
+
+.army-selected__stats {
+    margin-top: var(--space-xs);
+}
+
+.army-selected__sell {
+    margin-top: var(--space-s);
+}
+
+.army-evolution {
+    width: 520px;
+    flex-shrink: 0;
+    margin-left: var(--space-m);
+    padding: var(--space-m);
+}
+
+.army-evolution__list {
+    flex-grow: 1;
+}
+
+.army-price {
+    margin-left: var(--space-s);
+}
+
+.unit-card {
+    width: 176px;
+    margin: 0 var(--space-s) var(--space-s) 0;
+    align-items: center;
+    padding: var(--space-xs);
+    background-image: url("/Assets/_Project/Sprite/UI/Kit/ui-card.png#ui-card");
+    -unity-background-image-tint-color: var(--color-card);
+}
+
+.unit-card--dragging {
+    opacity: 0.4;
+}
+
+.unit-card--ghost {
+    position: absolute;
+    opacity: 0.9;
+}
+
+.unit-card:hover {
+    -unity-background-image-tint-color: var(--color-card-hover);
+}
+
+.unit-card--selected,
+.unit-card--selected:hover {
+    background-image: url("/Assets/_Project/Sprite/UI/Kit/ui-panel-gold.png#ui-panel-gold");
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+}
+
+.unit-card__name {
+    max-width: 100%;
+    font-size: var(--font-size-s);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.unit-card__count {
+    position: absolute;
+    top: var(--space-xs);
+    right: var(--space-xs);
+    padding: 0 var(--space-xs);
+    font-size: var(--font-size-s);
+    color: var(--color-gold);
+    background-image: url("/Assets/_Project/Sprite/UI/Kit/ui-inset.png#ui-inset");
+}
+
+.evo-option {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: var(--space-s);
+}
+
+.evo-option__portrait {
+    width: 112px;
+    height: 112px;
+}
+
+.evo-option__info {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin: 0 var(--space-s);
+}
+
+.evo-option__stats {
+    flex-wrap: wrap;
+}
+
+.evo-option__buy {
+    padding-left: var(--space-s);
+    padding-right: var(--space-s);
+}
+
+.touch .army-section__arrows {
+    display: none;
+}
+
+.touch .unit-card:hover {
+    -unity-background-image-tint-color: var(--color-card);
+}
+
+.touch .unit-card--selected:hover {
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+}
+
+.compact .army-lists {
+    padding-right: 100px;
+}
+
+.compact .army-transfer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+}
+
+.compact .army-transfer > .btn {
+    margin: var(--space-s) 0;
+}
+
+.compact .army-transfer .unity-label {
+    display: none;
+}
+
+.compact .army-transfer .icon {
+    margin-right: 0;
+}
+
+.compact .army-selected {
+    width: 320px;
+}
+
+.compact .army-selected__stats {
+    flex-wrap: wrap;
+}
+
+.compact .army-evolution {
+    width: 400px;
+}
+
+.compact .unit-card {
+    width: 120px;
+}
+
+.compact .unit-card > .portrait {
+    width: 80px;
+    height: 80px;
+}
+
+.compact .evo-option__portrait {
+    width: 80px;
+    height: 80px;
+}

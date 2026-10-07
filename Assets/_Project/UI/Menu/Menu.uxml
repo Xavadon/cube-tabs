@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Template name="LevelMap" src="/Assets/_Project/UI/LevelMap/LevelMap.uxml" />
+    <ui:Template name="Army" src="/Assets/_Project/UI/Army/Army.uxml" />
+    <ui:Template name="Shop" src="/Assets/_Project/UI/Shop/Shop.uxml" />
+    <Style src="/Assets/_Project/UI/Menu/Menu.uss" />
+    <ui:VisualElement class="layer" picking-mode="Ignore">
+        <ui:VisualElement name="nav" class="menu-nav" picking-mode="Ignore">
+            <ui:Button name="army-button" class="btn menu-nav__button loc" text="ui.army.title" />
+            <ui:Button name="map-button" class="btn btn--gold menu-nav__button menu-nav__button--main loc" text="ui.level.play" />
+            <ui:Button name="shop-button" class="btn menu-nav__button loc" text="ui.shop.title" />
+        </ui:VisualElement>
+        <ui:Instance template="LevelMap" name="level-map" class="layer" />
+        <ui:Instance template="Army" name="army" class="layer" />
+        <ui:Instance template="Shop" name="shop" class="layer" />
+    </ui:VisualElement>
+</ui:UXML>

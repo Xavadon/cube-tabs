@@ -1,0 +1,149 @@
+.level-map__frame {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.level-map__map {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    background-image: url("/Assets/_Project/Sprite/territory-map.png#territory-map");
+}
+
+.level-path {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    --path-color: #C8412F;
+    --path-width: 4;
+    --path-dash: 14;
+    --path-gap: 10;
+}
+
+.level-point {
+    position: absolute;
+    translate: -50% -50%;
+}
+
+.level-point--0 {
+    left: 24.63%;
+    top: 27.44%;
+}
+
+.level-point--1 {
+    left: 47.89%;
+    top: 28.83%;
+}
+
+.level-point--2 {
+    left: 28.34%;
+    top: 75.69%;
+}
+
+.level-point--3 {
+    left: 75.76%;
+    top: 32.99%;
+}
+
+.level-point--4 {
+    left: 69.36%;
+    top: 73.37%;
+}
+
+.level-point__icon {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.level-point__icon--0 {
+    background-image: url("/Assets/Cainos/Pixel Art Icon Pack - RPG/Texture/Weapon & Tool/Wooden Sword.png#Wooden Sword");
+}
+
+.level-point__icon--1 {
+    background-image: url("/Assets/Cainos/Pixel Art Icon Pack - RPG/Texture/Weapon & Tool/Iron Sword.png#Iron Sword");
+}
+
+.level-point__icon--2 {
+    background-image: url("/Assets/Cainos/Pixel Art Icon Pack - RPG/Texture/Weapon & Tool/Silver Sword.png#Silver Sword");
+}
+
+.level-point__icon--3 {
+    background-image: url("/Assets/Cainos/Pixel Art Icon Pack - RPG/Texture/Weapon & Tool/Golden Sword.png#Golden Sword");
+}
+
+.level-point__icon--4 {
+    background-image: url("/Assets/Cainos/Pixel Art Icon Pack - RPG/Texture/Weapon & Tool/Ruby Staff.png#Ruby Staff");
+}
+
+.level-point__lock {
+    display: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+}
+
+.level-point:disabled .level-point__icon {
+    opacity: 0.35;
+}
+
+.level-point:disabled .level-point__lock {
+    display: flex;
+}
+
+.level-info {
+    width: 560px;
+    flex-shrink: 0;
+    margin-left: var(--space-m);
+}
+
+.level-info__description {
+    margin-top: var(--space-s);
+}
+
+.level-info__stats {
+    flex-grow: 1;
+    margin: var(--space-m) 0;
+}
+
+.level-info__line {
+    font-size: var(--font-size-s);
+    margin-bottom: var(--space-xs);
+}
+
+.level-info__line--kills {
+    font-size: var(--font-size-m);
+    margin-bottom: var(--space-s);
+}
+
+.level-info__line--done {
+    color: var(--color-text-muted);
+}
+
+.level-info__line--ready {
+    color: var(--color-green);
+}
+
+.level-info__line--next {
+    color: var(--color-gold);
+}
+
+.level-info__line--locked {
+    color: var(--color-stone);
+}
+
+.level-info__play {
+    height: 96px;
+    font-size: var(--font-size-l);
+}
+
+.compact .level-info {
+    width: 440px;
+}

@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b574c7249b5861d43abc286ee8fcc848, type: 3}
+  m_Name: dark-spearman
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Spearman
+  <NameKey>k__BackingField: unit.spearman.name
+  <PriceAsHero>k__BackingField: 100
+  <Scale>k__BackingField: 1
+  <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: 7ac5ef97fbc067f448abbba3c4c92718, type: 2}
+  <Tiers>k__BackingField:
+  - <MoveSpeed>k__BackingField: 3.3
+    <Stats>k__BackingField:
+      <Health>k__BackingField: 665
+      <PhysicalResist>k__BackingField: 0.15
+      <MagicResist>k__BackingField: 0
+      <FireResist>k__BackingField: 0
+      <FaithResist>k__BackingField: 0
+      <Damage>k__BackingField: 80
+      <DamageType>k__BackingField: 0
+    <WeaponData>k__BackingField:
+    - {fileID: 11400000, guid: 3ea887067ddcfb542814e2eeacedc6ef, type: 2}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: 66aa58a4a81d76a418d496c0e318251d, type: 2}
+    <Ability>k__BackingField: {fileID: 0}
+    <DeathAbility>k__BackingField: {fileID: 0}
+    <KillReward>k__BackingField: 6
+    <EvolutionCost>k__BackingField: 0
+    <SellPrice>k__BackingField: 70
+    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: ce9c845aaa902ee41a295e22092d03db, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: ce9c845aaa902ee41a295e22092d03db, type: 2}
+  - <MoveSpeed>k__BackingField: 3.3
+    <Stats>k__BackingField:
+      <Health>k__BackingField: 730
+      <PhysicalResist>k__BackingField: 0.15
+      <MagicResist>k__BackingField: 0
+      <FireResist>k__BackingField: 0
+      <FaithResist>k__BackingField: 0
+      <Damage>k__BackingField: 88
+      <DamageType>k__BackingField: 0
+    <WeaponData>k__BackingField:
+    - {fileID: 11400000, guid: 3ea887067ddcfb542814e2eeacedc6ef, type: 2}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: 66aa58a4a81d76a418d496c0e318251d, type: 2}
+    <Ability>k__BackingField: {fileID: 0}
+    <DeathAbility>k__BackingField: {fileID: 0}
+    <KillReward>k__BackingField: 6
+    <EvolutionCost>k__BackingField: 180
+    <SellPrice>k__BackingField: 120
+    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: ce9c845aaa902ee41a295e22092d03db, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: ce9c845aaa902ee41a295e22092d03db, type: 2}
+  - <MoveSpeed>k__BackingField: 3.3
+    <Stats>k__BackingField:
+      <Health>k__BackingField: 800
+      <PhysicalResist>k__BackingField: 0.15
+      <MagicResist>k__BackingField: 0
+      <FireResist>k__BackingField: 0
+      <FaithResist>k__BackingField: 0
+      <Damage>k__BackingField: 96
+      <DamageType>k__BackingField: 0
+    <WeaponData>k__BackingField:
+    - {fileID: 11400000, guid: 3ea887067ddcfb542814e2eeacedc6ef, type: 2}
+    <BrainData>k__BackingField: {fileID: 11400000, guid: 66aa58a4a81d76a418d496c0e318251d, type: 2}
+    <Ability>k__BackingField: {fileID: 0}
+    <DeathAbility>k__BackingField: {fileID: 0}
+    <KillReward>k__BackingField: 6
+    <EvolutionCost>k__BackingField: 220
+    <SellPrice>k__BackingField: 180
+    <SkinMaterial>k__BackingField: {fileID: 2100000, guid: ce9c845aaa902ee41a295e22092d03db, type: 2}
+    <ArmorMaterial>k__BackingField: {fileID: 2100000, guid: ce9c845aaa902ee41a295e22092d03db, type: 2}
+  BaseMaterial: {fileID: 2100000, guid: ce9c845aaa902ee41a295e22092d03db, type: 2}
+  BaseWeapon: {fileID: 11400000, guid: 2609461451f571f488176b574bb3b33e, type: 2}
+  BaseAbility: {fileID: 0}
+  BaseBrain: {fileID: 0}

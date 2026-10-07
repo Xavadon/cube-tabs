@@ -1,0 +1,44 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <Style src="/Assets/_Project/UI/LevelMap/LevelMap.uss" />
+    <ui:VisualElement name="level-map-screen" class="screen">
+        <ui:VisualElement class="screen__header">
+            <ui:Label class="title screen__title loc" text="ui.map.title" />
+            <ui:Button name="close-button" class="btn btn--icon">
+                <ui:VisualElement class="icon icon--close" picking-mode="Ignore" />
+            </ui:Button>
+        </ui:VisualElement>
+        <ui:VisualElement class="screen__body">
+            <ui:VisualElement name="map-frame" class="panel level-map__frame">
+                <ui:VisualElement name="map" class="level-map__map">
+                    <_Project.Scripts.Gameplay.UI.LevelMap.LevelPath name="level-path" class="level-path" />
+                    <ui:Button class="btn btn--icon level-point level-point--0">
+                        <ui:VisualElement class="level-point__icon level-point__icon--0" picking-mode="Ignore" />
+                        <ui:VisualElement class="icon icon--lock level-point__lock" picking-mode="Ignore" />
+                    </ui:Button>
+                    <ui:Button class="btn btn--icon level-point level-point--1">
+                        <ui:VisualElement class="level-point__icon level-point__icon--1" picking-mode="Ignore" />
+                        <ui:VisualElement class="icon icon--lock level-point__lock" picking-mode="Ignore" />
+                    </ui:Button>
+                    <ui:Button class="btn btn--icon level-point level-point--2">
+                        <ui:VisualElement class="level-point__icon level-point__icon--2" picking-mode="Ignore" />
+                        <ui:VisualElement class="icon icon--lock level-point__lock" picking-mode="Ignore" />
+                    </ui:Button>
+                    <ui:Button class="btn btn--icon level-point level-point--3">
+                        <ui:VisualElement class="level-point__icon level-point__icon--3" picking-mode="Ignore" />
+                        <ui:VisualElement class="icon icon--lock level-point__lock" picking-mode="Ignore" />
+                    </ui:Button>
+                    <ui:Button class="btn btn--icon level-point level-point--4">
+                        <ui:VisualElement class="level-point__icon level-point__icon--4" picking-mode="Ignore" />
+                        <ui:VisualElement class="icon icon--lock level-point__lock" picking-mode="Ignore" />
+                    </ui:Button>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="info" class="panel level-info">
+                <ui:Label name="level-name" class="title" />
+                <ui:Label name="level-description" class="text-s text-muted text-wrap level-info__description" />
+                <ui:ScrollView name="level-stats" class="inset scroll level-info__stats" mouse-wheel-scroll-size="240" horizontal-scroller-visibility="Hidden" />
+                <ui:Button name="play-button" class="btn btn--gold level-info__play" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

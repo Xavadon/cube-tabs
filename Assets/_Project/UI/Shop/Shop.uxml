@@ -1,0 +1,47 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <Style src="/Assets/_Project/UI/Shop/Shop.uss" />
+    <ui:VisualElement name="shop-screen" class="screen">
+        <ui:VisualElement class="screen__header">
+            <ui:Label class="title screen__title loc" text="ui.shop.title" />
+            <ui:VisualElement class="gold">
+                <ui:Label name="gold-label" />
+                <ui:VisualElement class="coin" />
+            </ui:VisualElement>
+            <ui:Button name="close-button" class="btn btn--icon">
+                <ui:VisualElement class="icon icon--close" picking-mode="Ignore" />
+            </ui:Button>
+        </ui:VisualElement>
+        <ui:ScrollView class="scroll shop-scroll" mouse-wheel-scroll-size="240" horizontal-scroller-visibility="Hidden">
+            <ui:VisualElement class="shop-section">
+                <ui:Label class="title section-title loc" text="ui.shop.units" />
+                <ui:VisualElement name="units" class="shop-grid" />
+            </ui:VisualElement>
+            <ui:VisualElement class="shop-section">
+                <ui:Label class="title section-title loc" text="ui.shop.coins" />
+                <ui:VisualElement name="items" class="shop-grid" />
+            </ui:VisualElement>
+            <ui:VisualElement name="remove-ads-section" class="shop-section">
+                <ui:Label class="title section-title loc" text="ui.shop.remove_ads" />
+                <ui:VisualElement class="card shop-wide-card">
+                    <ui:VisualElement name="remove-ads-icon" class="portrait" />
+                    <ui:VisualElement class="shop-wide-card__info">
+                        <ui:Label name="remove-ads-name" />
+                        <ui:Label class="text-s text-muted text-wrap loc" text="ui.shop.remove_ads_description" />
+                    </ui:VisualElement>
+                    <ui:Button name="remove-ads-button" class="btn btn--green shop-buy">
+                        <ui:Label name="remove-ads-price" picking-mode="Ignore" />
+                        <ui:VisualElement name="remove-ads-yan" class="coin coin--yan" picking-mode="Ignore" />
+                    </ui:Button>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:ScrollView>
+        <ui:VisualElement name="purchase-popup" class="backdrop">
+            <ui:VisualElement name="purchase-panel" class="panel panel--gold popup">
+                <ui:Label name="purchase-title" class="title loc" text="ui.shop.purchase_success_title" />
+                <ui:VisualElement name="purchase-icon" class="inset popup__icon" />
+                <ui:Label name="purchase-reward" class="popup__reward" />
+                <ui:Button name="purchase-ok" class="btn btn--gold popup__button loc" text="ui.shop.purchase_success_ok" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

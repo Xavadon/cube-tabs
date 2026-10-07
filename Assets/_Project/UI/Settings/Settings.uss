@@ -1,0 +1,28 @@
+.settings__open {
+    position: absolute;
+    top: var(--space-edge);
+    right: var(--space-edge);
+}
+
+.settings__panel {
+    width: 760px;
+    max-width: 100%;
+}
+
+.settings__row {
+    flex-direction: row;
+    align-items: center;
+    margin-top: var(--space-m);
+}
+
+.settings__row-icon {
+    margin-right: var(--space-s);
+}
+
+.settings__label {
+    width: 180px;
+}
+
+.settings__slider {
+    flex-grow: 1;
+}

@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a268af6429472dd43a8c35ae75dc2274, type: 3}
+  m_Name: Dark Territory
+  m_EditorClassIdentifier: 
+  <LevelName>k__BackingField: Dark Territory
+  <NameKey>k__BackingField: level.dark_territory.name
+  <LevelIndex>k__BackingField: 3
+  <DescriptionKey>k__BackingField: level.dark_territory.description
+  _scene:
+    _sceneName: Dark Territory
+    _sceneAsset: {fileID: 102900000, guid: 80c5def71a1b75f48bf45210126303ba, type: 3}
+  <Milestones>k__BackingField:
+  - <KillsRequired>k__BackingField: 300
+    <Rewards>k__BackingField:
+    - CharacterData: {fileID: 11400000, guid: 7232bd23725794e4d8d1b10ab5040363, type: 2}
+      Count: 5
+    - CharacterData: {fileID: 11400000, guid: 4549d9a49df6e53429bdc6fcd4548f0d, type: 2}
+      Count: 5
+    <BonusArmySlots>k__BackingField: 5
+  - <KillsRequired>k__BackingField: 700
+    <Rewards>k__BackingField:
+    - CharacterData: {fileID: 11400000, guid: 7232bd23725794e4d8d1b10ab5040363, type: 2}
+      Count: 5
+    - CharacterData: {fileID: 11400000, guid: 4549d9a49df6e53429bdc6fcd4548f0d, type: 2}
+      Count: 5
+    - CharacterData: {fileID: 11400000, guid: 81557cc91482cfd4d953153090f338ad, type: 2}
+      Count: 5
+    <BonusArmySlots>k__BackingField: 5
+  - <KillsRequired>k__BackingField: 1100
+    <Rewards>k__BackingField:
+    - CharacterData: {fileID: 11400000, guid: 3ca566c8d99e17249bdc182676f1dbfa, type: 2}
+      Count: 5
+    - CharacterData: {fileID: 11400000, guid: 81557cc91482cfd4d953153090f338ad, type: 2}
+      Count: 5
+    - CharacterData: {fileID: 11400000, guid: 2dc08a0193120134dad9042ae1e1fb65, type: 2}
+      Count: 1
+    <BonusArmySlots>k__BackingField: 5
+  - <KillsRequired>k__BackingField: 1500
+    <Rewards>k__BackingField:
+    - CharacterData: {fileID: 11400000, guid: 3ca566c8d99e17249bdc182676f1dbfa, type: 2}
+      Count: 5
+    - CharacterData: {fileID: 11400000, guid: 81557cc91482cfd4d953153090f338ad, type: 2}
+      Count: 5
+    - CharacterData: {fileID: 11400000, guid: 2dc08a0193120134dad9042ae1e1fb65, type: 2}
+      Count: 1
+    - CharacterData: {fileID: 11400000, guid: e7c9b05c2a65ccb428eeb13c692e20ca, type: 2}
+      Count: 1
+    <BonusArmySlots>k__BackingField: 5
+  Waves:
+  - Entries:
+    - CharacterData: {fileID: 11400000, guid: 4549d9a49df6e53429bdc6fcd4548f0d, type: 2}
+      TierIndex: 0
+      Count: 10
+    - CharacterData: {fileID: 11400000, guid: 7232bd23725794e4d8d1b10ab5040363, type: 2}
+      TierIndex: 0
+      Count: 10
+  - Entries:
+    - CharacterData: {fileID: 11400000, guid: 81557cc91482cfd4d953153090f338ad, type: 2}
+      TierIndex: 0
+      Count: 7
+    - CharacterData: {fileID: 11400000, guid: 4549d9a49df6e53429bdc6fcd4548f0d, type: 2}
+      TierIndex: 0
+      Count: 7
+    - CharacterData: {fileID: 11400000, guid: 7232bd23725794e4d8d1b10ab5040363, type: 2}
+      TierIndex: 0
+      Count: 7
+    - CharacterData: {fileID: 11400000, guid: 3ca566c8d99e17249bdc182676f1dbfa, type: 2}
+      TierIndex: 0
+      Count: 7
+  - Entries:
+    - CharacterData: {fileID: 11400000, guid: 81557cc91482cfd4d953153090f338ad, type: 2}
+      TierIndex: 0
+      Count: 10
+    - CharacterData: {fileID: 11400000, guid: 3ca566c8d99e17249bdc182676f1dbfa, type: 2}
+      TierIndex: 0
+      Count: 4
+    - CharacterData: {fileID: 11400000, guid: 4549d9a49df6e53429bdc6fcd4548f0d, type: 2}
+      TierIndex: 0
+      Count: 4
+    - CharacterData: {fileID: 11400000, guid: 7232bd23725794e4d8d1b10ab5040363, type: 2}
+      TierIndex: 0
+      Count: 4
+    - CharacterData: {fileID: 11400000, guid: 2dc08a0193120134dad9042ae1e1fb65, type: 2}
+      TierIndex: 0
+      Count: 1
+    AnnouncementKey: wave.dark_territory.3
+  - Entries:
+    - CharacterData: {fileID: 11400000, guid: 81557cc91482cfd4d953153090f338ad, type: 2}
+      TierIndex: 0
+      Count: 12
+    - CharacterData: {fileID: 11400000, guid: 4549d9a49df6e53429bdc6fcd4548f0d, type: 2}
+      TierIndex: 0
+      Count: 6
+    - CharacterData: {fileID: 11400000, guid: 7232bd23725794e4d8d1b10ab5040363, type: 2}
+      TierIndex: 0
+      Count: 6
+    - CharacterData: {fileID: 11400000, guid: 3ca566c8d99e17249bdc182676f1dbfa, type: 2}
+      TierIndex: 0
+      Count: 6
+    - CharacterData: {fileID: 11400000, guid: 2dc08a0193120134dad9042ae1e1fb65, type: 2}
+      TierIndex: 0
+      Count: 1
+    - CharacterData: {fileID: 11400000, guid: e7c9b05c2a65ccb428eeb13c692e20ca, type: 2}
+      TierIndex: 0
+      Count: 1
+    AnnouncementKey: wave.dark_territory.4

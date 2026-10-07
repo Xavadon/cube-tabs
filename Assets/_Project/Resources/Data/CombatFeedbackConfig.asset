@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ecd4ff81c4ba74cb9fd5d4a336f820, type: 3}
+  m_Name: CombatFeedbackConfig
+  m_EditorClassIdentifier: 
+  <EnemyDamageStyle>k__BackingField:
+    <Format>k__BackingField: '{0:0}'
+    <Color>k__BackingField: {r: 1, g: 0.96, b: 0.85, a: 1}
+    <FontSize>k__BackingField: 30
+    <Lifetime>k__BackingField: 0.7
+    <RisePixels>k__BackingField: 55
+    <WorldOffset>k__BackingField: {x: 0, y: 2.4, z: 0}
+  <AllyDamageStyle>k__BackingField:
+    <Format>k__BackingField: '{0:0}'
+    <Color>k__BackingField: {r: 1, g: 0.45, b: 0.4, a: 1}
+    <FontSize>k__BackingField: 24
+    <Lifetime>k__BackingField: 0.55
+    <RisePixels>k__BackingField: 40
+    <WorldOffset>k__BackingField: {x: 0, y: 2.4, z: 0}
+  <ShowAllyDamage>k__BackingField: 0
+  <MinDamageToShow>k__BackingField: 1
+  <BigHitHealthRatio>k__BackingField: 0.25
+  <BigHitScale>k__BackingField: 1.45
+  <HorizontalJitterPixels>k__BackingField: 28
+  <GoldStyle>k__BackingField:
+    <Format>k__BackingField: +{0:0}
+    <Color>k__BackingField: {r: 1, g: 0.82, b: 0.2, a: 1}
+    <FontSize>k__BackingField: 34
+    <Lifetime>k__BackingField: 1
+    <RisePixels>k__BackingField: 90
+    <WorldOffset>k__BackingField: {x: 0, y: 1.6, z: 0}
+  <DeathShakeMinMaxHealth>k__BackingField: 700
+  <DeathShakeTrauma>k__BackingField: 0.45
+  <AbilityShakeCooldown>k__BackingField: 0.35

@@ -1,0 +1,81 @@
+.shop-scroll {
+    flex-grow: 1;
+}
+
+.shop-section {
+    margin-bottom: var(--space-l);
+}
+
+.shop-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.shop-card {
+    width: 260px;
+    align-items: center;
+    margin: 0 var(--space-m) var(--space-m) 0;
+}
+
+.shop-card__name {
+    margin: var(--space-xs) 0;
+    font-size: var(--font-size-s);
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+.shop-buy {
+    min-width: 180px;
+}
+
+.shop-wide-card {
+    flex-direction: row;
+    align-items: center;
+    max-width: 1200px;
+}
+
+.shop-wide-card__info {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin: 0 var(--space-m);
+}
+
+.popup {
+    width: 640px;
+    max-width: 100%;
+    align-items: center;
+    scale: 0.8 0.8;
+    transition-property: scale;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-out-back;
+}
+
+.popup--shown {
+    scale: 1 1;
+}
+
+.popup__icon {
+    width: 200px;
+    height: 200px;
+    margin: var(--space-m) 0;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.popup__reward {
+    margin-bottom: var(--space-m);
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+.popup__button {
+    min-width: 280px;
+}
+
+.compact .shop-card {
+    width: 220px;
+}
+
+.compact .popup__icon {
+    width: 160px;
+    height: 160px;
+}
